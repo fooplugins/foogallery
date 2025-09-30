@@ -179,15 +179,35 @@ if ( !class_exists( 'FooGallery_Spotlight_Gallery_Template' ) ) {
 						)
 					),
 					array(
+                        'id'      => 'override_bg_color',
+                        'title'   => __( 'Override BG Color', 'foogallery' ),
+						'section' => __( 'General', 'foogallery' ),
+                        'desc'    => __( 'Override the background color of the gallery.', 'foogallery' ),
+                        'default' => 'no',
+						'type'    => 'radio',
+                        'choices' => array(
+							'no' => __( 'No', 'foogallery' ),
+							'yes'   => __( 'Yes', 'foogallery' )
+                        ),
+						'row_data'=> array(
+							'data-foogallery-change-selector' => 'input:radio',
+							'data-foogallery-value-selector'  => 'input:checked',
+							'data-foogallery-preview' => 'shortcode'
+						)
+                    ),
+					array(
 						'id'      => 'background_color',
 						'title'   => __( 'Background Color', 'foogallery' ),
 						'desc'	  => __( 'Choose a background color for the gallery.', 'foogallery '),
 						'section'  => __( 'General', 'foogallery' ),
 						'type'    => 'colorpicker',
-						'default' => '',
+						'default' => 'rgba(0, 0, 0, 0)',
 						'opacity' => true,
 						'row_data' => array(
-							'data-foogallery-preview'               => 'shortcode'
+							'data-foogallery-preview'               => 'shortcode',
+							'data-foogallery-hidden'                => true,
+							'data-foogallery-show-when-field'       => 'override_bg_color',
+							'data-foogallery-show-when-field-value' => 'yes',
 						)
 					)
 				),
@@ -380,9 +400,12 @@ if ( !class_exists( 'FooGallery_Spotlight_Gallery_Template' ) ) {
 				$css[] = '#' . $id . ' .fiv-ctrls .fiv-prev::before { content: "\25BA"; transform: rotate(180deg) translateX(2px); }';
 			}
 
-			$background_color = foogallery_gallery_template_setting( 'background_color', '' );
-			if ( !empty( $background_color ) ) {
-				$css[] = '#' . $id . '.foogallery .fg-item { background-color: ' . $background_color . '; }';
+			$override_bg_color = foogallery_gallery_template_setting( 'override_bg_color', 'no' );
+			if ( 'yes' === $override_bg_color ) {
+				$background_color = foogallery_gallery_template_setting( 'background_color', '' );
+				if ( !empty( $background_color ) ) {
+					$css[] = '#' . $id . '.foogallery .fg-item { background-color: ' . $background_color . '; }';
+				}
 			}
 
 			return $css;
