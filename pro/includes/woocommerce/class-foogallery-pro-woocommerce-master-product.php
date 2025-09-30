@@ -456,7 +456,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 					'type'     => 'radio',
 					'default'  => '',
 					'choices'  => array(
-						'' => __( 'Disabled', 'foogallery' ),
+						''         => __( 'Disabled', 'foogallery' ),
 						'transfer' => __( 'Enabled', 'foogallery' ),
 					),
 					'row_data' => array(

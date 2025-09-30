@@ -218,8 +218,8 @@ if ( ! class_exists( 'FooGallery_LazyLoad' ) ) {
 					'type'     => 'radio',
 					'default'  => '',
 					'choices'  => array(
-						''         => __( 'Enabled', 'foogallery' ),
 						'disabled' => __( 'Disabled', 'foogallery' ),
+						''         => __( 'Enabled', 'foogallery' ),
 					),
 					'row_data' => array(
 						'data-foogallery-change-selector' => 'input:radio',

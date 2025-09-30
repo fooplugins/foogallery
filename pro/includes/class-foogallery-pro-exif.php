@@ -408,8 +408,8 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                 'type'    => 'radio',
                 'default' => 'no',
                 'choices' => apply_filters( 'foogallery_gallery_template_exif_view_choices', array(
-                    'yes'   => __( 'Enabled', 'foogallery' ),
                     'no'  => __( 'Disabled', 'foogallery' ),
+                    'yes'   => __( 'Enabled', 'foogallery' ),
                 ) ),
                 'row_data'=> array(
                     'data-foogallery-change-selector'          => 'input:radio',

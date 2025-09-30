@@ -531,9 +531,9 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 				'type'    => 'radio',
 				'default' => '',
 				'choices' => apply_filters( 'foogallery_gallery_template_lightbox_info_enabled_choices', array(
+					'disabled'   => __( 'Disabled', 'foogallery' ),
 					'' => __( 'Enabled', 'foogallery' ),
 					'hidden'    => __( 'Enabled (but hidden initially)', 'foogallery' ),
-					'disabled'   => __( 'Disabled', 'foogallery' ),
 				) ),
 				'row_data'=> array(
 					'data-foogallery-change-selector' => 'input:radio',

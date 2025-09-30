@@ -149,7 +149,7 @@ if ( !class_exists( 'FooGallery_Image_Viewer_Gallery_Template' ) ) {
 						'class'   => 'foogallery-radios-12em',
 						'choices' => array(
 							'disabled' => __( 'Disabled', 'foogallery' ),
-							'enabled' => __( 'Looping Enabled', 'foogallery' ),
+							'enabled' => __( 'Enabled', 'foogallery' ),
 						),
 						'row_data'=> array(
 							'data-foogallery-change-selector' => 'input:radio',

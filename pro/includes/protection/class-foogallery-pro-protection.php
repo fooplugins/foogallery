@@ -577,8 +577,8 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 				'type'     => 'radio',
 				'default'  => 'no',
 				'choices'  => array(
-					'yes' => __( 'Enabled', 'foogallery' ),
 					'no'  => __( 'Disabled', 'foogallery' ),
+					'yes' => __( 'Enabled', 'foogallery' ),
 				),
 				'row_data' => array(
 					'data-foogallery-change-selector' => 'input:radio',

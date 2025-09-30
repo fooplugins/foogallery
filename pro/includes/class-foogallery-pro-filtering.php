@@ -209,9 +209,9 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'type'     => 'radio',
 					'default'  => '',
 					'choices'  => apply_filters('foogallery_gallery_template_filtering_type_choices', array(
-							''        => __( 'Disabled', 'foogallery' ),
+							''       => __( 'Disabled', 'foogallery' ),
 							'simple' => __( 'Enabled', 'foogallery' ),
-							'multi' => __( 'Multi-Level', 'foogallery' )
+							'multi'  => __( 'Multi-Level', 'foogallery' )
 						)
 					),
 					'row_data' => array(
@@ -434,8 +434,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'type'     => 'radio',
 					'default'  => '',
 					'choices'  => array(
-						'' => __( 'Disabled', 'foogallery' ),
-						'true'    => __( 'Enabled', 'foogallery' ),
+						''     => __( 'Disabled', 'foogallery' ),
+						'true' => __( 'Enabled', 'foogallery' ),
 					),
 					'row_data' => array(
 						'data-foogallery-hidden'                   => true,
@@ -746,8 +746,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'subsection' => array( 'filtering-search' => __( 'Search', 'foogallery' ) ),
 					'type'     => 'radio',
 					'default'  => '',
-					'choices'  =>  array(
-						''    => __( 'Disabled', 'foogallery' ),
+					'choices'  => array(
+						''     => __( 'Disabled', 'foogallery' ),
 						'true' => __( 'Enabled', 'foogallery' ),
 					),
 					'row_data' => array(
