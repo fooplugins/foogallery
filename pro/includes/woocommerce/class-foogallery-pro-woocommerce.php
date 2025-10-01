@@ -984,7 +984,8 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				);
 
                 $new_fields[] = array(
-					'id'      => 'ecommerce_ribbon_info',
+					'id'      => 'ecommerce_ribbon_help',
+					'title'   => __( 'WooCommerce Ribbons Help', 'foogallery' ),
 					'desc'    => __( 'You can show different ribbons for products that are on sale, out of stock, on backorder or featured.', 'foogallery' ),
 					'section' => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
