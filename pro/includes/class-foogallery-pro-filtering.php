@@ -55,8 +55,39 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				//output pagination placeholders
 				add_action( 'foogallery_loaded_template_before', array( $this, 'output_filtering_placeholders_before' ), 10, 1 );
 				add_action( 'foogallery_loaded_template_after', array( $this, 'output_filtering_placeholders_after' ), 20, 1 );
+
+				add_filter( 'foogallery_render_gallery_template_field_value', array( $this, 'alter_old_field_values'), 99, 4 );
             }
         }
+
+		/**
+		 * Alter old field values to cater for removing the 'Advanced' option
+		 *
+		 * @param $value
+		 * @param $field
+		 * @param $gallery
+		 * @param $template
+		 *
+		 * @return string
+		 */
+		function alter_old_field_values( $value, $field, $gallery, $template ) {
+			//only map filtering_type field to cater for removing the 'Advanced' option
+			if ( 'filtering_type' === $field['id'] ) {
+				switch ( $value ) {
+				case '': // filtering is disabled.
+					$value = '';
+					break;
+				case 'multi': // multi-level filtering.
+					$value = 'multi';
+					break;
+				default: // everything else gets mapped to simple filtering.
+					$value = 'simple';
+					break;
+				}
+			}
+
+			return $value;
+		}
 
 		function register_extension( $extensions_list ) {
 			$pro_features = foogallery_pro_features();
@@ -763,28 +794,45 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					'desc'     => __( 'The position of the search input, relative to the other filters.', 'foogallery' ),
 					'section'  => __( 'Filtering', 'foogallery' ),
 					'subsection' => array( 'filtering-search' => __( 'Search', 'foogallery' ) ),
-					'type'     => 'select',
+					'type'     => 'radio',
 					'default'  => 'above-center',
 					'choices'  =>  array(
-						''             => __( 'Above Center', 'foogallery' ),
-						'above-right'  => __( 'Above Right', 'foogallery' ),
-						'above-left'   => __( 'Above Left', 'foogallery' ),
-						'below-center' => __( 'Below Center', 'foogallery' ),
-						'below-right'  => __( 'Below Right', 'foogallery' ),
-						'below-left'   => __( 'Below Left', 'foogallery' ),
-						'before'   => __( 'Before Filter', 'foogallery' ),
-						'after'   => __( 'After Filter', 'foogallery' ),
-						'before-merged' => __( 'Before Filter &amp; Merged', 'foogallery' ),
-						'after-merged' => __( 'After Filter &amp; Merged', 'foogallery' ),
+						'above-center'  => __( 'Above Center', 'foogallery' ),
+						'above-right'   => __( 'Above Right', 'foogallery' ),
+						'above-left'    => __( 'Above Left', 'foogallery' ),
+						'below-center'  => __( 'Below Center', 'foogallery' ),
+						'below-right'   => __( 'Below Right', 'foogallery' ),
+						'below-left'    => __( 'Below Left', 'foogallery' ),
+						'before'        => __( 'Before Filter', 'foogallery' ),
+						'before-merged' => __( 'Before &amp; Merged', 'foogallery' ),
+						'after'         => __( 'After Filter', 'foogallery' ),
+						'after-merged'  => __( 'After &amp; Merged', 'foogallery' ),
 					),
 					'row_data' => array(
 						'data-foogallery-hidden'                   => true,
 						'data-foogallery-show-when-field-operator' => '!==',
 						'data-foogallery-show-when-field'          => 'filtering_search',
 						'data-foogallery-show-when-field-value'    => '',
-						'data-foogallery-change-selector'          => 'select',
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-value-selector'           => 'input:checked',
 						'data-foogallery-preview'                  => 'shortcode'
-					)
+					),
+					'class' => 'foogallery-radios-12em'
+				);
+
+				$filtering_fields[] = array(
+					'id'      => 'filtering_merged_help',
+					'title'   => __( 'Merging Search Tip', 'foogallery' ),
+					'desc'    => __( 'When using "Before &amp; Merged" or "After &amp; Merged" positions, the search input will be merged with the filter tags. If the filter tags wrap to more than one line, the search will not be merged. To avoid this, limit the number of filter shown.', 'foogallery' ),
+					'section'  => __( 'Filtering', 'foogallery' ),
+					'subsection' => array( 'filtering-search' => __( 'Search', 'foogallery' ) ),
+					'type'    => 'help',
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field-operator' => 'regex',
+						'data-foogallery-show-when-field'          => 'filtering_search_position',
+						'data-foogallery-show-when-field-value'    => 'before-merged|after-merged',
+					),
 				);
 
 				//find the index of the Advanced section
@@ -918,7 +966,11 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				if ( $filtering_search ) {
 					$filtering_options['type'] = 'tags';
 					$filtering_options['search'] = true;
-					$filtering_options['searchPosition'] = foogallery_gallery_template_setting( 'filtering_search_position', 'above-center' );
+					$position = foogallery_gallery_template_setting( 'filtering_search_position', 'above-center' );
+					if ( '' === $position ) {
+						$position = 'above-center';
+					}
+					$filtering_options['searchPosition'] = $position;
 				}
 
 				if ( $filtering_options !== false ) {
