@@ -163,7 +163,7 @@ if ( ! class_exists( 'FooGallery_Pro_Buttons' ) ) {
 		}
 
 		/** 
-         * Checking the EXIF enabled status
+         * Checking is buttons are hidden
          *  
          * @return Boolean    
          */ 
