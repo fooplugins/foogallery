@@ -8,6 +8,9 @@ if ( ! class_exists( 'FooGallery_Pro_Buttons' ) ) {
 
 		function __construct() {
 			if ( is_admin() ) {
+				// Add extra fields to the templates.
+				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_buttons_fields' ), 29, 2 );
+
 				// Add attachment custom fields.
 				add_filter( 'foogallery_attachment_custom_fields', array( $this, 'attachment_custom_fields' ), 40 );
 
@@ -159,6 +162,23 @@ if ( ! class_exists( 'FooGallery_Pro_Buttons' ) ) {
 			}
 		}
 
+		/** 
+         * Checking the EXIF enabled status
+         *  
+         * @return Boolean    
+         */ 
+        function is_buttons_hidden() {
+        	if ( !foogallery_current_gallery_has_cached_value('buttons_hide') ) {
+
+				$buttons_hidden = 'hidden' === foogallery_gallery_template_setting( 'buttons_hide' );
+
+        		//set the toggle
+		        foogallery_current_gallery_set_cached_value( 'buttons_hide', $buttons_hidden );
+	        }
+
+        	return foogallery_current_gallery_get_cached_value( 'buttons_hide' );
+        }
+
 		/**
 		 * Builds up button HTML and adds it to the output.
 		 *
@@ -169,6 +189,10 @@ if ( ! class_exists( 'FooGallery_Pro_Buttons' ) ) {
 		 * @return mixed
 		 */
 		public function add_button_html( $html, $foogallery_attachment, $args ) {
+			if ( $this->is_buttons_hidden() ) {
+				return $html;
+			}
+
 			if ( isset( $foogallery_attachment->buttons ) && is_array( $foogallery_attachment->buttons ) ) {
 				$button_html = '<div class="fg-caption-buttons">';
 				foreach ( $foogallery_attachment->buttons as $button ) {
@@ -201,6 +225,10 @@ if ( ! class_exists( 'FooGallery_Pro_Buttons' ) ) {
 		 * @return mixed
 		 */
 		public function add_button_to_json(  $json_object, $foogallery_attachment, $args, $anchor_attributes, $image_attributes, $captions ) {
+			if ( $this->is_buttons_hidden() ) {
+				return $json_object;
+			}
+			
 			if ( isset( $foogallery_attachment->buttons ) && is_array( $foogallery_attachment->buttons ) ) {
 				$json_object->buttons = $foogallery_attachment->buttons;
 			}
@@ -229,6 +257,54 @@ if ( ! class_exists( 'FooGallery_Pro_Buttons' ) ) {
 				'input'       => 'text',
 				'application' => 'image/foogallery',
 			);
+
+			return $fields;
+		}
+
+		/**
+		 * Add button fields to all gallery templates
+		 *
+		 * @param array  $fields The fields to override.
+		 * @param string $template The gallery template.
+		 *
+		 * @return array
+		 */
+		public function add_buttons_fields( $fields, $template ) {
+
+			$new_fields = array();
+
+			$new_fields[] = array(
+				'id'      => 'buttons_help',
+				'title'   => __( 'Want to add custom buttons?', 'foogallery' ),
+				'desc'    => __( 'You can add a custom button to each item in your gallery within the advanced attachments modal, under the "Ecommerce" tab. To open the advanced attachments modal, go to "Manage Items" and then click on the the "Edit Info" icon.', 'foogallery' ),
+				'section' => __( 'Ecommerce', 'foogallery' ),
+				'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
+				'type'    => 'help',
+			);
+
+			$new_fields[] = array(
+				'id'       => 'buttons_hide',
+				'title'    => __( 'Hide All Buttons', 'foogallery' ),
+				'desc'     => __( 'You can choose to hide all buttons for the gallery. This will hide all buttons, including custom buttons and WooCommerce buttons.', 'foogallery' ),
+				'section'  => __( 'Ecommerce', 'foogallery' ),
+				'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
+				'type'     => 'radio',
+				'default'  => '',
+				'choices'  => array(
+					'' => __( 'Shown', 'foogallery' ),
+					'hidden' => __( 'Hidden', 'foogallery' ),
+				),
+				'row_data' => array(
+					'data-foogallery-change-selector' => 'input',
+					'data-foogallery-preview'         => 'shortcode',
+					'data-foogallery-value-selector'  => 'input:checked',
+				),
+			);
+
+			// find the index of the advanced section.
+			$index = foogallery_admin_fields_find_index_of_section( $fields, __( 'Advanced', 'foogallery' ) );
+
+			array_splice( $fields, $index, 0, $new_fields );
 
 			return $fields;
 		}
