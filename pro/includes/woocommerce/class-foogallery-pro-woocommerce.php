@@ -596,18 +596,14 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		}
 
 		/**
-		 * Determine if ribbons/buttons are needed for the product
+		 * Add ribbons to the attachment
 		 *
 		 * @param $attachment
 		 * @param WC_Product $product
 		 *
-		 * @return mixed
+		 * @return void
 		 */
-		static function determine_extra_data_for_product( &$attachment, $product ) {
-            if ( !self::is_product( $product ) ) {
-                return $attachment;
-            }
-
+		static function add_ribbons( &$attachment, $product ) {
 			// Do we need to add a sales ribbons?
 			$sale_ribbon_type = foogallery_gallery_template_setting( 'ecommerce_sale_ribbon_type', 'fg-ribbon-5' );
 			if ( '' !== $sale_ribbon_type ) {
@@ -646,7 +642,17 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					$attachment->ribbon_text = esc_html( foogallery_gallery_template_setting( 'ecommerce_backorder_ribbon_text', __( 'On Backorder', 'foogallery' ) ) );
 				}
 			}
+		}
 
+		/**
+		 * Add buttons to the attachment
+		 *
+		 * @param $attachment
+		 * @param WC_Product $product
+		 *
+		 * @return void
+		 */
+		static function add_buttons( &$attachment, $product ) {
 			if ( !is_a( $product, 'WC_Product_Variable' ) ) {
 				// Do we need "Add To Cart" button?
 				if ( $product->is_purchasable() && $product->is_in_stock() ) {
@@ -694,6 +700,23 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					$attachment->buttons[] = $button;
 				}
 			}
+		}
+
+		/**
+		 * Determine if ribbons/buttons are needed for the product
+		 *
+		 * @param $attachment
+		 * @param WC_Product $product
+		 *
+		 * @return mixed
+		 */
+		static function determine_extra_data_for_product( &$attachment, $product ) {
+			if ( !self::is_product( $product ) ) {
+				return $attachment;
+			}
+
+			self::add_ribbons( $attachment, $product );
+			self::add_buttons( $attachment, $product );
 
 			return $attachment;
 		}
@@ -792,10 +815,10 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			$new_fields = array();
 
 			if ( self::is_woocommerce_activated() ) {
-
 				$new_fields[] = array(
-					'id'      => 'ecommerce_info',
-					'desc'    => __( 'Buttons will only show if you are using the WooCommerce Product datasource, or if individual attachments are linked to WooCommerce products.', 'foogallery' ),
+					'id'      => 'buttons_ecommerce_help',
+					'title'   => __( 'WooCommerce Buttons Help', 'foogallery' ),
+					'desc'    => __( 'WooCommerce buttons will only show if you are using the WooCommerce Product datasource, or if individual attachments are linked to WooCommerce products.', 'foogallery' ),
 					'section' => __( 'Ecommerce', 'foogallery' ),
 					'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
 					'type'    => 'help',
@@ -1528,7 +1551,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
         public function attachment_modal_display_tab() { ?>
             <div class="foogallery-img-modal-tab-wrapper" data-tab_id="foogallery-panel-commerce">
                 <input type="radio" name="tabset" id="foogallery-tab-commerce" aria-controls="foogallery-panel-commerce">
-                <label for="foogallery-tab-commerce"><?php _e('Commerce', 'foogallery'); ?></label>
+                <label for="foogallery-tab-commerce"><?php _e('Ecommerce', 'foogallery'); ?></label>
             </div>
         <?php }
 
