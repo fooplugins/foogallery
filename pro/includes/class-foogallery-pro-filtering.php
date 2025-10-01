@@ -898,7 +898,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					}
 
 					// Multi-level
-					if ( 'multi' === $filtering_mode ) {
+					if ( 'multi' === $filtering ) {
 						$filtering_multi_override = foogallery_gallery_template_setting( 'filtering_multi_override', '' );
 
 						if ( !empty( $filtering_multi_override ) ) {
