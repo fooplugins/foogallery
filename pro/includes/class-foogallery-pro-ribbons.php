@@ -8,6 +8,9 @@ if ( ! class_exists( 'FooGallery_Pro_Ribbons' ) ) {
 
 		function __construct() {
 			if ( is_admin() ) {
+				// Add extra fields to the templates.
+				add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_ribbon_fields' ), 29, 2 );
+
 				// Add attachment custom fields.
 				add_filter( 'foogallery_attachment_custom_fields', array( $this, 'attachment_custom_fields' ), 40 );
 
@@ -146,6 +149,23 @@ if ( ! class_exists( 'FooGallery_Pro_Ribbons' ) ) {
 			}
 		}
 
+		/** 
+         * Checking is ribbons are hidden
+         *  
+         * @return Boolean    
+         */ 
+        function is_ribbons_hidden() {
+        	if ( !foogallery_current_gallery_has_cached_value('ribbons_hide') ) {
+
+				$ribbons_hidden = 'hidden' === foogallery_gallery_template_setting( 'ribbons_hide' );
+
+        		//set the toggle
+		        foogallery_current_gallery_set_cached_value( 'ribbons_hide', $ribbons_hidden );
+	        }
+
+        	return foogallery_current_gallery_get_cached_value( 'ribbons_hide' );
+        }
+
 		/**
 		 * Builds up ribbon HTML and adds it to the output.
 		 *
@@ -156,6 +176,10 @@ if ( ! class_exists( 'FooGallery_Pro_Ribbons' ) ) {
 		 * @return mixed
 		 */
 		public function add_ribbon_html( $html, $foogallery_attachment, $args ) {
+			if ( $this->is_ribbons_hidden() ) {
+				return $html;
+			}
+			
 			if ( isset( $foogallery_attachment->ribbon_type ) && isset( $foogallery_attachment->ribbon_text ) ) {
 				//Add the ribbon HTML!!!
 				$ribbon_html = '<div class="' . $foogallery_attachment->ribbon_type . '"><span>' . $this->generate_ribbon_html( $foogallery_attachment->ribbon_text ) . '</span></div>';
@@ -203,6 +227,10 @@ if ( ! class_exists( 'FooGallery_Pro_Ribbons' ) ) {
 		 * @return mixed
 		 */
 		public function add_ribbon_to_json(  $json_object, $foogallery_attachment, $args, $anchor_attributes, $image_attributes, $captions ) {
+			if ( $this->is_ribbons_hidden() ) {
+				return $json_object;
+			}
+			
 			if ( isset( $foogallery_attachment->ribbon_type ) && isset( $foogallery_attachment->ribbon_text ) ) {
 				$json_object->ribbon = array(
 					'type' => $foogallery_attachment->ribbon_type,
@@ -255,6 +283,54 @@ if ( ! class_exists( 'FooGallery_Pro_Ribbons' ) ) {
 				'fg-ribbon-1' => __( 'Type 6 (top-left, vertical, orange)', 'foogallery' ),
                 'fg-ribbon-7' => __( 'Type 7 (bottom, full-width, grey)', 'foogallery' ),
 			);
+		}
+
+		/**
+		 * Add button fields to all gallery templates
+		 *
+		 * @param array  $fields The fields to override.
+		 * @param string $template The gallery template.
+		 *
+		 * @return array
+		 */
+		public function add_ribbon_fields( $fields, $template ) {
+
+			$new_fields = array();
+
+			$new_fields[] = array(
+				'id'      => 'ribbons_help',
+				'title'   => __( 'Want to add custom ribbons?', 'foogallery' ),
+				'desc'    => __( 'You can add a custom ribbon to each item in your gallery within the advanced attachments modal, under the "Ecommerce" tab. To open the advanced attachments modal, go to "Manage Items" and then click on the the "Edit Info" icon.', 'foogallery' ),
+				'section' => __( 'Ecommerce', 'foogallery' ),
+				'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
+				'type'    => 'help',
+			);
+
+			$new_fields[] = array(
+				'id'       => 'ribbons_hide',
+				'title'    => __( 'Hide All Ribbons', 'foogallery' ),
+				'desc'     => __( 'You can choose to hide all ribbons for the gallery. This will hide all ribbons, including custom ribbons and WooCommerce ribbons.', 'foogallery' ),
+				'section'  => __( 'Ecommerce', 'foogallery' ),
+				'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
+				'type'     => 'radio',
+				'default'  => '',
+				'choices'  => array(
+					'' => __( 'Shown', 'foogallery' ),
+					'hidden' => __( 'Hidden', 'foogallery' ),
+				),
+				'row_data' => array(
+					'data-foogallery-change-selector' => 'input',
+					'data-foogallery-preview'         => 'shortcode',
+					'data-foogallery-value-selector'  => 'input:checked',
+				),
+			);
+
+			// find the index of the advanced section.
+			$index = foogallery_admin_fields_find_index_of_section( $fields, __( 'Advanced', 'foogallery' ) );
+
+			array_splice( $fields, $index, 0, $new_fields );
+
+			return $fields;
 		}
 	}
 }
