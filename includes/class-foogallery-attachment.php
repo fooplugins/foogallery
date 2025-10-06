@@ -53,6 +53,9 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 			$this->custom_target = get_post_meta( $this->ID, '_foogallery_custom_target', true );
 			$this->load_attachment_image_data( $this->ID );
 
+			$this->date = !empty( $post->post_date_gmt ) ? $post->post_date_gmt : $post->post_date;
+			$this->modified = !empty( $post->post_modified_gmt ) ? $post->post_modified_gmt : $post->post_modified;
+
 			do_action( 'foogallery_attachment_instance_after_load', $this, $post );
 		}
 
