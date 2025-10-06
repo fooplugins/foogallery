@@ -699,12 +699,6 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
             if ( is_array( $modal_data ) && !empty ( $modal_data ) ) {
                 if ( $modal_data['img_id'] > 0 ) {
                     if ( is_array ( $modal_data['meta'] ) && !empty ( $modal_data['meta'] ) ) {
-                        $keywords = '';
-                        $image_meta = array_key_exists( 'image_meta', $modal_data['meta'] ) ? $modal_data['meta']['image_meta'] : '';
-                        if ( is_array( $image_meta ) && !empty ( $image_meta ) ) {
-                            $keywords_str = array_key_exists( 'keywords', $image_meta ) ? implode( ',', $modal_data['meta']['image_meta']['keywords'] ) : '';
-                            $keywords = rtrim( $keywords_str, ',' );
-                        }
                         $aperture = $this->get_meta_value( $modal_data['meta']['image_meta'], 'aperture', '0' );
                         $camera = $this->get_meta_value( $modal_data['meta']['image_meta'], 'camera' );
                         $created_timestamp = $this->get_meta_value( $modal_data['meta']['image_meta'], 'created_timestamp', '0' );
@@ -770,14 +764,6 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
 								<p class="description">
 									<?php esc_html_e( 'The timestamp of when the photo was taken.', 'foogallery' ); ?>
 								</p>
-
-                                <span class="setting has-description" data-setting="keywords">
-									<label for="attachment-details-two-column-keywords" class="name"><?php esc_html_e('Keywords', 'foogallery'); ?></label>
-									<input placeholder="eg. portrait, architecture, nature, food, travel" type="text" name="foogallery[keywords]" id="attachment-details-two-column-keywords" value="<?php echo esc_attr( $keywords );?>">
-								</span>
-								<p class="description">
-									<?php esc_html_e( 'Additional keywords or tags to describe the photo.', 'foogallery' ); ?>
-								</p>
                             </div>
                         </section>
                         <?php
@@ -820,10 +806,6 @@ if ( ! class_exists( 'FooGallery_Pro_Exif' ) ) {
                     }
                     if ( $key === 'orientation' ) {
                         $image_meta['image_meta']['orientation'] = $val;
-                    }
-                    if ( $key === 'keywords' ) {
-                        $keywords = explode(',', $val);
-                        $image_meta['image_meta']['keywords'] = $keywords;
                     }
                 }
 
