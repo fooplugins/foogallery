@@ -13,6 +13,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 			add_filter( 'foogallery_datasource_woocommerce_attachments', array( $this, 'get_gallery_attachments' ), 10, 2 );
 			add_filter( 'foogallery_datasource_woocommerce_featured_image', array( $this, 'get_gallery_featured_attachment' ), 10, 2 );
 			add_filter( 'foogallery_datasource_woocommerce_attachment_ids', array( $this, 'get_gallery_attachment_ids' ), 10, 2 );
+			add_filter( 'foogallery_datasource_woocommerce_must_sort', '__return_false' );
 			add_action( 'foogallery_before_save_gallery_datasource', array( $this, 'before_save_gallery_datasource_clear_datasource_cached_images' ) );
 
 			add_action( 'foogallery-datasource-modal-content_woocommerce', array( $this, 'render_datasource_modal_content' ), 10, 2 );
@@ -294,6 +295,9 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 
 			$attachments = array();
 
+			/**
+			 * @var WC_Product $product
+			 */
 			foreach ( $products as $product ) {
 
                 // Do not show products that are not visible.
@@ -325,7 +329,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 				$attachment->custom_url    = get_permalink( $product->get_id() );
 				$attachment->custom_target = '';
 
-				$attachment    = apply_filters( 'foogallery_datasource_woocommerce_build_attachment', $attachment, $product );
+				$attachment->date = $product->get_date_created()->date( 'Y-m-d H:i:s' );
+				$attachment->modified = $product->get_date_modified()->date( 'Y-m-d H:i:s' );
+
+				$attachment = apply_filters( 'foogallery_datasource_woocommerce_build_attachment', $attachment, $product );
 				$attachments[$post_thumbnail_id] = $attachment;
 			}
 

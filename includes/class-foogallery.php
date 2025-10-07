@@ -349,7 +349,13 @@ class FooGallery extends stdClass {
 	public function attachments() {
 		//lazy load the attachments for performance
 		if ( $this->_attachments === false ) {
-			$this->_attachments = $this->apply_datasource_filter( 'attachments', array() );
+			$attachments = $this->apply_datasource_filter( 'attachments', array() );
+			if ( ! empty( $attachments ) && $this->apply_datasource_filter( 'must_sort', true ) ) {
+				$orderby = foogallery_sorting_get_posts_orderby_arg( $this->sorting );
+				$order = foogallery_sorting_get_posts_order_arg( $this->sorting );
+				$attachments = foogallery_sort_attachments( $attachments, $orderby, $order );
+			}
+			$this->_attachments = $attachments;
 		}
 
 		return $this->_attachments;

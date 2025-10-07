@@ -257,23 +257,13 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary_Query_Helper' ) ) {
 				}
 			}
 
-			//set some sorting globals
-			global $foogallery_force_sort_orderby;
-			global $foogallery_force_sort_order;
-			$foogallery_force_sort_orderby = $attachment_query_args['orderby'];
-			$foogallery_force_sort_order = $attachment_query_args['order'];
-
 			//setup intercepting actions
-			add_action( 'pre_get_posts', array( $this, 'force_gallery_ordering' ), 99 );
 			add_action( 'pre_get_posts', array( $this, 'force_suppress_filters' ), PHP_INT_MAX );
 
 			$attachment_posts = get_posts( $attachment_query_args );
 
 			//remove intercepting actions
-			remove_action( 'pre_get_posts', array( $this, 'force_gallery_ordering' ), 99 );
 			remove_action( 'pre_get_posts', array( $this, 'force_suppress_filters' ), PHP_INT_MAX );
-
-			$foogallery_force_sort = $foogallery_force_sort_orderby = $foogallery_force_sort_order = null;
 
 			foreach ( $attachment_posts as $attachment_post ) {
 				$attachments[] = apply_filters( 'foogallery_attachment_load', FooGalleryAttachment::get( $attachment_post ), $foogallery );
@@ -283,30 +273,8 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary_Query_Helper' ) ) {
 		}
 
 		/**
-		 * This forces the attachments to be fetched using the correct ordering.
-		 * Some plugins / themes override this globally for some reason, so this is a preventative measure to ensure sorting is correct
-		 * @param $query WP_Query
-		 */
-		public function force_gallery_ordering( $query ) {
-			global $foogallery_force_sort;
-			global $foogallery_force_sort_orderby;
-			global $foogallery_force_sort_order;
-
-			//only care about attachments
-			if ( isset( $foogallery_force_sort ) && array_key_exists( 'post_type', $query->query ) &&
-				'attachment' === $query->query['post_type'] ) {
-			    if ( isset( $foogallery_force_sort_orderby ) ) {
-				    $query->set( 'orderby', $foogallery_force_sort_orderby );
-			    }
-				if ( isset( $foogallery_force_sort_order ) ) {
-					$query->set( 'order', $foogallery_force_sort_order );
-				}
-			}
-		}
-
-		/**
 		 * This forces the attachments to be fetched without any other filters.
-		 * Some plugins override attachment queries, so this is a preventative measure to ensure sorting is correct
+		 * Some plugins override attachment queries, so this is a preventative measure to ensure attachments are fetched correctly
 		 * @param $query WP_Query
 		 */
 		public function force_suppress_filters( $query ) {

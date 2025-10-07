@@ -2473,3 +2473,71 @@ function foogallery_intval( $value, $default = 0 ) {
 function foogallery_is_preview() {
 	return isset( $GLOBALS['foogallery_gallery_preview'] ) && $GLOBALS['foogallery_gallery_preview'];
 }
+
+/**
+ * Sort the retrieved attachment posts after the query has executed.
+ *
+ * @param array      $attachment_posts Array of WP_Post objects for the attachments.
+ * @param string     $orderby          Orderby clause used for the query.
+ * @param string     $order            Order clause used for the query.
+ *
+ * @return array Sorted array of WP_Post objects.
+ */
+function foogallery_sort_attachments( $attachments, $orderby, $order ) {
+	if ( empty( $attachments ) ) {
+		return $attachments;
+	}
+
+	$order = ( strtoupper( $order ) === 'ASC' ) ? 'ASC' : 'DESC';
+
+	switch ( $orderby ) {
+		case 'date':
+			usort( $attachments, function ( $a, $b ) use ( $order ) {
+				$first  = strtotime( ! empty( $a->post_date_gmt ) ? $a->post_date_gmt : $a->post_date ) ?: 0;
+				$second = strtotime( ! empty( $b->post_date_gmt ) ? $b->post_date_gmt : $b->post_date ) ?: 0;
+				$comparison = 0;
+
+				if ( $first < $second ) {
+					$comparison = -1;
+				} elseif ( $first > $second ) {
+					$comparison = 1;
+				}
+
+				return ( 'ASC' === $order ) ? $comparison : - $comparison;
+			} );
+			break;
+		case 'modified':
+			usort( $attachments, function ( $a, $b ) use ( $order ) {
+				$first  = strtotime( ! empty( $a->post_modified_gmt ) ? $a->post_modified_gmt : $a->post_modified ) ?: 0;
+				$second = strtotime( ! empty( $b->post_modified_gmt ) ? $b->post_modified_gmt : $b->post_modified ) ?: 0;
+				$comparison = 0;
+
+				if ( $first < $second ) {
+					$comparison = -1;
+				} elseif ( $first > $second ) {
+					$comparison = 1;
+				}
+
+				return ( 'ASC' === $order ) ? $comparison : - $comparison;
+			} );
+			break;
+		case 'title':
+			usort( $attachments, function ( $a, $b ) use ( $order ) {
+				$comparison = strnatcasecmp( $a->post_title, $b->post_title );
+				if ( 'ASC' === $order ) {
+					return $comparison;
+				}
+
+				return - $comparison;
+			} );
+			break;
+		case 'rand':
+			shuffle( $attachments );
+			break;
+		default:
+			// For 'post__in' and any other unsupported orderby values we keep the original order.
+			break;
+	}
+
+	return apply_filters( 'foogallery_sort_attachments', $attachments, $orderby, $order );
+}

@@ -275,6 +275,15 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 									$attachment->height = $size[1];
 								}
 
+								if ( isset( $file_info['lastmodunix'] ) && $file_info['lastmodunix'] ) {
+									$attachment->modified = gmdate( 'Y-m-d H:i:s', (int) $file_info['lastmodunix'] );
+								}
+
+								$created_timestamp = @filectime( $filename );
+								if ( $created_timestamp ) {
+									$attachment->date = gmdate( 'Y-m-d H:i:s', (int) $created_timestamp );
+								}
+
 								//extract info from the json config file in the folder
 								if ( $json ) {
 									$file_json = $this->find_json_data_for_file( $file, $json );
@@ -836,4 +845,3 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 		}
 	}
 }
-

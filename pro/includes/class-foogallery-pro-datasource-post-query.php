@@ -182,6 +182,8 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 				$attachment->caption       = $post->post_title;
 				$attachment->description   = $post->post_excerpt;
 				$attachment->alt           = $post->post_title;
+				$attachment->date          = !empty( $post->post_date_gmt ) ? $post->post_date_gmt : $post->post_date;
+				$attachment->modified      = !empty( $post->post_modified_gmt ) ? $post->post_modified_gmt : $post->post_modified;
 				$attachment->custom_url    = $url;
 				$attachment->custom_target = '';
 				$attachment->sort          = '';

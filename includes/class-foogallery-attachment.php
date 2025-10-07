@@ -40,7 +40,7 @@ if ( ! class_exists( 'FooGalleryAttachment' ) ) {
 
 		/**
 		 * private attachment load function
-		 * @param $post
+		 * @param $post | WP_Post
 		 */
 		private function load( $post ) {
 			$this->_post = $post;
