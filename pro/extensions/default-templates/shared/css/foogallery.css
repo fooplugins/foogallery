@@ -1580,11 +1580,11 @@ div.fg-ribbon-7 > span {
     justify-content: center;
     padding: var(--fg-padding-y) var(--fg-padding-x);
     height: var(--fg-height);
-    margin: 0;
+    margin: 0 0 1px 0;
     font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
     font-size: inherit;
     font-weight: 400;
-    line-height: 1.4;
+    line-height: unset;
     text-align: center;
     white-space: nowrap;
     vertical-align: middle;
@@ -3814,13 +3814,33 @@ div.fg-ribbon-7 > span {
 .fg-paging-container + .fg-filtering-container {
 	padding-top: 0;
 }
-/* Tags */
+/* adjust placeholder size based on combination of style + search position */
 .fg-ph-tags:before {
-	display: block;
-	content: '';
-	width: 0;
-	height: 36px;
+    display: block;
+    content: '';
+    width: 0;
+    height: 36px;
 }
+.fg-ph-tags:not(.fg-filtering-container):before {
+    padding: 15px;
+}
+.fg-ph-tags:is(.fg-search-above-left,.fg-search-above-center,.fg-search-above-right,.fg-search-below-left,.fg-search-below-center,.fg-search-below-right):before {
+    height: calc( 36px + 4px + 36px );
+}
+.fg-ph-tags:is(.fg-style-button-block,.fg-style-pill-block):before {
+    height: 49px;
+}
+.fg-ph-tags:is(.fg-style-button-block,.fg-style-pill-block):is(.fg-search-above-left,.fg-search-above-center,.fg-search-above-right,.fg-search-below-left,.fg-search-below-center,.fg-search-below-right):before {
+    height: calc( 49px + 4px + 49px );
+}
+.fg-ph-tags.fg-style-dropdown-block:before {
+    height: 51px;
+}
+.fg-ph-tags.fg-style-dropdown-block:is(.fg-search-above-left,.fg-search-above-center,.fg-search-above-right,.fg-search-below-left,.fg-search-below-center,.fg-search-below-right):before {
+    height: calc( 51px + 4px + 49px );
+}
+
+
 .fg-filtering-container {
     --fg-border-radius: var(--fg-base-25);
     --fg-border-width: 1px;
