@@ -138,11 +138,21 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 			if ( foogallery_current_gallery_has_cached_value( 'filtering' ) ) {
 				$filtering_options = foogallery_current_gallery_get_cached_value( 'filtering' );
 				$filtering_type = $filtering_options['type'];
-
+				
 				if ( '' !== $filtering_type && isset( $filtering_options['position'] ) )  {
 					$filtering_position = $filtering_options['position'];
 					if ( $position === $filtering_position || 'both' === $filtering_position ) {
-						echo '<nav id="' . $foogallery->container_id() . '_filtering-' . $position . '" class="fg-filtering-container fg-ph-' . $filtering_type . '"></nav>';
+
+						//we need to add a nav placeholder.
+						$classes = array( 'fg-filtering-container', 'fg-ph-' . $filtering_type );
+						if ( !empty( $filtering_options['style'] ) ) {
+							$classes[] = 'fg-style-' . $filtering_options['style'];
+						}
+						if ( isset( $filtering_options['search'] ) && $filtering_options['search'] ) {
+							$classes[] = 'fg-search-' . $filtering_options['searchPosition'];
+						}
+
+						echo '<nav id="' . $foogallery->container_id() . '_filtering-' . $position . '" class="' . esc_attr( implode( ' ', $classes ) ) . '"></nav>';
 					}
 				}
 			}
