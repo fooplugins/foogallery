@@ -1,0 +1,26 @@
+/**
+ * FooGallery Bricks Compatibility Styles
+ * 
+ * @package FooGallery
+ * @author FooPlugins
+ */
+
+/* Bricks Builder Button Styles */
+.theme-bricks label[for="gallery_edit"] span,
+.theme-bricks label[for="gallery_add"] span {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.2;
+    padding: 8px 16px;
+    background: #515962;
+    border-radius: 5px;
+    color: #ffffff;
+    display: inline-block;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.theme-bricks label[for="gallery_edit"] span:hover,
+.theme-bricks label[for="gallery_add"] span:hover {
+    background: #40474e;
+}
