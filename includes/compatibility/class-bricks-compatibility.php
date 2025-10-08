@@ -23,6 +23,9 @@ if ( ! class_exists( 'FooGallery_Bricks_Compatibility' ) ) {
             add_filter( 'foogallery_lazy_load', [ $this, 'disable_lazy_loading_for_bricks_builder' ], 10, 3 );
         }
 
+        /**
+         * Initialize Bricks compatibility
+         */
         public function init() {
             // Only load if Bricks is active.
             if ( ! class_exists( '\Bricks\Elements' ) ) {
@@ -111,6 +114,7 @@ if ( ! class_exists( 'FooGallery_Bricks_Compatibility' ) ) {
                 return false;
             }
             
+            return $lazyload_support;
         }
 
     }
