@@ -4,7 +4,7 @@ Donate link: https://fooplugins.com
 Tags: gallery, image gallery, photo gallery, responsive gallery, wordpress gallery plugin
 Requires at least: 5.3
 Tested up to: 6.8
-Stable tag: 2.5.1
+Stable tag: 3.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -315,14 +315,17 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 2.5.2 =
-* Date Updated : 28 Sept 2025
+= 3.0.0-beta.1 =
+* Date Updated : 07 Oct 2025
 * New : Added layout selector in gallery edit page. (MAJOR IMPROVEMENT!!)
-* New : Added more hover effect icons.
+* New : Added 6 more hover effect icons.
 * New : Added a default hover effect preset in free version.
 [//]: # fs_premium_only_begin
-* New : [Expert Plan] Added style options for tag filters.
-* New : [Starter Plan] Added spotlight gallery layout.
+* New : [Expert Plan] Added 6 new style options for tag filters (including dropdowns!)
+* New : [Starter Plan] Added new Spotlight PRO gallery layout.
+* New : [Commerce Plan] Added 4 new button styling options (block, outline, pill, pill-outline)
+* New : [Commerce Plan] Added setting to hide all ribbons for the gallery.
+* New : [Commerce Plan] Added setting to hide all buttons for the gallery.
 [//]: # fs_premium_only_end
 * Update : improvements to the gallery edit page styling.
 * Update : Updated all gallery layout defaults to use more modern look and feel.
