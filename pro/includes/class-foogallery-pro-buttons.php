@@ -32,6 +32,9 @@ if ( ! class_exists( 'FooGallery_Pro_Buttons' ) ) {
 
 			// Override the buttons based on product metadata.
 			add_filter( 'foogallery_datasource_woocommerce_build_attachment', array( $this, 'override_buttons_from_product' ), 20, 2 );
+
+			//Add container class
+			add_filter( 'foogallery_build_class_attribute', array( $this, 'add_container_class' ), 10,  2 );
 		}
 
 		/**
@@ -283,6 +286,28 @@ if ( ! class_exists( 'FooGallery_Pro_Buttons' ) ) {
 			);
 
 			$new_fields[] = array(
+				'id'       => 'buttons_style',
+				'title'    => __( 'Button Style', 'foogallery' ),
+				'desc'     => __( 'You can change the style of buttons in the gallery.', 'foogallery' ),
+				'section'  => __( 'Ecommerce', 'foogallery' ),
+				'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
+				'type'     => 'radio',
+				'default'  => '',
+				'choices'  => array(
+					'' => __( 'Default', 'foogallery' ),
+					'fg-cb-block' => __( 'Block', 'foogallery' ),
+					'fg-cb-block-outline' => __( 'Block Outline', 'foogallery' ),
+					'fg-cb-pill' => __( 'Pill', 'foogallery' ),
+					'fg-cb-pill-outline' => __( 'Pill Outline', 'foogallery' ),
+				),
+				'row_data' => array(
+					'data-foogallery-change-selector' => 'input',
+					'data-foogallery-preview'         => 'shortcode',
+					'data-foogallery-value-selector'  => 'input:checked',
+				),
+			);
+
+			$new_fields[] = array(
 				'id'       => 'buttons_hide',
 				'title'    => __( 'Hide All Buttons', 'foogallery' ),
 				'desc'     => __( 'You can choose to hide all buttons for the gallery. This will hide all buttons, including custom buttons and WooCommerce buttons.', 'foogallery' ),
@@ -308,5 +333,22 @@ if ( ! class_exists( 'FooGallery_Pro_Buttons' ) ) {
 
 			return $fields;
 		}
+
+		/**
+         * Customize the item container class   
+         *  
+         * @param $classes  
+         * @param $gallery  
+         *  
+         * @return array    
+         */ 
+        function add_container_class( $classes, $gallery ) { 
+            if ( !$this->is_buttons_hidden() ) {
+	            //Set button style class
+	            $classes[] = foogallery_gallery_template_setting( 'buttons_style', '' );
+            }
+
+            return $classes;    
+        }
 	}
 }
