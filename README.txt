@@ -317,12 +317,18 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 = 3.0.0-beta.1 =
 * Date Updated : 07 Oct 2025
-* New : Added layout selector in gallery edit page. (MAJOR IMPROVEMENT!!)
+* Change : Gallery Templates are now called Gallery Layouts.
+* New : Added visual gallery layout selector in gallery edit page. (MAJOR IMPROVEMENT!!)
 * New : Added 6 more hover effect icons.
+* New : Added gallery preview device switcher (desktop / tablet / mobile)
+* New : Added thumbnail gap slider control for layouts that support it.
+* New : Added "stacked" effect for single thumbnail layout.
+* New : Added smart captions for single thumbnail layout, eg. 10 images.
 * New : Added a default hover effect preset in free version.
+* New : Added caption line limits for caption titles and descriptions, eg. show only 2 lines. 
 [//]: # fs_premium_only_begin
-* New : [Expert Plan] Added 6 new style options for tag filters (including dropdowns!)
 * New : [Starter Plan] Added new Spotlight PRO gallery layout.
+* New : [Expert Plan] Added 6 new style options for tag filters (including dropdowns!)
 * New : [Commerce Plan] Added 4 new button styling options (block, outline, pill, pill-outline)
 * New : [Commerce Plan] Added setting to hide all ribbons for the gallery.
 * New : [Commerce Plan] Added setting to hide all buttons for the gallery.
