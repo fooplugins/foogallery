@@ -61,7 +61,7 @@ return array(
 				//Advanced
 				'foogridpro_state' => 'no',
 				'foogridpro_custom_settings' => '',
-				'foogridpro_lazyload' => 'yes',
+				'foogridpro_lazyload' => '',
 
 				//Video
 				'foogridpro_video_autoplay'    => 'yes',
@@ -133,7 +133,7 @@ return array(
 				//Advanced
 				'slider_state' => 'no',
 				'slider_custom_settings' => '',
-				'slider_lazyload' => 'yes',
+				'slider_lazyload' => '',
 
 				//Video
 				'slider_video_autoplay'    => 'yes',
@@ -199,7 +199,7 @@ return array(
 				//Advanced
 				'polaroid_new_state' => 'no',
 				'polaroid_new_custom_settings' => '',
-				'polaroid_new_lazyload' => 'yes',
+				'polaroid_new_lazyload' => '',
 
 				//Video
 				'polaroid_new_video_autoplay'    => 'yes',
@@ -210,6 +210,62 @@ return array(
 			FOOGALLERY_META_NOTICE => '<strong><i class="dashicons dashicons-star-filled"></i>This is a PRO demo gallery!</strong> It showcases the following PRO features: <ul class="ul-disc"><li>Hover Effects</li><li>Filtering</li><li>Paging</li><li>Video</li></ul>',
 		),
 	), //Demo : Polaroid PRO
+	array(
+		'key'         => 'spotlight-pro',
+		'post_title'  => 'Demo : Spotlight PRO',
+		'post_status' => 'publish',
+		'post_type'   => FOOGALLERY_CPT_GALLERY,
+		'items'       => array( 'demo2', 'demo1', 'demo6', 'demo2', 'demo10', 'demo7' , 'demo8' , 'demo4'),
+		'meta_input'  => array(
+			FOOGALLERY_META_TEMPLATE => 'spotlight',
+			FOOGALLERY_META_SETTINGS => array(
+				'foogallery_items_view'         => 'preview',
+
+				//General
+				'spotlight_thumbnail_dimensions'  => array(
+					'width' => 640,
+					'height' => 500,
+					'crop' => true,
+				),
+				'spotlight_thumbnail_link'        => 'none',
+				'spotlight_lightbox'              => 'none',
+				'spotlight_alignment' 			  => 'fg-center',
+				'spotlight_arrow_icon' 			  => 'fg-nav-icon-line',
+				'spotlight_border_size' 		  => 'fg-border-thin',
+				'spotlight_dots_position' 		  => 'fg-dots-center',
+
+				//Appearance
+				'spotlight_theme'                 => 'fg-light',
+				'spotlight_rounded_corners'       => 'fg-round-large',
+				'spotlight_drop_shadow'           => '',
+				'spotlight_inner_shadow'          => '',
+				'spotlight_loading_icon'          => 'fg-loading-default',
+
+				'spotlight_loaded_effect'         => 'fg-loaded-fade-in',
+				'spotlight_instagram'             => '',
+
+				//Captions
+				'spotlight_captions_type'		  => '',
+				'spotlight_caption_title_source'  => 'none',
+				'spotlight_caption_desc_source'   => 'none',
+
+				//Hover Effects
+				'spotlight_hover_effect_type'     => 'none',
+
+				//Filtering
+				'spotlight_filtering_type' => '',
+
+				//Paging
+				'spotlight_paging_type' => '',
+
+				//Advanced
+				'spotlight_state' => 'no',
+				'spotlight_custom_settings' => '',
+				'spotlight_lazyload' => '',
+			),
+			FOOGALLERY_META_NOTICE => '<strong><i class="dashicons dashicons-star-filled"></i>This is a PRO demo gallery!</strong><br />It showcases the new Spotlight PRO gallery layout, which is meant to spotlight your images in a modern carousel without the need for a lightbox or fancy hover effects.',
+		),
+	), //Demo : Spotlight PRO
 	array(
 		'key'         => 'hover-effect-presets',
 		'post_title'  => 'Demo : Hover Effect Presets Showcase',
@@ -270,7 +326,7 @@ return array(
 				//Advanced
 				'default_state' => 'no',
 				'default_custom_settings' => '',
-				'default_lazyload' => 'yes',
+				'default_lazyload' => '',
 
 				//Video
 				'default_video_autoplay'    => 'yes',
@@ -340,7 +396,7 @@ return array(
 				//Advanced
 				'default_state' => 'no',
 				'default_custom_settings' => '',
-				'default_lazyload' => 'yes',
+				'default_lazyload' => '',
 
 				//Video
 				'default_video_autoplay'    => 'yes',
