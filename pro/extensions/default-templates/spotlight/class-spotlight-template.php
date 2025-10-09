@@ -15,7 +15,7 @@ if ( !class_exists( 'FooGallery_Spotlight_Gallery_Template' ) ) {
 			add_filter( 'foogallery_gallery_templates', array( $this, 'add_template' ) );
 
 			//add extra fields to the templates
-			add_filter( 'foogallery_override_gallery_template_fields-spotlight', array( $this, 'adjust_fields' ), 10, 2 );
+			add_filter( 'foogallery_override_gallery_template_fields-spotlight', array( $this, 'adjust_fields' ), 99, 2 );
 			add_filter( 'foogallery_override_gallery_template_fields_defaults-spotlight', array( $this, 'field_defaults' ), 10, 1 );
 
 			add_filter( 'foogallery_gallery_templates_files', array( $this, 'register_myself' ) );
@@ -257,6 +257,19 @@ if ( !class_exists( 'FooGallery_Spotlight_Gallery_Template' ) ) {
 				}
 			}
 
+			//remove some fields which don't make sense.
+			$indexes_to_remove = array();
+			$fields_to_remove = array( 'lightbox_warning', 'lightbox_promo' );
+			foreach ($fields as $key => &$field) {
+				if ( in_array( $field['id'], $fields_to_remove ) ) {
+					$indexes_to_remove[] = $key;
+				}
+			}
+
+			foreach ($indexes_to_remove as $index) {
+				unset( $fields[$index] );
+			}
+
 			return $fields;
 		}
 
@@ -272,6 +285,7 @@ if ( !class_exists( 'FooGallery_Spotlight_Gallery_Template' ) ) {
 				'hover_effect_caption_visibility' => '',
 				'caption_visibility_no_hover_effect' => '',
 				'drop_shadow' => '',
+				'hover_effect_type' => 'none',
 				'hover_effect_icon' => '',
 				'hover_effect_scale' => '',
 				'inner_shadow' => '',
