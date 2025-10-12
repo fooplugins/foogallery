@@ -45,8 +45,14 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Template' ) ) {
 				$current_gallery_template = $gallery->gallery_template;
 			}
 
+			$message = __( 'Once you are happy with your selected layout, you can minimize this section to save space', 'foogallery' );
+			$hide_help = 'on' == foogallery_get_setting( 'hide_gallery_template_help' );
+			if ( $hide_help ) {
+				$message = '';
+			}
+
 			?>
-			<div class="foogallery-template-card-selector" data-metabox-message="<?php echo esc_attr( __( 'Once you are happy with your selected layout, you can minimize this section to save space', 'foogallery' ) ); ?>">
+			<div class="foogallery-template-card-selector" data-metabox-message="<?php echo esc_attr( $message ); ?>">
 				<div class="foogallery-template-cards-container">
 					<?php foreach ( $gallery_templates as $template ) {
 						$selected_class = ( $current_gallery_template === $template['slug'] ) ? 'selected' : '';
