@@ -5299,11 +5299,11 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 						} else {
 							def.reject("post-init failed");
 						}
-					}).fail(def.reject);
+					}).catch(def.reject);
 				} else {
 					def.reject("pre-init failed");
 				}
-			}).fail(function (err) {
+			}).catch(function (err) {
 				console.log("initialize failed", self, err);
 				return self.destroy();
 			}).promise();
@@ -9164,7 +9164,6 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			var self = this;
 			if (self._containerExisted){
 				self.$container.empty()
-					.removeClass()
 					.addClass(self._placeholderClasses.join(' '));
 			} else {
 				self.$container.remove();
@@ -9462,13 +9461,13 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             // get the currently applied filter tags
             let tags = current.map( obj => _is.array( obj ) ? obj.slice() : obj );
             if ( !_is.empty( tag.value ) ) {
+                if ( !_is.array( tags[ tag.level ] ) ) {
+                    tags[ tag.level ] = [];
+                }
+                let i = _utils.inArray( tag.value, tags[ tag.level ] );
                 switch ( mode ) {
                     case "union":
                     case "intersect":
-                        if ( !_is.array( tags[ tag.level ] ) ) {
-                            tags[ tag.level ] = [];
-                        }
-                        let i = _utils.inArray( tag.value, tags[ tag.level ] );
                         if ( i === -1 ) {
                             tags[ tag.level ].push( tag.value );
                         } else {
@@ -9477,7 +9476,11 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                         break;
                     case "single":
                     default:
-                        tags[ tag.level ] = [ tag.value ];
+                        if ( i === -1 ) {
+                            tags[ tag.level ] = [ tag.value ];
+                        } else {
+                            tags[ tag.level ] = [];
+                        }
                         break;
                 }
             } else {
@@ -10936,14 +10939,14 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 self.currentItem = item;
                 self.prevItem = self.tmpl.items.prev(item, self.isVisible, self.opt.loop);
                 self.nextItem = self.tmpl.items.next(item, self.isVisible, self.opt.loop);
-                self.doLoad(media).then(def.resolve).fail(def.reject);
+                self.doLoad(media).then(def.resolve).catch(def.reject);
             }).always(function(){
                 self.isLoading = false;
             }).then(function(){
                 self.isLoaded = true;
                 self.trigger("loaded", [item]);
                 item.updateState();
-            }).fail(function(){
+            }).catch(function(){
                 self.isError = true;
                 self.trigger("error", [item]);
             }).promise();
@@ -10979,7 +10982,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                     self.appendTo( parent );
                 }
                 if (self.isAttached){
-                    self.load( item ).then(def.resolve).fail(def.reject);
+                    self.load( item ).then(def.resolve).catch(def.reject);
                 } else {
                     def.rejectWith("not attached");
                 }
@@ -11030,7 +11033,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                             wait.push(area.close(immediate));
                         }
                     });
-                    $.when.apply($, wait).then(def.resolve).fail(def.reject);
+                    $.when.apply($, wait).then(def.resolve).catch(def.reject);
                 });
             }).always(function(){
                 self.isClosing = false;
@@ -12121,8 +12124,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                         self.panel.trigger("area-unloaded", [self, prev]);
                         self.currentMedia = media;
                         self.panel.trigger("area-load", [self, media]);
-                        self.doLoad(media, reverseTransition).then(def.resolve).fail(def.reject);
-                    }).fail(def.reject);
+                        self.doLoad(media, reverseTransition).then(def.resolve).catch(def.reject);
+                    }).catch(def.reject);
                 } else {
                     if (hasMedia){
                         self.panel.trigger("area-unload", [self, prev]);
@@ -12132,11 +12135,11 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                     }
                     self.currentMedia = media;
                     self.panel.trigger("area-load", [self, media]);
-                    self.doLoad(media, reverseTransition).then(def.resolve).fail(def.reject);
+                    self.doLoad(media, reverseTransition).then(def.resolve).catch(def.reject);
                 }
             }).then(function(){
                 self.panel.trigger("area-loaded", [self, media]);
-            }).fail(function(){
+            }).catch(function(){
                 self.panel.trigger("area-error", [self, media]);
             }).promise();
         },
@@ -12246,7 +12249,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                     media.$el.addClass(states.visible);
                 }
                 wait.push(media.load());
-                $.when.apply($, wait).then(def.resolve).fail(def.reject);
+                $.when.apply($, wait).then(def.resolve).catch(def.reject);
             }).promise();
         },
         doUnload: function(media, reverseTransition){
@@ -12264,7 +12267,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                     }
                 }
                 wait.push(media.unload());
-                $.when.apply($, wait).then(def.resolve).fail(def.reject);
+                $.when.apply($, wait).then(def.resolve).catch(def.reject);
             }).always(function(){
                 if (media.isCreated){
                     media.$el.removeClass(states.reverse);
@@ -12695,7 +12698,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                             $el.css("transform", translate);
                         }, null, 350).then(function () {
                             def.resolve();
-                        }).fail(def.reject);
+                        }).catch(def.reject);
                     } else {
                         self.$stage.addClass(states.noTransitions).css("transform", translate);
                         self.$stage.prop("offsetHeight");
@@ -12999,13 +13002,13 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                     return;
                 }
                 self.$el.removeClass(states.allLoading).addClass(states.loading);
-                self.doLoad().then(def.resolve).fail(def.reject);
+                self.doLoad().then(def.resolve).catch(def.reject);
             }).always(function(){
                 self.$el.removeClass(states.loading);
             }).then(function(){
                 self.$el.addClass(states.loaded);
                 self.panel.trigger("media-loaded", [self]);
-            }).fail(function(){
+            }).catch(function(){
                 self.$el.addClass(states.loaded);
                 self.panel.trigger("media-error", [self]);
             }).promise();
@@ -13025,7 +13028,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                     def.rejectWith("default prevented");
                     return;
                 }
-                self.doUnload().then(def.resolve).fail(def.reject);
+                self.doUnload().then(def.resolve).catch(def.reject);
             }).then(function(){
                 self.panel.trigger("media-unloaded", [self]);
             }).promise();
@@ -13309,13 +13312,13 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                     return;
                 }
                 self.$el.removeClass(states.allLoading).addClass(states.loading);
-                self.doLoad().then(def.resolve).fail(def.reject);
+                self.doLoad().then(def.resolve).catch(def.reject);
             }).always(function(){
                 self.$el.removeClass(states.loading);
             }).then(function(){
                 self.$el.addClass(states.loaded);
                 self.panel.trigger("caption-loaded", [self]);
-            }).fail(function(){
+            }).catch(function(){
                 self.$el.addClass(states.loaded);
                 self.panel.trigger("caption-error", [self]);
             }).promise();
@@ -13335,7 +13338,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                     def.rejectWith("default prevented");
                     return;
                 }
-                self.doUnload().then(def.resolve).fail(def.reject);
+                self.doUnload().then(def.resolve).catch(def.reject);
             }).then(function(){
                 self.panel.trigger("caption-unloaded", [self]);
             }).promise();
@@ -13473,13 +13476,13 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                     return;
                 }
                 self.$el.removeClass(states.allLoading).addClass(states.loading);
-                self.doLoad().then(def.resolve).fail(def.reject);
+                self.doLoad().then(def.resolve).catch(def.reject);
             }).always(function(){
                 self.$el.removeClass(states.loading);
             }).then(function(){
                 self.$el.addClass(states.loaded);
                 self.panel.trigger("product-loaded", [self]);
-            }).fail(function(){
+            }).catch(function(){
                 self.$el.addClass(states.loaded);
                 self.panel.trigger("product-error", [self]);
             }).promise();
@@ -13546,7 +13549,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                     def.rejectWith("default prevented");
                     return;
                 }
-                self.doUnload().then(def.resolve).fail(def.reject);
+                self.doUnload().then(def.resolve).catch(def.reject);
             }).then(function(){
                 self.panel.trigger("product-unloaded", [self]);
             }).promise();
@@ -13876,7 +13879,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                     return;
                 }
                 var promise = self.isSelfHosted ? self.loadSelfHosted() : self.loadIframe();
-                promise.then(def.resolve).fail(def.reject);
+                promise.then(def.resolve).catch(def.reject);
             }).promise();
         },
         loadSelfHosted: function(){
