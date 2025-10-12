@@ -473,6 +473,29 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 						'data-foogallery-preview'               => 'shortcode'
 					)
 				);
+
+				$fields[] = array(
+					'id'       => 'hover_effect_icon_size',
+					'title'    => __( 'Icon Size', 'foogallery' ),
+					'desc'     => __( 'Choose the size of the icon that is displayed when you hover over a thumbnail.', 'foogallery' ),
+					'section'  => __( 'Hover Effects', 'foogallery' ),
+					'type'     => 'radio',
+					'default'  => 'fg-hover-zoom',
+					'choices'  => array(
+							''   => __( 'Default', 'foogallery' ),
+							'48' => __( '1.5x', 'foogallery' ),
+							'64' => __( '2x', 'foogallery' ),
+							'80' => __( '2.5x', 'foogallery' ),
+							'96' => __( '3x', 'foogallery' ),
+					),
+					'row_data' => array(
+						'data-foogallery-change-selector'       => 'input:radio',
+						'data-foogallery-hidden'                => true,
+						'data-foogallery-show-when-field'       => 'hover_effect_type',
+						'data-foogallery-show-when-field-value' => 'normal',
+						'data-foogallery-preview'               => 'shortcode'
+					)
+				);
 				//endregion Hover Effects Fields
 
 				//region Caption Fields
@@ -842,6 +865,16 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 			//check the template supports common fields
 			if ( is_admin() && foogallery_current_gallery_check_template_has_supported_feature('common_fields_support' ) ) {
 				$attributes['data-fg-common-fields'] = true;
+			}
+
+			$icon_size = intval( foogallery_gallery_template_setting( 'hover_effect_icon_size', '0' ) );
+			if ( $icon_size > 0 ) {
+				$style = "--fg-icon-size: {$icon_size}px;";
+				if ( empty($attributes['style']) ) {
+					$attributes['style'] = $style;
+				} else {
+					$attributes['style'] .= $style;
+				}
 			}
 
 			return $attributes;
