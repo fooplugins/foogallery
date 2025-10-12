@@ -370,6 +370,12 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				//set a flag on the gallery level
 				$current_foogallery->has_videos = true;
 
+				// Check the thumb link. If its set to none, then we can get out early.
+				$thumb_link = foogallery_gallery_template_setting( 'thumbnail_link', 'none' );
+				if ( 'none' === $thumb_link ) {
+					return $attr;
+				}
+
 				//if we have no widths or heights then use video default size
 				if ( ! isset( $attr['data-width'] ) ) {
 					$size = foogallery_gallery_template_setting( 'video_size', '640x360' );
@@ -457,11 +463,15 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				if ( $has_video ) {
 					$current_foogallery->has_videos = $has_video;
 
+					$has_sticky_icon = foogallery_gallery_template_setting( 'video_sticky_icon', '' );
+
+					if ( ! empty( $has_sticky_icon ) ) {
+						//include the video sticky class
+						$classes[] = $has_sticky_icon;
+					}
+
 					//get the selected video icon
 					$classes[] = foogallery_gallery_template_setting( 'video_hover_icon', 'fg-video-default' );
-
-					//include the video sticky class
-					$classes[] = foogallery_gallery_template_setting( 'video_sticky_icon', '' );
 				}
 			}
 
