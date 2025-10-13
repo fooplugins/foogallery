@@ -4,6 +4,7 @@
         .icon:target { display: inline; }
         .dark { fill: #333; }
         .light { fill: #FFF; }
+        .transparent { fill: #FFF; filter: drop-shadow( 0 0 1px rgba(0 0 0 / 50%)); transform: scale(0.75); transform-origin: 50% 50%; }
     </style>
     <defs>
         <path id="image-def" d="M15 1h-14c-0.55 0-1 0.45-1 1v12c0 0.55 0.45 1 1 1h14c0.55 0 1-0.45 1-1v-12c0-0.55-0.45-1-1-1zM11.5 3c0.828 0 1.5 0.672 1.5 1.5s-0.672 1.5-1.5 1.5-1.5-0.672-1.5-1.5 0.672-1.5 1.5-1.5zM14 13h-12v-2l3.5-6 4 5h1l3.5-3v6z"/>
@@ -46,6 +47,9 @@
     <g id="image-dark" class="icon dark">
         <use xlink:href="#image-def"/>
     </g>
+    <g id="image-transparent" class="icon transparent">
+        <use xlink:href="#image-def"/>
+    </g>
 
     <!-- zoom -->
     <g id="zoom" class="icon">
@@ -55,6 +59,9 @@
         <use xlink:href="#zoom-def"/>
     </g>
     <g id="zoom-dark" class="icon dark">
+        <use xlink:href="#zoom-def"/>
+    </g>
+    <g id="zoom-transparent" class="icon transparent">
         <use xlink:href="#zoom-def"/>
     </g>
 
@@ -68,6 +75,9 @@
     <g id="zoom2-dark" class="icon dark">
         <use xlink:href="#zoom2-def"/>
     </g>
+    <g id="zoom2-transparent" class="icon transparent">
+        <use xlink:href="#zoom2-def"/>
+    </g>
 
     <!-- zoom3 -->
     <g id="zoom3" class="icon">
@@ -77,6 +87,9 @@
         <use xlink:href="#zoom3-def"/>
     </g>
     <g id="zoom3-dark" class="icon dark">
+        <use xlink:href="#zoom3-def"/>
+    </g>
+    <g id="zoom3-transparent" class="icon transparent">
         <use xlink:href="#zoom3-def"/>
     </g>
 
@@ -90,6 +103,9 @@
     <g id="circle-plus-dark" class="icon dark">
         <use xlink:href="#circle-plus-def"/>
     </g>
+    <g id="circle-plus-transparent" class="icon transparent">
+        <use xlink:href="#circle-plus-def"/>
+    </g>
 
     <!-- plus -->
     <g id="plus" class="icon">
@@ -99,6 +115,9 @@
         <use xlink:href="#plus-def"/>
     </g>
     <g id="plus-dark" class="icon dark">
+        <use xlink:href="#plus-def"/>
+    </g>
+    <g id="plus-transparent" class="icon transparent">
         <use xlink:href="#plus-def"/>
     </g>
 
@@ -112,6 +131,9 @@
     <g id="eye-dark" class="icon dark">
         <use xlink:href="#eye-def"/>
     </g>
+    <g id="eye-transparent" class="icon transparent">
+        <use xlink:href="#eye-def"/>
+    </g>
 
     <!-- external -->
     <g id="external" class="icon">
@@ -123,6 +145,9 @@
     <g id="external-dark" class="icon dark">
         <use xlink:href="#external-def"/>
     </g>
+    <g id="external-transparent" class="icon transparent">
+        <use xlink:href="#external-def"/>
+    </g>
 
     <!-- cart -->
     <g id="cart" class="icon">
@@ -132,6 +157,9 @@
         <use xlink:href="#cart-def"/>
     </g>
     <g id="cart-dark" class="icon dark">
+        <use xlink:href="#cart-def"/>
+    </g>
+    <g id="cart-transparent" class="icon transparent">
         <use xlink:href="#cart-def"/>
     </g>
 
@@ -146,6 +174,9 @@
     <g id="plus2-dark" class="icon dark">
         <use xlink:href="#plus2-def"/>
     </g>
+    <g id="plus2-transparent" class="icon transparent">
+        <use xlink:href="#plus2-def"/>
+    </g>
 
     <!-- plus3 -->
     <g id="plus3" class="icon">
@@ -155,6 +186,9 @@
         <use xlink:href="#plus3-def"/>
     </g>
     <g id="plus3-dark" class="icon dark">
+        <use xlink:href="#plus3-def"/>
+    </g>
+    <g id="plus3-transparent" class="icon transparent">
         <use xlink:href="#plus3-def"/>
     </g>
 
@@ -168,6 +202,9 @@
     <g id="square-plus-dark" class="icon dark">
         <use xlink:href="#square-plus-def"/>
     </g>
+    <g id="square-plus-transparent" class="icon transparent">
+        <use xlink:href="#square-plus-def"/>
+    </g>
 
     <!-- circle-plus2 -->
     <g id="circle-plus2" class="icon">
@@ -177,6 +214,9 @@
         <use xlink:href="#circle-plus2-def"/>
     </g>
     <g id="circle-plus2-dark" class="icon dark">
+        <use xlink:href="#circle-plus2-def"/>
+    </g>
+    <g id="circle-plus2-transparent" class="icon transparent">
         <use xlink:href="#circle-plus2-def"/>
     </g>
 
@@ -190,6 +230,9 @@
     <g id="zoom4-dark" class="icon dark">
         <use xlink:href="#zoom4-def"/>
     </g>
+    <g id="zoom4-transparent" class="icon transparent">
+        <use xlink:href="#zoom4-def"/>
+    </g>
 
     <!-- zoom5 -->
     <g id="zoom5" class="icon">
@@ -199,6 +242,9 @@
         <use xlink:href="#zoom5-def"/>
     </g>
     <g id="zoom5-dark" class="icon dark">
+        <use xlink:href="#zoom5-def"/>
+    </g>
+    <g id="zoom5-transparent" class="icon transparent">
         <use xlink:href="#zoom5-def"/>
     </g>
 
@@ -214,6 +260,9 @@
     <g id="video-default-dark" class="icon dark">
         <use xlink:href="#video-default-def"/>
     </g>
+    <g id="video-default-transparent" class="icon transparent">
+        <use xlink:href="#video-default-def"/>
+    </g>
 
     <!-- video-1 -->
     <g id="video-1" class="icon">
@@ -223,6 +272,9 @@
         <use xlink:href="#video-1-def"/>
     </g>
     <g id="video-1-dark" class="icon dark">
+        <use xlink:href="#video-1-def"/>
+    </g>
+    <g id="video-1-transparent" class="icon transparent">
         <use xlink:href="#video-1-def"/>
     </g>
 
@@ -236,6 +288,9 @@
     <g id="video-2-dark" class="icon dark">
         <use xlink:href="#video-2-def"/>
     </g>
+    <g id="video-2-transparent" class="icon transparent">
+        <use xlink:href="#video-2-def"/>
+    </g>
 
     <!-- video-3 -->
     <g id="video-3" class="icon">
@@ -247,6 +302,9 @@
     <g id="video-3-dark" class="icon dark">
         <use xlink:href="#video-3-def"/>
     </g>
+    <g id="video-3-transparent" class="icon transparent">
+        <use xlink:href="#video-3-def"/>
+    </g>
 
     <!-- video-4 -->
     <g id="video-4" class="icon">
@@ -256,6 +314,9 @@
         <use xlink:href="#video-4-def"/>
     </g>
     <g id="video-4-dark" class="icon dark">
+        <use xlink:href="#video-4-def"/>
+    </g>
+    <g id="video-4-transparent" class="icon transparent">
         <use xlink:href="#video-4-def"/>
     </g>
 </svg>
