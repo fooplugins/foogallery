@@ -19,10 +19,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Template' ) ) {
         }
 
 		public function add_template_metabox( $post ) {
-			$header_html = '<span class="foogallery-gallery-template-metabox-title hidden">' .
-			__( '', 'foogallery' ) . 
-			'</span>';
-
 			add_meta_box(
 				'foogallery_template',
 				__( 'Gallery Layout', 'foogallery' ),
