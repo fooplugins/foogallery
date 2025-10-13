@@ -910,7 +910,7 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 #foogallery-image-edit-modal .tabset .foogallery-img-modal-tab-wrapper > input:checked + label {
     border-color: #ccc;
     border-bottom-color: rgb(204, 204, 204);
-    border-bottom: 2px solid #fff !important;
+    border-bottom: 3px solid #fff !important;
     margin-bottom: -1.7px;
     cursor: pointer;
 }
