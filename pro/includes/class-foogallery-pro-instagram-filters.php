@@ -44,7 +44,7 @@ if ( ! class_exists( 'FooGallery_Pro_Instagram_Filters' ) ) {
 			$fields[] = array(
 				'id'       => 'instagram',
 				'title'    => __( 'Instagram Filter', 'foogallery' ),
-				'desc'     => __( 'Apply an Instagram Filter to the images in your gallery.', 'foogallery' ),
+				'desc'     => __( 'Apply an Instagram Filter to the thumbnails in your gallery.', 'foogallery' ),
 				'section'  => __( 'Appearance', 'foogallery' ),
 				'type'     => 'radio',
 				'default'  => '',
