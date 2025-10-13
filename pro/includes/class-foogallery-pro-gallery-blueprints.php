@@ -106,6 +106,8 @@ if ( ! class_exists( 'FooGallery_Pro_Gallery_Blueprints' ) ) {
 				remove_meta_box( 'foogallery_sorting', FOOGALLERY_CPT_GALLERY, 'side' );
 
 				remove_meta_box( 'foogallery_thumb_settings', FOOGALLERY_CPT_GALLERY, 'side' );
+
+				remove_meta_box( 'foogallery_template',	FOOGALLERY_CPT_GALLERY, 'normal' );
 			}
 		}
 
