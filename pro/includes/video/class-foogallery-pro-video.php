@@ -48,6 +48,9 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				//add video icon class to galleries
 				add_filter( 'foogallery_build_class_attribute', array( $this, 'foogallery_build_class_attribute' ) );
 
+				//add our common field data attribute
+				add_filter( 'foogallery_build_container_attributes', array( $this, 'adjust_data_attributes' ), 20, 2 );
+
 				if ( is_admin() ) {
 
 					//setup script includes
@@ -221,6 +224,24 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 		 */
 		public function add_video_fields( $fields ) {
 			$video_fields[] = array(
+				'id'       => 'video_enabled',
+				'section'  => __( 'Video', 'foogallery' ),
+				'title'    => __( 'Enable Video', 'foogallery' ),
+				'desc'     => __( 'This will disable the video functionality for this gallery only. All videos will be ignored.', 'foogallery' ),
+				'type'     => 'radio',
+				'default'  => '',
+				'choices'  => array(
+					'disabled'        => __( 'Disabled', 'foogallery' ),
+					'' => __( 'Enabled', 'foogallery' ),
+				),
+				'row_data' => array(
+					'data-foogallery-change-selector' => 'input:radio',
+					'data-foogallery-value-selector'  => 'input:checked',
+					'data-foogallery-preview'         => 'shortcode'
+				)
+			);
+
+			$video_fields[] = array(
 				'id'       => 'video_hover_icon',
 				'section'  => __( 'Video', 'foogallery' ),
 				'title'    => __( 'Video Hover Icon', 'foogallery' ),
@@ -237,10 +258,38 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 					)
 				),
 				'row_data' => array(
-					'data-foogallery-change-selector' => 'input:radio',
-					'data-foogallery-preview'         => 'shortcode'
+					'data-foogallery-change-selector'       => 'input:radio',
+					'data-foogallery-preview'               => 'shortcode',
+					'data-foogallery-hidden'                => true,
+					'data-foogallery-show-when-field'       => 'video_enabled',
+					'data-foogallery-show-when-field-value' => '',
 				)
 			);
+
+			$video_fields[] = array(
+				'id'       => 'video_icon_size',
+				'title'    => __( 'Video Icon Size', 'foogallery' ),
+				'desc'     => __( 'Choose the size of the video icon. This is only shown if the hover effect is set to "None".', 'foogallery' ),
+				'section'  => __( 'Video', 'foogallery' ),
+				'type'     => 'radio',
+				'default'  => '',
+				'choices'  => array(
+						''   => __( 'Default', 'foogallery' ),
+						'48' => __( '1.5x', 'foogallery' ),
+						'64' => __( '2x', 'foogallery' ),
+						'80' => __( '2.5x', 'foogallery' ),
+						'96' => __( '3x', 'foogallery' ),
+				),
+				'row_data' => array(
+					'data-foogallery-change-selector'       => 'input:radio',
+					'data-foogallery-value-selector'  		=> 'input:checked',
+					'data-foogallery-hidden'                => true,
+					'data-foogallery-show-when-field'       => 'hover_effect_type',
+					'data-foogallery-show-when-field-value' => 'none',
+					'data-foogallery-preview'               => 'shortcode'
+				)
+			);
+
 			$video_fields[] = array(
 				'id'       => 'video_sticky_icon',
 				'section'  => __( 'Video', 'foogallery' ),
@@ -253,8 +302,11 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 					''                => __( 'No', 'foogallery' ),
 				),
 				'row_data' => array(
-					'data-foogallery-change-selector' => 'input:radio',
-					'data-foogallery-preview'         => 'shortcode'
+					'data-foogallery-change-selector'       => 'input:radio',
+					'data-foogallery-preview'               => 'shortcode',
+					'data-foogallery-hidden'                => true,
+					'data-foogallery-show-when-field'       => 'video_enabled',
+					'data-foogallery-show-when-field-value' => '',
 				)
 			);
 
@@ -264,6 +316,11 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				'desc'    => __( 'The lightbox video size can be overridden on each individual video by editing the attachment info, and changing the Override Width and Override Height properties.', 'foogallery' ),
 				'section' => __( 'Video', 'foogallery' ),
 				'type'    => 'help',
+				'row_data' => array(
+					'data-foogallery-hidden'                => true,
+					'data-foogallery-show-when-field'       => 'video_enabled',
+					'data-foogallery-show-when-field-value' => '',
+				)
 			);
 
 			$video_fields[] = array(
@@ -284,8 +341,11 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 					'1920x1080' => __( '1920 x 1080 (Full HD)', 'foogallery' ),
 				),
 				'row_data' => array(
-					'data-foogallery-change-selector' => 'input:radio',
-					'data-foogallery-preview'         => 'shortcode'
+					'data-foogallery-change-selector'       => 'input:radio',
+					'data-foogallery-preview'               => 'shortcode',
+					'data-foogallery-hidden'                => true,
+					'data-foogallery-show-when-field'       => 'video_enabled',
+					'data-foogallery-show-when-field-value' => '',
 				)
 			);
 
@@ -301,8 +361,11 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 					'no'  => __( 'No', 'foogallery' ),
 				),
 				'row_data' => array(
-					'data-foogallery-change-selector' => 'input:radio',
-					'data-foogallery-preview'         => 'shortcode'
+					'data-foogallery-change-selector'       => 'input:radio',
+					'data-foogallery-preview'               => 'shortcode',
+					'data-foogallery-hidden'                => true,
+					'data-foogallery-show-when-field'       => 'video_enabled',
+					'data-foogallery-show-when-field-value' => '',
 				)
 			);
 
@@ -323,6 +386,12 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 		public function set_video_flag_on_attachment( $foogallery_attachment, $post ) {
 			$foogallery_attachment->is_video = false;
 			$foogallery_attachment->is_embed = false;
+
+			$video_disabled = foogallery_gallery_template_setting( 'video_enabled', '' ) === 'disabled';
+
+			if ( $video_disabled ) {
+				return;
+			}
 
 			if ( foogallery_is_attachment_video( $foogallery_attachment ) ) {
 				//set the video flag
@@ -371,7 +440,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 				$current_foogallery->has_videos = true;
 
 				// Check the thumb link. If its set to none, then we can get out early.
-				$thumb_link = foogallery_gallery_template_setting( 'thumbnail_link', 'none' );
+				$thumb_link = foogallery_gallery_template_setting( 'thumbnail_link', '' );
 				if ( 'none' === $thumb_link ) {
 					return $attr;
 				}
@@ -440,6 +509,12 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 			/** @var FooGallery */
 			global $current_foogallery;
 
+			$video_disabled = foogallery_gallery_template_setting( 'video_enabled', '' ) === 'disabled';
+
+			if ( $video_disabled ) {
+				return $classes;
+			}
+
 			$has_video = false;
 
 			if ( isset( $current_foogallery ) ) {
@@ -476,6 +551,33 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 			}
 
 			return $classes;
+		}
+
+		/**
+		 * Adjusts the data attributes for videos
+		 *
+		 * @param $attributes array
+		 * @param $gallery FooGallery
+		 *
+		 * @return array
+		 */
+		function adjust_data_attributes( $attributes, $gallery ) {
+			//check hover effect is none, and then only process the icon size
+			if ( 'none' !== foogallery_gallery_template_setting( 'hover_effect_type', 'normal' ) ) {
+				return $attributes;
+			}
+
+			$icon_size = intval( foogallery_gallery_template_setting( 'video_icon_size', '0' ) );
+			if ( $icon_size > 0 ) {
+				$style = "--fg-icon-size: {$icon_size}px;";
+				if ( empty($attributes['style']) ) {
+					$attributes['style'] = $style;
+				} else {
+					$attributes['style'] .= $style;
+				}
+			}
+
+			return $attributes;
 		}
 
 		/**
