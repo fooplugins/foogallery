@@ -467,6 +467,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					),
 					'row_data' => array(
 						'data-foogallery-change-selector'       => 'input:radio',
+						'data-foogallery-value-selector'  		=> 'input:checked',
 						'data-foogallery-hidden'                => true,
 						'data-foogallery-show-when-field'       => 'hover_effect_type',
 						'data-foogallery-show-when-field-value' => 'normal',
@@ -480,7 +481,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'desc'     => __( 'Choose the size of the icon that is displayed when you hover over a thumbnail.', 'foogallery' ),
 					'section'  => __( 'Hover Effects', 'foogallery' ),
 					'type'     => 'radio',
-					'default'  => 'fg-hover-zoom',
+					'default'  => '',
 					'choices'  => array(
 							''   => __( 'Default', 'foogallery' ),
 							'48' => __( '1.5x', 'foogallery' ),
@@ -490,6 +491,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					),
 					'row_data' => array(
 						'data-foogallery-change-selector'       => 'input:radio',
+						'data-foogallery-value-selector'  		=> 'input:checked',
 						'data-foogallery-hidden'                => true,
 						'data-foogallery-show-when-field'       => 'hover_effect_type',
 						'data-foogallery-show-when-field-value' => 'normal',
@@ -846,7 +848,11 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					$style = "--fg-title-line-clamp: {$caption_title_clamp};";
 					$style .= "--fg-description-line-clamp: {$caption_desc_clamp};";
 
-					$attributes['style'] = $style;
+					if ( empty($attributes['style']) ) {
+						$attributes['style'] = $style;
+					} else {
+						$attributes['style'] .= $style;
+					}
 				}
 			}
 
