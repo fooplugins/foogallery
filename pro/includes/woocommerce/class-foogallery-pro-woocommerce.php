@@ -331,7 +331,17 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 				$response['body'] = __( 'We could not load any product information, as the product was not found!', 'foogallery' );
 				$response['purchasable'] = false;
 			} else {
-				$description = apply_filters( 'foogallery_ecommerce_build_product_info_response_description', $product->get_description(), $product, $gallery, $attachment_id );
+				// Get the description type setting (main description or short description)
+				$description_type = $gallery->get_setting( 'ecommerce_lightbox_product_description_type', 'description' );
+
+				// Get description based on the selected type
+				if ( $description_type === 'short_description' ) {
+					$description = $product->get_short_description();
+				} else {
+					$description = $product->get_description();
+				}
+
+				$description = apply_filters( 'foogallery_ecommerce_build_product_info_response_description', $description, $product, $gallery, $attachment_id, $description_type );
 				if ( $this->is_html( $description ) ) {
 					$description = wp_kses( $description, wp_kses_allowed_html() );
 				} else if ( ! empty( $description ) ) {
@@ -1184,6 +1194,29 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 						'none'   => __( 'Do Not Show', 'foogallery'),
 					),
 					'row_data' => array(
+						'data-foogallery-change-selector'          => 'input',
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-value-selector'           => 'input:checked',
+					),
+				);
+
+				$new_fields[] = array(
+					'id'       => 'ecommerce_lightbox_product_description_type',
+					'title'    => __( 'Product Description Type', 'foogallery' ),
+					'desc'     => __( 'Choose which description to display in the lightbox.', 'foogallery' ),
+					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
+					'type'     => 'radio',
+					'default'  => 'description',
+					'choices'  => array(
+						'description'       => __( 'Main Product Description', 'foogallery' ),
+						'short_description' => __( 'Short Product Description', 'foogallery' ),
+					),
+					'row_data' => array(
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field'          => 'ecommerce_lightbox_product_information',
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field-value'    => 'none',
 						'data-foogallery-change-selector'          => 'input',
 						'data-foogallery-preview'                  => 'shortcode',
 						'data-foogallery-value-selector'           => 'input:checked',
