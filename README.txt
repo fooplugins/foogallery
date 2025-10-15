@@ -273,9 +273,9 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 = 3.0.0 =
 
-This is a major update, where we have modernized every gallery layout, introduced a gallery layout selector and made many more changes across the board.
+This is a major update, where we have modernized every gallery layout, introduced a gallery layout selector and made many more improvements.
 
-* Date Updated : 12 Oct 2025
+* Date Updated : 13 Oct 2025
 * Change : Gallery Templates are now called Gallery Layouts.
 * New : Added visual gallery layout selector in gallery edit page. (MAJOR IMPROVEMENT!!)
 * New : Added 6 more hover effect icons.
@@ -289,6 +289,7 @@ This is a major update, where we have modernized every gallery layout, introduce
 [//]: # fs_premium_only_begin
 * New : [Starter Plan] Added new Spotlight PRO gallery layout.
 * New : [Expert Plan] Added 6 new style options for tag filters (including dropdowns!)
+* New : [Expert Plan] Added setting to disable video for the gallery.
 * New : [Commerce Plan] Added 4 new button styling options (block, outline, pill, pill-outline)
 * New : [Commerce Plan] Added setting to hide all ribbons for the gallery.
 * New : [Commerce Plan] Added setting to hide all buttons for the gallery.
