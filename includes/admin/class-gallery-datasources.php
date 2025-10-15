@@ -28,7 +28,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Datasources' ) ) {
 			wp_enqueue_script( 'foogallery.admin.datasources', FOOGALLERY_URL . 'js/foogallery.admin.datasources.js', array( 'jquery' ), FOOGALLERY_VERSION );
 		}
 
-			/**
+        /**
          * Include the datasource arguments for previews
          *
          * @param $args

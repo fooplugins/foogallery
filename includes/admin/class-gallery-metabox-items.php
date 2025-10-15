@@ -123,9 +123,11 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Items' ) ) {
 		public function ajax_gallery_preview() {
 			if ( check_admin_referer( 'foogallery_preview', 'foogallery_preview_nonce' ) ) {
 
-				$foogallery_id = $_POST['foogallery_id'];
+				$foogallery_id = intval( $_POST['foogallery_id'] );
 
-				$template = $_POST['foogallery_template'];
+				$template = isset( $_POST['foogallery_template'] ) ? sanitize_key( $_POST['foogallery_template'] ) : '';
+
+				$template = apply_filters( 'foogallery_preview_template', $template, $foogallery_id );
 
 				//check that the template supports previews
 				$gallery_template = foogallery_get_gallery_template( $template );

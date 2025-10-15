@@ -43,7 +43,30 @@ if ( ! class_exists( 'FooGallery_Pro_Gallery_Blueprints' ) ) {
 
 				// Override where the settings for a gallery are loaded from. In this case, from the Gallery Blueprint.
 				add_filter( 'foogallery_load_gallery_settings_id', array( $this, 'load_settings_from_gallery_blueprint' ) );
+
+				add_filter( 'foogallery_preview_template', array( $this, 'adjust_preview_template' ), 10, 2 );
             }
+        }
+
+		/**
+         * Make sure the bleuprint data is sent to the preview
+         *
+         * @param $args
+         * @param $form_post
+         * @param $template
+         * @return array
+         */
+        public function adjust_preview_template( $template, $foogallery_id ) {
+			if ( !empty( $template ) ) {
+				return $template;
+			}
+
+            $gallery_blueprint = $this->get_gallery_blueprint( $foogallery_id );
+            if ( false !== $gallery_blueprint ) {
+                return $gallery_blueprint->gallery_template;
+            }
+
+            return $template;
         }
 
 		function register_extension( $extensions_list ) {
@@ -297,7 +320,7 @@ if ( ! class_exists( 'FooGallery_Pro_Gallery_Blueprints' ) ) {
 	     *
 	     * @param $foogallery_id
 	     *
-	     * @return int
+	     * @return FooGallery
 	     */
 	    function get_gallery_blueprint( $foogallery_id ) {
 			global $foogallery_admin_gallery_blueprint_cache;
