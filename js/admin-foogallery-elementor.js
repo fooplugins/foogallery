@@ -40,6 +40,70 @@
         window.open(FooGalleryElementor.newUrl, '_blank');
     }
 
+    function refreshGalleries(panel) {
+        if (typeof FooGalleryElementor === 'undefined' || !FooGalleryElementor.ajaxUrl) {
+            return;
+        }
+
+        const previousValue = (window.elementor?.getPanelView?.()?.getCurrentPageView?.()?.model?.getSetting?.('gallery_id')) ?? '';
+        const controlView = window.elementor?.getPanelView?.()?.getCurrentPageView?.().getControlViewByName('gallery_id');
+
+        if (!controlView) {
+            return;
+        }
+
+        const $control = controlView.$el;
+        const $select = $control.find('select');
+
+        $control.addClass('foogallery-refreshing');
+
+        $.ajax({
+            url: FooGalleryElementor.ajaxUrl,
+            method: 'POST',
+            dataType: 'json',
+            data: {
+                action: 'foogallery_elementor_refresh_galleries',
+                nonce: FooGalleryElementor.refreshNonce
+            }
+        }).done(function(response) {
+            if (!response || !response.success || !response.data || !response.data.options) {
+                console.error('FooGallery Elementor: refresh response invalid.', response);
+                if (FooGalleryElementor.refreshError) {
+                    elementor.notifications?.showToast({ message: FooGalleryElementor.refreshError, type: 'error' });
+                }
+                return;
+            }
+
+            const options = response.data.options;
+            controlView.model.set('options', options);
+
+            if ($select.length) {
+                $select.empty();
+
+                Object.keys(options).forEach(function(value) {
+                    const label = options[value];
+                    $select.append($('<option/>').attr('value', value).text(label));
+                });
+
+                const hasPrevious = previousValue && Object.prototype.hasOwnProperty.call(options, previousValue);
+                const valueToSet = hasPrevious ? previousValue : '';
+
+                if (typeof controlView.setValue === 'function') {
+                    controlView.setValue(valueToSet);
+                } else {
+                    $select.val(valueToSet).trigger('change');
+                }
+            }
+        }).fail(function(jqXHR, textStatus) {
+            console.error('FooGallery Elementor: refresh failed.', textStatus);
+            if (FooGalleryElementor.refreshError) {
+                elementor.notifications?.showToast({ message: FooGalleryElementor.refreshError, type: 'error' });
+            }
+        }).always(function() {
+            $control.removeClass('foogallery-refreshing');
+        });
+    }
+
     // Wait until the editor is ready, then bind listeners.
     $( window ).on( 'elementor/frontend/init', function() {
         const channel = elementor.channels.editor;
@@ -56,6 +120,10 @@
 
         channel.on('foogallery:add', function () {
             openCreate();
+        });
+
+        channel.on('foogallery:refresh', function (panel) {
+            refreshGalleries(panel);
         });
     });
 

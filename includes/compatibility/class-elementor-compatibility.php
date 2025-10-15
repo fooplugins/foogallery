@@ -11,6 +11,7 @@ if ( ! class_exists( 'FooGallery_Elementor_Compatibility' ) ) {
             add_action( 'plugins_loaded', array( $this, 'init' ) );
 
             add_action( 'elementor/preview/enqueue_scripts', array( $this, 'enqueue_assets' ) );
+            add_action( 'wp_ajax_foogallery_elementor_refresh_galleries', array( $this, 'ajax_refresh_galleries' ) );
 
             // Add attribute to foogallery image links to prevent Elementor from trasitioning to the image.
             if ( defined( 'ELEMENTOR_VERSION' ) ) {
@@ -49,7 +50,28 @@ if ( ! class_exists( 'FooGallery_Elementor_Compatibility' ) ) {
             wp_localize_script( 'foogallery-elementor', 'FooGalleryElementor', [
                 'editUrlBase' => admin_url( 'post.php?action=edit&post=' ),
                 'newUrl'      => foogallery_admin_add_gallery_url(),
+                'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
+                'refreshNonce'=> wp_create_nonce( 'foogallery-elementor-refresh' ),
+                'refreshError'=> esc_html__( 'Unable to refresh galleries. Please reload the page.', 'foogallery' ),
             ] );
+        }
+
+        public function ajax_refresh_galleries() {
+            check_ajax_referer( 'foogallery-elementor-refresh', 'nonce' );
+
+            if ( ! current_user_can( 'edit_posts' ) ) {
+                wp_send_json_error( esc_html__( 'You are not allowed to refresh galleries.', 'foogallery' ), 403 );
+            }
+
+            if ( ! class_exists( 'Elementor_FooGallery_Widget' ) ) {
+                require_once FOOGALLERY_PATH . 'includes/compatibility/elementor/class-elementor-foogallery-widget.php';
+            }
+
+            $options = Elementor_FooGallery_Widget::get_gallery_options();
+
+            wp_send_json_success([
+                'options' => $options,
+            ]);
         }
 
         function save_elementor_data( $post_id, $editor_data) {
