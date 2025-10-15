@@ -4556,10 +4556,15 @@ div.fg-ribbon-7 > span {
     background-color: #555;
     border-color: inherit;
 }
+.fg-style-button-block.fg-light :is(.fg-search-clear,.fg-search-submit) {
+    color: #FFF;
+    background-color: #333;
+    border-color: #222;
+}
 .fg-style-button-block.fg-light :is(.fg-search-clear,.fg-search-submit):hover {
-    color: #333;
-    background-color: #efefef;
-    border-color: #adadad;
+    color: #FFF;
+    background-color: #555;
+    border-color: #333;
 }
 
 /* Dark */
@@ -4589,6 +4594,16 @@ div.fg-ribbon-7 > span {
 .fg-style-button-block.fg-dark .fg-tag-item.fg-selected .fg-tag-link .fg-tag-count {
     background-color: #333;
     border-color: #222;
+}
+.fg-style-button-block.fg-dark :is(.fg-search-clear,.fg-search-submit) {
+    color: #333;
+    background-color: #fff;
+    border-color: #444;
+}
+.fg-style-button-block.fg-dark :is(.fg-search-clear,.fg-search-submit):hover {
+    color: #333;
+    background-color: #efefef;
+    border-color: #444;
 }
 
 /* Multi Level Styling */
@@ -4883,10 +4898,15 @@ div.fg-ribbon-7 > span {
     background-color: #555;
     border-color: inherit;
 }
+.fg-style-pill-block.fg-light :is(.fg-search-clear,.fg-search-submit) {
+    color: #FFF;
+    background-color: #333;
+    border-color: #222;
+}
 .fg-style-pill-block.fg-light :is(.fg-search-clear,.fg-search-submit):hover {
-    color: #333;
-    background-color: #efefef;
-    border-color: #adadad;
+    color: #FFF;
+    background-color: #555;
+    border-color: #333;
 }
 
 /* Dark */
@@ -4916,6 +4936,16 @@ div.fg-ribbon-7 > span {
 .fg-style-pill-block.fg-dark .fg-tag-item.fg-selected .fg-tag-link .fg-tag-count {
     background-color: #333;
     border-color: #222;
+}
+.fg-style-pill-block.fg-dark :is(.fg-search-clear,.fg-search-submit) {
+    color: #333;
+    background-color: #fff;
+    border-color: #444;
+}
+.fg-style-pill-block.fg-dark :is(.fg-search-clear,.fg-search-submit):hover {
+    color: #333;
+    background-color: #efefef;
+    border-color: #444;
 }
 
 /* Multi Level Styling */
