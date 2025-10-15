@@ -214,6 +214,10 @@ if ( !class_exists( 'FooGallery_Slider_Gallery_Template' ) ) {
 						'data-foogallery-value-selector' => 'input:checked',
 						'data-foogallery-preview' => 'class'
 					);
+				} else if ( 'hover_effect_type' === $field['id'] ) {
+					if ( isset( $field['choices']['preset'] ) ) {
+						unset( $field['choices']['preset'] );
+					}
 				} else if ( 'video_autoplay' === $field['id'] ) {
 					$field['title'] = __( 'Autoplay', 'foogallery' );
 					$field['desc'] = __( 'Try to autoplay the video when selected. This will only work with videos hosted on Youtube or Vimeo.', 'foogallery' );
