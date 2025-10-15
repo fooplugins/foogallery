@@ -819,7 +819,8 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 							
 							<p class="description">
                                 <?php esc_html_e( 'The URL of the video. This can be a YouTube, Vimeo, or a self-hosted video.', 'foogallery' ); ?><br/>
-								<?php esc_html_e( 'To link to a self hosted video, click on choose to select the video from the media library.', 'foogallery' ); ?><br/>
+								<?php esc_html_e( 'To link to a local self hosted video, click on choose to select the video from the media library.', 'foogallery' ); ?><br/>
+								<?php esc_html_e( 'You can also link to a remote video by providing the full URL of the video.', 'foogallery' ); ?><br/>
 								<?php esc_html_e( 'If a Video URL is provided then this image will be shown as a video in the gallery.', 'foogallery' ); ?>
                             </p>
 
