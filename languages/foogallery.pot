@@ -8,7 +8,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: FooPlugins <info@fooplugins.com> (https://fooplugins.com)\n"
 "Last-Translator: FooPlugins <info@fooplugins.com> (https://fooplugins.com)\n"
-"POT-Creation-Date: 2025-10-01 17:38+0000\n"
+"POT-Creation-Date: 2025-10-13 17:20+0000\n"
 "Report-Msgid-Bugs-To: https://github.com/fooplugins/foogallery/issues\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -33,7 +33,7 @@ msgstr ""
 msgid "EXIF"
 msgstr ""
 
-#: foogallery.php:259, includes/admin/class-pro-promotion.php:662, pro/includes/class-foogallery-pro-filtering.php:236, pro/includes/class-foogallery-pro-filtering.php:238, pro/includes/class-foogallery-pro-filtering.php:259, pro/includes/class-foogallery-pro-filtering.php:276, pro/includes/class-foogallery-pro-filtering.php:294, pro/includes/class-foogallery-pro-filtering.php:324, pro/includes/class-foogallery-pro-filtering.php:343, pro/includes/class-foogallery-pro-filtering.php:366, pro/includes/class-foogallery-pro-filtering.php:394, pro/includes/class-foogallery-pro-filtering.php:417, pro/includes/class-foogallery-pro-filtering.php:440, pro/includes/class-foogallery-pro-filtering.php:463, pro/includes/class-foogallery-pro-filtering.php:488, pro/includes/class-foogallery-pro-filtering.php:505, pro/includes/class-foogallery-pro-filtering.php:530, pro/includes/class-foogallery-pro-filtering.php:551, pro/includes/class-foogallery-pro-filtering.php:572, pro/includes/class-foogallery-pro-filtering.php:597, pro/includes/class-foogallery-pro-filtering.php:622, pro/includes/class-foogallery-pro-filtering.php:643, pro/includes/class-foogallery-pro-filtering.php:664, pro/includes/class-foogallery-pro-filtering.php:689, pro/includes/class-foogallery-pro-filtering.php:710, pro/includes/class-foogallery-pro-filtering.php:731, pro/includes/class-foogallery-pro-filtering.php:758, pro/includes/class-foogallery-pro-filtering.php:776, pro/includes/class-foogallery-pro-filtering.php:795, pro/includes/class-foogallery-pro-filtering.php:1044, pro/includes/class-foogallery-pro-filtering.php:1053, pro/includes/class-foogallery-pro-filtering.php:1062, pro/includes/class-foogallery-pro-filtering.php:1071
+#: foogallery.php:259, includes/admin/class-pro-promotion.php:662, pro/includes/class-foogallery-pro-filtering.php:246, pro/includes/class-foogallery-pro-filtering.php:248, pro/includes/class-foogallery-pro-filtering.php:269, pro/includes/class-foogallery-pro-filtering.php:286, pro/includes/class-foogallery-pro-filtering.php:304, pro/includes/class-foogallery-pro-filtering.php:334, pro/includes/class-foogallery-pro-filtering.php:353, pro/includes/class-foogallery-pro-filtering.php:376, pro/includes/class-foogallery-pro-filtering.php:404, pro/includes/class-foogallery-pro-filtering.php:427, pro/includes/class-foogallery-pro-filtering.php:450, pro/includes/class-foogallery-pro-filtering.php:473, pro/includes/class-foogallery-pro-filtering.php:498, pro/includes/class-foogallery-pro-filtering.php:515, pro/includes/class-foogallery-pro-filtering.php:540, pro/includes/class-foogallery-pro-filtering.php:561, pro/includes/class-foogallery-pro-filtering.php:582, pro/includes/class-foogallery-pro-filtering.php:607, pro/includes/class-foogallery-pro-filtering.php:632, pro/includes/class-foogallery-pro-filtering.php:653, pro/includes/class-foogallery-pro-filtering.php:674, pro/includes/class-foogallery-pro-filtering.php:699, pro/includes/class-foogallery-pro-filtering.php:720, pro/includes/class-foogallery-pro-filtering.php:741, pro/includes/class-foogallery-pro-filtering.php:768, pro/includes/class-foogallery-pro-filtering.php:786, pro/includes/class-foogallery-pro-filtering.php:805, pro/includes/class-foogallery-pro-filtering.php:837, pro/includes/class-foogallery-pro-filtering.php:1075, pro/includes/class-foogallery-pro-filtering.php:1084, pro/includes/class-foogallery-pro-filtering.php:1093, pro/includes/class-foogallery-pro-filtering.php:1102
 msgid "Filtering"
 msgstr ""
 
@@ -49,11 +49,11 @@ msgstr ""
 msgid "Protection"
 msgstr ""
 
-#: foogallery.php:307, includes/admin/class-pro-promotion.php:746, pro/includes/video/class-foogallery-pro-video.php:225, pro/includes/video/class-foogallery-pro-video.php:246, pro/includes/video/class-foogallery-pro-video.php:265, pro/includes/video/class-foogallery-pro-video.php:271, pro/includes/video/class-foogallery-pro-video.php:294, pro/includes/video/class-foogallery-pro-video.php:540, pro/includes/video/class-foogallery-pro-video.php:665
+#: foogallery.php:307, includes/admin/class-pro-promotion.php:746, pro/includes/video/class-foogallery-pro-video.php:228, pro/includes/video/class-foogallery-pro-video.php:246, pro/includes/video/class-foogallery-pro-video.php:273, pro/includes/video/class-foogallery-pro-video.php:295, pro/includes/video/class-foogallery-pro-video.php:317, pro/includes/video/class-foogallery-pro-video.php:328, pro/includes/video/class-foogallery-pro-video.php:354, pro/includes/video/class-foogallery-pro-video.php:652, pro/includes/video/class-foogallery-pro-video.php:777
 msgid "Video"
 msgstr ""
 
-#: foogallery.php:319, includes/admin/class-pro-promotion.php:948, pro/includes/class-foogallery-pro-buttons.php:280, pro/includes/class-foogallery-pro-buttons.php:289, pro/includes/class-foogallery-pro-ribbons.php:304, pro/includes/class-foogallery-pro-ribbons.php:313, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:446, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:454, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:473, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:492, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:514, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:537, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1333, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:822, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:831, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:851, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:875, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:894, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:913, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:933, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:952, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:971, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:990, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:999, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1015, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1034, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1050, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1069, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1085, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1104, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1120, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1152, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1168, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1177, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1197, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1220, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1244, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1267, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1290, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1313, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1354, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1555
+#: foogallery.php:319, includes/admin/class-pro-promotion.php:948, pro/includes/class-foogallery-pro-buttons.php:283, pro/includes/class-foogallery-pro-buttons.php:292, pro/includes/class-foogallery-pro-buttons.php:314, pro/includes/class-foogallery-pro-ribbons.php:304, pro/includes/class-foogallery-pro-ribbons.php:313, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:446, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:454, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:473, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:492, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:514, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:537, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1333, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:822, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:831, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:851, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:875, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:894, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:913, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:933, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:952, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:971, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:990, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:999, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1015, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1034, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1050, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1069, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1085, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1104, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1120, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1152, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1168, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1177, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1197, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1220, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1244, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1267, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1290, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1313, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1354, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1555
 msgid "Ecommerce"
 msgstr ""
 
@@ -121,7 +121,7 @@ msgstr ""
 msgid "Choose which lightbox you want to use. The lightbox will generally only work if you set the thumbnail link to \"Full Size Image\"."
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:63, includes/class-foogallery-lightbox.php:150, includes/class-foogallery-lightbox.php:171, includes/class-foogallery-lightbox.php:187, includes/class-foogallery-lightbox.php:506, includes/class-foogallery-lightbox.php:729, includes/class-foogallery-lightbox.php:752, includes/class-foogallery-lightbox.php:771, includes/class-foogallery-lightbox.php:794, includes/class-foogallery-lightbox.php:817, includes/class-foogallery-lightbox.php:840, includes/admin/class-gallery-metabox-settings-helper.php:279, includes/admin/class-pro-promotion.php:827, includes/admin/class-pro-promotion.php:865, includes/admin/class-pro-promotion.php:900, includes/admin/class-pro-promotion.php:1102, includes/admin/class-settings.php:50, pro/includes/class-foogallery-pro-filtering.php:239, pro/includes/class-foogallery-pro-filtering.php:260, pro/includes/class-foogallery-pro-filtering.php:277, pro/includes/class-foogallery-pro-filtering.php:295, pro/includes/class-foogallery-pro-filtering.php:325, pro/includes/class-foogallery-pro-filtering.php:344, pro/includes/class-foogallery-pro-filtering.php:367, pro/includes/class-foogallery-pro-filtering.php:395, pro/includes/class-foogallery-pro-filtering.php:418, pro/includes/class-foogallery-pro-filtering.php:441, pro/includes/class-foogallery-pro-filtering.php:464, pro/includes/class-foogallery-pro-filtering.php:552, pro/includes/class-foogallery-pro-filtering.php:732, extensions/default-templates/carousel/class-carousel-gallery-template.php:165, extensions/default-templates/carousel/class-carousel-gallery-template.php:181, extensions/default-templates/carousel/class-carousel-gallery-template.php:193, extensions/default-templates/carousel/class-carousel-gallery-template.php:205, extensions/default-templates/carousel/class-carousel-gallery-template.php:224, extensions/default-templates/carousel/class-carousel-gallery-template.php:241, extensions/default-templates/carousel/class-carousel-gallery-template.php:254, extensions/default-templates/carousel/class-carousel-gallery-template.php:270, extensions/default-templates/carousel/class-carousel-gallery-template.php:285, extensions/default-templates/carousel/class-carousel-gallery-template.php:300, extensions/default-templates/carousel/class-carousel-gallery-template.php:316, extensions/default-templates/carousel/class-carousel-gallery-template.php:331, extensions/default-templates/default/class-default-gallery-template.php:102, extensions/default-templates/default/class-default-gallery-template.php:117, extensions/default-templates/default/class-default-gallery-template.php:135, extensions/default-templates/default/class-default-gallery-template.php:148, extensions/default-templates/default/class-default-gallery-template.php:163, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:93, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:99, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:115, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:128, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:145, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:162, extensions/default-templates/justified/class-justified-gallery-template.php:83, extensions/default-templates/justified/class-justified-gallery-template.php:99, extensions/default-templates/justified/class-justified-gallery-template.php:114, extensions/default-templates/justified/class-justified-gallery-template.php:128, extensions/default-templates/justified/class-justified-gallery-template.php:141, extensions/default-templates/justified/class-justified-gallery-template.php:159, extensions/default-templates/masonry/class-masonry-gallery-template.php:104, extensions/default-templates/masonry/class-masonry-gallery-template.php:119, extensions/default-templates/masonry/class-masonry-gallery-template.php:134, extensions/default-templates/masonry/class-masonry-gallery-template.php:156, extensions/default-templates/masonry/class-masonry-gallery-template.php:174, extensions/default-templates/masonry/class-masonry-gallery-template.php:196, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:91, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:100, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:114, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:127, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:142, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:117, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:126, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:141, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:159, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:176, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:193, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:196, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:210, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:235, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:254, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:271, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:293, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:313, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:330, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:347, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:128, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:143, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:156, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:171, pro/extensions/default-templates/product/class-product-gallery-template.php:106, pro/extensions/default-templates/product/class-product-gallery-template.php:116, pro/extensions/default-templates/product/class-product-gallery-template.php:131, pro/extensions/default-templates/product/class-product-gallery-template.php:144, pro/extensions/default-templates/product/class-product-gallery-template.php:159, pro/extensions/default-templates/slider/class-slider-gallery-template.php:107, pro/extensions/default-templates/slider/class-slider-gallery-template.php:127, pro/extensions/default-templates/spotlight/class-spotlight-template.php:99, pro/extensions/default-templates/spotlight/class-spotlight-template.php:115, pro/extensions/default-templates/spotlight/class-spotlight-template.php:128, pro/extensions/default-templates/spotlight/class-spotlight-template.php:145, pro/extensions/default-templates/spotlight/class-spotlight-template.php:164, pro/extensions/default-templates/spotlight/class-spotlight-template.php:184, pro/extensions/default-templates/spotlight/class-spotlight-template.php:202
+#: includes/class-foogallery-common-fields.php:63, includes/class-foogallery-lightbox.php:150, includes/class-foogallery-lightbox.php:171, includes/class-foogallery-lightbox.php:187, includes/class-foogallery-lightbox.php:506, includes/class-foogallery-lightbox.php:729, includes/class-foogallery-lightbox.php:752, includes/class-foogallery-lightbox.php:771, includes/class-foogallery-lightbox.php:794, includes/class-foogallery-lightbox.php:817, includes/class-foogallery-lightbox.php:840, includes/admin/class-gallery-metabox-settings-helper.php:279, includes/admin/class-pro-promotion.php:827, includes/admin/class-pro-promotion.php:865, includes/admin/class-pro-promotion.php:900, includes/admin/class-pro-promotion.php:1102, includes/admin/class-settings.php:50, pro/includes/class-foogallery-pro-filtering.php:249, pro/includes/class-foogallery-pro-filtering.php:270, pro/includes/class-foogallery-pro-filtering.php:287, pro/includes/class-foogallery-pro-filtering.php:305, pro/includes/class-foogallery-pro-filtering.php:335, pro/includes/class-foogallery-pro-filtering.php:354, pro/includes/class-foogallery-pro-filtering.php:377, pro/includes/class-foogallery-pro-filtering.php:405, pro/includes/class-foogallery-pro-filtering.php:428, pro/includes/class-foogallery-pro-filtering.php:451, pro/includes/class-foogallery-pro-filtering.php:474, pro/includes/class-foogallery-pro-filtering.php:562, pro/includes/class-foogallery-pro-filtering.php:742, extensions/default-templates/carousel/class-carousel-gallery-template.php:165, extensions/default-templates/carousel/class-carousel-gallery-template.php:181, extensions/default-templates/carousel/class-carousel-gallery-template.php:193, extensions/default-templates/carousel/class-carousel-gallery-template.php:205, extensions/default-templates/carousel/class-carousel-gallery-template.php:224, extensions/default-templates/carousel/class-carousel-gallery-template.php:241, extensions/default-templates/carousel/class-carousel-gallery-template.php:254, extensions/default-templates/carousel/class-carousel-gallery-template.php:270, extensions/default-templates/carousel/class-carousel-gallery-template.php:285, extensions/default-templates/carousel/class-carousel-gallery-template.php:300, extensions/default-templates/carousel/class-carousel-gallery-template.php:316, extensions/default-templates/carousel/class-carousel-gallery-template.php:331, extensions/default-templates/default/class-default-gallery-template.php:102, extensions/default-templates/default/class-default-gallery-template.php:117, extensions/default-templates/default/class-default-gallery-template.php:135, extensions/default-templates/default/class-default-gallery-template.php:148, extensions/default-templates/default/class-default-gallery-template.php:163, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:93, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:99, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:115, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:128, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:145, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:162, extensions/default-templates/justified/class-justified-gallery-template.php:83, extensions/default-templates/justified/class-justified-gallery-template.php:99, extensions/default-templates/justified/class-justified-gallery-template.php:114, extensions/default-templates/justified/class-justified-gallery-template.php:128, extensions/default-templates/justified/class-justified-gallery-template.php:141, extensions/default-templates/justified/class-justified-gallery-template.php:159, extensions/default-templates/masonry/class-masonry-gallery-template.php:104, extensions/default-templates/masonry/class-masonry-gallery-template.php:119, extensions/default-templates/masonry/class-masonry-gallery-template.php:134, extensions/default-templates/masonry/class-masonry-gallery-template.php:156, extensions/default-templates/masonry/class-masonry-gallery-template.php:174, extensions/default-templates/masonry/class-masonry-gallery-template.php:196, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:91, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:100, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:114, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:127, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:142, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:117, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:126, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:141, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:159, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:176, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:193, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:196, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:210, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:235, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:254, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:271, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:293, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:313, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:330, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:347, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:128, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:143, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:156, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:171, pro/extensions/default-templates/product/class-product-gallery-template.php:106, pro/extensions/default-templates/product/class-product-gallery-template.php:116, pro/extensions/default-templates/product/class-product-gallery-template.php:131, pro/extensions/default-templates/product/class-product-gallery-template.php:144, pro/extensions/default-templates/product/class-product-gallery-template.php:159, pro/extensions/default-templates/slider/class-slider-gallery-template.php:107, pro/extensions/default-templates/slider/class-slider-gallery-template.php:127, pro/extensions/default-templates/spotlight/class-spotlight-template.php:99, pro/extensions/default-templates/spotlight/class-spotlight-template.php:115, pro/extensions/default-templates/spotlight/class-spotlight-template.php:128, pro/extensions/default-templates/spotlight/class-spotlight-template.php:145, pro/extensions/default-templates/spotlight/class-spotlight-template.php:164, pro/extensions/default-templates/spotlight/class-spotlight-template.php:184, pro/extensions/default-templates/spotlight/class-spotlight-template.php:202
 msgid "General"
 msgstr ""
 
@@ -133,7 +133,7 @@ msgstr ""
 msgid "Appearance"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:111, includes/class-foogallery-common-fields.php:343, includes/class-foogallery-lightbox.php:184, includes/class-foogallery-paging.php:221, pro/includes/class-foogallery-pro-filtering.php:292
+#: includes/class-foogallery-common-fields.php:111, includes/class-foogallery-common-fields.php:343, includes/class-foogallery-lightbox.php:184, includes/class-foogallery-paging.php:221, pro/includes/class-foogallery-pro-filtering.php:302
 msgid "Theme"
 msgstr ""
 
@@ -141,15 +141,15 @@ msgstr ""
 msgid "The overall appearance of the items in the gallery, affecting the border, background, font and shadow colors."
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:117, includes/class-foogallery-common-fields.php:354, includes/class-foogallery-common-fields.php:537, includes/class-foogallery-lightbox.php:194, includes/class-foogallery-lightbox.php:274, includes/class-foogallery-lightbox.php:326, includes/class-foogallery-paging.php:228, pro/includes/class-foogallery-pro-exif.php:453, pro/includes/class-foogallery-pro-filtering.php:300, extensions/default-templates/masonry/class-masonry-gallery-template.php:344, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:221
+#: includes/class-foogallery-common-fields.php:117, includes/class-foogallery-common-fields.php:354, includes/class-foogallery-common-fields.php:562, includes/class-foogallery-lightbox.php:194, includes/class-foogallery-lightbox.php:274, includes/class-foogallery-lightbox.php:326, includes/class-foogallery-paging.php:228, pro/includes/class-foogallery-pro-exif.php:453, pro/includes/class-foogallery-pro-filtering.php:310, extensions/default-templates/masonry/class-masonry-gallery-template.php:344, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:221
 msgid "Light"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:118, includes/class-foogallery-common-fields.php:350, includes/class-foogallery-common-fields.php:533, includes/class-foogallery-lightbox.php:195, includes/class-foogallery-lightbox.php:275, includes/class-foogallery-lightbox.php:327, includes/class-foogallery-paging.php:229, pro/includes/class-foogallery-pro-exif.php:454, pro/includes/class-foogallery-pro-filtering.php:301, extensions/default-templates/masonry/class-masonry-gallery-template.php:345, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:222
+#: includes/class-foogallery-common-fields.php:118, includes/class-foogallery-common-fields.php:350, includes/class-foogallery-common-fields.php:558, includes/class-foogallery-lightbox.php:195, includes/class-foogallery-lightbox.php:275, includes/class-foogallery-lightbox.php:327, includes/class-foogallery-paging.php:229, pro/includes/class-foogallery-pro-exif.php:454, pro/includes/class-foogallery-pro-filtering.php:311, extensions/default-templates/masonry/class-masonry-gallery-template.php:345, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:222
 msgid "Dark"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:119, includes/class-foogallery-lightbox.php:196, includes/class-foogallery-lightbox.php:657, includes/class-foogallery-paging.php:230, includes/admin/class-pro-promotion.php:201, pro/includes/class-foogallery-pro-filtering.php:302, extensions/default-templates/masonry/class-masonry-gallery-template.php:347, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:224, pro/includes/protection/class-foogallery-pro-protection.php:723
+#: includes/class-foogallery-common-fields.php:119, includes/class-foogallery-lightbox.php:196, includes/class-foogallery-lightbox.php:657, includes/class-foogallery-paging.php:230, includes/admin/class-pro-promotion.php:201, pro/includes/class-foogallery-pro-filtering.php:312, extensions/default-templates/masonry/class-masonry-gallery-template.php:347, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:224, pro/includes/protection/class-foogallery-pro-protection.php:723
 msgid "Custom"
 msgstr ""
 
@@ -161,7 +161,7 @@ msgstr ""
 msgid "The border size applied to each thumbnail"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:136, includes/class-foogallery-common-fields.php:155, includes/class-foogallery-common-fields.php:175, includes/class-foogallery-common-fields.php:195, includes/class-foogallery-common-fields.php:216, includes/class-foogallery-common-fields.php:241, includes/class-foogallery-common-fields.php:273, includes/class-foogallery-common-fields.php:379, includes/class-foogallery-common-fields.php:402, includes/class-foogallery-common-fields.php:452, includes/class-foogallery-common-fields.php:585, includes/class-foogallery-common-fields.php:607, includes/class-foogallery-lightbox.php:513, includes/class-foogallery-lightbox.php:684, includes/class-foogallery-lightbox.php:711, includes/class-foogallery-paging.php:166, includes/class-foogallery-paging.php:204, includes/functions.php:1197, includes/admin/view-system-info.php:101, includes/compatibility/class-foobox-compatibility.php:216, includes/compatibility/class-foobox-compatibility.php:241, pro/includes/class-foogallery-pro-exif.php:432, pro/includes/class-foogallery-pro-gallery-blueprints.php:513, pro/includes/class-foogallery-pro-instagram-filters.php:53, pro/includes/class-foogallery-pro-ribbons.php:277, extensions/default-templates/carousel/class-carousel-gallery-template.php:209, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:164, pro/includes/video/class-foogallery-pro-video.php:231, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:244, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:303, pro/extensions/default-templates/slider/class-slider-gallery-template.php:193
+#: includes/class-foogallery-common-fields.php:136, includes/class-foogallery-common-fields.php:155, includes/class-foogallery-common-fields.php:175, includes/class-foogallery-common-fields.php:195, includes/class-foogallery-common-fields.php:216, includes/class-foogallery-common-fields.php:241, includes/class-foogallery-common-fields.php:273, includes/class-foogallery-common-fields.php:379, includes/class-foogallery-common-fields.php:402, includes/class-foogallery-common-fields.php:452, includes/class-foogallery-common-fields.php:610, includes/class-foogallery-common-fields.php:632, includes/class-foogallery-lightbox.php:513, includes/class-foogallery-lightbox.php:684, includes/class-foogallery-lightbox.php:711, includes/class-foogallery-paging.php:166, includes/class-foogallery-paging.php:204, includes/functions.php:1197, includes/admin/view-system-info.php:101, includes/compatibility/class-foobox-compatibility.php:216, includes/compatibility/class-foobox-compatibility.php:241, pro/includes/class-foogallery-pro-exif.php:432, pro/includes/class-foogallery-pro-gallery-blueprints.php:515, pro/includes/class-foogallery-pro-instagram-filters.php:53, pro/includes/class-foogallery-pro-ribbons.php:277, extensions/default-templates/carousel/class-carousel-gallery-template.php:209, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:164, pro/includes/video/class-foogallery-pro-video.php:252, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:244, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:303, pro/extensions/default-templates/slider/class-slider-gallery-template.php:193
 msgid "None"
 msgstr ""
 
@@ -225,7 +225,7 @@ msgstr ""
 msgid "An animated loading icon can be shown while the thumbnails are busy loading."
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:217, includes/class-foogallery-common-fields.php:303, includes/class-foogallery-common-fields.php:562, includes/class-foogallery-lightbox.php:439, includes/class-foogallery-lightbox.php:464, includes/class-foogallery-lightbox.php:584, includes/class-foogallery-lightbox.php:821, includes/class-foogallery-paging.php:227, includes/functions.php:576, includes/functions.php:1854, includes/functions.php:2284, extensions/albums/functions.php:81, includes/admin/class-pro-promotion.php:199, includes/admin/class-settings.php:185, includes/admin/view-help-demos.php:44, pro/includes/class-foogallery-pro-advanced-thumbnails.php:56, pro/includes/class-foogallery-pro-datasource-folders.php:466, pro/includes/class-foogallery-pro-filtering.php:299, pro/includes/class-foogallery-pro-filtering.php:371, extensions/albums/admin/class-metaboxes.php:543, extensions/default-templates/default/class-default-gallery-template.php:122, pro/includes/video/class-foogallery-pro-video.php:550, pro/extensions/default-templates/slider/class-slider-gallery-template.php:233
+#: includes/class-foogallery-common-fields.php:217, includes/class-foogallery-common-fields.php:303, includes/class-foogallery-common-fields.php:486, includes/class-foogallery-common-fields.php:587, includes/class-foogallery-lightbox.php:439, includes/class-foogallery-lightbox.php:464, includes/class-foogallery-lightbox.php:584, includes/class-foogallery-lightbox.php:821, includes/class-foogallery-paging.php:227, includes/functions.php:576, includes/functions.php:1854, includes/functions.php:2284, extensions/albums/functions.php:81, includes/admin/class-pro-promotion.php:199, includes/admin/class-settings.php:185, includes/admin/view-help-demos.php:44, pro/includes/class-foogallery-pro-advanced-thumbnails.php:56, pro/includes/class-foogallery-pro-buttons.php:297, pro/includes/class-foogallery-pro-datasource-folders.php:475, pro/includes/class-foogallery-pro-filtering.php:309, pro/includes/class-foogallery-pro-filtering.php:381, extensions/albums/admin/class-metaboxes.php:543, extensions/default-templates/default/class-default-gallery-template.php:122, pro/includes/video/class-foogallery-pro-video.php:277, pro/includes/video/class-foogallery-pro-video.php:662, pro/extensions/default-templates/slider/class-slider-gallery-template.php:233
 msgid "Default"
 msgstr ""
 
@@ -301,7 +301,7 @@ msgstr ""
 msgid "Hover Effect Type"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:267, includes/class-foogallery-common-fields.php:298, includes/class-foogallery-common-fields.php:321, includes/class-foogallery-common-fields.php:345, includes/class-foogallery-common-fields.php:374, includes/class-foogallery-common-fields.php:397, includes/class-foogallery-common-fields.php:421, includes/class-foogallery-common-fields.php:448, includes/class-foogallery-lightbox.php:1025, includes/admin/class-pro-promotion.php:605, includes/compatibility/class-foobox-compatibility.php:254
+#: includes/class-foogallery-common-fields.php:267, includes/class-foogallery-common-fields.php:298, includes/class-foogallery-common-fields.php:321, includes/class-foogallery-common-fields.php:345, includes/class-foogallery-common-fields.php:374, includes/class-foogallery-common-fields.php:397, includes/class-foogallery-common-fields.php:421, includes/class-foogallery-common-fields.php:448, includes/class-foogallery-common-fields.php:482, includes/class-foogallery-lightbox.php:1025, includes/admin/class-pro-promotion.php:605, includes/compatibility/class-foobox-compatibility.php:254
 msgid "Hover Effects"
 msgstr ""
 
@@ -357,7 +357,7 @@ msgstr ""
 msgid "A white overlay with dark text is shown on hover"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:358, includes/class-foogallery-common-fields.php:541, extensions/default-templates/masonry/class-masonry-gallery-template.php:346, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:223
+#: includes/class-foogallery-common-fields.php:358, includes/class-foogallery-common-fields.php:566, extensions/default-templates/masonry/class-masonry-gallery-template.php:346, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:223
 msgid "Transparent"
 msgstr ""
 
@@ -481,139 +481,163 @@ msgstr ""
 msgid "External"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:481, includes/class-foogallery-common-fields.php:504
+#: includes/class-foogallery-common-fields.php:480
+msgid "Icon Size"
+msgstr ""
+
+#: includes/class-foogallery-common-fields.php:481
+msgid "Choose the size of the icon that is displayed when you hover over a thumbnail."
+msgstr ""
+
+#: includes/class-foogallery-common-fields.php:487, pro/includes/video/class-foogallery-pro-video.php:278
+msgid "1.5x"
+msgstr ""
+
+#: includes/class-foogallery-common-fields.php:488, includes/functions.php:994, pro/includes/video/class-foogallery-pro-video.php:279
+msgid "2x"
+msgstr ""
+
+#: includes/class-foogallery-common-fields.php:489, pro/includes/video/class-foogallery-pro-video.php:280
+msgid "2.5x"
+msgstr ""
+
+#: includes/class-foogallery-common-fields.php:490, includes/functions.php:995, pro/includes/video/class-foogallery-pro-video.php:281
+msgid "3x"
+msgstr ""
+
+#: includes/class-foogallery-common-fields.php:506, includes/class-foogallery-common-fields.php:529
 msgid "Caption Visibility"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:482, includes/class-foogallery-common-fields.php:505, includes/class-foogallery-common-fields.php:528, includes/class-foogallery-common-fields.php:558, includes/class-foogallery-common-fields.php:580, includes/class-foogallery-common-fields.php:602, includes/class-foogallery-common-fields.php:624, includes/class-foogallery-common-fields.php:650, includes/class-foogallery-common-fields.php:669, includes/class-foogallery-common-fields.php:688, includes/class-foogallery-common-fields.php:707, includes/class-foogallery-lightbox.php:530, includes/class-foogallery-lightbox.php:554, includes/class-foogallery-lightbox.php:580, includes/class-foogallery-lightbox.php:605, includes/class-foogallery-lightbox.php:628, includes/class-foogallery-lightbox.php:651, includes/class-foogallery-lightbox.php:675, includes/class-foogallery-lightbox.php:702, includes/admin/class-pro-promotion.php:195, includes/admin/class-pro-promotion.php:219, includes/admin/class-settings.php:144, includes/admin/class-settings.php:161, pro/includes/class-foogallery-pro-advanced-captions.php:137, pro/includes/class-foogallery-pro-advanced-captions.php:190, pro/includes/class-foogallery-pro-advanced-captions.php:205, pro/includes/class-foogallery-pro-advanced-captions.php:229, pro/includes/class-foogallery-pro-advanced-captions.php:248, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:176, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:227, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:234, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:245, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:189
+#: includes/class-foogallery-common-fields.php:507, includes/class-foogallery-common-fields.php:530, includes/class-foogallery-common-fields.php:553, includes/class-foogallery-common-fields.php:583, includes/class-foogallery-common-fields.php:605, includes/class-foogallery-common-fields.php:627, includes/class-foogallery-common-fields.php:649, includes/class-foogallery-common-fields.php:675, includes/class-foogallery-common-fields.php:694, includes/class-foogallery-common-fields.php:713, includes/class-foogallery-common-fields.php:732, includes/class-foogallery-lightbox.php:530, includes/class-foogallery-lightbox.php:554, includes/class-foogallery-lightbox.php:580, includes/class-foogallery-lightbox.php:605, includes/class-foogallery-lightbox.php:628, includes/class-foogallery-lightbox.php:651, includes/class-foogallery-lightbox.php:675, includes/class-foogallery-lightbox.php:702, includes/admin/class-pro-promotion.php:195, includes/admin/class-pro-promotion.php:219, includes/admin/class-settings.php:144, includes/admin/class-settings.php:161, pro/includes/class-foogallery-pro-advanced-captions.php:137, pro/includes/class-foogallery-pro-advanced-captions.php:190, pro/includes/class-foogallery-pro-advanced-captions.php:205, pro/includes/class-foogallery-pro-advanced-captions.php:229, pro/includes/class-foogallery-pro-advanced-captions.php:248, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:176, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:227, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:234, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:245, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:189
 msgid "Captions"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:487, includes/class-foogallery-common-fields.php:510
+#: includes/class-foogallery-common-fields.php:512, includes/class-foogallery-common-fields.php:535
 msgid "Not shown"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:488
+#: includes/class-foogallery-common-fields.php:513
 msgid "On Hover"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:489, includes/class-foogallery-common-fields.php:511, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:207, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:254, pro/extensions/default-templates/product/class-product-gallery-template.php:242
+#: includes/class-foogallery-common-fields.php:514, includes/class-foogallery-common-fields.php:536, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:207, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:254, pro/extensions/default-templates/product/class-product-gallery-template.php:242
 msgid "Always Visible"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:492, includes/class-foogallery-common-fields.php:514
+#: includes/class-foogallery-common-fields.php:517, includes/class-foogallery-common-fields.php:539
 msgid "Choose when the captions will be displayed."
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:526
+#: includes/class-foogallery-common-fields.php:551
 msgid "Caption Theme"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:527
+#: includes/class-foogallery-common-fields.php:552
 msgid "Choose the color theme for the captions."
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:534
+#: includes/class-foogallery-common-fields.php:559
 msgid "A dark overlay with white text is shown for the captions"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:538
+#: includes/class-foogallery-common-fields.php:563
 msgid "A white overlay with dark text is shown for the captions"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:542
+#: includes/class-foogallery-common-fields.php:567
 msgid "A transparent overlay with white text is shown for the captions"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:556
+#: includes/class-foogallery-common-fields.php:581
 msgid "Caption Alignment"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:557
+#: includes/class-foogallery-common-fields.php:582
 msgid "Change the horizontal alignment of the thumbnail captions"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:563, includes/class-foogallery-lightbox.php:393, includes/class-foogallery-lightbox.php:440, includes/class-foogallery-lightbox.php:560, includes/class-foogallery-lightbox.php:585, extensions/albums/functions.php:69, pro/includes/class-foogallery-pro-filtering.php:399, extensions/default-templates/default/class-default-gallery-template.php:167, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:133, extensions/default-templates/justified/class-justified-gallery-template.php:145, extensions/default-templates/masonry/class-masonry-gallery-template.php:199, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:146, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:302, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:175, pro/extensions/default-templates/product/class-product-gallery-template.php:163, pro/extensions/default-templates/spotlight/class-spotlight-template.php:133, pro/extensions/default-templates/spotlight/class-spotlight-template.php:151
+#: includes/class-foogallery-common-fields.php:588, includes/class-foogallery-lightbox.php:393, includes/class-foogallery-lightbox.php:440, includes/class-foogallery-lightbox.php:560, includes/class-foogallery-lightbox.php:585, extensions/albums/functions.php:69, pro/includes/class-foogallery-pro-filtering.php:409, extensions/default-templates/default/class-default-gallery-template.php:167, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:133, extensions/default-templates/justified/class-justified-gallery-template.php:145, extensions/default-templates/masonry/class-masonry-gallery-template.php:199, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:146, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:302, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:175, pro/extensions/default-templates/product/class-product-gallery-template.php:163, pro/extensions/default-templates/spotlight/class-spotlight-template.php:133, pro/extensions/default-templates/spotlight/class-spotlight-template.php:151
 msgid "Left"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:564, includes/class-foogallery-lightbox.php:441, includes/class-foogallery-lightbox.php:586, extensions/albums/functions.php:70, pro/includes/class-foogallery-pro-filtering.php:400, extensions/default-templates/default/class-default-gallery-template.php:168, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:134, extensions/default-templates/justified/class-justified-gallery-template.php:146, extensions/default-templates/masonry/class-masonry-gallery-template.php:200, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:147, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:176, pro/extensions/default-templates/product/class-product-gallery-template.php:164, pro/extensions/default-templates/spotlight/class-spotlight-template.php:134, pro/extensions/default-templates/spotlight/class-spotlight-template.php:152
+#: includes/class-foogallery-common-fields.php:589, includes/class-foogallery-lightbox.php:441, includes/class-foogallery-lightbox.php:586, extensions/albums/functions.php:70, pro/includes/class-foogallery-pro-filtering.php:410, extensions/default-templates/default/class-default-gallery-template.php:168, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:134, extensions/default-templates/justified/class-justified-gallery-template.php:146, extensions/default-templates/masonry/class-masonry-gallery-template.php:200, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:147, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:176, pro/extensions/default-templates/product/class-product-gallery-template.php:164, pro/extensions/default-templates/spotlight/class-spotlight-template.php:134, pro/extensions/default-templates/spotlight/class-spotlight-template.php:152
 msgid "Center"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:565, includes/class-foogallery-lightbox.php:394, includes/class-foogallery-lightbox.php:442, includes/class-foogallery-lightbox.php:561, includes/class-foogallery-lightbox.php:587, extensions/albums/functions.php:71, pro/includes/class-foogallery-pro-filtering.php:401, extensions/default-templates/default/class-default-gallery-template.php:169, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:135, extensions/default-templates/justified/class-justified-gallery-template.php:147, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:148, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:300, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:177, pro/extensions/default-templates/product/class-product-gallery-template.php:165, pro/extensions/default-templates/spotlight/class-spotlight-template.php:135, pro/extensions/default-templates/spotlight/class-spotlight-template.php:153
+#: includes/class-foogallery-common-fields.php:590, includes/class-foogallery-lightbox.php:394, includes/class-foogallery-lightbox.php:442, includes/class-foogallery-lightbox.php:561, includes/class-foogallery-lightbox.php:587, extensions/albums/functions.php:71, pro/includes/class-foogallery-pro-filtering.php:411, extensions/default-templates/default/class-default-gallery-template.php:169, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:135, extensions/default-templates/justified/class-justified-gallery-template.php:147, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:148, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:300, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:177, pro/extensions/default-templates/product/class-product-gallery-template.php:165, pro/extensions/default-templates/spotlight/class-spotlight-template.php:135, pro/extensions/default-templates/spotlight/class-spotlight-template.php:153
 msgid "Right"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:566, includes/class-foogallery-lightbox.php:443, includes/class-foogallery-lightbox.php:588
+#: includes/class-foogallery-common-fields.php:591, includes/class-foogallery-lightbox.php:443, includes/class-foogallery-lightbox.php:588
 msgid "Justify"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:574, pro/extensions/default-templates/slider/class-slider-gallery-template.php:191
+#: includes/class-foogallery-common-fields.php:599, pro/extensions/default-templates/slider/class-slider-gallery-template.php:191
 msgid "settings"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:578, includes/admin/class-gallery-attachment-modal.php:608, pro/includes/foogallery-media-views-templates.php:234, pro/includes/foogallery-media-views-templates.php:455, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:372
+#: includes/class-foogallery-common-fields.php:603, includes/admin/class-gallery-attachment-modal.php:608, pro/includes/foogallery-media-views-templates.php:234, pro/includes/foogallery-media-views-templates.php:455, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:379
 msgid "Title"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:579
+#: includes/class-foogallery-common-fields.php:604
 msgid "Decide where caption titles are pulled from. By default, what is saved under general settings will be used, but it can be overridden per gallery"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:586, includes/class-foogallery-common-fields.php:608, pro/extensions/default-templates/slider/class-slider-gallery-template.php:194
+#: includes/class-foogallery-common-fields.php:611, includes/class-foogallery-common-fields.php:633, pro/extensions/default-templates/slider/class-slider-gallery-template.php:194
 msgid "Default (as per %s)"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:600, includes/admin/class-gallery-attachment-modal.php:616, pro/includes/class-foogallery-pro-datasource-folders.php:591, pro/includes/foogallery-media-views-templates.php:240, pro/includes/foogallery-media-views-templates.php:461
+#: includes/class-foogallery-common-fields.php:625, includes/admin/class-gallery-attachment-modal.php:616, pro/includes/class-foogallery-pro-datasource-folders.php:600, pro/includes/foogallery-media-views-templates.php:240, pro/includes/foogallery-media-views-templates.php:461
 msgid "Description"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:601
+#: includes/class-foogallery-common-fields.php:626
 msgid "Decide where captions descriptions are pulled from. By default, the general settings are used, but it can be overridden per gallery"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:622
+#: includes/class-foogallery-common-fields.php:647
 msgid "Limit Caption Length"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:623
+#: includes/class-foogallery-common-fields.php:648
 msgid "You can limit the length of caption title and descriptions in the thumbnails. This will NOT limit the length of captions from within the lightbox."
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:629, includes/class-foogallery-lightbox.php:734, includes/class-foogallery-lightbox.php:775, includes/class-foogallery-lightbox.php:799, includes/class-foogallery-lightbox.php:892, includes/class-foogallery-paging.php:251, pro/includes/class-foogallery-pro-filtering.php:578, pro/includes/class-foogallery-pro-filtering.php:603, pro/includes/class-foogallery-pro-filtering.php:670, pro/includes/video/class-foogallery-pro-video.php:253, pro/includes/video/class-foogallery-pro-video.php:301, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:261, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:320, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:337, pro/extensions/default-templates/spotlight/class-spotlight-template.php:189
+#: includes/class-foogallery-common-fields.php:654, includes/class-foogallery-lightbox.php:734, includes/class-foogallery-lightbox.php:775, includes/class-foogallery-lightbox.php:799, includes/class-foogallery-lightbox.php:892, includes/class-foogallery-paging.php:251, pro/includes/class-foogallery-pro-filtering.php:588, pro/includes/class-foogallery-pro-filtering.php:613, pro/includes/class-foogallery-pro-filtering.php:680, pro/includes/video/class-foogallery-pro-video.php:302, pro/includes/video/class-foogallery-pro-video.php:361, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:261, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:320, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:337, pro/extensions/default-templates/spotlight/class-spotlight-template.php:189
 msgid "No"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:631
+#: includes/class-foogallery-common-fields.php:656
 msgid "Yes (by character length)"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:632
+#: includes/class-foogallery-common-fields.php:657
 msgid "Limit the length of the caption title and description by character length."
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:635
+#: includes/class-foogallery-common-fields.php:660
 msgid "Yes (by lines)"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:636
+#: includes/class-foogallery-common-fields.php:661
 msgid "Limit the length of the caption title and description by the number of lines."
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:648
+#: includes/class-foogallery-common-fields.php:673
 msgid "Max Title Length"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:667
+#: includes/class-foogallery-common-fields.php:692
 msgid "Max Desc Length"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:686
+#: includes/class-foogallery-common-fields.php:711
 msgid "Max Title Lines"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:705
+#: includes/class-foogallery-common-fields.php:730
 msgid "Max Desc Lines"
 msgstr ""
 
@@ -681,15 +705,15 @@ msgstr ""
 msgid "If you choose to disable lazy loading, then all thumbnails will be loaded at once. This means you will lose the performance improvements that lazy loading gives you."
 msgstr ""
 
-#: includes/class-foogallery-lazyload.php:217, includes/class-gallery-advanced-settings.php:60, includes/class-gallery-advanced-settings.php:69, includes/class-gallery-advanced-settings.php:78, includes/class-gallery-advanced-settings.php:87, includes/class-gallery-advanced-settings.php:96, includes/admin/class-gallery-attachment-modal.php:595, includes/admin/class-pro-promotion.php:969, includes/admin/class-pro-promotion.php:1007, includes/admin/class-settings.php:462, pro/includes/class-foogallery-pro-advanced-gallery-settings.php:31, pro/includes/class-foogallery-pro-advanced-gallery-settings.php:49, pro/includes/class-foogallery-pro-advanced-thumbnails.php:52, pro/includes/class-foogallery-pro-advanced-thumbnails.php:70, pro/includes/class-foogallery-pro-advanced-thumbnails.php:84, pro/includes/class-foogallery-pro-buttons.php:305, pro/includes/class-foogallery-pro-exif.php:494, pro/includes/class-foogallery-pro-filtering.php:489, pro/includes/class-foogallery-pro-filtering.php:506, pro/includes/class-foogallery-pro-filtering.php:531, pro/includes/class-foogallery-pro-filtering.php:573, pro/includes/class-foogallery-pro-filtering.php:598, pro/includes/class-foogallery-pro-filtering.php:623, pro/includes/class-foogallery-pro-filtering.php:644, pro/includes/class-foogallery-pro-filtering.php:665, pro/includes/class-foogallery-pro-filtering.php:690, pro/includes/class-foogallery-pro-filtering.php:711, pro/includes/class-foogallery-pro-filtering.php:759, pro/includes/class-foogallery-pro-filtering.php:822, pro/includes/class-foogallery-pro-ribbons.php:329, pro/includes/protection/class-foogallery-pro-protection.php:626, pro/includes/video/class-foogallery-pro-video.php:310, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1339
+#: includes/class-foogallery-lazyload.php:217, includes/class-gallery-advanced-settings.php:60, includes/class-gallery-advanced-settings.php:69, includes/class-gallery-advanced-settings.php:78, includes/class-gallery-advanced-settings.php:87, includes/class-gallery-advanced-settings.php:96, includes/admin/class-gallery-attachment-modal.php:595, includes/admin/class-pro-promotion.php:969, includes/admin/class-pro-promotion.php:1007, includes/admin/class-settings.php:462, pro/includes/class-foogallery-pro-advanced-gallery-settings.php:31, pro/includes/class-foogallery-pro-advanced-gallery-settings.php:49, pro/includes/class-foogallery-pro-advanced-thumbnails.php:52, pro/includes/class-foogallery-pro-advanced-thumbnails.php:70, pro/includes/class-foogallery-pro-advanced-thumbnails.php:84, pro/includes/class-foogallery-pro-buttons.php:330, pro/includes/class-foogallery-pro-exif.php:494, pro/includes/class-foogallery-pro-filtering.php:499, pro/includes/class-foogallery-pro-filtering.php:516, pro/includes/class-foogallery-pro-filtering.php:541, pro/includes/class-foogallery-pro-filtering.php:583, pro/includes/class-foogallery-pro-filtering.php:608, pro/includes/class-foogallery-pro-filtering.php:633, pro/includes/class-foogallery-pro-filtering.php:654, pro/includes/class-foogallery-pro-filtering.php:675, pro/includes/class-foogallery-pro-filtering.php:700, pro/includes/class-foogallery-pro-filtering.php:721, pro/includes/class-foogallery-pro-filtering.php:769, pro/includes/class-foogallery-pro-filtering.php:849, pro/includes/class-foogallery-pro-ribbons.php:329, pro/includes/protection/class-foogallery-pro-protection.php:626, pro/includes/video/class-foogallery-pro-video.php:373, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1339
 msgid "Advanced"
 msgstr ""
 
-#: includes/class-foogallery-lazyload.php:221, includes/class-foogallery-lightbox.php:534, includes/class-gallery-advanced-settings.php:100, includes/compatibility/class-foobox-compatibility.php:348, pro/includes/class-foogallery-pro-advanced-gallery-settings.php:35, pro/includes/class-foogallery-pro-exif.php:411, pro/includes/class-foogallery-pro-filtering.php:243, pro/includes/class-foogallery-pro-filtering.php:468, pro/includes/class-foogallery-pro-filtering.php:781, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:151, extensions/default-templates/masonry/class-masonry-gallery-template.php:159, pro/includes/protection/class-foogallery-pro-protection.php:580, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:459
+#: includes/class-foogallery-lazyload.php:221, includes/class-foogallery-lightbox.php:534, includes/class-gallery-advanced-settings.php:100, includes/compatibility/class-foobox-compatibility.php:348, pro/includes/class-foogallery-pro-advanced-gallery-settings.php:35, pro/includes/class-foogallery-pro-exif.php:411, pro/includes/class-foogallery-pro-filtering.php:253, pro/includes/class-foogallery-pro-filtering.php:478, pro/includes/class-foogallery-pro-filtering.php:791, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:151, extensions/default-templates/masonry/class-masonry-gallery-template.php:159, pro/includes/protection/class-foogallery-pro-protection.php:580, pro/includes/video/class-foogallery-pro-video.php:234, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:459
 msgid "Disabled"
 msgstr ""
 
-#: includes/class-foogallery-lazyload.php:222, includes/class-foogallery-lightbox.php:535, includes/class-gallery-advanced-settings.php:101, includes/compatibility/class-foobox-compatibility.php:349, pro/includes/class-foogallery-pro-advanced-gallery-settings.php:36, pro/includes/class-foogallery-pro-exif.php:412, pro/includes/class-foogallery-pro-filtering.php:244, pro/includes/class-foogallery-pro-filtering.php:469, pro/includes/class-foogallery-pro-filtering.php:782, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:152, pro/includes/protection/class-foogallery-pro-protection.php:581, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:460
+#: includes/class-foogallery-lazyload.php:222, includes/class-foogallery-lightbox.php:535, includes/class-gallery-advanced-settings.php:101, includes/compatibility/class-foobox-compatibility.php:349, pro/includes/class-foogallery-pro-advanced-gallery-settings.php:36, pro/includes/class-foogallery-pro-exif.php:412, pro/includes/class-foogallery-pro-filtering.php:254, pro/includes/class-foogallery-pro-filtering.php:479, pro/includes/class-foogallery-pro-filtering.php:792, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:152, pro/includes/protection/class-foogallery-pro-protection.php:581, pro/includes/video/class-foogallery-pro-video.php:235, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:460
 msgid "Enabled"
 msgstr ""
 
@@ -829,15 +853,15 @@ msgstr ""
 msgid "You can change the position of the thumbnails, or hide them completely."
 msgstr ""
 
-#: includes/class-foogallery-lightbox.php:391, includes/class-foogallery-lightbox.php:558, includes/class-foogallery-paging.php:206, pro/includes/class-foogallery-pro-filtering.php:349
+#: includes/class-foogallery-lightbox.php:391, includes/class-foogallery-lightbox.php:558, includes/class-foogallery-paging.php:206, pro/includes/class-foogallery-pro-filtering.php:359
 msgid "Bottom"
 msgstr ""
 
-#: includes/class-foogallery-lightbox.php:392, includes/class-foogallery-lightbox.php:559, includes/class-foogallery-paging.php:205, pro/includes/class-foogallery-pro-filtering.php:348, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:301
+#: includes/class-foogallery-lightbox.php:392, includes/class-foogallery-lightbox.php:559, includes/class-foogallery-paging.php:205, pro/includes/class-foogallery-pro-filtering.php:358, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:301
 msgid "Top"
 msgstr ""
 
-#: includes/class-foogallery-lightbox.php:395, includes/class-foogallery-lightbox.php:822, includes/class-foogallery-lightbox.php:916, includes/class-foogallery-lightbox.php:941, includes/class-foogallery-lightbox.php:965, includes/class-foogallery-lightbox.php:988, includes/class-foogallery-lightbox.php:1011, pro/includes/class-foogallery-pro-buttons.php:295, pro/includes/class-foogallery-pro-ribbons.php:319, extensions/default-templates/carousel/class-carousel-gallery-template.php:290, extensions/default-templates/carousel/class-carousel-gallery-template.php:305, extensions/default-templates/carousel/class-carousel-gallery-template.php:321, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:838, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:899, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:957, pro/extensions/default-templates/spotlight/class-spotlight-template.php:150
+#: includes/class-foogallery-lightbox.php:395, includes/class-foogallery-lightbox.php:822, includes/class-foogallery-lightbox.php:916, includes/class-foogallery-lightbox.php:941, includes/class-foogallery-lightbox.php:965, includes/class-foogallery-lightbox.php:988, includes/class-foogallery-lightbox.php:1011, pro/includes/class-foogallery-pro-buttons.php:320, pro/includes/class-foogallery-pro-ribbons.php:319, extensions/default-templates/carousel/class-carousel-gallery-template.php:290, extensions/default-templates/carousel/class-carousel-gallery-template.php:305, extensions/default-templates/carousel/class-carousel-gallery-template.php:321, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:838, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:899, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:957, pro/extensions/default-templates/spotlight/class-spotlight-template.php:150
 msgid "Hidden"
 msgstr ""
 
@@ -1013,7 +1037,7 @@ msgstr ""
 msgid "Auto progress to the next item after a specified time."
 msgstr ""
 
-#: includes/class-foogallery-lightbox.php:733, includes/class-foogallery-lightbox.php:774, includes/class-foogallery-lightbox.php:798, includes/class-foogallery-lightbox.php:891, includes/class-foogallery-paging.php:250, pro/includes/class-foogallery-pro-filtering.php:579, pro/includes/class-foogallery-pro-filtering.php:604, pro/includes/class-foogallery-pro-filtering.php:671, pro/includes/video/class-foogallery-pro-video.php:252, pro/includes/video/class-foogallery-pro-video.php:300, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:260, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:319, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:336, pro/extensions/default-templates/spotlight/class-spotlight-template.php:190
+#: includes/class-foogallery-lightbox.php:733, includes/class-foogallery-lightbox.php:774, includes/class-foogallery-lightbox.php:798, includes/class-foogallery-lightbox.php:891, includes/class-foogallery-paging.php:250, pro/includes/class-foogallery-pro-filtering.php:589, pro/includes/class-foogallery-pro-filtering.php:614, pro/includes/class-foogallery-pro-filtering.php:681, pro/includes/video/class-foogallery-pro-video.php:301, pro/includes/video/class-foogallery-pro-video.php:360, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:260, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:319, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:336, pro/extensions/default-templates/spotlight/class-spotlight-template.php:190
 msgid "Yes"
 msgstr ""
 
@@ -1089,7 +1113,7 @@ msgstr ""
 msgid "Whether of not to show the Fullscreen button"
 msgstr ""
 
-#: includes/class-foogallery-lightbox.php:915, includes/class-foogallery-lightbox.php:940, includes/class-foogallery-lightbox.php:964, includes/class-foogallery-lightbox.php:987, includes/class-foogallery-lightbox.php:1010, pro/includes/class-foogallery-pro-buttons.php:294, pro/includes/class-foogallery-pro-ribbons.php:318, extensions/default-templates/carousel/class-carousel-gallery-template.php:289, extensions/default-templates/carousel/class-carousel-gallery-template.php:304, extensions/default-templates/carousel/class-carousel-gallery-template.php:320, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:898, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:956
+#: includes/class-foogallery-lightbox.php:915, includes/class-foogallery-lightbox.php:940, includes/class-foogallery-lightbox.php:964, includes/class-foogallery-lightbox.php:987, includes/class-foogallery-lightbox.php:1010, pro/includes/class-foogallery-pro-buttons.php:319, pro/includes/class-foogallery-pro-ribbons.php:318, extensions/default-templates/carousel/class-carousel-gallery-template.php:289, extensions/default-templates/carousel/class-carousel-gallery-template.php:304, extensions/default-templates/carousel/class-carousel-gallery-template.php:320, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:898, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:956
 msgid "Shown"
 msgstr ""
 
@@ -1149,7 +1173,7 @@ msgstr ""
 msgid "The size of your pages."
 msgstr ""
 
-#: includes/class-foogallery-paging.php:198, pro/includes/class-foogallery-pro-filtering.php:341, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:139
+#: includes/class-foogallery-paging.php:198, pro/includes/class-foogallery-pro-filtering.php:351, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:139
 msgid "Position"
 msgstr ""
 
@@ -1157,7 +1181,7 @@ msgstr ""
 msgid "The position of the paging for either dots or pagination."
 msgstr ""
 
-#: includes/class-foogallery-paging.php:207, pro/includes/class-foogallery-pro-filtering.php:350
+#: includes/class-foogallery-paging.php:207, pro/includes/class-foogallery-pro-filtering.php:360
 msgid "Both"
 msgstr ""
 
@@ -1249,23 +1273,23 @@ msgstr ""
 msgid "Select Gallery:"
 msgstr ""
 
-#: includes/class-foogallery.php:393, includes/class-foogallery.php:401, includes/admin/class-settings.php:436
+#: includes/class-foogallery.php:399, includes/class-foogallery.php:407, includes/admin/class-settings.php:436
 msgid "No images"
 msgstr ""
 
-#: includes/class-foogallery.php:394, includes/class-foogallery.php:404, includes/admin/class-settings.php:445, pro/includes/video/functions.php:90
+#: includes/class-foogallery.php:400, includes/class-foogallery.php:410, includes/admin/class-settings.php:445, pro/includes/video/functions.php:90
 msgid "1 image"
 msgstr ""
 
-#: includes/class-foogallery.php:395, includes/class-foogallery.php:407, includes/admin/class-settings.php:454, pro/includes/video/functions.php:91
+#: includes/class-foogallery.php:401, includes/class-foogallery.php:413, includes/admin/class-settings.php:454, pro/includes/video/functions.php:91
 msgid "%s images"
 msgstr ""
 
-#: includes/class-foogallery.php:419, extensions/albums/album-default.php:73, includes/admin/class-gallery-editor.php:268
+#: includes/class-foogallery.php:425, extensions/albums/album-default.php:73, includes/admin/class-gallery-editor.php:268
 msgid "%s #%s"
 msgstr ""
 
-#: includes/class-foogallery.php:472
+#: includes/class-foogallery.php:478
 msgid "Unknown"
 msgstr ""
 
@@ -1491,14 +1515,6 @@ msgstr ""
 msgid "From Media Library"
 msgstr ""
 
-#: includes/functions.php:994
-msgid "2x"
-msgstr ""
-
-#: includes/functions.php:995
-msgid "3x"
-msgstr ""
-
 #: includes/functions.php:996
 msgid "4x"
 msgstr ""
@@ -1511,7 +1527,7 @@ msgstr ""
 msgid "Image Attachment Page"
 msgstr ""
 
-#: includes/functions.php:1186, extensions/albums/functions.php:82, includes/admin/class-attachment-fields.php:22, includes/admin/class-gallery-attachment-modal.php:624, pro/includes/class-foogallery-pro-advanced-captions.php:93, pro/includes/class-foogallery-pro-datasource-folders.php:599, extensions/albums/admin/class-metaboxes.php:570
+#: includes/functions.php:1186, extensions/albums/functions.php:82, includes/admin/class-attachment-fields.php:22, includes/admin/class-gallery-attachment-modal.php:624, pro/includes/class-foogallery-pro-advanced-captions.php:93, pro/includes/class-foogallery-pro-datasource-folders.php:608, extensions/albums/admin/class-metaboxes.php:570
 msgid "Custom URL"
 msgstr ""
 
@@ -1675,15 +1691,15 @@ msgstr ""
 msgid "A dummy thumbnail engine that can be used for testing. (uses dummyimage.com)"
 msgstr ""
 
-#: includes/functions.php:2285, extensions/albums/admin/class-metaboxes.php:544, pro/includes/video/class-foogallery-pro-video.php:551
+#: includes/functions.php:2285, extensions/albums/admin/class-metaboxes.php:544, pro/includes/video/class-foogallery-pro-video.php:663
 msgid "New tab (_blank)"
 msgstr ""
 
-#: includes/functions.php:2286, extensions/albums/admin/class-metaboxes.php:545, pro/includes/video/class-foogallery-pro-video.php:552
+#: includes/functions.php:2286, extensions/albums/admin/class-metaboxes.php:545, pro/includes/video/class-foogallery-pro-video.php:664
 msgid "Same tab (_self)"
 msgstr ""
 
-#: includes/functions.php:2287, includes/compatibility/class-foobox-compatibility.php:328, pro/includes/video/class-foogallery-pro-video.php:553
+#: includes/functions.php:2287, includes/compatibility/class-foobox-compatibility.php:328, pro/includes/video/class-foogallery-pro-video.php:665
 msgid "FooBox"
 msgstr ""
 
@@ -1861,7 +1877,7 @@ msgstr ""
 msgid "The color of the title text that overlays the album thumbnails"
 msgstr ""
 
-#: extensions/albums/functions.php:63, pro/includes/class-foogallery-pro-filtering.php:392, extensions/default-templates/default/class-default-gallery-template.php:161, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:127, extensions/default-templates/justified/class-justified-gallery-template.php:139, extensions/default-templates/masonry/class-masonry-gallery-template.php:194, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:140, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:169, pro/extensions/default-templates/product/class-product-gallery-template.php:157, pro/extensions/default-templates/spotlight/class-spotlight-template.php:127
+#: extensions/albums/functions.php:63, pro/includes/class-foogallery-pro-filtering.php:402, extensions/default-templates/default/class-default-gallery-template.php:161, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:127, extensions/default-templates/justified/class-justified-gallery-template.php:139, extensions/default-templates/masonry/class-masonry-gallery-template.php:194, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:140, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:169, pro/extensions/default-templates/product/class-product-gallery-template.php:157, pro/extensions/default-templates/spotlight/class-spotlight-template.php:127
 msgid "Alignment"
 msgstr ""
 
@@ -2029,7 +2045,7 @@ msgstr ""
 msgid "Images are provided by %s"
 msgstr ""
 
-#: extensions/demo-content-generator/view-demo-content.php:57, pro/includes/class-foogallery-pro-exif.php:775
+#: extensions/demo-content-generator/view-demo-content.php:57
 msgid "Keywords"
 msgstr ""
 
@@ -2041,7 +2057,7 @@ msgstr ""
 msgid "Images"
 msgstr ""
 
-#: extensions/demo-content-generator/view-demo-content.php:59, pro/includes/class-foogallery-pro-filtering.php:777, pro/includes/class-foogallery-pro-filtering.php:796, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:974
+#: extensions/demo-content-generator/view-demo-content.php:59, pro/includes/class-foogallery-pro-filtering.php:787, pro/includes/class-foogallery-pro-filtering.php:806, pro/includes/class-foogallery-pro-filtering.php:838, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:974
 msgid "Search"
 msgstr ""
 
@@ -2237,7 +2253,7 @@ msgstr ""
 msgid "Point your attachment to a custom URL"
 msgstr ""
 
-#: includes/admin/class-attachment-fields.php:29, includes/admin/class-gallery-attachment-modal.php:628, pro/includes/class-foogallery-pro-datasource-folders.php:603, extensions/albums/admin/class-metaboxes.php:576
+#: includes/admin/class-attachment-fields.php:29, includes/admin/class-gallery-attachment-modal.php:628, pro/includes/class-foogallery-pro-datasource-folders.php:612, extensions/albums/admin/class-metaboxes.php:576
 msgid "Custom Target"
 msgstr ""
 
@@ -2321,7 +2337,7 @@ msgstr ""
 msgid "Taxonomies"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:612, pro/includes/class-foogallery-pro-datasource-folders.php:587
+#: includes/admin/class-gallery-attachment-modal.php:612, pro/includes/class-foogallery-pro-datasource-folders.php:596
 msgid "Caption"
 msgstr ""
 
@@ -2341,11 +2357,11 @@ msgstr ""
 msgid "Copy to clipboard"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:715, pro/includes/class-foogallery-pro-datasource-folders.php:608, pro/includes/foogallery-media-views-templates.php:481, pro/includes/foogallery-media-views-templates.php:500
+#: includes/admin/class-gallery-attachment-modal.php:715, pro/includes/class-foogallery-pro-datasource-folders.php:617, pro/includes/foogallery-media-views-templates.php:481, pro/includes/foogallery-media-views-templates.php:500
 msgid "Save"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:716, includes/admin/class-gallery-datasources.php:218, includes/admin/class-gallery-datasources.php:218, includes/admin/class-gallery-editor.php:226, includes/admin/class-gallery-editor.php:226, pro/includes/class-foogallery-pro-datasource-folders.php:607, pro/includes/class-foogallery-pro-gallery-blueprints.php:637, pro/includes/class-foogallery-pro-gallery-blueprints.php:600, pro/includes/foogallery-media-views-templates.php:532
+#: includes/admin/class-gallery-attachment-modal.php:716, includes/admin/class-gallery-datasources.php:218, includes/admin/class-gallery-datasources.php:218, includes/admin/class-gallery-editor.php:226, includes/admin/class-gallery-editor.php:226, pro/includes/class-foogallery-pro-datasource-folders.php:616, pro/includes/class-foogallery-pro-gallery-blueprints.php:639, pro/includes/class-foogallery-pro-gallery-blueprints.php:602, pro/includes/foogallery-media-views-templates.php:532
 msgid "Cancel"
 msgstr ""
 
@@ -2397,7 +2413,7 @@ msgstr ""
 msgid "Clear FooGallery Thumbnails"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:784, pro/includes/video/class-foogallery-pro-video.php:701, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1619
+#: includes/admin/class-gallery-attachment-modal.php:784, pro/includes/video/class-foogallery-pro-video.php:813, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1619
 msgid "Clear"
 msgstr ""
 
@@ -2413,7 +2429,7 @@ msgstr ""
 msgid "Thumbnails generated by FooGallery : "
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:866, pro/includes/video/class-foogallery-pro-video.php:200
+#: includes/admin/class-gallery-attachment-modal.php:866, pro/includes/video/class-foogallery-pro-video.php:203
 msgid "Override Width"
 msgstr ""
 
@@ -2421,7 +2437,7 @@ msgstr ""
 msgid "Specify a custom width to override the default width."
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:874, pro/includes/video/class-foogallery-pro-video.php:205
+#: includes/admin/class-gallery-attachment-modal.php:874, pro/includes/video/class-foogallery-pro-video.php:208
 msgid "Override Height"
 msgstr ""
 
@@ -2469,7 +2485,7 @@ msgstr ""
 msgid "Save Attachment Details"
 msgstr ""
 
-#: includes/admin/class-gallery-datasources.php:157, includes/admin/view-help-pro.php:19, pro/includes/class-foogallery-pro-gallery-blueprints.php:509, pro/includes/foogallery-media-views-templates.php:178
+#: includes/admin/class-gallery-datasources.php:157, includes/admin/view-help-pro.php:19, pro/includes/class-foogallery-pro-gallery-blueprints.php:511, pro/includes/foogallery-media-views-templates.php:178
 msgid "or"
 msgstr ""
 
@@ -2481,7 +2497,7 @@ msgstr ""
 msgid "Add To Gallery From Another Source"
 msgstr ""
 
-#: includes/admin/class-gallery-datasources.php:191, includes/admin/class-gallery-editor.php:192, pro/includes/class-foogallery-pro-bulk-management.php:69, pro/includes/class-foogallery-pro-filtering.php:1161, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:934
+#: includes/admin/class-gallery-datasources.php:191, includes/admin/class-gallery-editor.php:192, pro/includes/class-foogallery-pro-bulk-management.php:69, pro/includes/class-foogallery-pro-filtering.php:1192, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:934
 msgid "Reload"
 msgstr ""
 
@@ -2589,15 +2605,11 @@ msgstr ""
 msgid "Preview Debug Arguments:"
 msgstr ""
 
-#: includes/admin/class-gallery-metabox-template.php:23
-msgid ""
-msgstr ""
-
-#: includes/admin/class-gallery-metabox-template.php:28, extensions/albums/admin/class-metaboxes.php:558
+#: includes/admin/class-gallery-metabox-template.php:24, extensions/albums/admin/class-metaboxes.php:558
 msgid "Gallery Layout"
 msgstr ""
 
-#: includes/admin/class-gallery-metabox-template.php:49
+#: includes/admin/class-gallery-metabox-template.php:44
 msgid "Once you are happy with your selected layout, you can minimize this section to save space"
 msgstr ""
 
@@ -2845,7 +2857,7 @@ msgstr ""
 msgid "Real Media Library"
 msgstr ""
 
-#: includes/admin/class-pro-promotion.php:387, includes/admin/class-pro-promotion.php:388, pro/includes/class-foogallery-pro-datasource-post-query.php:206, pro/includes/class-foogallery-pro-datasource-post-query.php:207
+#: includes/admin/class-pro-promotion.php:387, includes/admin/class-pro-promotion.php:388, pro/includes/class-foogallery-pro-datasource-post-query.php:208, pro/includes/class-foogallery-pro-datasource-post-query.php:209
 msgid "Post Query"
 msgstr ""
 
@@ -3013,7 +3025,7 @@ msgstr ""
 msgid "display the filters above or below the gallery, and choose a color theme."
 msgstr ""
 
-#: includes/admin/class-pro-promotion.php:666, pro/includes/class-foogallery-pro-filtering.php:503
+#: includes/admin/class-pro-promotion.php:666, pro/includes/class-foogallery-pro-filtering.php:513
 msgid "Selection Mode"
 msgstr ""
 
@@ -3241,7 +3253,7 @@ msgstr ""
 msgid "You can choose one of our built-in repeating watermarks, or you can upload and use your own."
 msgstr ""
 
-#: includes/admin/class-pro-promotion.php:1024, includes/admin/class-pro-promotion.php:1025, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:192, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:193
+#: includes/admin/class-pro-promotion.php:1024, includes/admin/class-pro-promotion.php:1025, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:193, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:194
 msgid "WooCommerce Products"
 msgstr ""
 
@@ -3313,7 +3325,7 @@ msgstr ""
 msgid "When creating a new gallery, it can use the settings from an existing gallery as the default settings. This will save you time when creating many galleries that all have the same look and feel."
 msgstr ""
 
-#: includes/admin/class-settings.php:133, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:531
+#: includes/admin/class-settings.php:133, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:538
 msgid "Caption Title Source"
 msgstr ""
 
@@ -3321,7 +3333,7 @@ msgstr ""
 msgid "By default, image caption titles are pulled from the attachment \"Caption\" field. Alternatively, you can choose to use other fields."
 msgstr ""
 
-#: includes/admin/class-settings.php:150, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:550
+#: includes/admin/class-settings.php:150, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:557
 msgid "Caption Description Source"
 msgstr ""
 
@@ -3711,7 +3723,7 @@ msgstr ""
 msgid "This layout is part of PRO Commerce plan"
 msgstr ""
 
-#: includes/admin/view-features.php:136, pro/includes/class-foogallery-pro-filtering.php:160, pro/includes/class-foogallery-pro-filtering.php:1043, pro/includes/class-foogallery-pro-filtering.php:1241, pro/includes/class-foogallery-pro-filtering.php:1318
+#: includes/admin/view-features.php:136, pro/includes/class-foogallery-pro-filtering.php:170, pro/includes/class-foogallery-pro-filtering.php:1074, pro/includes/class-foogallery-pro-filtering.php:1272, pro/includes/class-foogallery-pro-filtering.php:1349
 msgid "All"
 msgstr ""
 
@@ -4719,7 +4731,7 @@ msgstr ""
 msgid "Bulk Taxonomy Manager"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-bulk-management.php:79, pro/includes/class-foogallery-pro-bulk-management.php:79, pro/includes/class-foogallery-pro-datasource-taxonomy-base.php:387, pro/includes/class-foogallery-pro-filtering.php:1155, pro/includes/class-foogallery-pro-filtering.php:1174, pro/includes/class-foogallery-pro-filtering.php:1174, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:928, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:944, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:944
+#: pro/includes/class-foogallery-pro-bulk-management.php:79, pro/includes/class-foogallery-pro-bulk-management.php:79, pro/includes/class-foogallery-pro-datasource-taxonomy-base.php:387, pro/includes/class-foogallery-pro-filtering.php:1186, pro/includes/class-foogallery-pro-filtering.php:1205, pro/includes/class-foogallery-pro-filtering.php:1205, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:928, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:944, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:944
 msgid "Close"
 msgstr ""
 
@@ -4781,7 +4793,7 @@ msgstr ""
 msgid "Select one or more"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-bulk-management.php:307, pro/includes/class-foogallery-pro-gallery-blueprints.php:495
+#: pro/includes/class-foogallery-pro-bulk-management.php:307, pro/includes/class-foogallery-pro-gallery-blueprints.php:497
 msgid "Bulk Assign"
 msgstr ""
 
@@ -4789,51 +4801,75 @@ msgstr ""
 msgid "Last Selected Image Details"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-buttons.php:122
+#: pro/includes/class-foogallery-pro-buttons.php:125
 msgid "Clear all other buttons"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-buttons.php:124
+#: pro/includes/class-foogallery-pro-buttons.php:127
 msgid "If this is enabled, all other buttons will be removed for the product."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-buttons.php:130
+#: pro/includes/class-foogallery-pro-buttons.php:133
 msgid "Additional Button Text"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-buttons.php:132
+#: pro/includes/class-foogallery-pro-buttons.php:135
 msgid "If this is left blank, no button will be shown."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-buttons.php:138
+#: pro/includes/class-foogallery-pro-buttons.php:141
 msgid "Additional Button URL"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-buttons.php:250, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1569
+#: pro/includes/class-foogallery-pro-buttons.php:253, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1569
 msgid "Button Text"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-buttons.php:256, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1576
+#: pro/includes/class-foogallery-pro-buttons.php:259, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1576
 msgid "Button URL"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-buttons.php:278
+#: pro/includes/class-foogallery-pro-buttons.php:281
 msgid "Want to add custom buttons?"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-buttons.php:279
+#: pro/includes/class-foogallery-pro-buttons.php:282
 msgid "You can add a custom button to each item in your gallery within the advanced attachments modal, under the \"Ecommerce\" tab. To open the advanced attachments modal, go to \"Manage Items\" and then click on the the \"Edit Info\" icon."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-buttons.php:281, pro/includes/class-foogallery-pro-buttons.php:290, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:823, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:832, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:852, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:876, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:895, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:914, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:934, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:953, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:972
+#: pro/includes/class-foogallery-pro-buttons.php:284, pro/includes/class-foogallery-pro-buttons.php:293, pro/includes/class-foogallery-pro-buttons.php:315, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:823, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:832, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:852, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:876, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:895, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:914, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:934, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:953, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:972
 msgid "Buttons"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-buttons.php:287
+#: pro/includes/class-foogallery-pro-buttons.php:290
+msgid "Button Style"
+msgstr ""
+
+#: pro/includes/class-foogallery-pro-buttons.php:291
+msgid "You can change the style of buttons in the gallery."
+msgstr ""
+
+#: pro/includes/class-foogallery-pro-buttons.php:298
+msgid "Block"
+msgstr ""
+
+#: pro/includes/class-foogallery-pro-buttons.php:299
+msgid "Block Outline"
+msgstr ""
+
+#: pro/includes/class-foogallery-pro-buttons.php:300, pro/includes/class-foogallery-pro-filtering.php:384
+msgid "Pill"
+msgstr ""
+
+#: pro/includes/class-foogallery-pro-buttons.php:301
+msgid "Pill Outline"
+msgstr ""
+
+#: pro/includes/class-foogallery-pro-buttons.php:312
 msgid "Hide All Buttons"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-buttons.php:288
+#: pro/includes/class-foogallery-pro-buttons.php:313
 msgid "You can choose to hide all buttons for the gallery. This will hide all buttons, including custom buttons and WooCommerce buttons."
 msgstr ""
 
@@ -4853,159 +4889,159 @@ msgstr ""
 msgid "$_SERVER[\"DOCUMENT_ROOT\"]"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:455
+#: pro/includes/class-foogallery-pro-datasource-folders.php:464
 msgid "Select which folder on the server you want to load images from. You also need to choose the source of the image metadata. Image metadata allows you to change the caption title, caption description, alt text and the order of the images. This metadata can be read from a file on the server (metadata.json) or from the WordPress database."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:457
+#: pro/includes/class-foogallery-pro-datasource-folders.php:466
 msgid "Image Metadata : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:459
+#: pro/includes/class-foogallery-pro-datasource-folders.php:468
 msgid "Load from file on server"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:461
+#: pro/includes/class-foogallery-pro-datasource-folders.php:470
 msgid "Load from WordPress database"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:464
+#: pro/includes/class-foogallery-pro-datasource-folders.php:473
 msgid "Sort Order : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:468
+#: pro/includes/class-foogallery-pro-datasource-folders.php:477
 msgid "Filename"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:470
+#: pro/includes/class-foogallery-pro-datasource-folders.php:479
 msgid "Filename (Reversed)"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:473
+#: pro/includes/class-foogallery-pro-datasource-folders.php:482
 msgid "Selected Folder : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:474, pro/includes/class-foogallery-pro-datasource-lightroom.php:263
+#: pro/includes/class-foogallery-pro-datasource-folders.php:483, pro/includes/class-foogallery-pro-datasource-lightroom.php:263
 msgid "nothing yet"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:639
+#: pro/includes/class-foogallery-pro-datasource-folders.php:648
 msgid "Loading metadata from %s"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:662
+#: pro/includes/class-foogallery-pro-datasource-folders.php:671
 msgid "NO metadata file found in folder!"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:663
+#: pro/includes/class-foogallery-pro-datasource-folders.php:672
 msgid "We read JSON metadata information about each image from the file (%s) which you need to save to the same folder."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:658
+#: pro/includes/class-foogallery-pro-datasource-folders.php:667
 msgid "Woohoo! There is no missing metadata!"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:656, pro/includes/class-foogallery-pro-datasource-folders.php:575
+#: pro/includes/class-foogallery-pro-datasource-folders.php:665, pro/includes/class-foogallery-pro-datasource-folders.php:584
 msgid "There are %d images with missing metadata!"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:650
+#: pro/includes/class-foogallery-pro-datasource-folders.php:659
 msgid "ERROR reading metadata file!"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:651
+#: pro/includes/class-foogallery-pro-datasource-folders.php:660
 msgid "There was a problem reading metadata from %s. Please check that the file contains valid JSON. You can use a website like %s to help validate your JSON data."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:652
+#: pro/includes/class-foogallery-pro-datasource-folders.php:661
 msgid "Error : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:674
+#: pro/includes/class-foogallery-pro-datasource-folders.php:683
 msgid "Below is the JSON metadata read from file:"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:672
+#: pro/includes/class-foogallery-pro-datasource-folders.php:681
 msgid "Below is the automatically generated JSON metadata, merged together with the existing metadata read from file:"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:669
+#: pro/includes/class-foogallery-pro-datasource-folders.php:678
 msgid "Below is the automatically generated JSON metadata for all images found in the folder."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:670
+#: pro/includes/class-foogallery-pro-datasource-folders.php:679
 msgid "To use it: copy the JSON data below, change it to your liking, save it to a file named %s, and finally upload/transfer/FTP the file into the same folder on your server."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:681
+#: pro/includes/class-foogallery-pro-datasource-folders.php:690
 msgid "Please note : you can change the sort order of the images by changing the order of the metadata within the metadata file."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:568
+#: pro/includes/class-foogallery-pro-datasource-folders.php:577
 msgid "Loading metadata from WordPress database option %s"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:569
+#: pro/includes/class-foogallery-pro-datasource-folders.php:578
 msgid "Clear Metadata"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:578
+#: pro/includes/class-foogallery-pro-datasource-folders.php:587
 msgid "Change the sort order of the images by drag and drop. Click the \"i\" icon to change the caption and other metadata for each image."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:581
+#: pro/includes/class-foogallery-pro-datasource-folders.php:590
 msgid "Edit Image Metadata"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:583
+#: pro/includes/class-foogallery-pro-datasource-folders.php:592
 msgid "File"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:595
+#: pro/includes/class-foogallery-pro-datasource-folders.php:604
 msgid "Alt Text"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:609
+#: pro/includes/class-foogallery-pro-datasource-folders.php:618
 msgid "Save &amp; Next"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:613
+#: pro/includes/class-foogallery-pro-datasource-folders.php:622
 msgid "Save Metadata"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:719
+#: pro/includes/class-foogallery-pro-datasource-folders.php:728
 msgid "No images found in the folder."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:698
+#: pro/includes/class-foogallery-pro-datasource-folders.php:707
 msgid "%s images found in the folder."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:704
+#: pro/includes/class-foogallery-pro-datasource-folders.php:713
 msgid "Edit the metadata for this image"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:706
+#: pro/includes/class-foogallery-pro-datasource-folders.php:715
 msgid "Missing Metadata!"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:754
+#: pro/includes/class-foogallery-pro-datasource-folders.php:763
 msgid "Go up a level"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:825
+#: pro/includes/class-foogallery-pro-datasource-folders.php:834
 msgid "Datasource : Server Folder"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:826
+#: pro/includes/class-foogallery-pro-datasource-folders.php:835
 msgid "This gallery will be dynamically populated with all images within the following folder on your server:"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:830, pro/includes/class-foogallery-pro-datasource-realmedialibrary.php:342
+#: pro/includes/class-foogallery-pro-datasource-folders.php:839, pro/includes/class-foogallery-pro-datasource-realmedialibrary.php:342
 msgid "Change Folder"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:833, pro/includes/class-foogallery-pro-datasource-realmedialibrary.php:345
+#: pro/includes/class-foogallery-pro-datasource-folders.php:842, pro/includes/class-foogallery-pro-datasource-realmedialibrary.php:345
 msgid "Remove Folder"
 msgstr ""
 
@@ -5049,71 +5085,71 @@ msgstr ""
 msgid "Remove Collection"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:230, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:421
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:232, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:428
 msgid "Choose the settings for your gallery below. The gallery will be dynamically populated using the post query settings below."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:236
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:238
 msgid "Post types"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:254
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:256
 msgid "Number of posts"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:263
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:265
 msgid "Number of posts you want to include in the gallery."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:267, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:518
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:269, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:525
 msgid "Exclude"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:276
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:278
 msgid "A comma separated list of post id's that you want to exclude from the gallery."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:280
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:282
 msgid "Link To"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:291
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:293
 msgid "Post Permalink"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:302
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:304
 msgid "Featured Image"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:329
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:331
 msgid "Datasource : Post Query"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:332
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:334
 msgid "This gallery will be dynamically populated with the featured images from the following post query:"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:335
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:337
 msgid "Post Type : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:336
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:338
 msgid "No. Of Posts : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:337, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:638
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:339, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:645
 msgid "Excludes : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:338
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:340
 msgid "Link To : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:342, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:645
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:344, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:652
 msgid "Change"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:345, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:648
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:347, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:655
 msgid "Remove"
 msgstr ""
 
@@ -5213,11 +5249,11 @@ msgstr ""
 msgid "Click on the \"Gallery Preview\" to see which attachments will be loaded into the gallery."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-exif.php:128, pro/includes/class-foogallery-pro-exif.php:305, pro/includes/class-foogallery-pro-exif.php:727
+#: pro/includes/class-foogallery-pro-exif.php:128, pro/includes/class-foogallery-pro-exif.php:305, pro/includes/class-foogallery-pro-exif.php:721
 msgid "Aperture"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-exif.php:143, pro/includes/class-foogallery-pro-exif.php:314, pro/includes/class-foogallery-pro-exif.php:719
+#: pro/includes/class-foogallery-pro-exif.php:143, pro/includes/class-foogallery-pro-exif.php:314, pro/includes/class-foogallery-pro-exif.php:713
 msgid "Camera"
 msgstr ""
 
@@ -5229,15 +5265,15 @@ msgstr ""
 msgid "Exposure"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-exif.php:188, pro/includes/class-foogallery-pro-exif.php:341, pro/includes/class-foogallery-pro-exif.php:751
+#: pro/includes/class-foogallery-pro-exif.php:188, pro/includes/class-foogallery-pro-exif.php:341, pro/includes/class-foogallery-pro-exif.php:745
 msgid "Focal Length"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-exif.php:203, pro/includes/class-foogallery-pro-exif.php:350, pro/includes/class-foogallery-pro-exif.php:743
+#: pro/includes/class-foogallery-pro-exif.php:203, pro/includes/class-foogallery-pro-exif.php:350, pro/includes/class-foogallery-pro-exif.php:737
 msgid "ISO"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-exif.php:218, pro/includes/class-foogallery-pro-exif.php:359, pro/includes/class-foogallery-pro-exif.php:759
+#: pro/includes/class-foogallery-pro-exif.php:218, pro/includes/class-foogallery-pro-exif.php:359, pro/includes/class-foogallery-pro-exif.php:753
 msgid "Orientation"
 msgstr ""
 
@@ -5345,551 +5381,551 @@ msgstr ""
 msgid "Minimal (Icon only)"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-exif.php:723
+#: pro/includes/class-foogallery-pro-exif.php:717
 msgid "The camera that was used to take the photo."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-exif.php:731
+#: pro/includes/class-foogallery-pro-exif.php:725
 msgid "The aperture setting that was used, such as f/1.8, f/4, f/8, etc."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-exif.php:735
+#: pro/includes/class-foogallery-pro-exif.php:729
 msgid "Shutter Speed"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-exif.php:739
+#: pro/includes/class-foogallery-pro-exif.php:733
 msgid "The shutter speed setting (or exposure time) that was used, such as 1/30s, 1/500s, 1/1000s, etc."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-exif.php:747
+#: pro/includes/class-foogallery-pro-exif.php:741
 msgid "The ISO sensitivity setting that was used, such as ISO 100, ISO 400, ISO 800, etc."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-exif.php:755
+#: pro/includes/class-foogallery-pro-exif.php:749
 msgid "The focal length setting that was used, typically measured in millimeters (mm)."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-exif.php:763
+#: pro/includes/class-foogallery-pro-exif.php:757
 msgid "The orientation or rotation of the image, as intended by the photographer when the photo was taken."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-exif.php:767
+#: pro/includes/class-foogallery-pro-exif.php:761
 msgid "Created Timestamp"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-exif.php:771
+#: pro/includes/class-foogallery-pro-exif.php:765
 msgid "The timestamp of when the photo was taken."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-exif.php:779
-msgid "Additional keywords or tags to describe the photo."
-msgstr ""
-
-#: pro/includes/class-foogallery-pro-filtering.php:171, pro/includes/class-foogallery-pro-filtering.php:1052
+#: pro/includes/class-foogallery-pro-filtering.php:181, pro/includes/class-foogallery-pro-filtering.php:1083
 msgid "Search gallery..."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:182, pro/includes/class-foogallery-pro-filtering.php:1061
+#: pro/includes/class-foogallery-pro-filtering.php:192, pro/includes/class-foogallery-pro-filtering.php:1092
 msgid "Submit search"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:193, pro/includes/class-foogallery-pro-filtering.php:1070
+#: pro/includes/class-foogallery-pro-filtering.php:203, pro/includes/class-foogallery-pro-filtering.php:1101
 msgid "Clear search"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:237
+#: pro/includes/class-foogallery-pro-filtering.php:247
 msgid "What type of filtering do you want to use?"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:245
+#: pro/includes/class-foogallery-pro-filtering.php:255
 msgid "Multi-Level"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:257
+#: pro/includes/class-foogallery-pro-filtering.php:267
 msgid "What is Multi-Level Filtering?"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:258
+#: pro/includes/class-foogallery-pro-filtering.php:268
 msgid "You can setup multiple levels of filters, where each level will filter the next level. This should be used in advanced scenarios where you need to filter by multiple levels of data."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:274
+#: pro/includes/class-foogallery-pro-filtering.php:284
 msgid "Levels"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:275
+#: pro/includes/class-foogallery-pro-filtering.php:285
 msgid "The filtering levels that will be used for the gallery."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:293
+#: pro/includes/class-foogallery-pro-filtering.php:303
 msgid "The theme used for filtering. Default will use the gallery theme."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:322
+#: pro/includes/class-foogallery-pro-filtering.php:332
 msgid "Filtering Source"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:323
+#: pro/includes/class-foogallery-pro-filtering.php:333
 msgid "What will be used as the source for your gallery filters. All attachment taxonomies will be listed."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:342
+#: pro/includes/class-foogallery-pro-filtering.php:352
 msgid "The position of the filters relative to the gallery."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:364
+#: pro/includes/class-foogallery-pro-filtering.php:374
 msgid "Style"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:365
+#: pro/includes/class-foogallery-pro-filtering.php:375
 msgid "The style of the filters."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:372
+#: pro/includes/class-foogallery-pro-filtering.php:382
 msgid "Button"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:373
+#: pro/includes/class-foogallery-pro-filtering.php:383
 msgid "Button Block"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:374
-msgid "Pill"
-msgstr ""
-
-#: pro/includes/class-foogallery-pro-filtering.php:375
+#: pro/includes/class-foogallery-pro-filtering.php:385
 msgid "Pill Block"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:376
+#: pro/includes/class-foogallery-pro-filtering.php:386
 msgid "Dropdown"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:377
+#: pro/includes/class-foogallery-pro-filtering.php:387
 msgid "Dropdown Block"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:393
+#: pro/includes/class-foogallery-pro-filtering.php:403
 msgid "The alignment of the filters."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:415, pro/includes/class-foogallery-pro-filtering.php:423
+#: pro/includes/class-foogallery-pro-filtering.php:425, pro/includes/class-foogallery-pro-filtering.php:433
 msgid "Collapse"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:416
+#: pro/includes/class-foogallery-pro-filtering.php:426
 msgid "Whether or not to collapse the filters into a dropdown on smaller devices."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:422, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:498
+#: pro/includes/class-foogallery-pro-filtering.php:432, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:498
 msgid "Do Nothing"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:438
+#: pro/includes/class-foogallery-pro-filtering.php:448
 msgid "Hide \"All\" Option"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:439
+#: pro/includes/class-foogallery-pro-filtering.php:449
 msgid "You can choose to hide the default \"All\" filter option."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:445
+#: pro/includes/class-foogallery-pro-filtering.php:455
 msgid "Hide \"All\""
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:446
+#: pro/includes/class-foogallery-pro-filtering.php:456
 msgid "Show \"All\""
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:461
+#: pro/includes/class-foogallery-pro-filtering.php:471
 msgid "Auto Select First Filter"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:462
+#: pro/includes/class-foogallery-pro-filtering.php:472
 msgid "You can auto select the first filter, if \"All\" is hidden."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:481
+#: pro/includes/class-foogallery-pro-filtering.php:491
 msgid "The default selection mode is Single, which allows you to choose a single filter at a time. You can also choose to filter by more than 1 filter by selecting Multiple. Multiple supports either a union (OR) or an intersect (AND) mode."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:482
+#: pro/includes/class-foogallery-pro-filtering.php:492
 msgid "Please Note : the Muliple (OR) and Muliple (AND) modes do not support the dropdown styles!"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:486
+#: pro/includes/class-foogallery-pro-filtering.php:496
 msgid "Filtering Selection Mode Help"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:504
+#: pro/includes/class-foogallery-pro-filtering.php:514
 msgid "The selection mode to use when filtering."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:511, pro/includes/protection/class-foogallery-pro-protection.php:699
+#: pro/includes/class-foogallery-pro-filtering.php:521, pro/includes/protection/class-foogallery-pro-protection.php:699
 msgid "Single"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:512
+#: pro/includes/class-foogallery-pro-filtering.php:522
 msgid "Multiple (OR)"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:513
+#: pro/includes/class-foogallery-pro-filtering.php:523
 msgid "Multiple (AND)"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:528
+#: pro/includes/class-foogallery-pro-filtering.php:538
 msgid "Minimum Count"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:529
+#: pro/includes/class-foogallery-pro-filtering.php:539
 msgid "The minimum count before a filter is shown, 0 = disabled and all are shown."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:549
+#: pro/includes/class-foogallery-pro-filtering.php:559
 msgid "Limit"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:550
+#: pro/includes/class-foogallery-pro-filtering.php:560
 msgid "The maximum number of filters to show, 0 = disabled and all are shown."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:570
+#: pro/includes/class-foogallery-pro-filtering.php:580
 msgid "Show Count"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:571
+#: pro/includes/class-foogallery-pro-filtering.php:581
 msgid "Whether or not to show the counts within each filter."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:595
+#: pro/includes/class-foogallery-pro-filtering.php:605
 msgid "Adjust Size"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:596
+#: pro/includes/class-foogallery-pro-filtering.php:606
 msgid "Whether or not to adjust the size of each filter depending on the count."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:620
+#: pro/includes/class-foogallery-pro-filtering.php:630
 msgid "Smallest Size"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:621
+#: pro/includes/class-foogallery-pro-filtering.php:631
 msgid "The smallest possible font size to use, when Adjust Size is used."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:641
+#: pro/includes/class-foogallery-pro-filtering.php:651
 msgid "Largest Size"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:642
+#: pro/includes/class-foogallery-pro-filtering.php:652
 msgid "The largest possible font size to use, when Adjust Size is used."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:662
+#: pro/includes/class-foogallery-pro-filtering.php:672
 msgid "Adjust Opacity"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:663
+#: pro/includes/class-foogallery-pro-filtering.php:673
 msgid "Whether or not to adjust the opacity of each filter depending on the count."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:687
+#: pro/includes/class-foogallery-pro-filtering.php:697
 msgid "Lightest Opacity"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:688
+#: pro/includes/class-foogallery-pro-filtering.php:698
 msgid "The lightest or most transparent opacity to use, when Adjust Opacity is used."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:708
+#: pro/includes/class-foogallery-pro-filtering.php:718
 msgid "Darkest Opacity"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:709
+#: pro/includes/class-foogallery-pro-filtering.php:719
 msgid "The darkest or most opaque opacity to use, when Adjust Opacity is used."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:729
+#: pro/includes/class-foogallery-pro-filtering.php:739
 msgid "Sort Mode"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:730
+#: pro/includes/class-foogallery-pro-filtering.php:740
 msgid "How do you want to sort your filters? Default is alphabetical order."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:737
+#: pro/includes/class-foogallery-pro-filtering.php:747
 msgid "Default (alphabetical)"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:738
+#: pro/includes/class-foogallery-pro-filtering.php:748
 msgid "Reverse"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:739
+#: pro/includes/class-foogallery-pro-filtering.php:749
 msgid "Count ascending"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:740
+#: pro/includes/class-foogallery-pro-filtering.php:750
 msgid "Count descending"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:741
+#: pro/includes/class-foogallery-pro-filtering.php:751
 msgid "No sorting"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:756
+#: pro/includes/class-foogallery-pro-filtering.php:766
 msgid "Filter Override"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:757
+#: pro/includes/class-foogallery-pro-filtering.php:767
 msgid "You can override which filters are shown, by providing a comma-separated list. Leave blank for them to be auto-generated."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:774
+#: pro/includes/class-foogallery-pro-filtering.php:784
 msgid "Include Search"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:775
+#: pro/includes/class-foogallery-pro-filtering.php:785
 msgid "Include a search input where users can filter the gallery by typing in a search term."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:793
+#: pro/includes/class-foogallery-pro-filtering.php:803
 msgid "Search Position"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:794
+#: pro/includes/class-foogallery-pro-filtering.php:804
 msgid "The position of the search input, relative to the other filters."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:800
+#: pro/includes/class-foogallery-pro-filtering.php:810
 msgid "Above Center"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:801
+#: pro/includes/class-foogallery-pro-filtering.php:811
 msgid "Above Right"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:802
+#: pro/includes/class-foogallery-pro-filtering.php:812
 msgid "Above Left"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:803
+#: pro/includes/class-foogallery-pro-filtering.php:813
 msgid "Below Center"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:804
+#: pro/includes/class-foogallery-pro-filtering.php:814
 msgid "Below Right"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:805
+#: pro/includes/class-foogallery-pro-filtering.php:815
 msgid "Below Left"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:806
+#: pro/includes/class-foogallery-pro-filtering.php:816
 msgid "Before Filter"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:807
+#: pro/includes/class-foogallery-pro-filtering.php:817
+msgid "Before &amp; Merged"
+msgstr ""
+
+#: pro/includes/class-foogallery-pro-filtering.php:818
 msgid "After Filter"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:808
-msgid "Before Filter &amp; Merged"
+#: pro/includes/class-foogallery-pro-filtering.php:819
+msgid "After &amp; Merged"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:809
-msgid "After Filter &amp; Merged"
+#: pro/includes/class-foogallery-pro-filtering.php:835
+msgid "Merging Search Tip"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1041
+#: pro/includes/class-foogallery-pro-filtering.php:836
+msgid "When using \"Before &amp; Merged\" or \"After &amp; Merged\" positions, the search input will be merged with the filter tags. If the filter tags wrap to more than one line, the search will not be merged. To avoid this, limit the number of filter shown."
+msgstr ""
+
+#: pro/includes/class-foogallery-pro-filtering.php:1072
 msgid "Filtering All Text"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1050
+#: pro/includes/class-foogallery-pro-filtering.php:1081
 msgid "Search Input Placeholder"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1059
+#: pro/includes/class-foogallery-pro-filtering.php:1090
 msgid "Search Submit (accessibility)"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1068
+#: pro/includes/class-foogallery-pro-filtering.php:1099
 msgid "Search Clear (accessibility)"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1104, pro/includes/class-foogallery-pro-filtering.php:1119
+#: pro/includes/class-foogallery-pro-filtering.php:1135, pro/includes/class-foogallery-pro-filtering.php:1150
 msgid "Level #"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1105, pro/includes/class-foogallery-pro-filtering.php:1120
+#: pro/includes/class-foogallery-pro-filtering.php:1136, pro/includes/class-foogallery-pro-filtering.php:1151
 msgid "All Text"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1106, pro/includes/class-foogallery-pro-filtering.php:1121
+#: pro/includes/class-foogallery-pro-filtering.php:1137, pro/includes/class-foogallery-pro-filtering.php:1152
 msgid "Terms"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1125
+#: pro/includes/class-foogallery-pro-filtering.php:1156
 msgid "Select Levels"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1160
+#: pro/includes/class-foogallery-pro-filtering.php:1191
 msgid "Multi-level Filtering Builder"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1162
+#: pro/includes/class-foogallery-pro-filtering.php:1193
 msgid "Load All"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1177, pro/includes/class-foogallery-pro-filtering.php:1177
+#: pro/includes/class-foogallery-pro-filtering.php:1208, pro/includes/class-foogallery-pro-filtering.php:1208
 msgid "Set Levels"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1235
+#: pro/includes/class-foogallery-pro-filtering.php:1266
 msgid "Level"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1236
+#: pro/includes/class-foogallery-pro-filtering.php:1267
 msgid "Remove Level"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1239
+#: pro/includes/class-foogallery-pro-filtering.php:1270
 msgid "Level %s \"All\" Text : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1330
+#: pro/includes/class-foogallery-pro-filtering.php:1361
 msgid "Multi Level Filtering Help"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1331
+#: pro/includes/class-foogallery-pro-filtering.php:1362
 msgid "To add a new level, click on the \"Add Another Level\" button on the left."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1332
+#: pro/includes/class-foogallery-pro-filtering.php:1363
 msgid "For each level that you add, you can override the \"All\" text for that level."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1333
+#: pro/includes/class-foogallery-pro-filtering.php:1364
 msgid "Select the terms for each level by clicking on them. They will change to a selected state. To unselect a term, click on it again."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1334
+#: pro/includes/class-foogallery-pro-filtering.php:1365
 msgid "Once you select a term, it will not be available for the other levels."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1335
+#: pro/includes/class-foogallery-pro-filtering.php:1366
 msgid "You can sort the terms by dragging and dropping them."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1336
+#: pro/includes/class-foogallery-pro-filtering.php:1367
 msgid "To remove a level, click on the small \"x\" button next to the level title."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1337
+#: pro/includes/class-foogallery-pro-filtering.php:1368
 msgid "If you want to undo any changes, click the \"Reload\" button at the top."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1338
+#: pro/includes/class-foogallery-pro-filtering.php:1369
 msgid "Once you are happy with your levels, click the \"Set Levels\" button below."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-gallery-blueprints.php:165
+#: pro/includes/class-foogallery-pro-gallery-blueprints.php:167
 msgid "PLEASE NOTE : you are editing a Gallery Blueprint. Editing settings for this Gallery Blueprint will affect %s galleries. To see which galleries, scroll down to the Gallery Blueprint Settings metabox."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-gallery-blueprints.php:183
+#: pro/includes/class-foogallery-pro-gallery-blueprints.php:185
 msgid "All settings for this gallery are currently inherited from the Gallery Blueprint"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-gallery-blueprints.php:185
+#: pro/includes/class-foogallery-pro-gallery-blueprints.php:187
 msgid "To edit any settings for this gallery, you will need to edit the settings of the Gallery Blueprint directly."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-gallery-blueprints.php:186
+#: pro/includes/class-foogallery-pro-gallery-blueprints.php:188
 msgid "Edit the Gallery Blueprint"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-gallery-blueprints.php:214
+#: pro/includes/class-foogallery-pro-gallery-blueprints.php:216
 msgid "Gallery Blueprint Settings"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-gallery-blueprints.php:263
+#: pro/includes/class-foogallery-pro-gallery-blueprints.php:265
 msgid "Set as a Gallery Blueprint"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-gallery-blueprints.php:263
+#: pro/includes/class-foogallery-pro-gallery-blueprints.php:265
 msgid "Unset Gallery Blueprint"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-gallery-blueprints.php:437
+#: pro/includes/class-foogallery-pro-gallery-blueprints.php:439
 msgid "What are Gallery Blueprints?"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-gallery-blueprints.php:439
+#: pro/includes/class-foogallery-pro-gallery-blueprints.php:441
 msgid "Gallery Blueprints allows you to setup a blueprint for multiple galleries, so that when you update the single blueprint, all the galleries change at the same time. Think of a blueprint as a \"template\". Any gallery using a blueprint will not be able to set its own settings, and everything is inherited from the blueprint. This allows you to change settings once, and update multiple galleries."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-gallery-blueprints.php:512
+#: pro/includes/class-foogallery-pro-gallery-blueprints.php:514
 msgid "Choose a Gallery Blueprint : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-gallery-blueprints.php:519
+#: pro/includes/class-foogallery-pro-gallery-blueprints.php:521
 msgid "Set"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-gallery-blueprints.php:523
+#: pro/includes/class-foogallery-pro-gallery-blueprints.php:525
 msgid "PLEASE NOTE : If you set a Gallery Blueprint, the following features will be hidden for the gallery : Bulk Copy, Custom CSS, Retina Support, Gallery Sorting. Instead, these settings will be inherited from the Gallery Blueprint."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-gallery-blueprints.php:506
+#: pro/includes/class-foogallery-pro-gallery-blueprints.php:508
 msgid "There are no gallery blueprints available at the moment!"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-gallery-blueprints.php:488
+#: pro/includes/class-foogallery-pro-gallery-blueprints.php:490
 msgid "This Gallery Blueprint is being used by the following galleries:"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-gallery-blueprints.php:485
+#: pro/includes/class-foogallery-pro-gallery-blueprints.php:487
 msgid "To use this Gallery Blueprint, edit another gallery and set the Gallery Blueprint in the Gallery Blueprint Settings metabox."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-gallery-blueprints.php:545
+#: pro/includes/class-foogallery-pro-gallery-blueprints.php:547
 msgid "The Gallery Blueprint cannot be unset, as it is being used by other galleries!"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-gallery-blueprints.php:569
+#: pro/includes/class-foogallery-pro-gallery-blueprints.php:571
 msgid "The Gallery Blueprint has been cleared."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-gallery-blueprints.php:567
+#: pro/includes/class-foogallery-pro-gallery-blueprints.php:569
 msgid "The Gallery Blueprint has been set."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-gallery-blueprints.php:576
+#: pro/includes/class-foogallery-pro-gallery-blueprints.php:578
 msgid " Refreshing..."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-gallery-blueprints.php:574
+#: pro/includes/class-foogallery-pro-gallery-blueprints.php:576
 msgid " Update the gallery first, to reflect the changes."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-gallery-blueprints.php:626
+#: pro/includes/class-foogallery-pro-gallery-blueprints.php:628
 msgid "Select the galleries you want to assign to this blueprint:"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-gallery-blueprints.php:636
+#: pro/includes/class-foogallery-pro-gallery-blueprints.php:638
 msgid "Assign Selected Galleries"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-gallery-blueprints.php:599
+#: pro/includes/class-foogallery-pro-gallery-blueprints.php:601
 msgid "There are no galleries available to assign to this blueprint."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-gallery-blueprints.php:663
+#: pro/includes/class-foogallery-pro-gallery-blueprints.php:665
 msgid "Successfully assigned %d galleries to this blueprint."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-gallery-blueprints.php:664
+#: pro/includes/class-foogallery-pro-gallery-blueprints.php:666
 msgid "This blueprint is now being used by the following galleries:"
 msgstr ""
 
@@ -5910,7 +5946,7 @@ msgid "Instagram Filter"
 msgstr ""
 
 #: pro/includes/class-foogallery-pro-instagram-filters.php:47
-msgid "Apply an Instagram Filter to the images in your gallery."
+msgid "Apply an Instagram Filter to the thumbnails in your gallery."
 msgstr ""
 
 #: pro/includes/class-foogallery-pro-instagram-filters.php:54
@@ -6137,7 +6173,7 @@ msgstr ""
 msgid "Select a video"
 msgstr ""
 
-#: pro/includes/foogallery-media-views-templates.php:180, pro/includes/foogallery-media-views-templates.php:267, pro/includes/video/class-foogallery-pro-video.php:697
+#: pro/includes/foogallery-media-views-templates.php:180, pro/includes/foogallery-media-views-templates.php:267, pro/includes/video/class-foogallery-pro-video.php:809
 msgid "Select Video"
 msgstr ""
 
@@ -6933,7 +6969,7 @@ msgstr ""
 msgid "Leave blank if you do not want a caption description."
 msgstr ""
 
-#: includes/compatibility/elementor/class-elementor-foogallery-widget.php:80, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:374
+#: includes/compatibility/elementor/class-elementor-foogallery-widget.php:80, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:381
 msgid "Content"
 msgstr ""
 
@@ -7613,199 +7649,215 @@ msgstr ""
 msgid "Verified api key."
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:226
-msgid "Video Hover Icon"
+#: pro/includes/video/class-foogallery-pro-video.php:229
+msgid "Enable Video"
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:232
-msgid "Video Icon 1"
-msgstr ""
-
-#: pro/includes/video/class-foogallery-pro-video.php:233
-msgid "Video Icon 2"
-msgstr ""
-
-#: pro/includes/video/class-foogallery-pro-video.php:234
-msgid "Video Icon 3"
-msgstr ""
-
-#: pro/includes/video/class-foogallery-pro-video.php:235
-msgid "Video Icon 4"
-msgstr ""
-
-#: pro/includes/video/class-foogallery-pro-video.php:236
-msgid "Video Icon 5"
+#: pro/includes/video/class-foogallery-pro-video.php:230
+msgid "This will disable the video functionality for this gallery only. All videos will be ignored."
 msgstr ""
 
 #: pro/includes/video/class-foogallery-pro-video.php:247
-msgid "Sticky Video Icon"
+msgid "Video Hover Icon"
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:248
-msgid "Always show the video icon for videos in the gallery, and not only when you hover."
+#: pro/includes/video/class-foogallery-pro-video.php:253
+msgid "Video Icon 1"
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:263
-msgid "Video Size Help"
+#: pro/includes/video/class-foogallery-pro-video.php:254
+msgid "Video Icon 2"
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:264
-msgid "The lightbox video size can be overridden on each individual video by editing the attachment info, and changing the Override Width and Override Height properties."
+#: pro/includes/video/class-foogallery-pro-video.php:255
+msgid "Video Icon 3"
+msgstr ""
+
+#: pro/includes/video/class-foogallery-pro-video.php:256
+msgid "Video Icon 4"
+msgstr ""
+
+#: pro/includes/video/class-foogallery-pro-video.php:257
+msgid "Video Icon 5"
+msgstr ""
+
+#: pro/includes/video/class-foogallery-pro-video.php:271
+msgid "Video Icon Size"
 msgstr ""
 
 #: pro/includes/video/class-foogallery-pro-video.php:272
-msgid "Lightbox Video Size"
-msgstr ""
-
-#: pro/includes/video/class-foogallery-pro-video.php:273
-msgid "The default video size when opening videos in the lightbox."
-msgstr ""
-
-#: pro/includes/video/class-foogallery-pro-video.php:277
-msgid "640 x 360"
-msgstr ""
-
-#: pro/includes/video/class-foogallery-pro-video.php:278
-msgid "854 x 480"
-msgstr ""
-
-#: pro/includes/video/class-foogallery-pro-video.php:279
-msgid "960 x 540"
-msgstr ""
-
-#: pro/includes/video/class-foogallery-pro-video.php:280
-msgid "1024 x 576"
-msgstr ""
-
-#: pro/includes/video/class-foogallery-pro-video.php:281
-msgid "1280 x 720 (HD)"
-msgstr ""
-
-#: pro/includes/video/class-foogallery-pro-video.php:282
-msgid "1366 x 768"
-msgstr ""
-
-#: pro/includes/video/class-foogallery-pro-video.php:283
-msgid "1600 x 900"
-msgstr ""
-
-#: pro/includes/video/class-foogallery-pro-video.php:284
-msgid "1920 x 1080 (Full HD)"
-msgstr ""
-
-#: pro/includes/video/class-foogallery-pro-video.php:295
-msgid "Lightbox Autoplay"
+msgid "Choose the size of the video icon. This is only shown if the hover effect is set to \"None\"."
 msgstr ""
 
 #: pro/includes/video/class-foogallery-pro-video.php:296
+msgid "Sticky Video Icon"
+msgstr ""
+
+#: pro/includes/video/class-foogallery-pro-video.php:297
+msgid "Always show the video icon for videos in the gallery, and not only when you hover."
+msgstr ""
+
+#: pro/includes/video/class-foogallery-pro-video.php:315
+msgid "Video Size Help"
+msgstr ""
+
+#: pro/includes/video/class-foogallery-pro-video.php:316
+msgid "The lightbox video size can be overridden on each individual video by editing the attachment info, and changing the Override Width and Override Height properties."
+msgstr ""
+
+#: pro/includes/video/class-foogallery-pro-video.php:329
+msgid "Lightbox Video Size"
+msgstr ""
+
+#: pro/includes/video/class-foogallery-pro-video.php:330
+msgid "The default video size when opening videos in the lightbox."
+msgstr ""
+
+#: pro/includes/video/class-foogallery-pro-video.php:334
+msgid "640 x 360"
+msgstr ""
+
+#: pro/includes/video/class-foogallery-pro-video.php:335
+msgid "854 x 480"
+msgstr ""
+
+#: pro/includes/video/class-foogallery-pro-video.php:336
+msgid "960 x 540"
+msgstr ""
+
+#: pro/includes/video/class-foogallery-pro-video.php:337
+msgid "1024 x 576"
+msgstr ""
+
+#: pro/includes/video/class-foogallery-pro-video.php:338
+msgid "1280 x 720 (HD)"
+msgstr ""
+
+#: pro/includes/video/class-foogallery-pro-video.php:339
+msgid "1366 x 768"
+msgstr ""
+
+#: pro/includes/video/class-foogallery-pro-video.php:340
+msgid "1600 x 900"
+msgstr ""
+
+#: pro/includes/video/class-foogallery-pro-video.php:341
+msgid "1920 x 1080 (Full HD)"
+msgstr ""
+
+#: pro/includes/video/class-foogallery-pro-video.php:355
+msgid "Lightbox Autoplay"
+msgstr ""
+
+#: pro/includes/video/class-foogallery-pro-video.php:356
 msgid "Try to autoplay the video when opened in a lightbox. This will only work with videos hosted on Youtube or Vimeo."
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:544
+#: pro/includes/video/class-foogallery-pro-video.php:656
 msgid "Default Video Target"
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:545
+#: pro/includes/video/class-foogallery-pro-video.php:657
 msgid "The default target set for a video when it is imported into the gallery."
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:559
+#: pro/includes/video/class-foogallery-pro-video.php:671
 msgid "Vimeo Access Token"
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:560
+#: pro/includes/video/class-foogallery-pro-video.php:672
 msgid "An access token is required by the Vimeo API in order to import multiple videos from channels, albums or a user. This is not required to import a single video."
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:568
+#: pro/includes/video/class-foogallery-pro-video.php:680
 msgid "YouTube API Key"
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:569
+#: pro/includes/video/class-foogallery-pro-video.php:681
 msgid "An API key is required by the YouTube API in order to search or import multiple videos from a playlist. This is not required to import a single video."
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:577
+#: pro/includes/video/class-foogallery-pro-video.php:689
 msgid "Video Count None Text"
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:579, pro/includes/video/functions.php:94
+#: pro/includes/video/class-foogallery-pro-video.php:691, pro/includes/video/functions.php:94
 msgid "No images or videos"
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:584
+#: pro/includes/video/class-foogallery-pro-video.php:696
 msgid "Video Count Single Text"
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:586, pro/includes/video/functions.php:95
+#: pro/includes/video/class-foogallery-pro-video.php:698, pro/includes/video/functions.php:95
 msgid "1 video"
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:591
+#: pro/includes/video/class-foogallery-pro-video.php:703
 msgid "Video Count Many Text"
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:593, pro/includes/video/functions.php:96
+#: pro/includes/video/class-foogallery-pro-video.php:705, pro/includes/video/functions.php:96
 msgid "%s videos"
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:599
+#: pro/includes/video/class-foogallery-pro-video.php:711
 msgid "Video Thumbnail Directory"
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:600
+#: pro/includes/video/class-foogallery-pro-video.php:712
 msgid "You can choose to override where the video thumbnail images will be saved within your media library. Leave blank to use the default location."
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:654
+#: pro/includes/video/class-foogallery-pro-video.php:766
 msgid "Saved successfully."
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:690
+#: pro/includes/video/class-foogallery-pro-video.php:802
 msgid "Video URL"
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:696
+#: pro/includes/video/class-foogallery-pro-video.php:808
 msgid "Select Self Hosted Video"
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:698, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1616
+#: pro/includes/video/class-foogallery-pro-video.php:810, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1616
 msgid "Choose"
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:709
+#: pro/includes/video/class-foogallery-pro-video.php:821
 msgid "The URL of the video. This can be a YouTube, Vimeo, or a self-hosted video."
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:710
+#: pro/includes/video/class-foogallery-pro-video.php:822
 msgid "To link to a self hosted video, click on choose to select the video from the media library."
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:711
+#: pro/includes/video/class-foogallery-pro-video.php:823
 msgid "If a Video URL is provided then this image will be shown as a video in the gallery."
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:715
+#: pro/includes/video/class-foogallery-pro-video.php:827
 msgid "Video Provider"
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:719
+#: pro/includes/video/class-foogallery-pro-video.php:831
 msgid "The provider of the video (YouTube, Vimeo, etc.). This is optional."
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:723
+#: pro/includes/video/class-foogallery-pro-video.php:835
 msgid "Override Video Type"
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:727
+#: pro/includes/video/class-foogallery-pro-video.php:839
 msgid "The type of the video embed. This is optional."
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:731
+#: pro/includes/video/class-foogallery-pro-video.php:843
 msgid "Video ID"
 msgstr ""
 
-#: pro/includes/video/class-foogallery-pro-video.php:735
+#: pro/includes/video/class-foogallery-pro-video.php:847
 msgid "The ID of the video from the video provider or used for embeds. This is optional."
 msgstr ""
 
@@ -7825,131 +7877,131 @@ msgstr ""
 msgid "Restart Migration"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:365
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:372
 msgid "Woocommerce is not installed! This datasource is not available."
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:373
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:380
 msgid "Short Description"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:375, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:443
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:382, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:443
 msgid "Price"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:379
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:386
 msgid "Newest First"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:380
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:387
 msgid "Oldest First"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:381
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:388
 msgid "Price (Low to High)"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:382
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:389
 msgid "Price (High to Low)"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:383
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:390
 msgid "Popularity"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:384
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:391
 msgid "Rating"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:388
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:395
 msgid "Any"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:389
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:396
 msgid "In Stock"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:390, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:633, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1088
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:397, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:633, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1088
 msgid "Out Of Stock"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:391, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:642, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1123
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:398, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:642, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1123
 msgid "On Backorder"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:427
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:434
 msgid "Product Categories"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:444
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:451
 msgid "Price Range"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:467
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:474
 msgid "Sort By"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:486
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:493
 msgid "Stock Status"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:505
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:512
 msgid "Number of Products"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:514
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:521
 msgid "Number of products you want to include in the gallery."
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:527
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:534
 msgid "A comma separated list of product id's that you want to exclude from the gallery."
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:612
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:619
 msgid "unlimited"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:616
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:623
 msgid "newest first"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:620
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:627
 msgid "any"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:626
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:633
 msgid "Datasource : WooCommerce Products"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:629
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:636
 msgid "This gallery will be dynamically populated with products, based on the following criteria:"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:632
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:639
 msgid "Categories : "
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:633
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:640
 msgid "Price Range : "
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:634
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:641
 msgid "Sort by : "
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:635
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:642
 msgid "Stock Status : "
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:636
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:643
 msgid "No. of Products : "
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:640
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:647
 msgid "Caption Title Source : "
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:641
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:648
 msgid "Caption Desc Source : "
 msgstr ""
 
