@@ -2040,6 +2040,12 @@ function foogallery_import_attachment( $attachment_data ) {
 		$attachment_args['meta_input']['_foogallery_custom_target'] = $attachment_data['custom_target'];
 	}
 
+	if ( isset( $attachment_data['video'] ) && ! empty( $attachment_data['video'] ) ) {
+		$attachment_args['meta_input']['_foogallery_video_data'] = array(
+			'url' => $attachment_data['video'],
+		);
+	}
+
 	// Save the original URL, so that we do not import it again!
 	$attachment_args['meta_input']['_foogallery_imported_from'] = $attachment_data['url'];
 
