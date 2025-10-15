@@ -7,7 +7,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Lightroom' ) ) {
     class FooGallery_Pro_Datasource_Lightroom {
 
     	public function __construct() {
-		    add_filter( 'foogallery_gallery_datasources', array($this, 'add_datasource'), 6 );
+		    add_filter( 'foogallery_gallery_datasources', array($this, 'add_datasource'), 20 );
 			add_filter( 'foogallery_datasource_lightroom_item_count', array( $this, 'get_gallery_attachment_count' ), 10, 2 );
 		    add_filter( 'foogallery_datasource_lightroom_attachment_ids', array( $this, 'get_gallery_attachment_ids' ), 10, 2 );
 			add_filter( 'foogallery_datasource_lightroom_featured_image', array( $this, 'get_gallery_featured_attachment' ), 10, 2 );
@@ -29,7 +29,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Lightroom' ) ) {
 			$datasources['lightroom'] = array(
 				'id'     => 'lightroom',
 				'name'   => __( 'Adobe Lightroom', 'foogallery' ),
-				'menu'   => __( 'Adobe Lightroom', 'foogallery' ),
+				'menu'   => __( 'Adobe Lightroom *', 'foogallery' ),
 				'public' => true
 			);
 
@@ -309,6 +309,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Lightroom' ) ) {
 					<div class="foogallery-datasource-lightroom-collection-info"></div>
 				</div>
 			<?php } else { ?>
+				<h3><?php esc_html_e('* This uses a 3rd Party Plugin by another company.', 'foogallery'); ?></h3>
 				<p><?php echo sprintf( __('You need to purchase the %s plugin in order to sync your Adobe Lightroom collections with your WordPress Media Library.','foogallery'), $wplr_link ); ?></p>
 				<p><?php echo __('WP/LR Sync is a Lightroom Publishing Service for WordPress. It exports your photos to WordPress, the folders and collections from Adobe Lightroom and keeps it all synchronized.', 'foogallery'); ?></p>
 				<a href="<?php echo $wplr_url; ?>" target="_blank"><img src="https://store.meowapps.com/wp-content/uploads/2017/03/meow-apps.png" width="500" /></a>

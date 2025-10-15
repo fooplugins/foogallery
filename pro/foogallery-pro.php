@@ -81,13 +81,18 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 				new FooGallery_Pro_Filtering();
 				new FooGallery_Pro_Video();
 				new FooGallery_Pro_Video_Legacy();
+				
+				//Standard Datasources
 				new FooGallery_Pro_Datasource_MediaCategories();
 				new FooGallery_Pro_Datasource_MediaTags();
 				new FooGallery_Pro_Datasource_Folders();
+				new FooGallery_Pro_Datasource_Post_Query();
+				
+				//3rd Part Datasources
 				new FooGallery_Pro_Datasource_Lightroom();
 				new FooGallery_Pro_WPLR_Support();
 				new FooGallery_Pro_Datasource_RealMediaLibrary();
-				new FooGallery_Pro_Datasource_Post_Query();
+				
 				new FooGallery_Pro_Advanced_Captions();
 				new FooGallery_Pro_Advanced_Thumbnails();
 				new FooGallery_Pro_Bulk_Management();

@@ -10,7 +10,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_RealMediaLibrary' ) ) {
 		}
 
 		public function plugins_loaded() {
-			add_filter( 'foogallery_gallery_datasources', array( $this, 'add_datasource' ), 6 );
+			add_filter( 'foogallery_gallery_datasources', array( $this, 'add_datasource' ), 30 );
 			add_action( 'foogallery-datasource-modal-content_rml', array( $this, 'render_datasource_modal_content' ), 10, 3 );
 			add_action( 'foogallery_gallery_metabox_items_list', array( $this, 'render_datasource_item' ), 10, 1 );
 			add_action( 'foogallery_before_save_gallery_datasource', array( $this, 'before_save_gallery_datasource_clear_datasource_cached_attachments' ) );
@@ -200,7 +200,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_RealMediaLibrary' ) ) {
 			$datasources['rml'] = array(
 				'id'     => 'rml',
 				'name'   => __( 'Real Media Library', 'foogallery' ),
-				'menu'   => __( 'Real Media Library', 'foogallery' ),
+				'menu'   => __( 'Real Media Library *', 'foogallery' ),
 				'public' => true
 			);
 
@@ -219,9 +219,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_RealMediaLibrary' ) ) {
 			//check for plugin version and show message
 
 			if ( ! defined( 'RML_VERSION' ) ) { ?>
+				<h3><?php esc_html_e('* This uses a 3rd Party Plugin by another company.', 'foogallery'); ?></h3>
 				<p><?php echo sprintf( __( 'You need to activate the %s plugin in order to use the Real Media Library datasource', 'foogallery' ), $rml_link ); ?></p>
 				<p><?php echo __( 'RML (Real Media Library) is one of the most wanted media wordpress plugins. It is easy to use and it allows you to organize your thousands of images in folders. It is similar to wordpress categories like in the posts.', 'foogallery' ); ?></p>
-				<a href="<?php echo $rml_url; ?>" target="_blank"><img src="https://matthias-web.com/wp-content/uploads/Plugins/Real-Media-Library/preview.jpg" width="500" /></a>
+				<a href="<?php echo $rml_url; ?>" target="_blank"><img src="https://ps.w.org/real-media-library-lite/assets/banner-772x250.png" width="772" /></a>
 			<?php } else {
 
 				if ( !$this->correct_version() ) { ?>
