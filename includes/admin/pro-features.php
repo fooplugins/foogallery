@@ -3,7 +3,7 @@
 return array(
     'gallery_templates' => array(
         'title' => foogallery__( 'PRO Gallery Layouts','foogallery' ),
-        'desc' => foogallery__( '3 more advanced gallery layouts to help you showcase your photography, including Slider PRO, Grid PRO and Polaroid PRO.', 'foogallery' ),
+        'desc' => foogallery__( '4 more advanced gallery layouts to help you showcase your photography, including Slider PRO, Grid PRO and Polaroid PRO.', 'foogallery' ),
         'link' => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/gallery-templates/',
         'utm_content' => 'gallery_templates',
         'link_text' => foogallery__( 'Learn More','foogallery' ),
