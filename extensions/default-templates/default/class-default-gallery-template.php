@@ -31,8 +31,25 @@ if ( ! class_exists( 'FooGallery_Default_Gallery_Template' ) ) {
 
 			// set defaults for the gallery
 			add_filter( 'foogallery_override_gallery_template_fields-default', array( $this, 'set_default_fields' ), 10, 2 );
+
+			//alter the crop value if needed
+			add_filter( 'foogallery_render_gallery_template_field_value', array( $this, 'alter_field_value'), 10, 4 );
 			// @formatter:on
 		}
+
+		/**
+		 * Make sure the spacing value is set correctly from legacy values.
+		 */
+		function alter_field_value( $value, $field, $gallery, $template ) {
+            //only do something if we are dealing with the thumbnail_dimensions field in this template
+            if ( self::TEMPLATE_ID === $template['slug'] && 'spacing' === $field['id'] ) {
+                if ( strpos( $value, 'fg-gutter-' )  === 0 ) {
+					$value = foogallery_intval( $value );
+				}
+            }
+
+            return $value;
+        }
 
 		/**
 		 * Add css to the page for the gallery
