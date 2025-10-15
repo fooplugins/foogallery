@@ -136,8 +136,39 @@ JS;
 		 * @return array|false
 		 */
 		function create_pro_demo_content() {
+			$fs_instance = foogallery_fs();
+			$foogallery_current_plan = $fs_instance->get_plan_name();
+
 			// First, ensure we have the sample images using the existing demo content system
 			$image_data = include( FOOGALLERY_PATH . 'includes/admin/demo-content-images.php' );
+			$demo_galleries = array();
+
+			if ( $foogallery_current_plan ===  FOOGALLERY_PRO_PLAN_STARTER ) {
+				//No new demo images to import
+				$demo_galleries = array_merge( $demo_galleries, include FOOGALLERY_PRO_PATH . 'includes/admin/demo-content-pro-starter-galleries.php' );
+			}
+
+			if ( $foogallery_current_plan ===  FOOGALLERY_PRO_PLAN_EXPERT ) {
+				//Import some demo videos.
+				$image_data = array_merge( $image_data, include( FOOGALLERY_PRO_PATH . 'includes/admin/demo-content-pro-expert-images.php' ) );
+				//Import pro starter galleries
+				$demo_galleries = array_merge( $demo_galleries, include FOOGALLERY_PRO_PATH . 'includes/admin/demo-content-pro-starter-galleries.php' );
+				//Import pro expert galleries
+				$demo_galleries = array_merge( $demo_galleries, include FOOGALLERY_PRO_PATH . 'includes/admin/demo-content-pro-expert-galleries.php' );
+			}
+
+			if ( $foogallery_current_plan ===  FOOGALLERY_PRO_PLAN_COMMERCE ) {
+				//Import some demo videos.
+				$image_data = array_merge( $image_data, include( FOOGALLERY_PRO_PATH . 'includes/admin/demo-content-pro-expert-images.php' ) );
+				//Import some commerce demo images.
+				$image_data = array_merge( $image_data, include( FOOGALLERY_PRO_PATH . 'includes/admin/demo-content-pro-commerce-images.php' ) );
+				//Import pro starter galleries
+				$demo_galleries = array_merge( $demo_galleries, include FOOGALLERY_PRO_PATH . 'includes/admin/demo-content-pro-starter-galleries.php' );
+				//Import pro expert galleries
+				$demo_galleries = array_merge( $demo_galleries, include FOOGALLERY_PRO_PATH . 'includes/admin/demo-content-pro-expert-galleries.php' );
+				//Import pro commerce galleries
+				$demo_galleries = array_merge( $demo_galleries, include FOOGALLERY_PRO_PATH . 'includes/admin/demo-content-pro-commerce-galleries.php' );
+			}
 
 			$images_imported     = 0;
 			$attachment_mappings = array();
@@ -155,17 +186,14 @@ JS;
 				}
 			}
 
-			// Load the pro demo galleries data
-			$pro_demo_galleries = include FOOGALLERY_PRO_PATH . 'includes/admin/demo-content-pro-galleries.php';
-
-			if ( ! is_array( $pro_demo_galleries ) ) {
+			if ( ! is_array( $demo_galleries ) ) {
 				return false;
 			}
 
 			$galleries_created = 0;
 
 			// Create each demo gallery using the existing system
-			foreach ( $pro_demo_galleries as $demo_gallery ) {
+			foreach ( $demo_galleries as $demo_gallery ) {
 				$result = $demo_content->import_gallery( $demo_gallery, $attachment_mappings );
 				if ( $result !== false ) {
 					if ( $result['imported'] ) {
