@@ -12,6 +12,7 @@ $migrator_install_url = wp_nonce_url(
 
 $migrator_link = sprintf( '<a href="%s" target="_blank">%s</a>', 'https://wordpress.org/plugins/foogallery-migrate/', __( 'Find out more!', 'foogallery' ) );
 $migrator_admin_url = foogallery_admin_url_for_page( 'foogallery-migrate' );
+$demos_created = foogallery_get_setting( 'demo_content' ) === 'on';
 
 ?>
 <div id="help_section" class="foogallery-admin-help-section">
@@ -20,7 +21,7 @@ $migrator_admin_url = foogallery_admin_url_for_page( 'foogallery-migrate' );
 			<h3><?php printf( __(  'Thank you for choosing %s!', 'foogallery' ), foogallery_plugin_name() );?></h3>
 			<p><?php _e( 'Better galleries for WordPress, that are faster, more flexible and beautiful!', 'foogallery' ); ?></p>
             <a href="#create" class="foogallery-admin-help-button"><?php _e( 'Getting Started', 'foogallery' ); ?></a>
-            <a href="#demos" class="foogallery-admin-help-button"><?php _e( 'Create Demos', 'foogallery' ); ?></a>
+            <a href="#demo-content" class="foogallery-admin-help-button"><?php _e( 'Create Demos', 'foogallery' ); ?></a>
             <a href="#migrator" class="foogallery-admin-help-button"><?php _e( 'Migrate', 'foogallery' ); ?></a>
             <a target="_blank" class="foogallery-admin-help-button foogallery-admin-help-button-active" href="<?php echo esc_url ( $plugin_url ); ?>"><?php echo __( 'Visit our Homepage', 'foogallery' ); ?><i class="dashicons dashicons-external"></i></a>
 		</header>
@@ -43,38 +44,39 @@ $migrator_admin_url = foogallery_admin_url_for_page( 'foogallery-migrate' );
         </footer>
     </section>
 
-    <section class="fgah-feature foogallery-admin-help-create-demos" id="demos">
+    <section class="fgah-feature foogallery-admin-help-create-demos" id="demo-content">
         <header class="fgah-create-demos">
             <h3><?php _e( 'Demo Galleries', 'foogallery' );?></h3>
             <p><?php _e( 'It\'s always best to see what is possible by looking at the real thing. If you want to get started really quickly without any hassle, then we can import some demo galleries for you. This will create a number of pre-defined galleries which you can easily edit and make your own.', 'foogallery' ); ?></p>
         </header>
         <footer class="fgah-create-demos">
+            <?php if ( $demos_created ) { ?>
+                <a class="foogallery-admin-help-button-cta" href="<?php echo esc_attr( foogallery_admin_gallery_listing_url() ); ?>"><?php _e( 'View Galleries', 'foogallery' ); ?></a>
+            <?php } ?>
+
             <button class="foogallery-admin-help-button-cta foogallery-admin-help-import-demos"
+                    data-action="foogallery_admin_import_demos"
                     data-working="<?php _e( 'Please wait...', 'foogallery' ); ?>"
+                    data-complete="<?php _e( 'Done!', 'foogallery' ); ?>"
+                    data-error="<?php _e( 'Error!', 'foogallery' ); ?>"
                     data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_admin_import_demos' ) ); ?>">
 	            <span class="progress"></span>
-	            <span class="fgah-create-demos-text" style="position: relative;"><?php _e( 'Create Demo Galleries *', 'foogallery' ); ?></span>
+	            <span class="fgah-create-demos-text" style="position: relative;"><?php _e( 'Create Demos *', 'foogallery' ); ?></span>
             </button>
 
             <?php if ( foogallery_is_pro() ) : ?>
-                <button class="foogallery-admin-help-button-cta foogallery-admin-help-import-pro-demos"
+                <button class="foogallery-admin-help-button-cta foogallery-admin-help-import-demos"
+                        data-action="foogallery_admin_import_pro_demos"
                         data-working="<?php _e( 'Please wait...', 'foogallery' ); ?>"
+                        data-complete="<?php _e( 'Done!', 'foogallery' ); ?>"
+                        data-error="<?php _e( 'Error!', 'foogallery' ); ?>"
                         data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_admin_import_pro_demos' ) ); ?>">
                     <span class="progress"></span>
-                    <span class="fgah-create-pro-demos-text" style="position: relative;"><?php _e( 'Create PRO Demo Galleries *', 'foogallery' ); ?></span>
+                    <span class="fgah-create-demos-text" style="position: relative;"><?php _e( 'Create PRO Demos *', 'foogallery' ); ?></span>
                 </button>
             <?php endif; ?>
 
-            <small><?php _e( '* Sample images will be imported into your media library', 'foogallery' ); ?></small>
-        </footer>
-
-        <header class="fgah-created-demos">
-            <h3><?php _e( 'Demo Galleries', 'foogallery' );?></h3>
-            <p><?php _e( 'We have created a number of pre-defined galleries which you can easily edit to test out all the plugin features.', 'foogallery' ); ?></p>
-        </header>
-        <footer class="fgah-created-demos">
-            <a class="foogallery-admin-help-button-cta" href="<?php echo esc_attr( foogallery_admin_gallery_listing_url() ); ?>"><?php _e( 'View Galleries', 'foogallery' ); ?></a>
-	        <small class="fgah-demo-result"></small>
+            <small class="fgah-demo-result"><?php _e( '* Sample images will be imported into your media library', 'foogallery' ); ?></small>
         </footer>
     </section>
 

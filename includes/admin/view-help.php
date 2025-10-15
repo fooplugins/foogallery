@@ -22,8 +22,6 @@ $footer_text = sprintf( $made_by, $fooplugins_link );
 //allow the variables to be overwritten by other things!
 $logo = apply_filters( 'foogallery_admin_help_logo_url', $logo );
 
-$demos_created = foogallery_get_setting( 'demo_content' ) === 'on';
-
 $fs_instance = foogallery_fs();
 $foogallery_current_plan = $fs_instance->get_plan_name();
 $is_free = $fs_instance->is_free_plan();
@@ -84,13 +82,13 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 
 					var $this = $(this),
 						data = {
-							'action': 'foogallery_admin_import_demos',
+							'action': $this.data( 'action' ),
 							'_wpnonce': $this.data( 'nonce' ),
 							'_wp_http_referer': encodeURIComponent( $( 'input[name="_wp_http_referer"]' ).val() )
 						};
 
 					$this.prop('disable', true).addClass("foogallery-admin-help-loading");
-					$('.fgah-create-demos-text').html( $this.data('working') );
+					$this.find('.fgah-create-demos-text:first').html( $this.data('working') );
 
 					$.ajax({
 						type: 'POST',
@@ -98,9 +96,11 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 						data: data,
 						cache: false,
 						success: function( html ) {
+							$this.find('.fgah-create-demos-text:first').html( $this.data('complete') );
 							$('.fgah-demo-result').html( html );
-							$('.fgah-create-demos').hide();
-							$('.fgah-created-demos').show();
+						},
+						error: function() {
+							$this.find('.fgah-create-demos-text:first').html( $this.data('error') );
 						}
 					}).always(function(){
 						$this.removeClass("foogallery-admin-help-loading").prop('disable', false);
@@ -110,42 +110,6 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 		};
 
 		$.foogallery_import_data.init();
-
-		$.foogallery_import_pro_data = {
-			init : function() {
-				<?php if ( foogallery_is_pro() ) { ?>
-				$(".foogallery-admin-help-import-pro-demos").click( function(e) {
-					e.preventDefault();
-
-					var $this = $(this),
-						data = {
-							'action': 'foogallery_admin_import_pro_demos',
-							'_wpnonce': $this.data( 'nonce' ),
-							'_wp_http_referer': encodeURIComponent( $( 'input[name="_wp_http_referer"]' ).val() )
-						};
-
-					$this.prop('disable', true).addClass("foogallery-admin-help-loading");
-					$('.fgah-create-pro-demos-text').html( $this.data('working') );
-
-					$.ajax({
-						type: 'POST',
-						url: ajaxurl,
-						data: data,
-						cache: false,
-						success: function( html ) {
-							$('.fgah-demo-result').html( html );
-							$('.fgah-create-demos').hide();
-							$('.fgah-created-demos').show();
-						}
-					}).always(function(){
-						$this.removeClass("foogallery-admin-help-loading").prop('disable', false);
-					});
-				} );
-				<?php } ?>
-			}
-		};
-
-		$.foogallery_import_pro_data.init();
 
 		$.foogallery_demos = {
 			init : function() {
@@ -166,17 +130,6 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 		$.foogallery_demos.init();
 	});
 </script>
-<style>
-    <?php if ( $demos_created ) { ?>
-    .fgah-create-demos {
-	    display: none;
-    }
-	<?php } else { ?>
-    .fgah-created-demos {
-        display: none;
-    }
-	<?php } ?>
-</style>
 <div class="foogallery-admin-help">
 	<div class="foogallery-admin-help-header">
 		<div class="foogallery-admin-help-ribbon"><span><?php echo FOOGALLERY_VERSION; ?></span></div>
