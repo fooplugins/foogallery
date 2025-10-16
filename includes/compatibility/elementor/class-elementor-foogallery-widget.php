@@ -181,7 +181,7 @@ class Elementor_FooGallery_Widget extends \Elementor\Widget_Base {
         if ( $foogallery_id  > 0 ) {
             foogallery_render_gallery( $foogallery_id );
         } else if ( is_admin() ) {
-            echo '<p>' . __( 'Please select a gallery to display.', 'foogallery' ) . '</p>';
+            echo '<p>' . esc_html__( 'Please select a gallery to display.', 'foogallery' ) . '</p>';
         }
     }
 }
