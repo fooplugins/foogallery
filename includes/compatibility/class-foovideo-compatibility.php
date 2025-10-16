@@ -76,8 +76,8 @@ if ( ! class_exists( 'FooGallery_FooVideo_Compatibility' ) ) {
 									e.preventDefault();
 									$.post(ajaxurl, {
 										action  : 'foogallery_video_discount_dismiss',
-										url     : '<?php echo admin_url( 'admin-ajax.php' ); ?>',
-										_wpnonce: '<?php echo wp_create_nonce( 'foogallery_video_discount_dismiss' ); ?>'
+										url     : '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>',
+										_wpnonce: '<?php echo esc_attr( wp_create_nonce( 'foogallery_video_discount_dismiss' ) ); ?>'
 									});
 								});
 						});
@@ -85,10 +85,10 @@ if ( ! class_exists( 'FooGallery_FooVideo_Compatibility' ) ) {
 				</script>
 				<div class="foogallery-foovideo-discount-notice notice notice-info is-dismissible">
 					<p>
-						<strong><?php echo $notice_title; ?></strong><br />
-						<?php echo $notice_message; ?><br />
+						<strong><?php echo esc_html( $notice_title ); ?></strong><br />
+						<?php echo esc_html( $notice_message ); ?><br />
 						<br />
-						<a class="button button-primary button-large" href="<?php echo $url; ?>"><?php _e( 'Redeem Now!', 'foogallery' ); ?></a>
+						<a class="button button-primary button-large" href="<?php echo esc_url( $url ); ?>"><?php esc_html_e( 'Redeem Now!', 'foogallery' ); ?></a>
 					</p>
 				</div>
 				<?php
@@ -122,76 +122,76 @@ if ( ! class_exists( 'FooGallery_FooVideo_Compatibility' ) ) {
 
 		function ajax_foogallery_video_discount_offer() {
 			if ( check_admin_referer( 'foogallery_video_discount_offer' ) ) {
-				$license_key = get_site_option( 'foo-video_licensekey' );
+			$license_key = get_site_option( 'foo-video_licensekey' );
 
-				if ( empty( $license_key ) ) {
-					echo '<h3>' . __( 'No FooVideo License Found!', 'foogallery' ) . '</h3>';
-					$settings_link = '<a target="_blank" href="' . foogallery_admin_settings_url() . '#extensions">' . __('FooGallery Settings page', 'foogallery') . '</a>';
-					echo '<h4>' . sprintf( __( 'There is no FooVideo license key set for this site. Please set it via the %s under the extensions tab and try again.', 'foogallery' ), $settings_link ) . '</h4>';
-				} else {
-					$license_url = "https://fooplugins.com/api/{$license_key}/licensekey/";
+			if ( empty( $license_key ) ) {
+				echo '<h3>' . esc_html__( 'No FooVideo License Found!', 'foogallery' ) . '</h3>';
+				$settings_link = '<a target="_blank" href="' . esc_url( foogallery_admin_settings_url() . '#extensions' ) . '">' . esc_html__('FooGallery Settings page', 'foogallery') . '</a>';
+				echo '<h4>' . wp_kses_post( sprintf( __( 'There is no FooVideo license key set for this site. Please set it via the %s under the extensions tab and try again.', 'foogallery' ), $settings_link ) ) . '</h4>';
+			} else {
+				$license_url = "https://fooplugins.com/api/{$license_key}/licensekey/";
 
-					//fetch the license info from FooPlugins.com
-					$response = wp_remote_get( $license_url, array( 'sslverify' => false ) );
+				//fetch the license info from FooPlugins.com
+				$response = wp_remote_get( $license_url, array( 'sslverify' => false ) );
 
-					if( ! is_wp_error( $response ) ) {
+				if( ! is_wp_error( $response ) ) {
 
-						if ( $response['response']['code'] == 200 ) {
-							$license_details = @json_decode( $response['body'], true );
+					if ( $response['response']['code'] == 200 ) {
+						$license_details = @json_decode( $response['body'], true );
 
-							if ( isset( $license_details ) ) {
-								$coupon = $license_details['coupon'];
+						if ( isset( $license_details ) ) {
+							$coupon = $license_details['coupon'];
 
-								if ( $coupon['valid'] ) {
-									echo '<h3>' . __( 'Your discount code is : ', 'foogallery' ) . $coupon['code'] . '</h3>';
-									echo '<h4>' . __( 'The value of the discount is : ', 'foogallery' ) . $coupon['value'] . '</h4>';
+							if ( $coupon['valid'] ) {
+								echo '<h3>' . esc_html__( 'Your discount code is : ', 'foogallery' ) . esc_html( $coupon['code'] ) . '</h3>';
+								echo '<h4>' . esc_html__( 'The value of the discount is : ', 'foogallery' ) . esc_html( $coupon['value'] ) . '</h4>';
 
-									$license_option = __( 'Single Site', 'foogallery' );
-									if ( 'FooVideo Extension (Multi)' === $license_details['license'] ) {
-										$license_option = __( '5 Site', 'foogallery' );
-									} else if ( 'FooVideo Extension (Business)' === $license_details['license'] ) {
-										$license_option = __( '25 Site', 'foogallery' );
-									}
-									$license_option = '<strong>' . $license_option . '</strong>';
-									$pricing_page_url  = foogallery_admin_pricing_url();
-									$pricing_page_text = apply_filters( 'foogallery_foovideo_pricing_menu_text', __( 'FooGallery -> Upgrade', 'foogallery' ) );
-									$pricing_page_link = '<a target="_blank" href="' . $pricing_page_url . '">' . $pricing_page_text . '</a>';
-
-									if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
-										echo sprintf( __( 'Your discount entitles you to a FooGallery PRO - %s license for no additional cost!', 'foogallery' ), $license_option );
-										echo '<br />' . sprintf( __( 'Copy the discount code above and use it when purchasing FooGallery PRO from %s (make sure to select %s plan!).', 'foogallery' ), $pricing_page_link, $license_option );
-									} else {
-										echo sprintf( __( 'Your discount entitles you to a free FooGallery PRO - %s license renewal or extension!', 'foogallery' ), $license_option );
-										echo '<br />' . sprintf( __( 'Copy the discount code above and use it when extending your FooGallery PRO license from %s (make sure to select the %s plan!).', 'foogallery' ), $pricing_page_link, $license_option );
-									}
-									$doc_link = '<a href="https://fooplugins.link/foovideo-upgrade" target="_blank">' . __( 'read our documentation', 'foogallery' ) . '</a>';
-									echo '<br />' . sprintf( __( 'For a more detailed guide on the process, %s.', 'foogallery' ), $doc_link );
-
-									//redeemed the code - no need to show the admin notice anymore
-									update_option( FooGallery_FooVideo_Compatibility::option_discount_key, '2' );
-								} else {
-									echo '<h3>' . __( 'Invalid License!', 'foogallery' ) . '</h3>';
-									echo '<h4>' .$coupon['code'] . '</h4>';
+								$license_option = __( 'Single Site', 'foogallery' );
+								if ( 'FooVideo Extension (Multi)' === $license_details['license'] ) {
+									$license_option = __( '5 Site', 'foogallery' );
+								} else if ( 'FooVideo Extension (Business)' === $license_details['license'] ) {
+									$license_option = __( '25 Site', 'foogallery' );
 								}
+								$license_option = '<strong>' . $license_option . '</strong>';
+								$pricing_page_url  = foogallery_admin_pricing_url();
+								$pricing_page_text = apply_filters( 'foogallery_foovideo_pricing_menu_text', __( 'FooGallery -> Upgrade', 'foogallery' ) );
+								$pricing_page_link = '<a target="_blank" href="' . $pricing_page_url . '">' . $pricing_page_text . '</a>';
 
+								if ( !class_exists( 'FooGallery_Pro_Video' ) ) {
+									echo wp_kses_post( sprintf( __( 'Your discount entitles you to a FooGallery PRO - %s license for no additional cost!', 'foogallery' ), $license_option ) );
+									echo '<br />' . wp_kses_post( sprintf( __( 'Copy the discount code above and use it when purchasing FooGallery PRO from %s (make sure to select %s plan!).', 'foogallery' ), $pricing_page_link, $license_option ) );
+								} else {
+									echo wp_kses_post( sprintf( __( 'Your discount entitles you to a free FooGallery PRO - %s license renewal or extension!', 'foogallery' ), $license_option ) );
+									echo '<br />' . wp_kses_post( sprintf( __( 'Copy the discount code above and use it when extending your FooGallery PRO license from %s (make sure to select the %s plan!).', 'foogallery' ), $pricing_page_link, $license_option ) );
+								}
+								$doc_link = '<a href="https://fooplugins.link/foovideo-upgrade" target="_blank">' . esc_html__( 'read our documentation', 'foogallery' ) . '</a>';
+								echo '<br />' . wp_kses_post( sprintf( __( 'For a more detailed guide on the process, %s.', 'foogallery' ), $doc_link ) );
+
+								//redeemed the code - no need to show the admin notice anymore
+								update_option( FooGallery_FooVideo_Compatibility::option_discount_key, '2' );
+							} else {
+								echo '<h3>' . esc_html__( 'Invalid License!', 'foogallery' ) . '</h3>';
+								echo '<h4>' . esc_html( $coupon['code'] ) . '</h4>';
 							}
+
 						}
-					} else {
-						echo '<h4>'. __('Sorry! There was an error retrieving your discount code from our servers. Please log a support ticket and we will help.', 'foogallery') . '</h4>';
 					}
+				} else {
+					echo '<h4>'. esc_html__('Sorry! There was an error retrieving your discount code from our servers. Please log a support ticket and we will help.', 'foogallery') . '</h4>';
 				}
 			}
-			die();
 		}
+		die();
+	}
 
 		function ajax_foogallery_video_discount_offer_support() {
 			if ( check_admin_referer( 'foogallery_video_discount_offer_support' ) ) {
 				//send the support email!
 				$message = $_POST['message'];
 				if ( wp_mail( 'support@fooplugins.com', 'FooGallery/FooVideo Discount Offer Query', $message ) ) {
-					echo __('Support email logged successfully!', 'foogallery' );
+					echo esc_html__('Support email logged successfully!', 'foogallery' );
 				} else {
-					echo __('We could not log the ticket. Please email support@fooplugins.com directly.', 'foogallery' );
+					echo esc_html__('We could not log the ticket. Please email support@fooplugins.com directly.', 'foogallery' );
 				}
 			}
 			die();
