@@ -583,7 +583,7 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 	line-height: 1.2em;
 }
 
-.foogallery-items-view-switch-container.hidden {
+.foogallery-items-view-switch-container.foogallery-hidden {
 	display: none;
 }
 
@@ -1177,4 +1177,8 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 
 .foogallery-gallery-notice ul {
 	margin-top: 0;
+}
+
+.foogallery-hidden {
+	display: none;
 }

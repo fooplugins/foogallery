@@ -100,13 +100,13 @@ FooGallery.autoEnabled = false;
 
 	FOOGALLERY.showHiddenAreas = function( show ) {
         if ( show ) {
-            $('.foogallery-items-add').removeClass('hidden');
-            $('.foogallery-attachments-list-container').addClass('hidden');
-            $('.foogallery-items-empty').removeClass('hidden');
+            $('.foogallery-items-add').removeClass('foogallery-hidden');
+            $('.foogallery-attachments-list-container').addClass('foogallery-hidden');
+            $('.foogallery-items-empty').removeClass('foogallery-hidden');
         } else {
-            $('.foogallery-items-add').addClass('hidden');
-            $('.foogallery-attachments-list-container').removeClass('hidden');
-            $('.foogallery-items-empty').addClass('hidden');
+            $('.foogallery-items-add').addClass('foogallery-hidden');
+            $('.foogallery-attachments-list-container').removeClass('foogallery-hidden');
+            $('.foogallery-items-empty').addClass('foogallery-hidden');
         }
 	};
 
@@ -349,7 +349,7 @@ FooGallery.autoEnabled = false;
 			$metabox_heading.addClass( 'foogallery-custom-metabox-header' );
 		}
 
-        $('.foogallery-template-selector').appendTo( $metabox_heading ).removeClass('hidden');
+        $('.foogallery-template-selector').appendTo( $metabox_heading ).removeClass('foogallery-hidden');
 
 		//remove the loading spinner
 		$('.foogallery-gallery-items-metabox-title').remove();
@@ -361,7 +361,7 @@ FooGallery.autoEnabled = false;
 			$items_metabox_heading.addClass( 'foogallery-custom-metabox-header' );
 		}
 
-		$('.foogallery-items-view-switch-container').appendTo( $items_metabox_heading ).removeClass('hidden');
+		$('.foogallery-items-view-switch-container').appendTo( $items_metabox_heading ).removeClass('foogallery-hidden');
 
 		//Bind to the Manage / Preview buttons
 		$('.foogallery-items-view-switch-container a').on('click', function(e) {
@@ -1034,8 +1034,6 @@ FooGallery.autoEnabled = false;
 	$(document).ready(function () {
 
         FOOGALLERY.initAttachments();
-
-        FOOGALLERY.calculateHiddenAreas();
 
         FOOGALLERY.galleryTemplateChanged(false);
     });

@@ -41,7 +41,7 @@ FooGallery.utils.ready(function ($) {
 		e.preventDefault();
 		$('.foogallery-master-product-modal-content-inner li.selected').removeClass('selected');
 		$(this).addClass('selected');
-		$('.foogallery-master-product-modal-details').removeClass('hidden');
+		$('.foogallery-master-product-modal-details').removeClass('foogallery-hidden');
 		foogallery_master_product_render_details($(this).data('id'));
 		$('.foogallery-master-product-modal-set').removeAttr('disabled');
 	});
