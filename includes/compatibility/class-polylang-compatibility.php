@@ -90,13 +90,13 @@ if ( ! class_exists( 'FooGallery_Polylang_Compatibility' ) ) {
 
 				if ( array_key_exists( 'media_support', $options ) && 1 === $options['media_support'] ) {
 					?>
-					<div class="notice error">
-						<p>
-							<strong><?php _e( 'FooGallery + Polylang Alert : ', 'foogallery' ); ?></strong>
-							<?php _e( 'We noticed that you have Polylang installed and you have chosen to activate languages and translations for media.', 'foogallery' ); ?><br />
-							<?php _e( 'This may cause empty galleries on translated pages! To disable this feature, please visit Languages -> Settings.', 'foogallery' ); ?>
-						</p>
-					</div>
+				<div class="notice error">
+					<p>
+						<strong><?php esc_html_e( 'FooGallery + Polylang Alert : ', 'foogallery' ); ?></strong>
+						<?php esc_html_e( 'We noticed that you have Polylang installed and you have chosen to activate languages and translations for media.', 'foogallery' ); ?><br />
+						<?php esc_html_e( 'This may cause empty galleries on translated pages! To disable this feature, please visit Languages -> Settings.', 'foogallery' ); ?>
+					</p>
+				</div>
 					<?php
 				}
 			}
