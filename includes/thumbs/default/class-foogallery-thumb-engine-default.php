@@ -59,9 +59,9 @@ if ( ! class_exists( 'FooGallery_Thumb_Engine_Default' ) ) {
 
 			if ( is_array( $foogallery_thumbnail_generation_test_errors) ) {
 				foreach ( $foogallery_thumbnail_generation_test_errors as $error ) {
-					echo $error['title'] . '
+					echo esc_html( $error['title'] ) . '
 =======================================
-URL : ' . $error['url'] . '
+URL : ' . esc_url( $error['url'] ) . '
 Error : ';
 					print_r( $error['error'] );
 					echo "\n";
@@ -100,9 +100,9 @@ Error : ';
 				'crop'   => true
 			) );
 
-			echo '<h3>' . $title . '</h3>';
-			echo 'original : <code>' . $url . '</code><br />';
-			echo 'result : <code>' . $resize_url . '</code><br /><br />';
+			echo '<h3>' . esc_html( $title ) . '</h3>';
+			echo 'original : <code>' . esc_url( $url ) . '</code><br />';
+			echo 'result : <code>' . esc_url( $resize_url ) . '</code><br /><br />';
 
 			if ( isset( $engine->last_error ) ) {
 				print_r( $engine->last_error );
@@ -119,9 +119,9 @@ Error : ';
 				}
 
 			} else {
-				echo '<img src="' . $url . '" />';
+				echo '<img src="' . esc_url( $url ) . '" />';
 				echo '&nbsp;&nbsp;&nbsp;→→→&nbsp;&nbsp;&nbsp;';
-				echo '<img src="' . $resize_url . '" />';
+				echo '<img src="' . esc_url( $resize_url ) . '" />';
 			}
 
 
