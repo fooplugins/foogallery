@@ -1077,7 +1077,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
                 echo '</div>';
 
                 echo '<div class="foogallery-master-product-modal-sidebar">';
-                $class = $product_id === 0 ? ' hidden' : '';
+                $class = $product_id === 0 ? ' foogallery-hidden' : '';
                 echo '<div class="foogallery-master-product-modal-sidebar-inner foogallery-master-product-modal-details' . $class . '">';
                 echo '<h2>' . __( 'Selected Master Product', 'foogallery' ) . '</h2>';
                 echo '<div class="foogallery-master-product-modal-details-inner">';
