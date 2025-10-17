@@ -1,4 +1,5 @@
 <?php
+// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped -- Template selection with sanitized values
 /**
  * Class to handle adding the Template metabox to a gallery
  */
