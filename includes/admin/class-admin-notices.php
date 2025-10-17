@@ -148,8 +148,8 @@ if ( ! class_exists( 'FooGallery_Admin_Notices' ) ) {
 									e.preventDefault();
 									$.post( ajaxurl, {
 										action: 'foogallery_admin_rating_notice_dismiss',
-										url: '<?php echo admin_url( 'admin-ajax.php' ); ?>',
-										_wpnonce: '<?php echo wp_create_nonce( 'foogallery_admin_rating_notice_dismiss' ); ?>'
+										url: "<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>",
+										_wpnonce: "<?php echo esc_attr( wp_create_nonce( 'foogallery_admin_rating_notice_dismiss' )); ?>"
 									} );
 								} );
 						} );
@@ -166,12 +166,12 @@ if ( ! class_exists( 'FooGallery_Admin_Notices' ) ) {
 				</style>
 				<div class="foogallery-rating-notice notice notice-success is-dismissible">
 					<p>
-						<strong><?php _e( 'Thanks for using FooGallery' ) ?> <span class="dashicons dashicons-heart"></span></strong>
+						<strong><?php esc_html_e( 'Thanks for using FooGallery', 'foogallery' ) ?> <span class="dashicons dashicons-heart"></span></strong>
 						<br/>
-						<?php _e( 'We noticed you have created 5 galleries in FooGallery. If you love FooGallery, please consider giving it a 5 star rating. Your positive ratings help spread the word and help us grow.', 'foogallery' ); ?>
+						<?php esc_html_e( 'We noticed you have created 5 galleries in FooGallery. If you love FooGallery, please consider giving it a 5 star rating. Your positive ratings help spread the word and help us grow.', 'foogallery' ); ?>
 						<br/>
 						<br/>
-						<a class="button button-primary button-large" target="_blank" href="<?php echo $url; ?>"><?php _e( 'Rate FooGallery', 'foogallery' ); ?></a>
+						<a class="button button-primary button-large" target="_blank" href="<?php echo esc_url( $url ); ?>"><?php esc_html_e( 'Rate FooGallery', 'foogallery' ); ?></a>
 					</p>
 				</div>
 				<?php
@@ -191,13 +191,13 @@ if ( ! class_exists( 'FooGallery_Admin_Notices' ) ) {
 					?>
 					<div class="notice error">
 						<p>
-							<strong><?php _e( 'Thumbnail Generation Alert!', 'foogallery' ); ?></strong><br/>
-							<?php _e( 'There is a problem generating thumbnails for your galleries. There could be a number of reasons which could cause this problem.', 'foogallery' ); ?>
+							<strong><?php esc_html_e( 'Thumbnail Generation Alert!', 'foogallery' ); ?></strong><br/>
+							<?php esc_html_e( 'There is a problem generating thumbnails for your galleries. There could be a number of reasons which could cause this problem.', 'foogallery' ); ?>
 							<br/>
-							<?php _e( 'If thumbnails cannot be generated, then full-sized, uncropped images will be used instead. This will result in slow page load times, and thumbnails that do not look correct.', 'foogallery' ); ?>
+							<?php esc_html_e( 'If thumbnails cannot be generated, then full-sized, uncropped images will be used instead. This will result in slow page load times, and thumbnails that do not look correct.', 'foogallery' ); ?>
 							<br/>
 							<a target="_blank"
-							   href="https://fooplugins.com/documentation/foogallery/troubleshooting-foogallery/thumbnail-generation-alert-help/"><?php _e( 'View Troubleshooting Documentation', 'foogallery' ); ?></a>
+							   href="https://fooplugins.com/documentation/foogallery/troubleshooting-foogallery/thumbnail-generation-alert-help/"><?php esc_html_e( 'View Troubleshooting Documentation', 'foogallery' ); ?></a>
 							<br/>
 						</p>
 					</div>
@@ -222,8 +222,8 @@ if ( ! class_exists( 'FooGallery_Admin_Notices' ) ) {
 									e.preventDefault();
 									$.post( ajaxurl, {
 										action: 'foogallery_admin_foobar_notice_dismiss',
-										url: '<?php echo admin_url( 'admin-ajax.php' ); ?>',
-										_wpnonce: '<?php echo wp_create_nonce( 'foogallery_admin_foobar_notice_dismiss' ); ?>'
+										url: "<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>",
+										_wpnonce: "<?php echo esc_attr( wp_create_nonce( 'foogallery_admin_foobar_notice_dismiss' )); ?>"
 									} );
 								} );
 						} );
@@ -250,7 +250,7 @@ if ( ! class_exists( 'FooGallery_Admin_Notices' ) ) {
 						<br/>
 						<br/>
 						<a class="button button-primary button-large" target="_blank"
-						   href="<?php echo $install_foobar; ?>">Install FooBar</a>
+						   href="<?php echo wp_kses_post( $install_foobar ); ?>">Install FooBar</a>
 						<a class="button" target="_blank"
 						   href="https://wordpress.org/plugins/foobar-notifications-lite/">View Details</a>
 					</p>
