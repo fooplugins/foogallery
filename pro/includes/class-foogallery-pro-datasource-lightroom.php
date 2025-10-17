@@ -425,7 +425,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Lightroom' ) ) {
 
 						FOOGALLERY.showHiddenAreas( false );
 
-						$('.foogallery-attachments-list-container').addClass('hidden');
+						$('.foogallery-attachments-list-container').addClass('foogallery-hidden');
 
 						$('.foogallery_preview_container').addClass('foogallery-preview-force-refresh');
                     });
