@@ -1,4 +1,5 @@
 <?php
+// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped -- Settings helper with sanitized internal values
 /**
  * Created by bradvin
  * Date: 28/04/2017
