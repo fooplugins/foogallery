@@ -18,6 +18,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 		 */
 		function render_gallery_template_field( $field, $gallery, $template ) {
 			$template_slug = $template['slug'];
+		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped -- Complex form generation with internal template settings, not user input
 
 			//only declare up front so no debug warnings are shown
 			$type = $id = $desc = $default = $placeholder = $choices = $class = $spacer = $opactiy = null;
@@ -191,21 +192,21 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 					$height = is_array( $field['value'] ) ? $field['value']['height'] : 150;
 					$crop = is_array( $field['value'] ) && array_key_exists( 'crop', $field['value'] ) ? $field['value']['crop'] : 0;
 					$crop_checked = ( $crop == 1 ) ? ' checked="checked"' : '';
-					echo '<label for="FooGallerySettings_' . $id . '_width">' . __( 'Width', 'foogallery' ) . '</label>';
+					echo '<label for="FooGallerySettings_' . $id . '_width">' . esc_html__( 'Width', 'foogallery' ) . '</label>';
 					echo '<input class="small-text" type="number" step="1" min="0" id="FooGallerySettings_' . $id . '_width" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '][width]" value="' . esc_attr( $width ) . '" />';
-					echo '<label for="FooGallerySettings_' . $id . '_width">' . __( 'Height', 'foogallery' ) . '</label>';
+					echo '<label for="FooGallerySettings_' . $id . '_width">' . esc_html__( 'Height', 'foogallery' ) . '</label>';
 					echo '<input class="small-text" type="number" step="1" min="0" id="FooGallerySettings_' . $id . '_height" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '][height]" value="' . esc_attr( $height ) . '" />';
 					echo '<div class="foogallery-thumbsize-crop"><input name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '][crop]" type="hidden" id="FooGallerySettings_' . $id . '_nocrop" value="0" />';
 					echo '<input name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '][crop]" type="checkbox" id="FooGallerySettings_' . $id . '_crop" value="1"' . $crop_checked . '>';
-					echo '<label for="FooGallerySettings_' . $id . '_crop">' . __( 'Crop thumbnail to exact dimensions', 'foogallery' ) . '</label></div>';
+					echo '<label for="FooGallerySettings_' . $id . '_crop">' . esc_html__( 'Crop thumbnail to exact dimensions', 'foogallery' ) . '</label></div>';
 					break;
 
 				case 'thumb_size_no_crop':
 					$width = is_array( $field['value'] ) ? $field['value']['width'] : 150;
 					$height = is_array( $field['value'] ) ? $field['value']['height'] : 150;
-					echo '<label for="FooGallerySettings_' . $id . '_width">' . __( 'Width', 'foogallery' ) . '</label>';
+					echo '<label for="FooGallerySettings_' . $id . '_width">' . esc_html__( 'Width', 'foogallery' ) . '</label>';
 					echo '<input class="small-text" type="number" step="1" min="0" id="FooGallerySettings_' . $id . '_width" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '][width]" value="' . esc_attr( $width ) . '" />';
-					echo '<label for="FooGallerySettings_' . $id . '_width">' . __( 'Height', 'foogallery' ) . '</label>';
+					echo '<label for="FooGallerySettings_' . $id . '_width">' . esc_html__( 'Height', 'foogallery' ) . '</label>';
 					echo '<input class="small-text" type="number" step="1" min="0" id="FooGallerySettings_' . $id . '_height" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '][height]" value="' . esc_attr( $height ) . '" />';
 					break;
 
@@ -223,5 +224,6 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 			//allow for more customization
 			do_action( 'foogallery_render_gallery_template_field_after', $field, $gallery );
 		}
+		// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }
