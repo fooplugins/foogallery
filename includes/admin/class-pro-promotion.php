@@ -324,16 +324,16 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 				$plan = __('PRO Expert', 'foogallery');
 			}
 ?>
-			<div class="foogallery_template_field_type-promo <?php echo $class; ?>">
+			<div class="foogallery_template_field_type-promo <?php echo esc_attr( $class ); ?>">
 				<div class="foogallery-promo">
-					<strong><?php echo $plan; ?> <?php _e('Feature', 'foogallery' ); ?> : <?php echo $datasouce_title; ?></strong>
+					<strong><?php echo esc_attr( $plan ); ?> <?php esc_html_e('Feature', 'foogallery' ); ?> : <?php echo esc_html( $datasouce_title ); ?></strong>
 					<br><br>
-					<?php echo $datasource_desc; ?>
+					<?php echo esc_html( $datasource_desc ); ?>
 					<br><br>
-					<?php echo $this->build_promo_trial_html( 'datasources', $plan ); ?>
+					<?php echo $this->build_promo_trial_html( 'datasources', $plan ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					<br><br>
-					<a class="button-primary" href="<?php echo esc_url( $this->build_url( $datasource_url_name ) ); ?>" target="_blank"><?php echo __( 'Learn More', 'foogallery' ); ?></a>
-					<a class="button-secondary" href="<?php echo esc_url( $this->build_url( 'foogallery-plans' ) ); ?>" target="_blank"><?php echo __( 'Compare Plans', 'foogallery' ); ?></a>
+					<a class="button-primary" href="<?php echo esc_url( $this->build_url( $datasource_url_name ) ); ?>" target="_blank"><?php echo esc_html__( 'Learn More', 'foogallery' ); ?></a>
+					<a class="button-secondary" href="<?php echo esc_url( $this->build_url( 'foogallery-plans' ) ); ?>" target="_blank"><?php echo esc_html__( 'Compare Plans', 'foogallery' ); ?></a>
 				</div>
 			</div>
 <?php
