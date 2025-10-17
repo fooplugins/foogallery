@@ -44,17 +44,17 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 			switch ( $column ) {
 				case FOOGALLERY_CPT_GALLERY . '_template':
 					$gallery = $this->get_local_gallery( $post );
-					echo $gallery->gallery_template_name();
+					echo esc_html( $gallery->gallery_template_name() );
 					break;
 				case FOOGALLERY_CPT_GALLERY . '_count':
 					$gallery = $this->get_local_gallery( $post );
-					echo $gallery->image_count();
+					echo absint( $gallery->image_count() );
 					break;
 				case FOOGALLERY_CPT_GALLERY . '_shortcode':
 					$gallery = $this->get_local_gallery( $post );
 					$shortcode = $gallery->shortcode();
 
-					echo '<input type="text" readonly="readonly" size="' . strlen( $shortcode )  . '" value="' . esc_attr( $shortcode ) . '" class="foogallery-shortcode" />';
+					echo '<input type="text" readonly="readonly" size="' . absint( strlen( $shortcode ) )  . '" value="' . esc_attr( $shortcode ) . '" class="foogallery-shortcode" />';
 
 					$this->include_clipboard_script = true;
 
@@ -67,7 +67,7 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 						'force_use_original_thumb' => true
 					) );
 					if ( $html_img ) {
-						echo $html_img;
+						echo $html_img; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					}
 					break;
 				case FOOGALLERY_CPT_GALLERY . '_usage':
@@ -76,11 +76,12 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 					if ( $posts && count( $posts ) > 0 ) {
 						echo '<ul class="ul-disc">';
 						foreach ( $posts as $post ) {
-							echo edit_post_link( $post->post_title, '<li>', '</li>', $post->ID );
+							echo edit_post_link( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					 		$post->post_title, '<li>', '</li>', $post->ID );
 						}
 						echo '</ul>';
 					} else {
-						_e( 'Not used!', 'foogallery' );
+						esc_html_e( 'Not used!', 'foogallery' );
 					}
 					break;
 			}
@@ -98,7 +99,7 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 								document.execCommand('copy');
 								//show the copied message
 								$('.foogallery-shortcode-message').remove();
-								$(this).after('<p class="foogallery-shortcode-message"><?php _e( 'Shortcode copied to clipboard :)','foogallery' ); ?></p>');
+								$(this).after('<p class="foogallery-shortcode-message"><?php esc_html_e( 'Shortcode copied to clipboard :)','foogallery' ); ?></p>');
 							} catch(err) {
 								console.log('Oops, unable to copy!');
 							}
