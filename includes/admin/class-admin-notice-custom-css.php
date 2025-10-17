@@ -67,17 +67,17 @@ if ( ! class_exists( 'FooGallery_Admin_Notice_CustomCSS' ) ) {
                     $galleries = $option['galleries'];
                     if ( count( $galleries ) > 0 ) {
                         ?>
-                        <p><?php _e( 'You will need to update the custom CSS on the following galleries:', 'foogallery' ); ?></p>
+                        <p><?php esc_html_e( 'You will need to update the custom CSS on the following galleries:', 'foogallery' ); ?></p>
                         <ul class="ul-disc">
                             <?php foreach ( $galleries as $gallery_id => $gallery_name ) { ?>
-                                <li><a href="<?php echo get_edit_post_link( $gallery_id ); ?>"><?php echo $gallery_name; ?></a></li>
+                                <li><a href="<?php echo esc_url( get_edit_post_link( $gallery_id ) ); ?>"><?php echo esc_html( $gallery_name ); ?></a></li>
                             <?php } ?>
                         </ul>
                         <?php
                     }
                     if ( $option['setting'] ) {
                         ?>
-                        <p><?php _e( 'You have outdated custom CSS saved in the Custom Stylesheet setting below that needs to be updated.', 'foogallery' ); ?></p>
+                        <p><?php esc_html_e( 'You have outdated custom CSS saved in the Custom Stylesheet setting below that needs to be updated.', 'foogallery' ); ?></p>
                         <?php
                     }
                 }
@@ -108,19 +108,19 @@ if ( ! class_exists( 'FooGallery_Admin_Notice_CustomCSS' ) ) {
                 <script type="text/javascript">
 					(function( $ ) {
 						$( document ).ready( function() {
-							$( '.foogallery-admin-notice-<?php echo $this->notice_id; ?>.is-dismissible' )
+							$( '.foogallery-admin-notice-<?php echo esc_attr( $this->notice_id ); ?>.is-dismissible' )
 								.on( 'click', '.notice-dismiss', function( e ) {
 									e.preventDefault();
 									$.post( ajaxurl, {
-										action: 'foogallery_admin_notice_dismiss-<?php echo $this->notice_id; ?>',
-										url: '<?php echo admin_url( 'admin-ajax.php' ); ?>',
-										_wpnonce: '<?php echo wp_create_nonce( 'foogallery_admin_notice_dismiss-' . $this->notice_id ); ?>'
+										action: 'foogallery_admin_notice_dismiss-<?php echo esc_js( $this->notice_id ); ?>',
+										url: "<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>",
+										_wpnonce: "<?php echo esc_attr( wp_create_nonce( 'foogallery_admin_notice_dismiss-' . $this->notice_id )); ?>"
 									} );
 								} );
 						} );
 					})( jQuery );
 				</script>
-				<div class="notice <?php echo $this->notice_class; ?> is-dismissible foogallery-admin-notice-<?php echo $this->notice_id; ?>">
+				<div class="notice <?php echo esc_attr( $this->notice_class ); ?> is-dismissible foogallery-admin-notice-<?php echo esc_attr( $this->notice_id ); ?>">
 					<?php $this->display_notice_inner_html(); ?>
 				</div>
 				<?php
@@ -135,21 +135,21 @@ if ( ! class_exists( 'FooGallery_Admin_Notice_CustomCSS' ) ) {
             $url = foogallery_admin_settings_url() . '#custom_assets';
             $link = '<a href="'. $url . '">' . __( 'FooGallery Settings', 'foogallery' ) . '</a>';
             if ( is_array( $option ) && count( $option ) > 0 ) { ?>
-                <h3><?php _e( 'FooGallery - Custom CSS Update Required', 'foogallery' ); ?></h3>
+                <h3><?php esc_html_e( 'FooGallery - Custom CSS Update Required', 'foogallery' ); ?></h3>
                 <?php
                     $galleries = $option['galleries'];
                     if ( count( $galleries ) > 0 ) {
                         ?>
-                        <p><?php printf( __( 'We found outdated custom CSS in %s galleries that needs to be updated.', 'foogallery' ), count( $galleries ) ); ?></p>
+                        <p><?php printf( esc_html__( 'We found outdated custom CSS in %s galleries that needs to be updated.', 'foogallery' ), count( $galleries ) ); ?></p>
                         <?php
                     }
                     if ( $option['setting'] ) {
                         ?>
-                        <p><?php printf( __( 'You have outdated custom CSS saved in settings that needs to be updated.', 'foogallery' ) ); ?></p>
+                        <p><?php printf( esc_html__( 'You have outdated custom CSS saved in settings that needs to be updated.', 'foogallery' ) ); ?></p>
                         <?php
                     }
                 ?>
-                <p><?php printf( __( 'You will need to update your custom CSS! Visit %s to see what needs updating', 'foogallery' ), $link ); ?></p>
+                <p><?php printf( esc_html__( 'You will need to update your custom CSS! Visit %s to see what needs updating', 'foogallery' ), wp_kses_post( $link ) ); ?></p>
             <?php }
         }
 
