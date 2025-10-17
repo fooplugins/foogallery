@@ -1072,6 +1072,10 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 #foogallery-panel-watermark-preview.watermark-preview-show {
 	display: block;
 }
+#foogallery-panel-watermark-preview a:focus {
+	outline: none;
+	box-shadow: none;
+}
 .foogallery-modal-footer-wrap {
     text-align: right;
     margin-bottom: 10px;
