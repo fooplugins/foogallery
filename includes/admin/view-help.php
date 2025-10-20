@@ -132,21 +132,21 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 </script>
 <div class="foogallery-admin-help">
 	<div class="foogallery-admin-help-header">
-		<div class="foogallery-admin-help-ribbon"><span><?php echo FOOGALLERY_VERSION; ?></span></div>
-		<img src="<?php echo $logo; ?>" width="200">
+		<div class="foogallery-admin-help-ribbon"><span><?php echo esc_html( FOOGALLERY_VERSION ); ?></span></div>
+		<img src="<?php echo esc_url( $logo ); ?>" width="200">
 	</div>
 	<nav>
 		<a class="foogallery-admin-help-tab-active" href="#help">
-			<?php _e( 'Welcome', 'foogallery' ); ?>
+			<?php esc_html_e( 'Welcome', 'foogallery' ); ?>
 		</a>
 		<a href="#pro">
-			<?php _e( $upgrade_tab_text, 'foogallery' ); ?>
+			<?php esc_html_e( $upgrade_tab_text, 'foogallery' ); ?>
 		</a>
 		<a href="#demos">
-			<?php _e( 'Demo', 'foogallery' ); ?>
+			<?php esc_html_e( 'Demo', 'foogallery' ); ?>
 		</a>
 		<a href="#support">
-			<?php _e( 'Support', 'foogallery' ); ?>
+			<?php esc_html_e( 'Support', 'foogallery' ); ?>
 		</a>
 	</nav>
 	<div class="foogallery-admin-help-content">
@@ -160,22 +160,22 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 		<div id="support_section" class="foogallery-admin-help-section" style="display: none">
             <section class="fgah-feature">
                 <header>
-                    <h3><?php _e( '🚑 Need help? We\'re here for you...' , 'foogallery' );?></h3>
+                    <h3><?php esc_html_e( '🚑 Need help? We\'re here for you...' , 'foogallery' );?></h3>
                 </header>
                 <ul class="fgah-help-list">
                     <li>
-                        <a href="<?php echo esc_url( foogallery_admin_url( 'https://fooplugins.com/documentation/foogallery/', 'help') ); ?>" target="_blank"><?php _e('FooGallery Documentation','foogallery'); ?></a>
-                        - <?php _e('Our documentation covers everything you need to know, from install instructions and account management, to troubleshooting common issues and extending the functionality.', 'foogallery'); ?>
+                        <a href="<?php echo esc_url( foogallery_admin_url( 'https://fooplugins.com/documentation/foogallery/', 'help') ); ?>" target="_blank"><?php esc_html_e('FooGallery Documentation','foogallery'); ?></a>
+                        - <?php esc_html_e('Our documentation covers everything you need to know, from install instructions and account management, to troubleshooting common issues and extending the functionality.', 'foogallery'); ?>
                     </li>
 	                <?php if ( $is_free ) { ?>
                     <li>
-                        <a href="https://wordpress.org/support/plugin/foogallery/" target="_blank"><?php _e('FooGallery WordPress.org Support','foogallery'); ?></a>
-                        - <?php _e('We actively monitor and answer all questions posted on WordPress.org for FooGallery.', 'foogallery'); ?>
+                        <a href="https://wordpress.org/support/plugin/foogallery/" target="_blank"><?php esc_html_e('FooGallery WordPress.org Support','foogallery'); ?></a>
+                        - <?php esc_html_e('We actively monitor and answer all questions posted on WordPress.org for FooGallery.', 'foogallery'); ?>
                     </li>
 	                <?php } else { ?>
 		                <li>
-			                <a href="<?php echo esc_url( $support_url ); ?>" target="_blank"><?php _e('Premium Support','foogallery'); ?></a>
-			                - <?php _e('Open a support ticket and our dedicated support team will assist. This is the fasted way to get help!', 'foogallery'); ?>
+			                <a href="<?php echo esc_url( $support_url ); ?>" target="_blank"><?php esc_html_e('Premium Support','foogallery'); ?></a>
+			                - <?php esc_html_e('Open a support ticket and our dedicated support team will assist. This is the fasted way to get help!', 'foogallery'); ?>
 		                </li>
 	                <?php } ?>
                 </ul>
@@ -183,6 +183,6 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 		</div>
 	</div>
 	<div class="foogallery-admin-help-footer">
-		<?php echo $footer_text; ?>
+		<?php echo wp_kses_post( $footer_text ); ?>
 	</div>
 </div>
