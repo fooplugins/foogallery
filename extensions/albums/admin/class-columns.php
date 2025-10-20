@@ -31,17 +31,17 @@ if ( ! class_exists( 'FooGallery_Albums_Admin_Columns' ) ) {
 					$album = FooGalleryAlbum::get( $post );
 					$template = $album->album_template_details();
 					if ( false !== $template ) {
-						echo $template['name'];
+						echo esc_html( $template['name'] );
 					}
 					break;
 				case FOOGALLERY_CPT_ALBUM . '_galleries':
 					$album = FooGalleryAlbum::get( $post );
-					echo $album->gallery_count();
+					echo absint( $album->gallery_count() );
 					break;
 				case FOOGALLERY_CPT_ALBUM . '_shortcode':
 					$album = FooGalleryAlbum::get( $post );
 					$shortcode = $album->shortcode();
-					echo '<input type="text" readonly="readonly" size="' . strlen( $shortcode )  . '" value="' . esc_attr( $shortcode ) . '" class="foogallery-shortcode" />';
+					echo '<input type="text" readonly="readonly" size="' . absint( strlen( $shortcode ) )  . '" value="' . esc_attr( $shortcode ) . '" class="foogallery-shortcode" />';
 					$this->include_clipboard_script = true;
 					break;
 			}
@@ -59,7 +59,7 @@ if ( ! class_exists( 'FooGallery_Albums_Admin_Columns' ) ) {
 								document.execCommand('copy');
 								//show the copied message
 								$('.foogallery-shortcode-message').remove();
-								$(this).after('<p class="foogallery-shortcode-message"><?php _e( 'Shortcode copied to clipboard :)','foogallery' ); ?></p>');
+								$(this).after('<p class="foogallery-shortcode-message"><?php esc_html_e( 'Shortcode copied to clipboard :)','foogallery' ); ?></p>');
 							} catch(err) {
 								console.log('Oops, unable to copy!');
 							}
