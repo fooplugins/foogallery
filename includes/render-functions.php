@@ -582,8 +582,8 @@ function foogallery_render_script_block_for_json_items( $gallery, $attachments )
 	if ( count( $attachments ) > 0 ) {
 		$attachments_json = array_map( 'foogallery_build_json_from_attachment', $attachments );
 		echo '<script type="text/javascript">';
-		echo '  window["' . $gallery->container_id() . '_items"] = [';
-		echo implode( ', ', $attachments_json );
+		echo '  window["' . esc_js( $gallery->container_id() ) . '_items"] = [';
+		echo implode( ', ', $attachments_json ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON data
 		echo '  ];';
 		echo '</script>';
 	}
