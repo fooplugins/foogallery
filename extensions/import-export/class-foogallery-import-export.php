@@ -165,7 +165,7 @@ if ( ! class_exists( 'FooGallery_Import_Export' ) ) {
 			if ( check_admin_referer( 'foogallery_gallery_export' ) ) {
 				if ( isset( $_POST['galleries'] ) ) {
 					$galleries = array_map( 'sanitize_text_field', wp_unslash( $_POST['galleries'] ) );
-					echo foogallery_generate_export_json( $galleries );
+					echo foogallery_generate_export_json( $galleries ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON output
 				}
 			}
 			die();
