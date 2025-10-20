@@ -633,17 +633,17 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 		function render_custom_setting_types( $args ) {
 			if ( 'clear_optimization_button' === $args['type'] ) { ?>
 				<div id="foogallery_clear_css_optimizations_container">
-					<input type="button" data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_clear_css_optimizations' ) ); ?>" class="button-primary foogallery_clear_css_optimizations" value="<?php _e( 'Clear CSS Optimization Cache', 'foogallery' ); ?>">
+					<input type="button" data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_clear_css_optimizations' ) ); ?>" class="button-primary foogallery_clear_css_optimizations" value="<?php esc_attr_e( 'Clear CSS Optimization Cache', 'foogallery' ); ?>">
 					<span id="foogallery_clear_css_cache_spinner" style="position: absolute" class="spinner"></span>
 				</div>
 			<?php } else if ( 'uninstall' === $args['type'] ) { ?>
 				<div id="foogallery_uninstall_container">
-					<input type="button" data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_uninstall' ) ); ?>" class="button-primary foogallery_uninstall" value="<?php _e( 'Run Full Uninstall', 'foogallery' ); ?>">
+					<input type="button" data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_uninstall' ) ); ?>" class="button-primary foogallery_uninstall" value="<?php esc_attr_e( 'Run Full Uninstall', 'foogallery' ); ?>">
 					<span id="foogallery_uninstall_spinner" style="position: absolute" class="spinner"></span>
 				</div>
 			<?php } else if ( 'thumb_generation_test' === $args['type'] ) { ?>
 				<div id="foogallery_thumb_generation_test_container">
-					<input type="button" data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_thumb_generation_test' ) ); ?>" class="button-primary foogallery_thumb_generation_test" value="<?php _e( 'Run Tests', 'foogallery' ); ?>">
+					<input type="button" data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_thumb_generation_test' ) ); ?>" class="button-primary foogallery_thumb_generation_test" value="<?php esc_attr_e( 'Run Tests', 'foogallery' ); ?>">
 					<span id="foogallery_thumb_generation_test_spinner" style="position: absolute" class="spinner"></span>
 				</div>
 			<?php }
@@ -662,7 +662,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				}
 				$nonce = wp_create_nonce( 'foogallery_apply_retina_defaults' );
 				?><div id="foogallery_apply_retina_support_container">
-					<input type="button" data-inputs="<?php echo implode( ',', $input_ids ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>" class="button-primary foogallery_apply_retina_support" value="<?php _e( 'Apply Defaults to all Galleries', 'foogallery' ); ?>">
+					<input type="button" data-inputs="<?php echo esc_attr( implode( ',', $input_ids ) ); ?>" data-nonce="<?php echo esc_attr( $nonce ); ?>" class="button-primary foogallery_apply_retina_support" value="<?php esc_attr_e( 'Apply Defaults to all Galleries', 'foogallery' ); ?>">
 					<span id="foogallery_apply_retina_support_spinner" style="position: absolute" class="spinner"></span>
 				</div>
 			<?php }
@@ -675,7 +675,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			if ( check_admin_referer( 'foogallery_clear_css_optimizations' ) ) {
 				foogallery_clear_all_css_load_optimizations();
 
-				_e('The CSS optimization cache was successfully cleared!', 'foogallery' );
+				esc_html_e('The CSS optimization cache was successfully cleared!', 'foogallery' );
 				die();
 			}
 		}
@@ -719,10 +719,10 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 					$gallery_update_count++;
 				}
 
-				echo sprintf( _n(
+				echo esc_html( sprintf( _n(
 					'1 gallery successfully updated to use the default retina settings.',
 					'%s galleries successfully updated to use the default retina settings.',
-					$gallery_update_count, 'foogallery' ), $gallery_update_count );
+					$gallery_update_count, 'foogallery' ), absint( $gallery_update_count ) ) );
 
 				die();
 			}
@@ -732,7 +732,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			if ( check_admin_referer( 'foogallery_uninstall' ) && current_user_can( 'install_plugins' ) ) {
 				foogallery_uninstall();
 
-				_e('All traces of the plugin were removed from your system!', 'foogallery' );
+				esc_html_e('All traces of the plugin were removed from your system!', 'foogallery' );
 				die();
 			}
 		}
