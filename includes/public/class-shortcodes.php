@@ -63,7 +63,7 @@ if ( ! class_exists( 'FooGallery_Shortcodes' ) ) {
 		function render_custom_css( $foogallery ) {
 			if ( !empty( $foogallery->custom_css ) ) {
 				echo '<style type="text/css">';
-				echo $foogallery->custom_css;
+				echo $foogallery->custom_css; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Custom CSS from gallery settings
 				echo '</style>';
 			}
 		}
