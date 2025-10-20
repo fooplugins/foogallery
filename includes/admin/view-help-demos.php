@@ -5,27 +5,27 @@ function foogallery_admin_help_demo_item( $seed, $width, $height, $title, $desc,
 ?><div class="fg-item fg-type-image fg-idle">
 	<figure class="fg-item-inner">
 		<a class="fg-thumb"
-		   href="<?php echo $href; ?>"
+		   href="<?php echo esc_url( $href ); ?>"
 		   data-type="image"
-		   data-title="<?php echo $title; ?>"
-		   data-description="<?php echo $desc; ?>">
+		   data-title="<?php echo esc_attr( $title ); ?>"
+		   data-description="<?php echo esc_attr( $desc ); ?>">
             <span class="fg-image-wrap">
                 <img class="fg-image"
-                     src="<?php echo $placeholder; ?>"
-                     data-src-fg="https://picsum.photos/seed/<?php echo $seed; ?>/<?php echo $width; ?>/<?php echo $height; ?>"
-                     data-srcset-fg="https://picsum.photos/seed/<?php echo $seed; ?>/<?php echo ($width * 2); ?>/<?php echo ($height * 2); ?> 2x"
-                     width="<?php echo $width; ?>"
-                     height="<?php echo $height; ?>"
-                     title="<?php echo $title; ?>"
-                     alt="<?php echo $desc; ?>">
+                     src="<?php echo esc_url( $placeholder ); ?>"
+                     data-src-fg="https://picsum.photos/seed/<?php echo esc_attr( $seed ); ?>/<?php echo esc_attr( $width ); ?>/<?php echo esc_attr( $height ); ?>"
+                     data-srcset-fg="https://picsum.photos/seed/<?php echo esc_attr( $seed ); ?>/<?php echo absint( $width * 2 ); ?>/<?php echo absint( $height * 2 ); ?> 2x"
+                     width="<?php echo esc_attr( $width ); ?>"
+                     height="<?php echo esc_attr( $height ); ?>"
+                     title="<?php echo esc_attr( $title ); ?>"
+                     alt="<?php echo esc_attr( $desc ); ?>">
             </span>
 			<span class="fg-image-overlay"></span>
 		</a>
 		<figcaption class="fg-caption">
 			<div class="fg-caption-inner">
-				<div class="fg-caption-title"><?php echo $title; ?></div>
+				<div class="fg-caption-title"><?php echo esc_html( $title ); ?></div>
 				<?php if ( !empty( $desc ) ) {?>
-				<div class="fg-caption-desc"><?php echo $desc; ?></div>
+				<div class="fg-caption-desc"><?php echo esc_html( $desc ); ?></div>
 				<?php } ?>
 			</div>
 		</figcaption>
@@ -39,21 +39,21 @@ function foogallery_admin_help_demo_item( $seed, $width, $height, $title, $desc,
 
 <div id="demos_section" class="foogallery-admin-help-section fgah-demo" style="display: none">
 	<header>
-		<h3><?php _e( 'Gallery Demos 😎', 'foogallery' );?></h3>
-		<p><?php _e( 'Select a demo below to see it in action!', 'foogallery' ); ?></p>
-		<a href="#foogallery-admin-help-demo-1" class="foogallery-admin-help-demo foogallery-admin-help-button foogallery-admin-help-button-active"><?php _e( 'Default', 'foogallery' ); ?></a>
-		<a href="#foogallery-admin-help-demo-2" class="foogallery-admin-help-demo foogallery-admin-help-button"><?php _e( 'Masonry', 'foogallery' ); ?></a>
-		<a href="#foogallery-admin-help-demo-3" class="foogallery-admin-help-demo foogallery-admin-help-button"><?php _e( 'Image Viewer', 'foogallery' ); ?></a>
-		<a href="#foogallery-admin-help-demo-4" class="foogallery-admin-help-demo foogallery-admin-help-button"><?php _e( 'Justified', 'foogallery' ); ?></a>
-		<a href="#foogallery-admin-help-demo-5" class="foogallery-admin-help-demo foogallery-admin-help-button"><?php _e( 'Simple Portfolio', 'foogallery' ); ?></a>
-		<a href="#foogallery-admin-help-demo-6" class="foogallery-admin-help-demo foogallery-admin-help-button"><?php _e( 'Carousel', 'foogallery' ); ?></a>
-		<a href="<?php echo esc_url( foogallery_admin_url( 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/demos/', 'help' ) ); ?>" target="_blank" class="foogallery-admin-help-button"><?php _e( 'More Demos', 'foogallery' ); ?><i class="dashicons dashicons-external"></i></a>
+		<h3><?php esc_html_e( 'Gallery Demos 😎', 'foogallery' );?></h3>
+		<p><?php esc_html_e( 'Select a demo below to see it in action!', 'foogallery' ); ?></p>
+		<a href="#foogallery-admin-help-demo-1" class="foogallery-admin-help-demo foogallery-admin-help-button foogallery-admin-help-button-active"><?php esc_html_e( 'Default', 'foogallery' ); ?></a>
+		<a href="#foogallery-admin-help-demo-2" class="foogallery-admin-help-demo foogallery-admin-help-button"><?php esc_html_e( 'Masonry', 'foogallery' ); ?></a>
+		<a href="#foogallery-admin-help-demo-3" class="foogallery-admin-help-demo foogallery-admin-help-button"><?php esc_html_e( 'Image Viewer', 'foogallery' ); ?></a>
+		<a href="#foogallery-admin-help-demo-4" class="foogallery-admin-help-demo foogallery-admin-help-button"><?php esc_html_e( 'Justified', 'foogallery' ); ?></a>
+		<a href="#foogallery-admin-help-demo-5" class="foogallery-admin-help-demo foogallery-admin-help-button"><?php esc_html_e( 'Simple Portfolio', 'foogallery' ); ?></a>
+		<a href="#foogallery-admin-help-demo-6" class="foogallery-admin-help-demo foogallery-admin-help-button"><?php esc_html_e( 'Carousel', 'foogallery' ); ?></a>
+		<a href="<?php echo esc_url( foogallery_admin_url( 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/demos/', 'help' ) ); ?>" target="_blank" class="foogallery-admin-help-button"><?php esc_html_e( 'More Demos', 'foogallery' ); ?><i class="dashicons dashicons-external"></i></a>
 	</header>
 
 	<div id="foogallery-admin-help-demo-1" class="foogallery-admin-help-demo-content">
 		<header class="foogallery-admin-help-header">
-			<h3 id="default_demo"><?php _e( 'Default Responsive Gallery Demo', 'foogallery' );?></h3>
-			<p><?php _e( 'Our default responsive gallery template. You have full control over the image border, captions and hover effects. This demo has a thin white border with a small gutter. An icon and the captions are shown on hover. There is also a dark tint and zoom hover effect.', 'foogallery' );?></p>
+			<h3 id="default_demo"><?php esc_html_e( 'Default Responsive Gallery Demo', 'foogallery' );?></h3>
+			<p><?php esc_html_e( 'Our default responsive gallery template. You have full control over the image border, captions and hover effects. This demo has a thin white border with a small gutter. An icon and the captions are shown on hover. There is also a dark tint and zoom hover effect.', 'foogallery' );?></p>
 		</header>
 
 		<div id="foogallery-gallery-0" class="foogallery fg-default fg-center fg-hover-zoomed-semi fg-gutter-10 fg-m-col2 fg-loading-default fg-loaded-fade-in fg-light fg-shadow-inset-small fg-caption-hover fg-hover-fade fg-hover-zoom4"
@@ -73,8 +73,8 @@ function foogallery_admin_help_demo_item( $seed, $width, $height, $title, $desc,
 
 	<div id="foogallery-admin-help-demo-2" class="foogallery-admin-help-demo-content" style="display: none">
 		<header class="foogallery-admin-help-header">
-			<h3 id="masonry_demo"><?php _e( 'Masonry Demo', 'foogallery' );?></h3>
-			<p><?php _e( 'A masonry-style gallery template, which keeps all images at a constant width while packing them in to best fill the space. This demo has a thin white border and captions are below the image. Images also have hover effects.', 'foogallery' );?></p>
+			<h3 id="masonry_demo"><?php esc_html_e( 'Masonry Demo', 'foogallery' );?></h3>
+			<p><?php esc_html_e( 'A masonry-style gallery template, which keeps all images at a constant width while packing them in to best fill the space. This demo has a thin white border and captions are below the image. Images also have hover effects.', 'foogallery' );?></p>
 		</header>
 		<style>
 	        #foogallery-gallery-1.fg-masonry .fg-item {
@@ -102,8 +102,8 @@ function foogallery_admin_help_demo_item( $seed, $width, $height, $title, $desc,
 
 	<div id="foogallery-admin-help-demo-3" class="foogallery-admin-help-demo-content" style="display: none">
 		<header class="foogallery-admin-help-header">
-			<h3 id="iv_demo"><?php _e( 'Image Viewer Demo', 'foogallery' );?></h3>
-			<p><?php _e( 'Our image viewer gallery template, which showcases a single image at a time. In this demo, captions are always shown, and a white hover effect is also enabled.', 'foogallery' );?></p>
+			<h3 id="iv_demo"><?php esc_html_e( 'Image Viewer Demo', 'foogallery' );?></h3>
+			<p><?php esc_html_e( 'Our image viewer gallery template, which showcases a single image at a time. In this demo, captions are always shown, and a white hover effect is also enabled.', 'foogallery' );?></p>
 		</header>
 		<div id="foogallery-gallery-2" class="foogallery foogallery-link-image fg-center fg-image-viewer fg-light fg-border-thin fg-shadow-outline fg-loading-default fg-loaded-fade-in fg-caption-always fg-hover-fade fg-hover-zoom fg-ready fg-light-overlays fg-round-small"
 		     data-foogallery="{&quot;item&quot;:{&quot;showCaptionTitle&quot;:true,&quot;showCaptionDescription&quot;:true},&quot;lazy&quot;:true,&quot;template&quot;:{&quot;loop&quot;:true}}">
@@ -126,8 +126,8 @@ function foogallery_admin_help_demo_item( $seed, $width, $height, $title, $desc,
 
 	<div id="foogallery-admin-help-demo-4" class="foogallery-admin-help-demo-content" style="display: none">
 		<header class="foogallery-admin-help-header">
-			<h3 id="justified_demo"><?php _e( 'Justified Demo', 'foogallery' );?></h3>
-			<p><?php _e( 'A justified gallery template, where the images have a similar height. This demo has no image borders, the captions are always visible and overlaid on top of the images. There is also a simple hover effect.', 'foogallery' );?></p>
+			<h3 id="justified_demo"><?php esc_html_e( 'Justified Demo', 'foogallery' );?></h3>
+			<p><?php esc_html_e( 'A justified gallery template, where the images have a similar height. This demo has no image borders, the captions are always visible and overlaid on top of the images. There is also a simple hover effect.', 'foogallery' );?></p>
 		</header>
 		<style>
 	        #foogallery-gallery-3.fg-justified .fg-item {
@@ -157,8 +157,8 @@ function foogallery_admin_help_demo_item( $seed, $width, $height, $title, $desc,
 
 	<div id="foogallery-admin-help-demo-5" class="foogallery-admin-help-demo-content" style="display: none">
 		<header class="foogallery-admin-help-header">
-			<h3 id="portfolio_demo"><?php _e( 'Simple Portfolio Gallery Demo', 'foogallery' );?></h3>
-			<p><?php _e( 'A portfolio gallery template that keeps all items in a row at the same height. Captions are visible below the images and centered.', 'foogallery' );?></p>
+			<h3 id="portfolio_demo"><?php esc_html_e( 'Simple Portfolio Gallery Demo', 'foogallery' );?></h3>
+			<p><?php esc_html_e( 'A portfolio gallery template that keeps all items in a row at the same height. Captions are visible below the images and centered.', 'foogallery' );?></p>
 		</header>
 		<style>
 	        #foogallery-gallery-4.fg-simple_portfolio {
@@ -182,8 +182,8 @@ function foogallery_admin_help_demo_item( $seed, $width, $height, $title, $desc,
 
 	<div id="foogallery-admin-help-demo-6" class="foogallery-admin-help-demo-content" style="display: none">
 		<header class="foogallery-admin-help-header">
-			<h3 id="portfolio_demo"><?php _e( 'Carousel Gallery Demo', 'foogallery' );?></h3>
-			<p><?php _e( 'A responsive carousel gallery allows you to showcase your images in a single row.', 'foogallery' );?></p>
+			<h3 id="portfolio_demo"><?php esc_html_e( 'Carousel Gallery Demo', 'foogallery' );?></h3>
+			<p><?php esc_html_e( 'A responsive carousel gallery allows you to showcase your images in a single row.', 'foogallery' );?></p>
 		</header>
 		<div id="foogallery-gallery-5" class="foogallery foogallery-container foogallery-carousel foogallery-lightbox-foogallery fg-carousel fg-light fg-border-thin fg-shadow-outline fg-loading-default fg-loaded-fade-in fg-hover-fade fg-hover-zoom fg-c-c fg-ready"
 		     data-foogallery="{&quot;item&quot;:{&quot;showCaptionTitle&quot;:true,&quot;showCaptionDescription&quot;:false},&quot;lazy&quot;:true,&quot;template&quot;:{&quot;maxItems&quot;:5,&quot;scale&quot;:0.12,&quot;gutter&quot;:{&quot;min&quot;:-40,&quot;max&quot;:-20,&quot;unit&quot;:&quot;%&quot;},&quot;autoplay&quot;:{&quot;time&quot;:6,&quot;interaction&quot;:&quot;pause&quot;},&quot;centerOnClick&quot;:true}}">
