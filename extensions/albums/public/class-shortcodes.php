@@ -36,7 +36,7 @@ if ( ! class_exists( 'FooGallery_Album_Shortcodes' ) ) {
 		function render_custom_css( $foogallery_album ) {
 			if ( !empty( $foogallery_album->custom_css ) ) {
 				echo '<style type="text/css">';
-				echo $foogallery_album->custom_css;
+				echo $foogallery_album->custom_css; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Custom CSS from album settings
 				echo '</style>';
 			}
 		}
