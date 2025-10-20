@@ -49,7 +49,7 @@ if ( ! class_exists( 'FooGallery_Export_View_Helper' ) ) {
 							},
 							error: function() {
 								//something went wrong! Alert the user and reload the page
-								alert('<?php _e( 'Something went wrong with the export!', 'foogallery' ); ?>');
+								alert('<?php esc_html_e( 'Something went wrong with the export!', 'foogallery' ); ?>');
 							}
 						});
 					});
@@ -63,20 +63,20 @@ if ( ! class_exists( 'FooGallery_Export_View_Helper' ) ) {
 				<thead>
 				<tr>
 					<td scope="col" id="cb" class="manage-column column-cb check-column">
-						<label class="screen-reader-text" for="cb-select-all-1"><?php _e( 'Select All', 'foogallery' ); ?></label>
+						<label class="screen-reader-text" for="cb-select-all-1"><?php esc_html_e( 'Select All', 'foogallery' ); ?></label>
 						<input id="cb-select-all-1" type="checkbox" />
 					</td>
 					<th scope="col" class="manage-column">
-						<span><?php _e( 'Gallery Name', 'foogallery' ); ?></span>
+						<span><?php esc_html_e( 'Gallery Name', 'foogallery' ); ?></span>
 					</th>
 					<th scope="col" class="manage-column">
-						<span><?php _e( 'Template', 'foogallery' ); ?></span>
+						<span><?php esc_html_e( 'Template', 'foogallery' ); ?></span>
 					</th>
 					<th scope="col" class="manage-column">
-						<span><?php _e( 'Datasource', 'foogallery' ); ?></span>
+						<span><?php esc_html_e( 'Datasource', 'foogallery' ); ?></span>
 					</th>
 					<th scope="col" class="manage-column">
-						<span><?php _e( 'Attachments', 'foogallery' ); ?></span>
+						<span><?php esc_html_e( 'Attachments', 'foogallery' ); ?></span>
 					</th>
 				</tr>
 				</thead>
@@ -87,21 +87,21 @@ if ( ! class_exists( 'FooGallery_Export_View_Helper' ) ) {
 					$counter++; ?>
 					<tr class="<?php echo ($counter % 2 === 0) ? 'alternate' : ''; ?>">
 						<th scope="row" class="column-cb check-column">
-							<input name="foogallery-id[]" class="foogallery_id" type="checkbox" value="<?php echo $gallery->ID; ?>">
+							<input name="foogallery-id[]" class="foogallery_id" type="checkbox" value="<?php echo esc_attr( $gallery->ID ); ?>">
 						</th>
 						<td>
-							<?php echo $gallery->name; ?>
+							<?php echo esc_html( $gallery->name ); ?>
 						</td>
 						<td>
-							<?php echo $gallery->gallery_template; ?>
+							<?php echo esc_html( $gallery->gallery_template ); ?>
 						</td>
 						<td>
-							<?php echo $gallery->datasource_name; ?>
+							<?php echo esc_html( $gallery->datasource_name ); ?>
 						</td>
 						<td>
 							<?php
 							if ( 'media_library' === $gallery->datasource_name ) {
-								echo $gallery->item_count();
+								echo absint( $gallery->item_count() );
 							} else {
 								echo '0';
 							}
@@ -112,7 +112,7 @@ if ( ! class_exists( 'FooGallery_Export_View_Helper' ) ) {
 				</tbody>
 			</table>
 				<br />
-				<input type="submit" name="foogallery_gallery_export" class="button button-primary foogallery_gallery_export" value="<?php _e( 'Export', 'foogallery' ); ?>">
+				<input type="submit" name="foogallery_gallery_export" class="button button-primary foogallery_gallery_export" value="<?php esc_attr_e( 'Export', 'foogallery' ); ?>">
 				<span class="foogallery_export_spinner spinner" style="float: none"></span>
 			</form>
 			<br />
