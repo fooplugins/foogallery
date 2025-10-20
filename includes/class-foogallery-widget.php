@@ -45,9 +45,9 @@ if ( ! class_exists( 'FooGallery_Widget' ) ) {
         public function widget($args, $instance)
         {
             // outputs the content of the widget
-            echo $args['before_widget'];
+            echo $args['before_widget']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
             if (!empty($instance['title'])) {
-                echo $args['before_title'] . apply_filters('widget_title', $instance['title']) . $args['after_title'];
+                echo $args['before_title'] . apply_filters('widget_title', $instance['title']) . $args['after_title']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
             }
             //output the gallery here
             $foogallery_id = isset( $instance['foogallery_id'] ) ? intval( $instance['foogallery_id'] ) : 0;
@@ -55,7 +55,7 @@ if ( ! class_exists( 'FooGallery_Widget' ) ) {
                 foogallery_render_gallery( $foogallery_id );
             }
 
-            echo $args['after_widget'];
+            echo $args['after_widget']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         }
 
 
@@ -73,18 +73,18 @@ if ( ! class_exists( 'FooGallery_Widget' ) ) {
             $galleries = foogallery_get_all_galleries();
             ?>
             <p>
-                <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label>
-                <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>"
-                       name="<?php echo $this->get_field_name('title'); ?>" type="text"
+                <label for="<?php echo esc_attr( $this->get_field_id('title') ); ?>"><?php esc_html_e('Title:', 'foogallery'); ?></label>
+                <input class="widefat" id="<?php echo esc_attr( $this->get_field_id('title') ); ?>"
+                       name="<?php echo esc_attr( $this->get_field_name('title') ); ?>" type="text"
                        value="<?php echo esc_attr($title); ?>">
             </p>
             <p>
-                <label for="<?php echo $this->get_field_id('foogallery_id'); ?>"><?php _e('Select Gallery:', 'foogallery'); ?></label>
-                <select class="widefat" id="<?php echo $this->get_field_id('foogallery_id'); ?>"
-                       name="<?php echo $this->get_field_name('foogallery_id'); ?>"
+                <label for="<?php echo esc_attr( $this->get_field_id('foogallery_id') ); ?>"><?php esc_html_e('Select Gallery:', 'foogallery'); ?></label>
+                <select class="widefat" id="<?php echo esc_attr( $this->get_field_id('foogallery_id') ); ?>"
+                       name="<?php echo esc_attr( $this->get_field_name('foogallery_id') ); ?>"
                        value="<?php echo esc_attr($title); ?>">
                     <?php foreach ( $galleries as $gallery ) {?>
-                        <option <?php echo $gallery->ID == $foogallery_id ? 'selected="selected"' : ''; ?> value="<?php echo $gallery->ID; ?>"><?php echo $gallery->name . ' [' . $gallery->ID . ']'; ?></option>
+                        <option <?php echo $gallery->ID == $foogallery_id ? 'selected="selected"' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> value="<?php echo esc_attr( $gallery->ID ); ?>"><?php echo esc_html( $gallery->name . ' [' . $gallery->ID . ']' ); ?></option>
                     <?php } ?>
                 </select>
             </p>
