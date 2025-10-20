@@ -169,15 +169,15 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 			wp_enqueue_style( 'media-views' );
 
 			?>
-			<input type="hidden" name="<?php echo FOOGALLERY_CPT_ALBUM; ?>_nonce"
-			       id="<?php echo FOOGALLERY_CPT_ALBUM; ?>_nonce"
-			       value="<?php echo wp_create_nonce( plugin_basename( FOOGALLERY_FILE ) ); ?>"/>
+			<input type="hidden" name="<?php echo esc_attr( FOOGALLERY_CPT_ALBUM ); ?>_nonce"
+			       id="<?php echo esc_attr( FOOGALLERY_CPT_ALBUM ); ?>_nonce"
+			       value="<?php echo esc_attr( wp_create_nonce( plugin_basename( FOOGALLERY_FILE )) ); ?>"/>
 			<input type="hidden" name='foogallery_album_galleries' id="foogallery_album_galleries"
-			       value="<?php echo $album->gallery_id_csv(); ?>"/>
+			       value="<?php echo esc_attr( $album->gallery_id_csv() ); ?>"/>
 			<div>
 				<?php if ( !$album->has_galleries() ) { ?>
 					<div class="foogallery-album-error">
-						<?php _e( 'There are no galleries selected for your album yet! Click any gallery to add it to your album.', 'foogallery' ); ?>
+						<?php esc_html_e( 'There are no galleries selected for your album yet! Click any gallery to add it to your album.', 'foogallery' ); ?>
 					</div>
 				<?php } ?>
 
@@ -185,26 +185,26 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 					<div class="media-modal-content">
 						<div class="media-frame mode-select">
 							<div class="media-frame-title">
-								<h1><?php _e('Edit Gallery Details', 'foogallery'); ?></h1>
+								<h1><?php esc_html_e('Edit Gallery Details', 'foogallery'); ?></h1>
 								<span class="spinner is-active"></span>
 							</div>
 							<div class="modal-content">
 								<?php wp_nonce_field( 'foogallery_album_gallery_details', 'foogallery_album_gallery_details_nonce', false ); ?>
-								<div class="gallery-details" data-loading="<?php _e( 'Loading details for ', 'foogallery' ); ?>"></div>
+								<div class="gallery-details" data-loading="<?php esc_attr_e( 'Loading details for ', 'foogallery' ); ?>"></div>
 							</div>
 						</div>
 						<div class="media-frame-toolbar">
 							<div class="media-toolbar">
 								<div class="media-toolbar-secondary"></div>
 								<div class="media-toolbar-primary search-form">
-									<button type="button" class="button media-button button-primary button-large media-button-select gallery-details-save"><?php _e('Save Gallery Details', 'foogallery'); ?></button>
+									<button type="button" class="button media-button button-primary button-large media-button-select gallery-details-save"><?php esc_html_e('Save Gallery Details', 'foogallery'); ?></button>
 									<span class="spinner"></span>
 								</div>
 							</div>
 						</div>
 					</div>
 					<button type="button" class="button-link media-modal-close">
-						<span class="media-modal-icon"><span class="screen-reader-text"><?php _e('Close media panel', 'foogallery'); ?></span></span>
+						<span class="media-modal-icon"><span class="screen-reader-text"><?php esc_html_e('Close media panel', 'foogallery'); ?></span></span>
 					</button>
 
 				</div>
@@ -220,20 +220,20 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 						$title = $gallery->safe_name();
 						?>
 						<li class="foogallery-pile">
-							<div class="foogallery-gallery-select landscape<?php echo $selected; ?>" data-foogallery-id="<?php echo $gallery->ID; ?>">
+							<div class="foogallery-gallery-select landscape<?php echo esc_attr( $selected ); ?>" data-foogallery-id="<?php echo esc_attr( $gallery->ID ); ?>">
 								<div style="display: table;">
 									<div style="display: table-cell; vertical-align: middle; text-align: center;">
-										<img src="<?php echo $img_src; ?>"/>
+										<img src="<?php echo esc_url( $img_src ); ?>"/>
 										<h3>
                                             <?php echo esc_html( $title ); ?>
-                                            <span><?php echo $images; ?></span>
+                                            <span><?php echo esc_html( $images ); ?></span>
                                         </h3>
 									</div>
 								</div>
 								<a class="info foogallery-album-info" href="#"
-								   title="<?php _e( 'Edit Album Info', 'foogallery' ); ?>"
-								   data-gallery-title="<?php echo $title; ?>"
-								   data-gallery-id="<?php echo $gallery->ID; ?>"><span class="dashicons dashicons-info"></span>
+								   title="<?php esc_html_e( 'Edit Album Info', 'foogallery' ); ?>"
+								   data-gallery-title="<?php echo esc_attr( $title ); ?>"
+								   data-gallery-id="<?php echo esc_attr( $gallery->ID ); ?>"><span class="dashicons dashicons-info"></span>
                                 </a>
 							</div>
 						</li>
@@ -249,10 +249,10 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 			$shortcode = $album->shortcode();
 			?>
 			<p class="foogallery-shortcode">
-				<input type="text" id="foogallery_copy_shortcode" size="<?php echo strlen( $shortcode ); ?>" value="<?php echo htmlspecialchars( $shortcode ); ?>" readonly="readonly" />
+				<input type="text" id="foogallery_copy_shortcode" size="<?php echo absint( strlen( $shortcode ) ); ?>" value="<?php echo esc_attr( $shortcode ); ?>" readonly="readonly" />
 			</p>
 			<p>
-				<?php _e( 'Paste the above shortcode into a post or page to show the album.', 'foogallery' ); ?>
+				<?php esc_html_e( 'Paste the above shortcode into a post or page to show the album.', 'foogallery' ); ?>
 			</p>
 			<script>
 				jQuery(function($) {
@@ -265,7 +265,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 							document.execCommand('copy');
 							//show the copied message
 							$('.foogallery-shortcode-message').remove();
-							$(shortcodeInput).after('<p class="foogallery-shortcode-message"><?php _e( 'Shortcode copied to clipboard :)','foogallery' ); ?></p>');
+							$(shortcodeInput).after('<p class="foogallery-shortcode-message"><?php esc_html_e( 'Shortcode copied to clipboard :)','foogallery' ); ?></p>');
 						} catch(err) {
 							console.log('Oops, unable to copy!');
 						}
@@ -279,13 +279,13 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 			$album = $this->get_album( $post );
 			$sorting_options = foogallery_sorting_options(); ?>
 			<p>
-				<?php _e('Change the way galleries are sorted within your album. By default, they are sorted in the order you see them.', 'foogallery'); ?>
+				<?php esc_html_e('Change the way galleries are sorted within your album. By default, they are sorted in the order you see them.', 'foogallery'); ?>
 			</p>
 			<?php
 			foreach ( $sorting_options as $sorting_key => $sorting_label ) { ?>
 				<p>
-				<input type="radio" value="<?php echo $sorting_key; ?>" <?php checked( $sorting_key === $album->sorting ); ?> id="FooGallerySettings_AlbumSort_<?php echo $sorting_key; ?>" name="<?php echo FOOGALLERY_ALBUM_META_SORT; ?>" />
-				<label for="FooGallerySettings_AlbumSort_<?php echo $sorting_key; ?>"><?php echo $sorting_label; ?></label>
+				<input type="radio" value="<?php echo esc_attr( $sorting_key ); ?>" <?php checked( $sorting_key === $album->sorting ); ?> id="FooGallerySettings_AlbumSort_<?php echo esc_attr( $sorting_key ); ?>" name="<?php echo esc_attr( FOOGALLERY_ALBUM_META_SORT ); ?>" />
+				<label for="FooGallerySettings_AlbumSort_<?php echo esc_attr( $sorting_key ); ?>"><?php echo esc_html( $sorting_label ); ?></label>
 				</p><?php
 			}
 		}
@@ -306,19 +306,19 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 				<tbody>
 				<tr class="foogallery_template_field foogallery_template_field_selector">
 					<th>
-						<label for="FooGallerySettings_AlbumTemplate"><?php _e( 'Album Layout', 'foogallery' ); ?></label>
+						<label for="FooGallerySettings_AlbumTemplate"><?php esc_html_e( 'Album Layout', 'foogallery' ); ?></label>
 					</th>
 					<td>
-						<select id="FooGallerySettings_AlbumTemplate" name="<?php echo FOOGALLERY_ALBUM_META_TEMPLATE; ?>">
+						<select id="FooGallerySettings_AlbumTemplate" name="<?php echo esc_attr( FOOGALLERY_ALBUM_META_TEMPLATE ); ?>">
 							<?php
 							foreach ( $available_templates as $template ) {
 								$selected = ($album_template === $template['slug']) ? 'selected' : '';
-								echo "<option {$selected} value=\"{$template['slug']}\">{$template['name']}</option>";
+								echo "<option " . esc_attr( $selected ) . " value=\"" . esc_attr( $template['slug'] ) . "\">" . esc_html( $template['name'] ) . "</option>";
 							}
 							?>
 						</select>
 						<br />
-						<small><?php _e( 'The album layout that will be used when the album is output to the frontend.', 'foogallery' ); ?></small>
+						<small><?php esc_html_e( 'The album layout that will be used when the album is output to the frontend.', 'foogallery' ); ?></small>
 					</td>
 				</tr>
 				<?php
@@ -335,24 +335,24 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 						if ( isset($field['section']) && $field['section'] !== $section ) {
 							$section = $field['section'];
 							?>
-							<tr class="<?php echo $class; ?>" <?php echo $field_visibility; ?>>
-								<td colspan="2"><h4><?php echo $section; ?></h4></td>
+							<tr class="<?php echo esc_attr( $class ); ?>" <?php echo $field_visibility; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+								<td colspan="2"><h4><?php echo esc_html( $section ); ?></h4></td>
 							</tr>
 						<?php }
 						if (isset($field['type']) && 'help' == $field['type'] && $hide_help) {
 							continue; //skip help if the 'hide help' setting is turned on
 						}
 						?>
-						<tr class="<?php echo $class; ?>" <?php echo $field_visibility; ?>>
+						<tr class="<?php echo esc_attr( $class ); ?>" <?php echo $field_visibility; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 							<?php if ( isset($field['type']) && 'help' == $field['type'] ) { ?>
 								<td colspan="2">
 									<div class="foogallery-help">
-										<?php echo $field['desc']; ?>
+										<?php echo wp_kses_post( $field['desc'] ); ?>
 									</div>
 								</td>
 							<?php } else { ?>
 								<th>
-									<label for="FooGallerySettings_<?php echo $template['slug'] . '_' . $field['id']; ?>"><?php echo $field['title']; ?></label>
+									<label for="FooGallerySettings_<?php echo esc_attr( $template['slug'] . '_' . $field['id'] ); ?>"><?php echo esc_html( $field['title'] ); ?></label>
 								</th>
 								<td>
 									<?php do_action( 'foogallery_render_gallery_template_field', $field, $album, $template ); ?>
@@ -374,13 +374,13 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 			$example = '<code>#foogallery-album-' . $post->ID . ' { }</code>';
 			?>
 			<p>
-				<?php printf( __( 'Add any custom CSS to target this specific album. For example %s', 'foogallery' ), $example ); ?>
+				<?php printf( esc_html__( 'Add any custom CSS to target this specific album. For example %s', 'foogallery' ), wp_kses_post( $example ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			</p>
 			<table id="table_styling" class="form-table">
 				<tbody>
 					<tr>
 						<td>
-							<textarea class="foogallery_metabox_custom_css" name="<?php echo FOOGALLERY_META_CUSTOM_CSS; ?>" type="text"><?php echo $custom_css; ?></textarea>
+							<textarea class="foogallery_metabox_custom_css" name="<?php echo esc_attr( FOOGALLERY_META_CUSTOM_CSS ); ?>" type="text"><?php echo esc_textarea( $custom_css ); ?></textarea>
 						</td>
 					</tr>
 				</tbody>
@@ -489,13 +489,13 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 
 										break;
 								} ?>
-							<tr class="foogallery-gallery-detail-fields-<?php echo $field; ?>">
+							<tr class="foogallery-gallery-detail-fields-<?php echo esc_attr( $field ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>">
 								<th scope="row" class="label">
-									<label for="foogallery-gallery-detail-fields-<?php echo $field; ?>"><?php echo $values['label']; ?></label>
+									<label for="foogallery-gallery-detail-fields-<?php echo esc_attr( $field ); ?>"><?php echo esc_html( $values['label'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></label>
 								</th>
 								<td>
-									<?php echo $values['html']; ?>
-									<?php if ( !empty( $values['help'] ) ) { ?><p class="help"><?php echo $values['help']; ?></p><?php } ?>
+									<?php echo $values['html']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic field HTML ?>
+									<?php if ( !empty( $values['help'] ) ) { ?><p class="help"><?php echo wp_kses_post( $values['help'] ); ?></p><?php } ?>
 								</td>
 							</tr>
 							<?php } ?>
@@ -503,7 +503,7 @@ if ( ! class_exists( 'FooGallery_Admin_Album_MetaBoxes' ) ) {
 					</table>
 					</form><?php
 				} else {
-					echo '<h2>' . __( 'Invalid Gallery!', 'foogallery' ) . '</h2>';
+					echo '<h2>' . esc_html__( 'Invalid Gallery!', 'foogallery' ) . '</h2>';
 				}
 			}
 			die();
