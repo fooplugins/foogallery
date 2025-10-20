@@ -132,8 +132,8 @@ if ( ! class_exists( 'FooGallery_Debug' ) ) {
 			?>
 			<div class="foogallery-help">
 				<i class="dashicons dashicons-editor-help"></i>
-				<h4><?php _e( 'Why am I seeing this?', 'foogallery' ); ?></h4>
-				<p><?php _e( 'This is a debugging tool that will output some information about the gallery being edited. This information is sometimes requested for support queries or used for developement purposes only. To hide this, disable debugging under Settings -> Advanced.', 'foogallery' ); ?></p>
+				<h4><?php esc_html_e( 'Why am I seeing this?', 'foogallery' ); ?></h4>
+				<p><?php esc_html_e( 'This is a debugging tool that will output some information about the gallery being edited. This information is sometimes requested for support queries or used for developement purposes only. To hide this, disable debugging under Settings -> Advanced.', 'foogallery' ); ?></p>
 			</div>
 			<?php
 			
