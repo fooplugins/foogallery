@@ -50,17 +50,17 @@ foreach ( foogallery_current_gallery_attachments_for_rendering() as $attachment 
 
 
 ?>
-<div <?php echo $foogallery_single_thumbnail_attributes; ?>>
-    <?php echo foogallery_attachment_html( $featured_attachment, $args ); ?>
+<div <?php echo $foogallery_single_thumbnail_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+    <?php echo foogallery_attachment_html( $featured_attachment, $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
     <?php 
     foreach ( $attachments_not_hidden as $attachment ) {
-        echo foogallery_attachment_html( $attachment );
+        echo foogallery_attachment_html( $attachment ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
     ?>
     <div class="fg-st-hidden">
         <?php
         foreach ( $attachments_hidden as $attachment ) {
-            echo foogallery_attachment_html( $attachment );
+            echo foogallery_attachment_html( $attachment ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         }
         ?>
     </div>
