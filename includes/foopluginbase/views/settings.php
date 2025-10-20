@@ -15,7 +15,7 @@ $plugin_slug = $plugin_info['slug'];
 $summary = $this->apply_filters( $plugin_slug . '_admin_settings_page_summary', '' );
 
 ?>
-<div class="wrap" id="<?php echo $plugin_slug; ?>-settings">
+<div class="wrap" id="<?php echo esc_attr( $plugin_slug ); ?>-settings">
 	<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
 	<?php
         //only show the settings messages if less than WP3.5
@@ -31,8 +31,8 @@ $summary = $this->apply_filters( $plugin_slug . '_admin_settings_page_summary', 
 			echo esc_html( $summary );
 		}
     ?>
-	<div id="<?php echo $plugin_slug; ?>-settings-wrapper">
-		<div id="<?php echo $plugin_slug; ?>-settings-main">
+	<div id="<?php echo esc_attr( $plugin_slug ); ?>-settings-wrapper">
+		<div id="<?php echo esc_attr( $plugin_slug ); ?>-settings-main">
 	<form action="options.php" method="post">
 		<?php settings_fields($plugin_slug); ?>
                 <?php
@@ -46,7 +46,7 @@ $summary = $this->apply_filters( $plugin_slug . '_admin_settings_page_summary', 
                     $first = true;
                     foreach ($tabs as $tab) {
                         $class = $first ? "nav-tab nav-tab-active" : "nav-tab";
-                        echo "<a href='#{$tab['id']}' class='$class'>{$tab['title']}</a>";
+                        echo "<a href='#" . esc_attr( $tab['id'] ) . "' class='" . esc_attr( $class ) . "'>" . esc_html( $tab['title'] ) . "</a>"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 							if ( $first ) {
 								$first = false;
 							}
@@ -59,11 +59,11 @@ $summary = $this->apply_filters( $plugin_slug . '_admin_settings_page_summary', 
                     foreach ($tabs as $tab) {
                         $style = $first ? "" : "style='display:none'";
 
-                        echo "<div class='nav-container' id='{$tab['id']}_tab' $style>";
+                        echo "<div class='nav-container' id='" . esc_attr( $tab['id'] ) . "_tab' " . $style . ">"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 						foreach ( (array) $wp_settings_sections[$plugin_slug] as $section ) {
 							if (in_array($section['id'], $tab['sections'])) {
-								echo "<h3>{$section['title']}</h3>\n";
+								echo "<h3>" . esc_html( $section['title'] ) . "</h3>\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 								call_user_func($section['callback'], $section);
 								if ( !isset($wp_settings_fields) || !isset($wp_settings_fields[$plugin_slug]) || !isset($wp_settings_fields[$plugin_slug][$section['id']]) ) {
 									continue;
@@ -88,16 +88,16 @@ $summary = $this->apply_filters( $plugin_slug . '_admin_settings_page_summary', 
                 ?>
 		<p class="submit">
 					<input name="submit" class="button-primary" type="submit"
-						   value="<?php _e( 'Save Changes', $plugin_slug ); ?>"/>
-					<input name="<?php echo $plugin_slug; ?>[reset-defaults]"
-						   onclick="return confirm('<?php _e( 'Are you sure you want to restore all settings back to their default values?', $plugin_slug ); ?>');"
+						   value="<?php esc_attr_e( 'Save Changes', $plugin_slug ); ?>"/>
+					<input name="<?php echo esc_attr( $plugin_slug ); ?>[reset-defaults]"
+						   onclick="return confirm('<?php esc_attr_e( 'Are you sure you want to restore all settings back to their default values?', $plugin_slug ); ?>');"
 						   class="button-secondary" type="submit"
-						   value="<?php _e( 'Restore Defaults', $plugin_slug ); ?>"/>
+						   value="<?php esc_attr_e( 'Restore Defaults', $plugin_slug ); ?>"/>
 			<?php do_action($plugin_slug . '_admin_settings_buttons') ?>
 		</p>
 	</form>
 		</div>
-		<div id="<?php echo $plugin_slug; ?>-settings-sidebar" class="postbox-container">
+		<div id="<?php echo esc_attr( $plugin_slug ); ?>-settings-sidebar" class="postbox-container">
 			<?php do_action($plugin_slug . '_admin_settings_sidebar'); ?>
 		</div>
 	</div>
