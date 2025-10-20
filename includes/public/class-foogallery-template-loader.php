@@ -31,14 +31,14 @@ class FooGallery_Template_Loader {
 
 		if ( false === $current_foogallery ) {
 			//we could not find the gallery!
-			_e( 'The gallery was not found!', 'foogallery' );
+			esc_html_e( 'The gallery was not found!', 'foogallery' );
 			$current_foogallery = null;
 			return;
 		}
 
 		// check if the gallery is password protected
 		if ( post_password_required( $current_foogallery->_post ) ) {
-			echo get_the_password_form( $current_foogallery->_post );
+			echo get_the_password_form( $current_foogallery->_post ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			$current_foogallery = null;
 			return;
 		}
@@ -149,7 +149,7 @@ class FooGallery_Template_Loader {
 				do_action( "foogallery_loaded_template-($current_foogallery_template)", $current_foogallery );
 			} else {
 				//we could not find a template!
-				_e( 'No gallery layout found!', 'foogallery' );
+				esc_html_e( 'No gallery layout found!', 'foogallery' );
 			}
 		}
 
@@ -326,7 +326,7 @@ class FooGallery_Template_Loader {
 			// @formatter:off
 			?>
 <style type="text/css">
-<?php echo implode( "\n", $css ); ?>
+<?php echo implode( "\n", $css ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 </style>
 			<?php
 			// @formatter:on
