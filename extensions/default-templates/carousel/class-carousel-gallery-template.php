@@ -52,6 +52,7 @@ if ( ! class_exists( 'FooGallery_Carousel_Gallery_Template' ) ) {
 		        $min  = is_array( $field['value'] ) ? intval( $field['value']['min'] ) : -40;
 				$max = is_array( $field['value'] ) ? intval( $field['value']['max'] ): -20;
 				$units = is_array( $field['value'] ) ? $field['value']['units'] : '%';
+				// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped -- Form field generation
 				echo '<label for="FooGallerySettings_' . $id . '_min">' . __( 'Min', 'foogallery' ) . '</label>&nbsp;';
 				echo '<input class="small-text" type="number" step="1" min="-1000" id="FooGallerySettings_' . $id . '_min" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '][min]" value="' . esc_attr( $min ) . '" />';
 				echo '&nbsp;&nbsp;<label for="FooGallerySettings_' . $id . '_max">' . __( 'Max', 'foogallery' ) . '</label>&nbsp;';
@@ -76,6 +77,7 @@ if ( ! class_exists( 'FooGallery_Carousel_Gallery_Template' ) ) {
 				<?php
 				echo '&nbsp;&nbsp;<a data-min="-40" data-max="-20" data-units="%" class="foogallery-field-carousel-gutter-preset" href="#" >' . __( 'Preset 1', 'foogallery' ) . '</a>';
 				echo '&nbsp;&nbsp;<a data-min="5" data-max="10" data-units="px" class="foogallery-field-carousel-gutter-preset" href="#" >' . __( 'Preset 2', 'foogallery' ) . '</a>';
+				// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 		}
 
