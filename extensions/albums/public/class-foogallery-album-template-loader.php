@@ -30,7 +30,7 @@ class FooGallery_Album_Template_Loader {
 		$current_foogallery_album = $this->find_album( $args );
 
 		if ( false === $current_foogallery_album ) {
-			_e( 'Could not load the album!', 'foogallery' );
+			esc_html_e( 'Could not load the album!', 'foogallery' );
 			return;
 		}
 
@@ -88,7 +88,7 @@ class FooGallery_Album_Template_Loader {
 
 			} else {
 				//we could not find a template!
-				_e( 'No album layout found!', 'foogallery' );
+				esc_html_e( 'No album layout found!', 'foogallery' );
 			}
 		}
 	}
