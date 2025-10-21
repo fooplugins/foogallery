@@ -146,7 +146,7 @@ if ( ! class_exists( 'FooGallery_Advanced_Gallery_Settings' ) ) {
 
 			if ( $current_foogallery === $gallery ) {
                 $custom_attribute_key = sanitize_title( foogallery_gallery_template_setting( 'custom_attribute_key', '' ) );
-                $custom_attribute_value = sanitize_html_class( foogallery_gallery_template_setting( 'custom_attribute_value', '' ) );
+                $custom_attribute_value = sanitize_text_field( foogallery_gallery_template_setting( 'custom_attribute_value', '' ) );
 
                 if ( !empty( $custom_attribute_key ) && !empty( $custom_attribute_value ) ) {
 
