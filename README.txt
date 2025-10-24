@@ -4,7 +4,7 @@ Donate link: https://fooplugins.com
 Tags: gallery, image-gallery, photo-gallery, wordpress-gallery, lightbox
 Requires at least: 5.3
 Tested up to: 6.8
-Stable tag: 3.0.0
+Stable tag: 3.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -270,6 +270,13 @@ Yes. FooGallery does not collect visitor data, and admin tracking is optional.
 Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 3.0.2 =
+
+* Date Updated : 24 Oct 2025
+[//]: # fs_premium_only_begin
+* Fixed: [Expert Plan] Custom captions show blank in certain edge cases.
+[//]: # fs_premium_only_end
 
 = 3.0.1 =
 
