@@ -271,11 +271,18 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 3.0.1 =
+
+This is a minor bug fix release, to address some issues with gallery sorting. If you sort your galleries any way other than the default, then you need to update.
+
+* Date Updated : 24 Oct 2025
+* Fixed: Sorting attachments by date and modified was not working.
+
 = 3.0.0 =
 
 This is a major update, where we have modernized every gallery layout, introduced a gallery layout selector and made many more improvements.
 
-* Date Updated : 13 Oct 2025
+* Date Updated : 21 Oct 2025
 * Change : Gallery Templates are now called Gallery Layouts.
 * New : Added visual gallery layout selector in gallery edit page. (MAJOR IMPROVEMENT!!)
 * New : Added 6 more hover effect icons.
