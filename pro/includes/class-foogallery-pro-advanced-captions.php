@@ -15,7 +15,26 @@ if ( ! class_exists( 'FooGallery_Pro_Advanced_Captions' ) ) {
 
             //add custom captions
             add_filter( 'foogallery_build_attachment_html_caption_custom', array( &$this, 'customize_captions' ), 30, 3 );
+
+			//adjust the caption data options
+			add_filter( 'foogallery_build_container_data_options', array( $this, 'adjust_caption_data_options' ), 20, 3 );
         }
+
+		function adjust_caption_data_options( $options, $gallery, $attributes ) {
+			$caption_type = foogallery_gallery_template_setting( 'captions_type', '' );
+
+            if ( 'custom' === $caption_type ) {
+				//If we are using custom captions, always show the caption description (which is used for custom captions)
+				$options['item']['showCaptionTitle']       = false;
+				$options['item']['showCaptionDescription'] = true;
+
+				//Remove the caption length options
+				unset($options['item']['maxCaptionLength']);
+				unset($options['item']['maxDescriptionLength']);
+			}
+
+			return $options;
+		}
 
         function build_custom_captions_help() {
         	global $foogallery_custom_caption_help_html;

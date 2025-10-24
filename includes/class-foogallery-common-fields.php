@@ -821,8 +821,8 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 				$caption_title = foogallery_gallery_template_setting( 'caption_title_source', '' );
 				$caption_desc  = foogallery_gallery_template_setting( 'caption_desc_source', '' );
 
-				$options['item']['showCaptionTitle']       = $caption_title != 'none';
-				$options['item']['showCaptionDescription'] = $caption_desc != 'none';
+				$options['item']['showCaptionTitle']       = $caption_title !== 'none';
+				$options['item']['showCaptionDescription'] = $caption_desc !== 'none';
 
 				$captions_limit_length = foogallery_gallery_template_setting( 'captions_limit_length', '' );
 
