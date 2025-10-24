@@ -2483,11 +2483,11 @@ function foogallery_is_preview() {
 /**
  * Sort the retrieved attachment posts after the query has executed.
  *
- * @param array      $attachment_posts Array of WP_Post objects for the attachments.
- * @param string     $orderby          Orderby clause used for the query.
- * @param string     $order            Order clause used for the query.
+ * @param FooGalleryAttachment[] $attachments Array of attachment objects.
+ * @param string $orderby Orderby clause used for the query.
+ * @param string $order Order clause used for the query.
  *
- * @return array Sorted array of WP_Post objects.
+ * @return FooGalleryAttachment[] Sorted array of attachment objects.
  */
 function foogallery_sort_attachments( $attachments, $orderby, $order ) {
 	if ( empty( $attachments ) ) {
@@ -2499,8 +2499,10 @@ function foogallery_sort_attachments( $attachments, $orderby, $order ) {
 	switch ( $orderby ) {
 		case 'date':
 			usort( $attachments, function ( $a, $b ) use ( $order ) {
-				$first  = strtotime( ! empty( $a->post_date_gmt ) ? $a->post_date_gmt : $a->post_date ) ?: 0;
-				$second = strtotime( ! empty( $b->post_date_gmt ) ? $b->post_date_gmt : $b->post_date ) ?: 0;
+				$first_source  = $a->date ?? '';
+				$second_source = $b->date ?? '';
+				$first  = strtotime( $first_source ) ?: 0;
+				$second = strtotime( $second_source ) ?: 0;
 				$comparison = 0;
 
 				if ( $first < $second ) {
@@ -2514,8 +2516,10 @@ function foogallery_sort_attachments( $attachments, $orderby, $order ) {
 			break;
 		case 'modified':
 			usort( $attachments, function ( $a, $b ) use ( $order ) {
-				$first  = strtotime( ! empty( $a->post_modified_gmt ) ? $a->post_modified_gmt : $a->post_modified ) ?: 0;
-				$second = strtotime( ! empty( $b->post_modified_gmt ) ? $b->post_modified_gmt : $b->post_modified ) ?: 0;
+				$first_source  = $a->modified ?? '';
+				$second_source = $b->modified ?? '';
+				$first  = strtotime( $first_source ) ?: 0;
+				$second = strtotime( $second_source ) ?: 0;
 				$comparison = 0;
 
 				if ( $first < $second ) {
@@ -2529,7 +2533,7 @@ function foogallery_sort_attachments( $attachments, $orderby, $order ) {
 			break;
 		case 'title':
 			usort( $attachments, function ( $a, $b ) use ( $order ) {
-				$comparison = strnatcasecmp( $a->post_title, $b->post_title );
+				$comparison = strnatcasecmp( $a->title ?? '', $b->title ?? '' );
 				if ( 'ASC' === $order ) {
 					return $comparison;
 				}
