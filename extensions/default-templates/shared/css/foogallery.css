@@ -4588,6 +4588,11 @@ html.fg-panel-no-scroll body {
 	padding: 16px 0 0 0;
 }
 
+/* Transparent Overlays */
+.fg-masonry.fg-captions-bottom.fg-transparent-overlays .fg-caption {
+    text-shadow: none;
+}
+
 /* Transparent Theme */
 .fg-masonry.fg-transparent .fg-item-inner {
 	background-color: transparent;
@@ -4915,6 +4920,10 @@ html.fg-panel-no-scroll body {
     padding: 0 0 16px 0;
 }
 
+/* Transparent Overlays */
+.fg-simple_portfolio.fg-transparent-overlays .fg-caption {
+    text-shadow: none;
+}
 /* Transparent Theme */
 .fg-simple_portfolio.fg-transparent .fg-item-inner {
     background-color: transparent;
@@ -5085,6 +5094,11 @@ html.fg-panel-no-scroll body {
 }
 .foogallery.fg-dark.fg-preset.fg-polaroid .fg-caption-title {
 	color: #FFF;
+}
+
+/* Transparent Overlays */
+.foogallery.fg-preset.fg-polaroid.fg-transparent-overlays .fg-caption {
+    text-shadow: none;
 }
 
 /* Handle Border Sizing */
