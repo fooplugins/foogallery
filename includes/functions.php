@@ -153,8 +153,7 @@ function foogallery_get_default_options() {
 		'gallery_sorting'            => '',
 		'datasource'                 => 'media_library',
         'advanced_attachment_modal'  => 'on',
-		'hide_editor_button'         => 'on',
-		'enable_custom_ready'        => 'on'
+		'hide_editor_button'         => 'on'
 	);
 
 	// A handy filter to override the defaults.
