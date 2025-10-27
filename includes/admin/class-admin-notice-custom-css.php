@@ -42,10 +42,14 @@ if ( ! class_exists( 'FooGallery_Admin_Notice_CustomCSS' ) ) {
 
                 $index = foogallery_admin_fields_find_index_of_field( $settings['settings'], 'custom_js' );
 
+                $link_html = '<a target="_blank" href="' . esc_url( 'https://fooplugins.com/documentation/foogallery/troubleshooting-foogallery/foogallery-v3-0-custom-css-migration-guide/' ) . '">' . __( 'Custom CSS v3 Migration Guide', 'foogallery' ) . '</a>';
+
                 $new_settings[] = array(
                     'id'      => 'custom_css_update',
-                    'title'   => __( 'Custom CSS Update!', 'foogallery' ),
-                    'desc'    => __( 'We found outdated custom CSS that needs to be updated. Since FooGallery update v2.5, custom CSS related to captions (specifically when using `fg-caption`), has changed. You will need to update your custom CSS. Please contact support if you need assistance.', 'foogallery' ),
+                    'title'   => __( 'Custom CSS Review!', 'foogallery' ),
+                    'desc'    => __( 'We found custom CSS that needs to be reviewed. Since FooGallery update v3, custom CSS related to captions (specifically when using `fg-caption`), nees to be reivewed and in some cases updated.', 'foogallery' ) . '<br />' . 
+                        __( 'Changes are not always needed, so if you review your Custom CSS and all seems correct, you can safely dismiss the admin notice, and ignore this message.', 'foogallery' ) . '<br />' . 
+                        sprintf( __( 'For more info, please read our %s.', 'foogallery' ), $link_html ),
                     'type'    => 'custom_css_update',
                     'tab'     => 'custom_assets',
                 );
@@ -67,7 +71,7 @@ if ( ! class_exists( 'FooGallery_Admin_Notice_CustomCSS' ) ) {
                     $galleries = $option['galleries'];
                     if ( count( $galleries ) > 0 ) {
                         ?>
-                        <p><?php _e( 'You will need to update the custom CSS on the following galleries:', 'foogallery' ); ?></p>
+                        <p><?php _e( 'Please review the custom CSS on the following galleries:', 'foogallery' ); ?></p>
                         <ul class="ul-disc">
                             <?php foreach ( $galleries as $gallery_id => $gallery_name ) { ?>
                                 <li><a href="<?php echo get_edit_post_link( $gallery_id ); ?>"><?php echo $gallery_name; ?></a></li>
@@ -77,7 +81,7 @@ if ( ! class_exists( 'FooGallery_Admin_Notice_CustomCSS' ) ) {
                     }
                     if ( $option['setting'] ) {
                         ?>
-                        <p><?php _e( 'You have outdated custom CSS saved in the Custom Stylesheet setting below that needs to be updated.', 'foogallery' ); ?></p>
+                        <p><?php _e( 'Please review the custom CSS saved in the Custom Stylesheet setting below.', 'foogallery' ); ?></p>
                         <?php
                     }
                 }
@@ -135,21 +139,21 @@ if ( ! class_exists( 'FooGallery_Admin_Notice_CustomCSS' ) ) {
             $url = foogallery_admin_settings_url() . '#custom_assets';
             $link = '<a href="'. $url . '">' . __( 'FooGallery Settings', 'foogallery' ) . '</a>';
             if ( is_array( $option ) && count( $option ) > 0 ) { ?>
-                <h3><?php _e( 'FooGallery - Custom CSS Update Required', 'foogallery' ); ?></h3>
+                <h3><?php _e( 'FooGallery - Custom CSS Review Required', 'foogallery' ); ?></h3>
                 <?php
                     $galleries = $option['galleries'];
                     if ( count( $galleries ) > 0 ) {
                         ?>
-                        <p><?php printf( __( 'We found outdated custom CSS in %s galleries that needs to be updated.', 'foogallery' ), count( $galleries ) ); ?></p>
+                        <p><?php printf( __( 'We found custom CSS in %s galleries that needs to be reviewed.', 'foogallery' ), count( $galleries ) ); ?></p>
                         <?php
                     }
                     if ( $option['setting'] ) {
                         ?>
-                        <p><?php printf( __( 'You have outdated custom CSS saved in settings that needs to be updated.', 'foogallery' ) ); ?></p>
+                        <p><?php printf( __( 'You have custom CSS saved in settings that needs to be reviewed.', 'foogallery' ) ); ?></p>
                         <?php
                     }
                 ?>
-                <p><?php printf( __( 'You will need to update your custom CSS! Visit %s to see what needs updating', 'foogallery' ), $link ); ?></p>
+                <p><?php printf( __( 'We have made some changes in v3 that could potentially affect your custom CSS. Visit %s to see what needs to be reviewed.', 'foogallery' ), $link ); ?></p>
             <?php }
         }
 
