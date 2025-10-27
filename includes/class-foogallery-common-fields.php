@@ -763,6 +763,9 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 				//add the gallery template core class
 				$classes[] = 'fg-' . $gallery->gallery_template;
 
+				//always add the fg-ready class, to avoid some javascript errors.
+				$classes[] = 'fg-ready';
+
 				//get some default classes from common gallery settings
 				$classes[] = foogallery_gallery_template_setting( 'theme', 'fg-light' );
 				$classes[] = foogallery_gallery_template_setting( 'border_size', 'fg-border-thin' );
@@ -790,10 +793,6 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 				}
 
 				$classes[] = foogallery_gallery_template_setting( 'caption_alignment', '' );
-
-				if ( 'on' === foogallery_get_setting( 'enable_custom_ready', 'on' ) ) {
-                    $classes[] = 'fg-ready';
-                }
 
 				if ( 'preset' === foogallery_gallery_template_setting( 'hover_effect_type', '' ) ) {
 					$classes[] = foogallery_gallery_template_setting( 'hover_effect_preset', 'fg-preset fg-brad' );
