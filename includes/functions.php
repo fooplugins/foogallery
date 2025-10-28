@@ -90,7 +90,9 @@ function foogallery_permalink() {
 function foogallery_get_setting( $key, $default = false ) {
 	$foogallery = FooGallery_Plugin::get_instance();
 
-	return $foogallery->options()->get( $key, foogallery_get_default( $key, $default ) );
+	$value = $foogallery->options()->get( $key, foogallery_get_default( $key, $default ) );
+
+	return apply_filters( 'foogallery_get_setting-' . $key, $value, $default );
 }
 
 /**
