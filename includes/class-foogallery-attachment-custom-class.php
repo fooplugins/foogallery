@@ -44,14 +44,22 @@ if ( ! class_exists( 'FooGallery_Attachment_Custom_Class' ) ) {
 		function alter_class_attributes( $attr, $args, $object ) {
 			$custom_class = get_post_meta( $object->ID, '_foogallery_custom_class', true );
 
-			if ( ! isset( $attr[ 'class' ] ) ) {
+			//if the object is a FooGalleryAttachment and has a custom class, add it to the custom class
+			if ( $object instanceof FooGalleryAttachment && !empty( $object->custom_class ) ) {
+				if ( !empty( $custom_class ) ) {
+					$custom_class .= ' ';
+				}
+				$custom_class .= $object->custom_class;
+			}
+
+			if ( !isset( $attr[ 'class' ] ) ) {
 				$attr[ 'class' ] = $custom_class;
 			}else{
 				$attr[ 'class' ] .= ' ' . $custom_class;
 			}
 
 			//check for any special class names and do some magic!
-			if ( 'nolink' === $custom_class ) {
+			if ( strpos( $custom_class, 'nolink' ) !== false ) {
 				unset( $attr['href'] );
 			}
 

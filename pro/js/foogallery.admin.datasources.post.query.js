@@ -56,6 +56,7 @@ FooGallery.utils.ready(function ($) {
             "override_link_property": $('#override_link_property').val(),
             "override_desc_property": $('#override_desc_property').val(),
             "override_title_property": $('#override_title_property').val(),
+            "override_class_property": $('#override_class_property').val(),
             "taxonomy": $('#taxonomy').val(),
             "custom_target": $('#custom_target').val()
         };
@@ -70,6 +71,7 @@ FooGallery.utils.ready(function ($) {
         $('#foogallery-datasource-post-query-override_link_property').html( $('#override_link_property').val() );
         $('#foogallery-datasource-post-query-override_desc_property').html( $('#override_desc_property').val() );
         $('#foogallery-datasource-post-query-override_title_property').html( $('#override_title_property').val() );
+        $('#foogallery-datasource-post-query-override_class_property').html( $('#override_class_property').val() );
         $('#foogallery-datasource-post-query-taxonomy').html( $('#taxonomy').val() );
         $('#foogallery-datasource-post-query-custom_target').html( $('#custom_target').val() );
 

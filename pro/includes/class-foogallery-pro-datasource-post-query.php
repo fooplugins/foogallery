@@ -142,6 +142,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 			$override_link_property  = ! empty( $foogallery->datasource_value['override_link_property'] ) ? $foogallery->datasource_value['override_link_property'] : '';
 			$override_desc_property  = ! empty( $foogallery->datasource_value['override_desc_property'] ) ? $foogallery->datasource_value['override_desc_property'] : '';
 			$override_title_property = ! empty( $foogallery->datasource_value['override_title_property'] ) ? $foogallery->datasource_value['override_title_property'] : '';
+			$override_class_property = ! empty( $foogallery->datasource_value['override_class_property'] ) ? $foogallery->datasource_value['override_class_property'] : '';
 			$custom_target           = isset( $foogallery->datasource_value['custom_target'] ) ? sanitize_text_field( $foogallery->datasource_value['custom_target'] ) : '';
 			$taxonomy                = ! empty( $foogallery->datasource_value['taxonomy'] ) ? sanitize_key( $foogallery->datasource_value['taxonomy'] ) : '';
 
@@ -189,6 +190,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 				$url_override         = $this->get_override_property_value( $post, $override_link_property, $url );
 				$title_override       = $this->get_override_property_value( $post, $override_title_property, $post->post_title );
 				$description_override = $this->get_override_property_value( $post, $override_desc_property, $post->post_excerpt );
+				$class_override       = $this->get_override_property_value( $post, $override_class_property, '' );
 
 				$attachment->ID            = $post_thumbnail_id;
 				$attachment->title         = $title_override;
@@ -196,6 +198,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 				$attachment->caption       = $title_override;
 				$attachment->description   = $description_override;
 				$attachment->alt           = $title_override;
+				$attachment->custom_class  = $class_override;
 				$attachment->date          = !empty( $post->post_date_gmt ) ? $post->post_date_gmt : $post->post_date;
 				$attachment->modified      = !empty( $post->post_modified_gmt ) ? $post->post_modified_gmt : $post->post_modified;
 				$attachment->custom_url    = $url_override;
@@ -532,6 +535,19 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 						</td>
 					</tr>
 					<tr>
+						<th scope="row"><?php _e( 'Override Class Property', 'foogallery' ); ?></th>
+						<td>
+							<input
+								type="text"
+								class="regular-text foogallery_post_query_input"
+								name="override_class_property"
+								id="override_class_property"
+								value="<?php echo isset( $datasource_value['override_class_property'] ) ? esc_attr( $datasource_value['override_class_property'] ) : ''; ?>"
+							/>
+							<p class="description"><?php _e( 'Override the property of the post object to use for the CSS class(es). Classes will be added to the anchor link.', 'foogallery' ); ?></p>
+						</td>
+					</tr>
+					<tr>
 						<th scope="row"><?php _e( 'Override Help', 'foogallery' ); ?></th>
 						<td>
 							<p class="description"><?php _e( 'For all overrides, you can provide the name of a property of the post object to use as the value. For example, "post_title".', 'foogallery' ) ?></p>
@@ -579,6 +595,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 	                <?php echo __('Override Link Property : ', 'foogallery'); ?><span id="foogallery-datasource-post-query-override_link_property"><?php echo $override_link_property; ?></span><br />
 	                <?php echo __('Override Desc Property : ', 'foogallery'); ?><span id="foogallery-datasource-post-query-override_desc_property"><?php echo $override_desc_property; ?></span><br />
 	                <?php echo __('Override Title Property : ', 'foogallery'); ?><span id="foogallery-datasource-post-query-override_title_property"><?php echo $override_title_property; ?></span><br />
+	                <?php echo __('Override Class Property : ', 'foogallery'); ?><span id="foogallery-datasource-post-query-override_class_property"><?php echo $override_class_property; ?></span><br />
 	                <?php echo __('Taxonomy : ', 'foogallery'); ?><span id="foogallery-datasource-post-query-taxonomy"><?php echo $taxonomy; ?></span><br />
 	                <?php echo __('Custom Target : ', 'foogallery'); ?><span id="foogallery-datasource-post-query-custom_target"><?php echo $custom_target; ?></span><br />
                 </div>
