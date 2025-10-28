@@ -169,16 +169,28 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 				$query_args['post_status'] = 'inherit';
 			}
 
+			// Make some exceptions for foogalleries!
+			if ( FOOGALLERY_CPT_GALLERY === $postType ) {
+				unset( $query_args['meta_query'] );
+				$query_args['post__not_in'][] = $foogallery->ID;
+			}
+
 			$posts = get_posts( $query_args );
+			$attachments = array();
 
 			foreach ( $posts as $post ) {
 				$attachment = new FooGalleryAttachment();
 				$attachment->post_query_datasource_used = true;
-
-				$post_thumbnail_id = get_post_thumbnail_id( $post );
+				
 				if ( 'attachment' === $postType ) {
 					$post_thumbnail_id = $post->ID;
+				} elseif ( FOOGALLERY_CPT_GALLERY === $postType ) {
+					$foogallery = FooGallery::get_by_id( $post->ID );
+					$post_thumbnail_id = $foogallery->featured_attachment()->ID;
+				} else {
+					$post_thumbnail_id = get_post_thumbnail_id( $post );
 				}
+
 				$attachment->load_attachment_image_data( $post_thumbnail_id );
 
 				if ( $link_to == 'image' ) {
@@ -344,7 +356,8 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 		public function render_datasource_modal_content( $foogallery_id, $datasource_value ) {
 			?>
             <p>
-				<?php _e('Choose the settings for your gallery below. The gallery will be dynamically populated using the post query settings below.', 'foogallery' ); ?>
+				<?php _e('Choose the settings for your gallery below. The gallery will be dynamically populated using the post query settings below.', 'foogallery' ); ?><br />
+				<?php _e('Please Note : Only posts with a featured image will be displayed!', 'foogallery' ); ?>
             </p>
 	            <form action="" method="post" name="post_query_gallery_form">
                 <table class="form-table">
