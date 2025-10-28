@@ -166,6 +166,22 @@ if ( ! class_exists( 'FooGallery_Pro_Ribbons' ) ) {
         	return foogallery_current_gallery_get_cached_value( 'ribbons_hide' );
         }
 
+		function class_ribbon_data() {
+			if ( !foogallery_current_gallery_has_cached_value('class_ribbon_data') ) {
+
+				$class_ribbon_data = array(
+					'type' => foogallery_gallery_template_setting( 'add_class_ribbon' ),
+					'text' => foogallery_gallery_template_setting( 'class_ribbon_text' ),
+					'rule' => foogallery_gallery_template_setting( 'class_ribbon_rule' ),
+				);
+
+        		//set the data
+		        foogallery_current_gallery_set_cached_value( 'class_ribbon_data', $class_ribbon_data );
+	        }
+
+        	return foogallery_current_gallery_get_cached_value( 'class_ribbon_data' );
+		}
+
 		/**
 		 * Builds up ribbon HTML and adds it to the output.
 		 *
@@ -178,6 +194,24 @@ if ( ! class_exists( 'FooGallery_Pro_Ribbons' ) ) {
 		public function add_ribbon_html( $html, $foogallery_attachment, $args ) {
 			if ( $this->is_ribbons_hidden() ) {
 				return $html;
+			}
+
+			//Only add a class ribbon if we don't have a ribbon already, and we have a class on the attachment
+			if ( !isset( $foogallery_attachment->ribbon_type ) && !empty($foogallery_attachment->custom_class ) ) {
+
+				//check if we need to add a class ribbon
+				$class_ribbon_data = $this->class_ribbon_data();
+				if ( '' !== $class_ribbon_data['type'] ) {
+					$class_ribbon_rule = $class_ribbon_data['rule'];
+					$class_ribbon_text = $class_ribbon_data['text'];
+					if ( '' !== $class_ribbon_rule && '' !== $class_ribbon_text ) {
+						//only apply the ribbon if the class rule is found!
+						if ( strpos( $foogallery_attachment->custom_class, $class_ribbon_rule ) !== false ) {
+							$foogallery_attachment->ribbon_type = $class_ribbon_data['type'];
+							$foogallery_attachment->ribbon_text = esc_html( $class_ribbon_text );
+						}
+					}
+				}
 			}
 			
 			if ( isset( $foogallery_attachment->ribbon_type ) && isset( $foogallery_attachment->ribbon_text ) ) {
@@ -322,6 +356,60 @@ if ( ! class_exists( 'FooGallery_Pro_Ribbons' ) ) {
 					'data-foogallery-change-selector' => 'input',
 					'data-foogallery-preview'         => 'shortcode',
 					'data-foogallery-value-selector'  => 'input:checked',
+				),
+			);
+
+			$new_fields[] = array(
+				'id'       => 'add_class_ribbon',
+				'title'    => __( 'Add Custom Class Ribbon', 'foogallery' ),
+				'desc'     => __( 'Add a custom ribbon based on the custom class added to the attachment.', 'foogallery' ),
+				'section'  => __( 'Ecommerce', 'foogallery' ),
+				'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
+				'type'     => 'select',
+				'default'  => '',
+				'choices'  => self::get_ribbon_choices(),
+				'row_data' => array(
+					'data-foogallery-change-selector' => 'select',
+					'data-foogallery-preview'         => 'shortcode',
+					'data-foogallery-value-selector'  => 'select :selected',
+				),
+			);
+
+			$new_fields[] = array(
+				'id'       => 'class_ribbon_text',
+				'title'    => __( 'Custom Class Ribbon Text', 'foogallery' ),
+				'desc'     => __( 'Text for the custom class ribbon.', 'foogallery' ),
+				'section'  => __( 'Ecommerce', 'foogallery' ),
+				'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
+				'type'     => 'text',
+				'default'  => 'icon-star',
+				'row_data' => array(
+					'data-foogallery-hidden'                   => true,
+					'data-foogallery-show-when-field'          => 'add_class_ribbon',
+					'data-foogallery-show-when-field-operator' => '!==',
+					'data-foogallery-show-when-field-value'    => '',
+					'data-foogallery-change-selector'          => 'input',
+					'data-foogallery-preview'                  => 'shortcode',
+					'data-foogallery-value-selector'           => 'input:checked',
+				),
+			);
+
+			$new_fields[] = array(
+				'id'       => 'class_ribbon_rule',
+				'title'    => __( 'Custom Class Ribbon Rule', 'foogallery' ),
+				'desc'     => __( 'Which custom class should trigger the ribbon.', 'foogallery' ),
+				'section'  => __( 'Ecommerce', 'foogallery' ),
+				'subsection' => array( 'ecommerce-ribbons' => __( 'Ribbons', 'foogallery' ) ),
+				'type'     => 'text',
+				'default'  => 'featured',
+				'row_data' => array(
+					'data-foogallery-hidden'                   => true,
+					'data-foogallery-show-when-field'          => 'add_class_ribbon',
+					'data-foogallery-show-when-field-operator' => '!==',
+					'data-foogallery-show-when-field-value'    => '',
+					'data-foogallery-change-selector'          => 'input',
+					'data-foogallery-preview'                  => 'shortcode',
+					'data-foogallery-value-selector'           => 'input:checked',
 				),
 			);
 
