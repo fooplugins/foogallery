@@ -35,6 +35,35 @@ if ( ! class_exists( 'FooGallery_Pro_Buttons' ) ) {
 
 			//Add container class
 			add_filter( 'foogallery_build_class_attribute', array( $this, 'add_container_class' ), 10,  2 );
+
+			//Add any additional buttons to the attachments
+			add_filter( 'foogallery_attachments', array( $this, 'add_buttons_to_attachments' ), 10, 2 );
+		}
+
+		/**
+		 * Add any additional buttons to the attachments
+		 *
+		 * @param $attachments
+		 * @param $gallery
+		 *
+		 * @return mixed
+		 */
+		function add_buttons_to_attachments( &$attachments, $gallery ) {
+			$add_custom_button = foogallery_gallery_template_setting( 'add_custom_button' );
+
+			if ( !empty( $add_custom_button ) ) {
+				$custom_button_text = foogallery_gallery_template_setting( 'custom_button_text' );
+
+				foreach ( $attachments as $attachment ) {
+					$attachment->buttons[] = array(
+						'url'   => $attachment->custom_url,
+						'target' => $attachment->custom_target,
+						'text'  => esc_html( $custom_button_text ),
+					);
+				}
+			}
+
+			return $attachments;
 		}
 
 		/**
@@ -206,6 +235,8 @@ if ( ! class_exists( 'FooGallery_Pro_Buttons' ) ) {
 						$button_args['href'] = $button['url'];
 					}
 					if ( isset( $button['target'] ) && !empty( $button['target'] ) ) {
+						$button_args['target'] = $button['target'];
+					}
 					$button_html .= foogallery_html_opening_tag( 'a', $button_args );
 					$button_html .= isset( $button['text'] ) ? esc_html( $button['text'] ) : '';
 					$button_html .= '</a>';
@@ -324,6 +355,44 @@ if ( ! class_exists( 'FooGallery_Pro_Buttons' ) ) {
 					'data-foogallery-change-selector' => 'input',
 					'data-foogallery-preview'         => 'shortcode',
 					'data-foogallery-value-selector'  => 'input:checked',
+				),
+			);
+
+			$new_fields[] = array(
+				'id'       => 'add_custom_button',
+				'title'    => __( 'Add Custom Button', 'foogallery' ),
+				'desc'     => __( 'Add a custom button to the gallery, using the Custom URL and Custom Target fields.', 'foogallery' ),
+				'section'  => __( 'Ecommerce', 'foogallery' ),
+				'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
+				'type'     => 'radio',
+				'default'  => '',
+				'choices'  => array(
+					'' => __( 'Disabled', 'foogallery' ),
+					'enabled' => __( 'Enabled', 'foogallery' ),
+				),
+				'row_data' => array(
+					'data-foogallery-change-selector' => 'input',
+					'data-foogallery-preview'         => 'shortcode',
+					'data-foogallery-value-selector'  => 'input:checked',
+				),
+			);
+
+			$new_fields[] = array(
+				'id'       => 'custom_button_text',
+				'title'    => __( 'Custom Button Text', 'foogallery' ),
+				'desc'     => __( 'Button text for the custom button.', 'foogallery' ),
+				'section'  => __( 'Ecommerce', 'foogallery' ),
+				'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
+				'type'     => 'text',
+				'default'  => __( 'Open', 'foogallery' ),
+				'row_data' => array(
+					'data-foogallery-hidden'                   => true,
+					'data-foogallery-show-when-field'          => 'add_custom_button',
+					'data-foogallery-show-when-field-operator' => '!==',
+					'data-foogallery-show-when-field-value'    => '',
+					'data-foogallery-change-selector'          => 'input',
+					'data-foogallery-preview'                  => 'shortcode',
+					'data-foogallery-value-selector'           => 'input:checked',
 				),
 			);
 
