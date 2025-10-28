@@ -203,7 +203,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'id'      => 'hide_editor_button',
 				'title'   => __( 'Classic Editor Button', 'foogallery' ),
 				'desc'    => sprintf( __( 'Either show or hide the "Add %s" button in the Classic editor.', 'foogallery' ), foogallery_plugin_name() ),
-				'default' => 'on',
+				'default' => foogallery_get_default( 'hide_editor_button', 'on' ),
 				'type'    => 'select',
 				'choices' => array(
 					'on'  => __( 'Hidden', 'foogallery' ),
@@ -218,7 +218,7 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 				'title'   => __( 'Advanced Attachment Modal', 'foogallery' ),
 				'desc'    => __( 'If enabled, this will use the advanced attachment modal which allows for faster and easier editing of attachment details, when creating your galleries.', 'foogallery' ),
 				'type'    => 'select',
-				'default' => 'on',
+				'default' => foogallery_get_default( 'advanced_attachment_modal', 'on' ),
 				'tab'     => 'general',
 				'section' => __( 'Admin', 'foogallery' ),
 				'choices' => array(
