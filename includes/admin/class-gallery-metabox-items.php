@@ -118,9 +118,12 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Items' ) ) {
 			<?php
 		}
 
-		public function render_empty_gallery_preview() {
+		public function render_empty_gallery_preview( $message = '' ) {
+			if ( empty($message) ) {
+				$message = __( 'Please add media to your gallery to see a preview!', 'foogallery' );
+			}
 			echo '<div class="foogallery-preview-empty" style="padding:20px; text-align: center">';
-			echo '<h3>' . __( 'Please add media to your gallery to see a preview!', 'foogallery' ) . '</h3>';
+			echo '<h3>' . $message . '</h3>';
 			echo '</div>';
 		}
 
@@ -210,7 +213,11 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Items' ) ) {
 			global $foogallery_gallery_preview;
 
 			if ( isset( $foogallery_gallery_preview ) && true === $foogallery_gallery_preview ) {
-				$this->render_empty_gallery_preview();
+				$message = '';
+				if ( foogallery_default_datasource() !== $foogallery->datasource_name ) {
+					$message = __( 'No items were found for this gallery.', 'foogallery' );
+				}
+				$this->render_empty_gallery_preview( $message );
 			}
 		}
 
