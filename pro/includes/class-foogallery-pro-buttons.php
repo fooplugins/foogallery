@@ -205,6 +205,7 @@ if ( ! class_exists( 'FooGallery_Pro_Buttons' ) ) {
 					if ( isset( $button['url'] ) && !empty( $button['url'] ) ) {
 						$button_args['href'] = $button['url'];
 					}
+					if ( isset( $button['target'] ) && !empty( $button['target'] ) ) {
 					$button_html .= foogallery_html_opening_tag( 'a', $button_args );
 					$button_html .= isset( $button['text'] ) ? esc_html( $button['text'] ) : '';
 					$button_html .= '</a>';
