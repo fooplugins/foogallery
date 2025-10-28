@@ -25,13 +25,15 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		}
 
 		function load_feature() {
+			if ( is_admin() ) {
+				// Set the settings icon for commerce.
+				add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons' ) );
+			}
+
             if ( foogallery_feature_enabled( 'foogallery-woocommerce' ) ) {
                 if ( is_admin() ) {
 					// Add extra fields to the templates.
 					add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_ecommerce_fields' ), 30, 2 );
-
-					// Set the settings icon for commerce.
-					add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons' ) );
 
 					// Add a cart icon to the hover icons.
 					add_filter( 'foogallery_gallery_template_common_thumbnail_fields_hover_effect_icon_choices', array( $this, 'add_cart_hover_icon' ) );
@@ -84,7 +86,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
                 add_filter( 'foogallery_build_custom_caption_placeholder_replacement', array( $this, 'build_product_captions' ), 10, 3 );
 
                 // Add button data to the json output
-                add_filter( 'foogallery_build_attachment_json', array( $this, 'add_button_to_json' ), 40, 6 );
+                add_filter( 'foogallery_build_attachment_json', array( $this, 'add_product_data_to_json' ), 40, 6 );
 
 				add_filter( 'foogallery_html_cache_disabled', array( $this, 'disable_html_cache' ), 10, 3 );
             }
@@ -161,7 +163,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		 *
 		 * @return mixed
 		 */
-		public function add_button_to_json(  $json_object, $foogallery_attachment, $args, $anchor_attributes, $image_attributes, $captions ) {
+		public function add_product_data_to_json(  $json_object, $foogallery_attachment, $args, $anchor_attributes, $image_attributes, $captions ) {
 			if ( isset( $foogallery_attachment->product ) && self::is_product( $foogallery_attachment->product ) ) {
 				$json_object->productId = $foogallery_attachment->product->get_id();
 			}
