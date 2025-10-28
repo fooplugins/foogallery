@@ -172,7 +172,6 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 
 			foreach ( $posts as $post ) {
 				$attachment = new FooGalleryAttachment();
-				$attachment->_post = $post;
 				$attachment->post_query_datasource_used = true;
 
 				$post_thumbnail_id = get_post_thumbnail_id( $post );
