@@ -293,6 +293,15 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 				$products = array();
 			}
 
+			//set the taxonomy on the gallery.
+			$taxonomy = $foogallery->get_setting( 'filtering_taxonomy', '' );
+			if ( $taxonomy === FOOGALLERY_ATTACHMENT_TAXONOMY_TAG ) {
+				$taxonomy = 'product_tag';
+			} else {
+				$taxonomy = 'product_cat';
+			}
+			$foogallery->taxonomy = $taxonomy;
+
 			$attachments = array();
 
 			/**
@@ -318,6 +327,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 				$attachment->load_attachment_image_data( $post_thumbnail_id );
 
 				$attachment->ID            = $post_thumbnail_id;
+				$attachment->post_id       = $product->get_id();
 				$attachment->title         = $product->get_title();
 				$attachment->has_metadata  = false;
 				$attachment->sort          = PHP_INT_MAX;

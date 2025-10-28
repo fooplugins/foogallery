@@ -150,6 +150,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 				$taxonomy = '';
 			}
 
+			if ( ! empty( $taxonomy ) ) {
+				$foogallery->taxonomy = $taxonomy;
+			}
+
 			$query_args = apply_filters( 'foogallery_datasource_post_query_arguments', array(
 				'posts_per_page' => $totalPosts,
 				'post_type'      => $postType,
@@ -205,6 +209,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 				$class_override       = $this->get_override_property_value( $post, $override_class_property, '' );
 
 				$attachment->ID            = $post_thumbnail_id;
+				$attachment->post_id       = $post->ID;
 				$attachment->title         = $title_override;
 				$attachment->has_metadata  = false;
 				$attachment->caption       = $title_override;
@@ -224,7 +229,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 					}
 
 					$attachment->post_query_taxonomy        = $taxonomy;
-					$attachment->post_query_taxonomy_terms  = array_map( 'strval', $terms );
+					$attachment->post_query_taxonomy_terms  = $terms;
 				}
 
 				$attachment = apply_filters( 'foogallery_datasource_post_query_build_attachment', $attachment, $post );

@@ -1228,6 +1228,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 		public function render_content( $taxonomy, $levels, $foogallery_id, $attachments ) {
 			echo '<div class="foogallery-multi-filtering-modal-content-inner">';
 
+			$terms = array();
+
 			if ( !empty( $attachments ) ) {
 				$attachment_ids = array_filter( array_map( 'absint', explode( ',', $attachments ) ) );
 				$terms = wp_get_object_terms( $attachment_ids, $taxonomy );
@@ -1331,9 +1333,28 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				$attachments = safe_get_from_request( 'attachments' );
 
 				if ( empty( $taxonomy ) ) {
+
 					//select the taxonomy that is chosen for the gallery
 					$foogallery = FooGallery::get_by_id( $foogallery_id );
-					if ( !$foogallery->is_new() ) {
+
+					if ( foogallery_default_datasource() !== $foogallery->datasource_name ) {
+						
+						//force the gallery to load it's attachments. This is needed for non media datasources.
+						//also, make the datasource "think" its in a preview to force a fresh load.
+						global $foogallery_gallery_preview;
+						$foogallery_gallery_preview = true;
+						$gallery_attachments = $foogallery->attachments();
+						$foogallery_gallery_preview = false;
+
+						//Always force the attachments to be empty for non media datasources, so all terms are loaded.
+						$attachments = '';
+
+						if ( isset( $foogallery->taxonomy ) ) {
+							$taxonomy = $foogallery->taxonomy;
+						}
+					}
+
+					if ( empty( $taxonomy ) && !$foogallery->is_new() ) {
 						$taxonomy = $foogallery->get_setting( 'filtering_taxonomy', '' );
 					}
 				}
