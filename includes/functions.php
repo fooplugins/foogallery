@@ -2545,9 +2545,44 @@ function foogallery_sort_attachments( $attachments, $orderby, $order ) {
 		case 'rand':
 			shuffle( $attachments );
 			break;
-		default:
-			// For 'post__in' and any other unsupported orderby values we keep the original order.
-			break;
+	default:
+		// For 'post__in' and any other unsupported orderby values we keep the original order when no sort override is set.
+
+		// Check if the attachments have a sort property, and use that to sort.
+		$sortable_attachments = array_filter(
+			$attachments,
+			static function ( $attachment ) {
+				return isset( $attachment->sort ) && '' !== $attachment->sort && null !== $attachment->sort;
+			}
+		);
+
+		if ( ! empty( $sortable_attachments ) ) {
+			usort( $attachments, function ( $a, $b ) use ( $order ) {
+				$first  = $a->sort ?? '';
+				$second = $b->sort ?? '';
+
+				$first_numeric  = is_numeric( $first );
+				$second_numeric = is_numeric( $second );
+
+				$comparison = 0;
+
+				if ( $first_numeric || $second_numeric ) {
+					$first  = $first_numeric ? (float) $first : PHP_INT_MAX;
+					$second = $second_numeric ? (float) $second : PHP_INT_MAX;
+
+					if ( $first < $second ) {
+						$comparison = -1;
+					} elseif ( $first > $second ) {
+						$comparison = 1;
+					}
+				} else {
+					$comparison = strnatcasecmp( (string) $first, (string) $second );
+				}
+
+				return $comparison;
+			} );
+		}
+		break;
 	}
 
 	return apply_filters( 'foogallery_sort_attachments', $attachments, $orderby, $order );
