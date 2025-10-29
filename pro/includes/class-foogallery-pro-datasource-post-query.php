@@ -143,6 +143,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 			$override_desc_property  = ! empty( $foogallery->datasource_value['override_desc_property'] ) ? $foogallery->datasource_value['override_desc_property'] : '';
 			$override_title_property = ! empty( $foogallery->datasource_value['override_title_property'] ) ? $foogallery->datasource_value['override_title_property'] : '';
 			$override_class_property = ! empty( $foogallery->datasource_value['override_class_property'] ) ? $foogallery->datasource_value['override_class_property'] : '';
+			$override_sort_property  = ! empty( $foogallery->datasource_value['override_sort_property'] ) ? $foogallery->datasource_value['override_sort_property'] : '';
 			$custom_target           = isset( $foogallery->datasource_value['custom_target'] ) ? sanitize_text_field( $foogallery->datasource_value['custom_target'] ) : '';
 			$taxonomy                = ! empty( $foogallery->datasource_value['taxonomy'] ) ? sanitize_key( $foogallery->datasource_value['taxonomy'] ) : '';
 
@@ -207,6 +208,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 				$title_override       = $this->get_override_property_value( $post, $override_title_property, $post->post_title );
 				$description_override = $this->get_override_property_value( $post, $override_desc_property, $post->post_excerpt );
 				$class_override       = $this->get_override_property_value( $post, $override_class_property, '' );
+				$sort_override        = $this->get_override_property_value( $post, $override_sort_property, '' );
 
 				$attachment->ID            = $post_thumbnail_id;
 				$attachment->post_id       = $post->ID;
@@ -220,7 +222,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 				$attachment->modified      = !empty( $post->post_modified_gmt ) ? $post->post_modified_gmt : $post->post_modified;
 				$attachment->custom_url    = $url_override;
 				$attachment->custom_target = $custom_target;
-				$attachment->sort          = '';
+				$attachment->sort          = '' !== $sort_override ? $sort_override : '';
 
 				if ( ! empty( $taxonomy ) ) {
 					$terms = wp_get_post_terms( $post->ID, $taxonomy, array( 'fields' => 'names' ) );
@@ -566,6 +568,19 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 						</td>
 					</tr>
 					<tr>
+						<th scope="row"><?php _e( 'Override Sort Property', 'foogallery' ); ?></th>
+						<td>
+							<input
+								type="text"
+								class="regular-text foogallery_post_query_input"
+								name="override_sort_property"
+								id="override_sort_property"
+								value="<?php echo isset( $datasource_value['override_sort_property'] ) ? esc_attr( $datasource_value['override_sort_property'] ) : ''; ?>"
+							/>
+							<p class="description"><?php _e( 'Override the property of the post object to use for the sort order, eg. "menu_order". Leave blank to keep the default sort.', 'foogallery' ); ?></p>
+						</td>
+					</tr>
+					<tr>
 						<th scope="row"><?php _e( 'Override Help', 'foogallery' ); ?></th>
 						<td>
 							<p class="description"><?php _e( 'For all overrides, you can provide the name of a property of the post object to use as the value. For example, "post_title".', 'foogallery' ) ?></p>
@@ -591,11 +606,13 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 			$no_of_post = isset( $gallery->datasource_value ) && is_array( $gallery->datasource_value ) && array_key_exists( 'no_of_post', $gallery->datasource_value ) ? $gallery->datasource_value['no_of_post'] : '';
 			$exclude = isset( $gallery->datasource_value ) && is_array( $gallery->datasource_value ) && array_key_exists( 'exclude', $gallery->datasource_value ) ? $gallery->datasource_value['exclude'] : '';
 			$link_to = isset( $gallery->datasource_value ) && is_array( $gallery->datasource_value ) && array_key_exists( 'link_to', $gallery->datasource_value ) ? $gallery->datasource_value['link_to'] : '';
-			$override_link_property = isset( $gallery->datasource_value['override_link_property'] ) ? $gallery->datasource_value['override_link_property'] : '';
-			$override_desc_property = isset( $gallery->datasource_value['override_desc_property'] ) ? $gallery->datasource_value['override_desc_property'] : '';
+			$override_link_property  = isset( $gallery->datasource_value['override_link_property'] ) ? $gallery->datasource_value['override_link_property'] : '';
+			$override_desc_property  = isset( $gallery->datasource_value['override_desc_property'] ) ? $gallery->datasource_value['override_desc_property'] : '';
 			$override_title_property = isset( $gallery->datasource_value['override_title_property'] ) ? $gallery->datasource_value['override_title_property'] : '';
-			$taxonomy = isset( $gallery->datasource_value['taxonomy'] ) ? $gallery->datasource_value['taxonomy'] : '';
-			$custom_target = isset( $gallery->datasource_value['custom_target'] ) ? $gallery->datasource_value['custom_target'] : '';
+			$override_class_property = isset( $gallery->datasource_value['override_class_property'] ) ? $gallery->datasource_value['override_class_property'] : '';
+			$override_sort_property  = isset( $gallery->datasource_value['override_sort_property'] ) ? $gallery->datasource_value['override_sort_property'] : '';
+			$taxonomy                = isset( $gallery->datasource_value['taxonomy'] ) ? $gallery->datasource_value['taxonomy'] : '';
+			$custom_target           = isset( $gallery->datasource_value['custom_target'] ) ? $gallery->datasource_value['custom_target'] : '';
 
 			?>
             <div <?php echo $show_container ? '' : 'style="display:none" '; ?>class="foogallery-datasource-item foogallery-datasource-post_query">
@@ -605,18 +622,33 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
                 <p>
 					<?php _e( 'This gallery will be dynamically populated with the featured images from the following post query:', 'foogallery' ); ?>
                 </p>
-                <div class="foogallery-items-html">
-                    <?php echo __('Post Type : ', 'foogallery'); ?><span id="foogallery-datasource-post-query-gallery_post_type"><?php echo $gallery_post_type; ?></span><br />
-	                <?php echo __('No. Of Posts : ', 'foogallery'); ?><span id="foogallery-datasource-post-query-no_of_post"><?php echo $no_of_post; ?></span><br />
-	                <?php echo __('Excludes : ', 'foogallery'); ?><span id="foogallery-datasource-post-query-exclude"><?php echo $exclude; ?></span><br />
-	                <?php echo __('Link To : ', 'foogallery'); ?><span id="foogallery-datasource-post-query-link_to"><?php echo $link_to; ?></span><br />
-	                <?php echo __('Override Link Property : ', 'foogallery'); ?><span id="foogallery-datasource-post-query-override_link_property"><?php echo $override_link_property; ?></span><br />
-	                <?php echo __('Override Desc Property : ', 'foogallery'); ?><span id="foogallery-datasource-post-query-override_desc_property"><?php echo $override_desc_property; ?></span><br />
-	                <?php echo __('Override Title Property : ', 'foogallery'); ?><span id="foogallery-datasource-post-query-override_title_property"><?php echo $override_title_property; ?></span><br />
-	                <?php echo __('Override Class Property : ', 'foogallery'); ?><span id="foogallery-datasource-post-query-override_class_property"><?php echo $override_class_property; ?></span><br />
-	                <?php echo __('Taxonomy : ', 'foogallery'); ?><span id="foogallery-datasource-post-query-taxonomy"><?php echo $taxonomy; ?></span><br />
-	                <?php echo __('Custom Target : ', 'foogallery'); ?><span id="foogallery-datasource-post-query-custom_target"><?php echo $custom_target; ?></span><br />
-                </div>
+	                <div class="foogallery-items-html">
+	                <?php
+	                $summary_fields = array(
+		                array( 'label' => __( 'Post Type : ', 'foogallery' ), 'id' => 'foogallery-datasource-post-query-gallery_post_type', 'value' => $gallery_post_type ),
+		                array( 'label' => __( 'No. Of Posts : ', 'foogallery' ), 'id' => 'foogallery-datasource-post-query-no_of_post', 'value' => $no_of_post ),
+		                array( 'label' => __( 'Excludes : ', 'foogallery' ), 'id' => 'foogallery-datasource-post-query-exclude', 'value' => $exclude ),
+		                array( 'label' => __( 'Link To : ', 'foogallery' ), 'id' => 'foogallery-datasource-post-query-link_to', 'value' => $link_to ),
+		                array( 'label' => __( 'Override Link Property : ', 'foogallery' ), 'id' => 'foogallery-datasource-post-query-override_link_property', 'value' => $override_link_property ),
+		                array( 'label' => __( 'Override Desc Property : ', 'foogallery' ), 'id' => 'foogallery-datasource-post-query-override_desc_property', 'value' => $override_desc_property ),
+		                array( 'label' => __( 'Override Title Property : ', 'foogallery' ), 'id' => 'foogallery-datasource-post-query-override_title_property', 'value' => $override_title_property ),
+		                array( 'label' => __( 'Override Class Property : ', 'foogallery' ), 'id' => 'foogallery-datasource-post-query-override_class_property', 'value' => $override_class_property ),
+		                array( 'label' => __( 'Override Sort Property : ', 'foogallery' ), 'id' => 'foogallery-datasource-post-query-override_sort_property', 'value' => $override_sort_property ),
+		                array( 'label' => __( 'Taxonomy : ', 'foogallery' ), 'id' => 'foogallery-datasource-post-query-taxonomy', 'value' => $taxonomy ),
+		                array( 'label' => __( 'Custom Target : ', 'foogallery' ), 'id' => 'foogallery-datasource-post-query-custom_target', 'value' => $custom_target ),
+	                );
+
+	                foreach ( $summary_fields as $field ) {
+		                $value = $field['value'];
+		                $has_value = is_scalar( $value ) ? '' !== trim( (string) $value ) : ! empty( $value );
+
+		                echo '<div data-summary-field="' . esc_attr( $field['id'] ) . '"' . ( $has_value ? '' : ' style="display:none"' ) . '>';
+		                echo esc_html( $field['label'] );
+		                echo '<span id="' . esc_attr( $field['id'] ) . '">' . esc_html( $value ) . '</span>';
+		                echo '</div>';
+	                }
+	                ?>
+	                </div>
                 <br/>
                 <button type="button" class="button edit">
 					<?php _e( 'Change', 'foogallery' ); ?>
