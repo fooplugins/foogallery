@@ -17,6 +17,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 			add_action( 'foogallery_before_save_gallery_datasource', array( $this, 'before_save_gallery_datasource_clear_datasource_cached_images' ) );
 			add_action( 'foogallery_admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) );
             add_filter( 'foogallery_admin_settings_override', array( $this, 'add_settings' ) );
+			add_filter( 'foogallery_datasource_folders_must_sort', '__return_false' );
 		}
 
         /**
