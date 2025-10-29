@@ -263,14 +263,15 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 3.0.3 =
+= 3.0.5 =
 
 This update includes improvements to the post query datasource, which makes it more powerful.
 
-* Date Updated : 28 Oct 2025
+* Date Updated : 29 Oct 2025
 * New: Added new filter to override any setting 'foogallery_get_setting-{key}'
 * New: Added new filter to override attachments for a gallery 'foogallery_attachments'
 [//]: # fs_premium_only_begin
+* Fixed: [Expert Plan] Multi-select filtering modal now loads correct terms for other datasources.
 * Update: [Expert Plan] Improved post query datasource. Added support for non public post types, included ability to load taxonomy terms for filtering, added multiple override fields, added custom target field, added support for ACF fields.
 * New: [Commerce Plan] Added new ability to add a custom button (based on Custom URL and Custom Target).
 * New: [Commerce Plan] Added new ability to add a ribbon based off the custom class (will only show if the class is set in the custom class field on the attachment)

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: FooPlugins <info@fooplugins.com> (https://fooplugins.com)\n"
 "Last-Translator: FooPlugins <info@fooplugins.com> (https://fooplugins.com)\n"
-"POT-Creation-Date: 2025-10-28 20:08+0000\n"
+"POT-Creation-Date: 2025-10-29 10:02+0000\n"
 "Report-Msgid-Bugs-To: https://github.com/fooplugins/foogallery/issues\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -225,7 +225,7 @@ msgstr ""
 msgid "An animated loading icon can be shown while the thumbnails are busy loading."
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:217, includes/class-foogallery-common-fields.php:303, includes/class-foogallery-common-fields.php:486, includes/class-foogallery-common-fields.php:587, includes/class-foogallery-lightbox.php:439, includes/class-foogallery-lightbox.php:464, includes/class-foogallery-lightbox.php:584, includes/class-foogallery-lightbox.php:821, includes/class-foogallery-paging.php:227, includes/functions.php:577, includes/functions.php:1855, includes/functions.php:2291, extensions/albums/functions.php:81, includes/admin/class-pro-promotion.php:199, includes/admin/class-settings.php:185, includes/admin/view-help-demos.php:44, pro/includes/class-foogallery-pro-advanced-thumbnails.php:56, pro/includes/class-foogallery-pro-buttons.php:329, pro/includes/class-foogallery-pro-datasource-folders.php:475, pro/includes/class-foogallery-pro-filtering.php:309, pro/includes/class-foogallery-pro-filtering.php:381, extensions/albums/admin/class-metaboxes.php:543, extensions/default-templates/default/class-default-gallery-template.php:139, pro/includes/video/class-foogallery-pro-video.php:277, pro/includes/video/class-foogallery-pro-video.php:662, pro/extensions/default-templates/slider/class-slider-gallery-template.php:237
+#: includes/class-foogallery-common-fields.php:217, includes/class-foogallery-common-fields.php:303, includes/class-foogallery-common-fields.php:486, includes/class-foogallery-common-fields.php:587, includes/class-foogallery-lightbox.php:439, includes/class-foogallery-lightbox.php:464, includes/class-foogallery-lightbox.php:584, includes/class-foogallery-lightbox.php:821, includes/class-foogallery-paging.php:227, includes/functions.php:577, includes/functions.php:1855, includes/functions.php:2291, extensions/albums/functions.php:81, includes/admin/class-pro-promotion.php:199, includes/admin/class-settings.php:185, includes/admin/view-help-demos.php:44, pro/includes/class-foogallery-pro-advanced-thumbnails.php:56, pro/includes/class-foogallery-pro-buttons.php:329, pro/includes/class-foogallery-pro-datasource-folders.php:476, pro/includes/class-foogallery-pro-filtering.php:309, pro/includes/class-foogallery-pro-filtering.php:381, extensions/albums/admin/class-metaboxes.php:543, extensions/default-templates/default/class-default-gallery-template.php:139, pro/includes/video/class-foogallery-pro-video.php:277, pro/includes/video/class-foogallery-pro-video.php:662, pro/extensions/default-templates/slider/class-slider-gallery-template.php:237
 msgid "Default"
 msgstr ""
 
@@ -577,7 +577,7 @@ msgstr ""
 msgid "settings"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:603, includes/admin/class-gallery-attachment-modal.php:608, pro/includes/foogallery-media-views-templates.php:234, pro/includes/foogallery-media-views-templates.php:455, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:379
+#: includes/class-foogallery-common-fields.php:603, includes/admin/class-gallery-attachment-modal.php:608, pro/includes/foogallery-media-views-templates.php:234, pro/includes/foogallery-media-views-templates.php:455, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:389
 msgid "Title"
 msgstr ""
 
@@ -589,7 +589,7 @@ msgstr ""
 msgid "Default (as per %s)"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:625, includes/admin/class-gallery-attachment-modal.php:616, pro/includes/class-foogallery-pro-datasource-folders.php:600, pro/includes/foogallery-media-views-templates.php:240, pro/includes/foogallery-media-views-templates.php:461
+#: includes/class-foogallery-common-fields.php:625, includes/admin/class-gallery-attachment-modal.php:616, pro/includes/class-foogallery-pro-datasource-folders.php:601, pro/includes/foogallery-media-views-templates.php:240, pro/includes/foogallery-media-views-templates.php:461
 msgid "Description"
 msgstr ""
 
@@ -1527,7 +1527,7 @@ msgstr ""
 msgid "Image Attachment Page"
 msgstr ""
 
-#: includes/functions.php:1187, extensions/albums/functions.php:82, includes/admin/class-attachment-fields.php:22, includes/admin/class-gallery-attachment-modal.php:624, pro/includes/class-foogallery-pro-advanced-captions.php:112, pro/includes/class-foogallery-pro-datasource-folders.php:608, extensions/albums/admin/class-metaboxes.php:570
+#: includes/functions.php:1187, extensions/albums/functions.php:82, includes/admin/class-attachment-fields.php:22, includes/admin/class-gallery-attachment-modal.php:624, pro/includes/class-foogallery-pro-advanced-captions.php:112, pro/includes/class-foogallery-pro-datasource-folders.php:609, extensions/albums/admin/class-metaboxes.php:570
 msgid "Custom URL"
 msgstr ""
 
@@ -2265,7 +2265,7 @@ msgstr ""
 msgid "Point your attachment to a custom URL"
 msgstr ""
 
-#: includes/admin/class-attachment-fields.php:29, includes/admin/class-gallery-attachment-modal.php:628, pro/includes/class-foogallery-pro-datasource-folders.php:612, pro/includes/class-foogallery-pro-datasource-post-query.php:499, extensions/albums/admin/class-metaboxes.php:576
+#: includes/admin/class-attachment-fields.php:29, includes/admin/class-gallery-attachment-modal.php:628, pro/includes/class-foogallery-pro-datasource-folders.php:613, pro/includes/class-foogallery-pro-datasource-post-query.php:506, extensions/albums/admin/class-metaboxes.php:576
 msgid "Custom Target"
 msgstr ""
 
@@ -2349,7 +2349,7 @@ msgstr ""
 msgid "Taxonomies"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:612, pro/includes/class-foogallery-pro-datasource-folders.php:596
+#: includes/admin/class-gallery-attachment-modal.php:612, pro/includes/class-foogallery-pro-datasource-folders.php:597
 msgid "Caption"
 msgstr ""
 
@@ -2369,11 +2369,11 @@ msgstr ""
 msgid "Copy to clipboard"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:715, pro/includes/class-foogallery-pro-datasource-folders.php:617, pro/includes/foogallery-media-views-templates.php:481, pro/includes/foogallery-media-views-templates.php:500
+#: includes/admin/class-gallery-attachment-modal.php:715, pro/includes/class-foogallery-pro-datasource-folders.php:618, pro/includes/foogallery-media-views-templates.php:481, pro/includes/foogallery-media-views-templates.php:500
 msgid "Save"
 msgstr ""
 
-#: includes/admin/class-gallery-attachment-modal.php:716, includes/admin/class-gallery-datasources.php:218, includes/admin/class-gallery-datasources.php:218, includes/admin/class-gallery-editor.php:226, includes/admin/class-gallery-editor.php:226, pro/includes/class-foogallery-pro-datasource-folders.php:616, pro/includes/class-foogallery-pro-gallery-blueprints.php:662, pro/includes/class-foogallery-pro-gallery-blueprints.php:625, pro/includes/foogallery-media-views-templates.php:532
+#: includes/admin/class-gallery-attachment-modal.php:716, includes/admin/class-gallery-datasources.php:218, includes/admin/class-gallery-datasources.php:218, includes/admin/class-gallery-editor.php:226, includes/admin/class-gallery-editor.php:226, pro/includes/class-foogallery-pro-datasource-folders.php:617, pro/includes/class-foogallery-pro-gallery-blueprints.php:662, pro/includes/class-foogallery-pro-gallery-blueprints.php:625, pro/includes/foogallery-media-views-templates.php:532
 msgid "Cancel"
 msgstr ""
 
@@ -2865,7 +2865,7 @@ msgstr ""
 msgid "Media Categories"
 msgstr ""
 
-#: includes/admin/class-pro-promotion.php:366, includes/admin/class-pro-promotion.php:367, pro/includes/class-foogallery-pro-datasource-folders.php:55, pro/includes/class-foogallery-pro-datasource-folders.php:56
+#: includes/admin/class-pro-promotion.php:366, includes/admin/class-pro-promotion.php:367, pro/includes/class-foogallery-pro-datasource-folders.php:56, pro/includes/class-foogallery-pro-datasource-folders.php:57
 msgid "Server Folder"
 msgstr ""
 
@@ -2877,7 +2877,7 @@ msgstr ""
 msgid "Real Media Library"
 msgstr ""
 
-#: includes/admin/class-pro-promotion.php:387, includes/admin/class-pro-promotion.php:388, pro/includes/class-foogallery-pro-datasource-post-query.php:333, pro/includes/class-foogallery-pro-datasource-post-query.php:334
+#: includes/admin/class-pro-promotion.php:387, includes/admin/class-pro-promotion.php:388, pro/includes/class-foogallery-pro-datasource-post-query.php:340, pro/includes/class-foogallery-pro-datasource-post-query.php:341
 msgid "Post Query"
 msgstr ""
 
@@ -3345,7 +3345,7 @@ msgstr ""
 msgid "When creating a new gallery, it can use the settings from an existing gallery as the default settings. This will save you time when creating many galleries that all have the same look and feel."
 msgstr ""
 
-#: includes/admin/class-settings.php:133, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:538
+#: includes/admin/class-settings.php:133, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:548
 msgid "Caption Title Source"
 msgstr ""
 
@@ -3353,7 +3353,7 @@ msgstr ""
 msgid "By default, image caption titles are pulled from the attachment \"Caption\" field. Alternatively, you can choose to use other fields."
 msgstr ""
 
-#: includes/admin/class-settings.php:150, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:557
+#: includes/admin/class-settings.php:150, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:567
 msgid "Caption Description Source"
 msgstr ""
 
@@ -3739,7 +3739,7 @@ msgstr ""
 msgid "This layout is part of PRO Commerce plan"
 msgstr ""
 
-#: includes/admin/view-features.php:136, pro/includes/class-foogallery-pro-filtering.php:170, pro/includes/class-foogallery-pro-filtering.php:1074, pro/includes/class-foogallery-pro-filtering.php:1272, pro/includes/class-foogallery-pro-filtering.php:1349
+#: includes/admin/view-features.php:136, pro/includes/class-foogallery-pro-filtering.php:170, pro/includes/class-foogallery-pro-filtering.php:1074, pro/includes/class-foogallery-pro-filtering.php:1274, pro/includes/class-foogallery-pro-filtering.php:1370
 msgid "All"
 msgstr ""
 
@@ -4921,175 +4921,175 @@ msgstr ""
 msgid "Open"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:33
+#: pro/includes/class-foogallery-pro-datasource-folders.php:34
 msgid "Server Folder Root"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:34
+#: pro/includes/class-foogallery-pro-datasource-folders.php:35
 msgid "Some server configurations require a different root folder to be used when scanning the server. This is used when using the Server Folder datasource."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:36
+#: pro/includes/class-foogallery-pro-datasource-folders.php:37
 msgid "ABSPATH (Default)"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:37
+#: pro/includes/class-foogallery-pro-datasource-folders.php:38
 msgid "$_SERVER[\"DOCUMENT_ROOT\"]"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:464
+#: pro/includes/class-foogallery-pro-datasource-folders.php:465
 msgid "Select which folder on the server you want to load images from. You also need to choose the source of the image metadata. Image metadata allows you to change the caption title, caption description, alt text and the order of the images. This metadata can be read from a file on the server (metadata.json) or from the WordPress database."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:466
+#: pro/includes/class-foogallery-pro-datasource-folders.php:467
 msgid "Image Metadata : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:468
+#: pro/includes/class-foogallery-pro-datasource-folders.php:469
 msgid "Load from file on server"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:470
+#: pro/includes/class-foogallery-pro-datasource-folders.php:471
 msgid "Load from WordPress database"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:473
+#: pro/includes/class-foogallery-pro-datasource-folders.php:474
 msgid "Sort Order : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:477
+#: pro/includes/class-foogallery-pro-datasource-folders.php:478
 msgid "Filename"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:479
+#: pro/includes/class-foogallery-pro-datasource-folders.php:480
 msgid "Filename (Reversed)"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:482
+#: pro/includes/class-foogallery-pro-datasource-folders.php:483
 msgid "Selected Folder : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:483, pro/includes/class-foogallery-pro-datasource-lightroom.php:263
+#: pro/includes/class-foogallery-pro-datasource-folders.php:484, pro/includes/class-foogallery-pro-datasource-lightroom.php:263
 msgid "nothing yet"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:648
+#: pro/includes/class-foogallery-pro-datasource-folders.php:649
 msgid "Loading metadata from %s"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:671
+#: pro/includes/class-foogallery-pro-datasource-folders.php:672
 msgid "NO metadata file found in folder!"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:672
+#: pro/includes/class-foogallery-pro-datasource-folders.php:673
 msgid "We read JSON metadata information about each image from the file (%s) which you need to save to the same folder."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:667
+#: pro/includes/class-foogallery-pro-datasource-folders.php:668
 msgid "Woohoo! There is no missing metadata!"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:665, pro/includes/class-foogallery-pro-datasource-folders.php:584
+#: pro/includes/class-foogallery-pro-datasource-folders.php:666, pro/includes/class-foogallery-pro-datasource-folders.php:585
 msgid "There are %d images with missing metadata!"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:659
+#: pro/includes/class-foogallery-pro-datasource-folders.php:660
 msgid "ERROR reading metadata file!"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:660
+#: pro/includes/class-foogallery-pro-datasource-folders.php:661
 msgid "There was a problem reading metadata from %s. Please check that the file contains valid JSON. You can use a website like %s to help validate your JSON data."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:661
+#: pro/includes/class-foogallery-pro-datasource-folders.php:662
 msgid "Error : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:683
+#: pro/includes/class-foogallery-pro-datasource-folders.php:684
 msgid "Below is the JSON metadata read from file:"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:681
+#: pro/includes/class-foogallery-pro-datasource-folders.php:682
 msgid "Below is the automatically generated JSON metadata, merged together with the existing metadata read from file:"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:678
+#: pro/includes/class-foogallery-pro-datasource-folders.php:679
 msgid "Below is the automatically generated JSON metadata for all images found in the folder."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:679
+#: pro/includes/class-foogallery-pro-datasource-folders.php:680
 msgid "To use it: copy the JSON data below, change it to your liking, save it to a file named %s, and finally upload/transfer/FTP the file into the same folder on your server."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:690
+#: pro/includes/class-foogallery-pro-datasource-folders.php:691
 msgid "Please note : you can change the sort order of the images by changing the order of the metadata within the metadata file."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:577
+#: pro/includes/class-foogallery-pro-datasource-folders.php:578
 msgid "Loading metadata from WordPress database option %s"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:578
+#: pro/includes/class-foogallery-pro-datasource-folders.php:579
 msgid "Clear Metadata"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:587
+#: pro/includes/class-foogallery-pro-datasource-folders.php:588
 msgid "Change the sort order of the images by drag and drop. Click the \"i\" icon to change the caption and other metadata for each image."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:590
+#: pro/includes/class-foogallery-pro-datasource-folders.php:591
 msgid "Edit Image Metadata"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:592
+#: pro/includes/class-foogallery-pro-datasource-folders.php:593
 msgid "File"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:604
+#: pro/includes/class-foogallery-pro-datasource-folders.php:605
 msgid "Alt Text"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:618
+#: pro/includes/class-foogallery-pro-datasource-folders.php:619
 msgid "Save &amp; Next"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:622
+#: pro/includes/class-foogallery-pro-datasource-folders.php:623
 msgid "Save Metadata"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:728
+#: pro/includes/class-foogallery-pro-datasource-folders.php:729
 msgid "No images found in the folder."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:707
+#: pro/includes/class-foogallery-pro-datasource-folders.php:708
 msgid "%s images found in the folder."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:713
+#: pro/includes/class-foogallery-pro-datasource-folders.php:714
 msgid "Edit the metadata for this image"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:715
+#: pro/includes/class-foogallery-pro-datasource-folders.php:716
 msgid "Missing Metadata!"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:763
+#: pro/includes/class-foogallery-pro-datasource-folders.php:764
 msgid "Go up a level"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:834
+#: pro/includes/class-foogallery-pro-datasource-folders.php:835
 msgid "Datasource : Server Folder"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:835
+#: pro/includes/class-foogallery-pro-datasource-folders.php:836
 msgid "This gallery will be dynamically populated with all images within the following folder on your server:"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:839, pro/includes/class-foogallery-pro-datasource-realmedialibrary.php:343
+#: pro/includes/class-foogallery-pro-datasource-folders.php:840, pro/includes/class-foogallery-pro-datasource-realmedialibrary.php:343
 msgid "Change Folder"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-folders.php:842, pro/includes/class-foogallery-pro-datasource-realmedialibrary.php:346
+#: pro/includes/class-foogallery-pro-datasource-folders.php:843, pro/includes/class-foogallery-pro-datasource-realmedialibrary.php:346
 msgid "Remove Folder"
 msgstr ""
 
@@ -5141,171 +5141,183 @@ msgstr ""
 msgid "Remove Collection"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:359, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:428
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:366, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:438
 msgid "Choose the settings for your gallery below. The gallery will be dynamically populated using the post query settings below."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:360
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:367
 msgid "Please Note : Only posts with a featured image will be displayed!"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:366
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:373
 msgid "Post type"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:400
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:407
 msgid "Public"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:414
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:421
 msgid "Private"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:428
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:435
 msgid "The post type you want to query for the gallery. Only published posts will be included."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:432
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:439
 msgid "Number of posts"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:441
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:448
 msgid "Number of posts you want to include in the gallery. Leave empty to include all published posts."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:445, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:525
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:452, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:535
 msgid "Exclude"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:454
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:461
 msgid "A comma separated list of post id's that you want to exclude from the gallery."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:458
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:465
 msgid "Link To"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:469
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:476
 msgid "Post Permalink"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:480
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:487
 msgid "Featured Image"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:486
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:493
 msgid "Taxonomy"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:495
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:502
 msgid "Provide the taxonomy slug to use for gallery filtering (for example, category or post_tag). Leave blank to not include taxonomy terms."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:508
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:515
 msgid "Specify a custom target attribute for the link (for example, _blank). Leave empty to use the default behaviour."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:512
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:519
 msgid "Override Link Property"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:521
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:528
 msgid "Override the property of the post object to use as the link. By default, the Link To option will be used."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:525
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:532
 msgid "Override Desc Property"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:534
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:541
 msgid "Override the property of the post object to use as the description. By default, post_excerpt will be used."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:538
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:545
 msgid "Override Title Property"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:547
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:554
 msgid "Override the property of the post object to use as the title. By default, post_title will be used."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:551
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:558
 msgid "Override Class Property"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:560
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:567
 msgid "Override the property of the post object to use for the CSS class(es). Classes will be added to the anchor link."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:564
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:571
+msgid "Override Sort Property"
+msgstr ""
+
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:580
+msgid "Override the property of the post object to use for the sort order, eg. \"menu_order\". Leave blank to keep the default sort."
+msgstr ""
+
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:584
 msgid "Override Help"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:566
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:586
 msgid "For all overrides, you can provide the name of a property of the post object to use as the value. For example, \"post_title\"."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:567
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:587
 msgid "You can also use the name of a post meta field to use as the value. Simply provide the name of the meta key."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:568
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:588
 msgid "You can also use the name of an ACF field to use as the value. Simply provide the name of the ACF field prefixed with \"acf:\", for example \"acf:my_acf_field\"."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:598
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:620
 msgid "Datasource : Post Query"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:601
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:623
 msgid "This gallery will be dynamically populated with the featured images from the following post query:"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:604
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:628
 msgid "Post Type : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:605
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:629
 msgid "No. Of Posts : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:606, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:645
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:630, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:655
 msgid "Excludes : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:607
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:631
 msgid "Link To : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:608
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:632
 msgid "Override Link Property : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:609
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:633
 msgid "Override Desc Property : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:610
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:634
 msgid "Override Title Property : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:611
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:635
 msgid "Override Class Property : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:612
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:636
+msgid "Override Sort Property : "
+msgstr ""
+
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:637
 msgid "Taxonomy : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:613
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:638
 msgid "Custom Target : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:617, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:652
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:654, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:662
 msgid "Change"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:620, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:655
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:657, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:665
 msgid "Remove"
 msgstr ""
 
@@ -5941,51 +5953,51 @@ msgstr ""
 msgid "Set Levels"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1266
+#: pro/includes/class-foogallery-pro-filtering.php:1268
 msgid "Level"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1267
+#: pro/includes/class-foogallery-pro-filtering.php:1269
 msgid "Remove Level"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1270
+#: pro/includes/class-foogallery-pro-filtering.php:1272
 msgid "Level %s \"All\" Text : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1361
+#: pro/includes/class-foogallery-pro-filtering.php:1382
 msgid "Multi Level Filtering Help"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1362
+#: pro/includes/class-foogallery-pro-filtering.php:1383
 msgid "To add a new level, click on the \"Add Another Level\" button on the left."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1363
+#: pro/includes/class-foogallery-pro-filtering.php:1384
 msgid "For each level that you add, you can override the \"All\" text for that level."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1364
+#: pro/includes/class-foogallery-pro-filtering.php:1385
 msgid "Select the terms for each level by clicking on them. They will change to a selected state. To unselect a term, click on it again."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1365
+#: pro/includes/class-foogallery-pro-filtering.php:1386
 msgid "Once you select a term, it will not be available for the other levels."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1366
+#: pro/includes/class-foogallery-pro-filtering.php:1387
 msgid "You can sort the terms by dragging and dropping them."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1367
+#: pro/includes/class-foogallery-pro-filtering.php:1388
 msgid "To remove a level, click on the small \"x\" button next to the level title."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1368
+#: pro/includes/class-foogallery-pro-filtering.php:1389
 msgid "If you want to undo any changes, click the \"Reload\" button at the top."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-filtering.php:1369
+#: pro/includes/class-foogallery-pro-filtering.php:1390
 msgid "Once you are happy with your levels, click the \"Set Levels\" button below."
 msgstr ""
 
@@ -7153,7 +7165,7 @@ msgstr ""
 msgid "Leave blank if you do not want a caption description."
 msgstr ""
 
-#: includes/compatibility/elementor/class-elementor-foogallery-widget.php:114, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:381
+#: includes/compatibility/elementor/class-elementor-foogallery-widget.php:114, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:391
 msgid "Content"
 msgstr ""
 
@@ -8065,131 +8077,131 @@ msgstr ""
 msgid "Restart Migration"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:372
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:382
 msgid "Woocommerce is not installed! This datasource is not available."
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:380
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:390
 msgid "Short Description"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:382, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:455
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:392, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:455
 msgid "Price"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:386
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:396
 msgid "Newest First"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:387
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:397
 msgid "Oldest First"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:388
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:398
 msgid "Price (Low to High)"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:389
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:399
 msgid "Price (High to Low)"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:390
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:400
 msgid "Popularity"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:391
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:401
 msgid "Rating"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:395
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:405
 msgid "Any"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:396
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:406
 msgid "In Stock"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:397, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:645, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1100
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:407, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:645, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1100
 msgid "Out Of Stock"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:398, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:654, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1135
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:408, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:654, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1135
 msgid "On Backorder"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:434
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:444
 msgid "Product Categories"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:451
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:461
 msgid "Price Range"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:474
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:484
 msgid "Sort By"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:493
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:503
 msgid "Stock Status"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:512
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:522
 msgid "Number of Products"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:521
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:531
 msgid "Number of products you want to include in the gallery."
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:534
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:544
 msgid "A comma separated list of product id's that you want to exclude from the gallery."
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:619
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:629
 msgid "unlimited"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:623
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:633
 msgid "newest first"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:627
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:637
 msgid "any"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:633
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:643
 msgid "Datasource : WooCommerce Products"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:636
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:646
 msgid "This gallery will be dynamically populated with products, based on the following criteria:"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:639
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:649
 msgid "Categories : "
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:640
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:650
 msgid "Price Range : "
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:641
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:651
 msgid "Sort by : "
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:642
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:652
 msgid "Stock Status : "
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:643
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:653
 msgid "No. of Products : "
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:647
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:657
 msgid "Caption Title Source : "
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:648
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:658
 msgid "Caption Desc Source : "
 msgstr ""
 
