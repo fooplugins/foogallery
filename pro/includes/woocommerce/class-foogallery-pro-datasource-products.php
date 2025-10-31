@@ -330,7 +330,6 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
 				$attachment->post_id       = $product->get_id();
 				$attachment->title         = $product->get_title();
 				$attachment->has_metadata  = false;
-				$attachment->sort          = PHP_INT_MAX;
 
 				$attachment->caption       = $this->get_caption( $product, $caption_title_source );
 				$attachment->description   = $this->get_caption( $product, $caption_desc_source );
