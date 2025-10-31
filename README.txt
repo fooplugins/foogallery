@@ -4,7 +4,7 @@ Donate link: https://fooplugins.com
 Tags: gallery, image-gallery, photo-gallery, responsive-gallery, lightbox
 Requires at least: 5.3
 Tested up to: 6.8
-Stable tag: 3.0.2
+Stable tag: 3.0.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -262,6 +262,13 @@ Yes. FooGallery does not collect visitor data, and admin tracking is optional.
 Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 3.0.6 =
+
+This is a small bug fix release, to address a bug with deeplinking not working in lightbox.
+
+* Date Updated : 31 Oct 2025
+* Fixed: Deeplinking not working in lightbox.
 
 = 3.0.5 =
 
