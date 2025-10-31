@@ -58,7 +58,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Items' ) ) {
 
 			do_action( 'foogallery_gallery_metabox_items', $gallery );
 			?>
-			<div class="hidden foogallery-items-view-switch-container">
+			<div class="foogallery-hidden foogallery-items-view-switch-container">
 				<div class="foogallery-items-view-switch">
 					<a href="#manage" data-value="manage" data-container=".foogallery-items-view-manage" class="<?php echo $mode==='manage' ? 'current' : ''; ?>"><?php esc_html_e('Manage Items', 'foogallery'); ?></a>
 					<a href="#preview" data-value="preview" data-container=".foogallery-items-view-preview" class="<?php echo $mode==='preview' ? 'current' : ''; ?>"><?php esc_html_e('Gallery Preview', 'foogallery'); ?></a>
@@ -90,17 +90,21 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Items' ) ) {
 					</div>
 					<?php do_action( 'foogallery_gallery_metabox_items_list', $gallery ); ?>
 				</div>
-				<div class="foogallery-items-add <?php echo $has_items ? 'hidden' : ''; ?>">
+				<div class="foogallery-items-add <?php echo $has_items ? 'foogallery-hidden' : ''; ?>">
 					<?php do_action( 'foogallery_gallery_metabox_items_add', $gallery ); ?>
 				</div>
 			</div>
-			<div class="foogallery-items-view foogallery-items-view-preview <?php echo $mode==='preview' ? '' : 'hidden'; ?>">
+			<div class="foogallery-items-view foogallery-items-view-preview <?php echo $mode==='preview' ? '' : 'foogallery-hidden'; ?>">
 				<!-- Wrap existing preview container -->
 				<div class="foogallery-preview-wrapper viewport-desktop">
 					<div class="foogallery_preview_container <?php echo $mode==='preview' ? '' : 'foogallery-preview-force-refresh'; ?>">
 						<?php
-						if ( $has_items && $mode==='preview' ) {
+						if ( $has_items && $mode === 'preview' ) {
 							foogallery_render_gallery( $gallery->ID );
+						} else if ( $has_items && $mode === 'manage' ) {
+							echo '<div style="padding:20px; text-align: center">';
+							echo '<h3>' . __( 'Generating preview...', 'foogallery' ) . '</h3>';
+							echo '</div>';
 						} else {
 							$this->render_empty_gallery_preview();
 						}

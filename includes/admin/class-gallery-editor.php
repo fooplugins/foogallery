@@ -25,7 +25,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 		}
 
 		private function should_hide_editor_button() {
-			return 'on' == foogallery_get_setting( 'hide_editor_button' );
+			return 'on' == foogallery_get_setting( 'hide_editor_button', false );
 		}
 
 		/**

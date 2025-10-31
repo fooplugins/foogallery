@@ -201,22 +201,30 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 
 			$settings[] = array(
 				'id'      => 'hide_editor_button',
-				'title'   => __( 'Hide Classic Editor Button', 'foogallery' ),
-				'desc'    => sprintf( __( 'If enabled, this will hide the "Add %s" button in the Classic editor.', 'foogallery' ), foogallery_plugin_name() ),
-				'default' => 'on',
-				'type'    => 'checkbox',
+				'title'   => __( 'Classic Editor Button', 'foogallery' ),
+				'desc'    => sprintf( __( 'Either show or hide the "Add %s" button in the Classic editor.', 'foogallery' ), foogallery_plugin_name() ),
+				'default' => foogallery_get_default( 'hide_editor_button', 'on' ),
+				'type'    => 'select',
+				'choices' => array(
+					'on'  => __( 'Hidden', 'foogallery' ),
+					'off' => __( 'Visible', 'foogallery' )
+				),
 				'tab'     => 'general',
 				'section' => __( 'Admin', 'foogallery' )
 			);
 
 			$settings[] = array(
 				'id'      => 'advanced_attachment_modal',
-				'title'   => __( 'Enable Advanced Attachment Modal', 'foogallery' ),
+				'title'   => __( 'Advanced Attachment Modal', 'foogallery' ),
 				'desc'    => __( 'If enabled, this will use the advanced attachment modal which allows for faster and easier editing of attachment details, when creating your galleries.', 'foogallery' ),
-				'type'    => 'checkbox',
-				'default' => 'on',
+				'type'    => 'select',
+				'default' => foogallery_get_default( 'advanced_attachment_modal', 'on' ),
 				'tab'     => 'general',
-				'section' => __( 'Admin', 'foogallery' )
+				'section' => __( 'Admin', 'foogallery' ),
+				'choices' => array(
+					'on'  => __( 'Enabled', 'foogallery' ),
+					'off' => __( 'Disabled', 'foogallery' )
+				)
 			);
 
 			$settings[] = array(
@@ -460,15 +468,6 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 
 			//region Advanced Tab
 			$tabs['advanced'] = __( 'Advanced', 'foogallery' );
-
-            $settings[] = array(
-                'id'      => 'enable_custom_ready',
-                'title'   => __( 'Custom Ready Event', 'foogallery' ),
-                'desc'    => sprintf( __( 'There are sometimes unavoidable javascript errors on the page, which could result in the gallery not initializing correctly. Enable this setting to use a built-in custom ready event to overcome this problem if needed.', 'foogallery' ), foogallery_plugin_name() ),
-                'type'    => 'checkbox',
-                'tab'     => 'advanced',
-                'default' => 'on'
-            );
 
             $settings[] = array(
                 'id'      => 'add_media_button_start',

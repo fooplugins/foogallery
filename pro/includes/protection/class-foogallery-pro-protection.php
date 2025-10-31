@@ -259,6 +259,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 									}
 									if ( result.data.refreshfield ) {
 										jQuery('.foogallery_metabox_field-watermark_status').html(result.data.fieldhtml);
+										FOOGALLERY.reloadGalleryPreview();
 									}
 								}
 							},
@@ -595,8 +596,8 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 				'default'  => 'no',
 				'type'     => 'radio',
 				'choices'  => array(
-					'yes' => __( 'Use Watermarked Images', 'foogallery' ),
 					'no'  => __( 'Use Original Images', 'foogallery' ),
+					'yes' => __( 'Use Watermarked Images', 'foogallery' ),
 				),
 				'row_data' => array(
 					'data-foogallery-change-selector' => 'input:radio',
@@ -607,7 +608,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 
 			$new_fields[] = array(
 				'id'       => 'protection_watermarking_status',
-				'title'    => __( 'Protection Status', 'foogallery' ),
+				'title'    => __( 'Watermark Status', 'foogallery' ),
 				'desc'     => __( 'The status of watermark protection for the current gallery.', 'foogallery' ),
 				'section'  => __( 'Protection', 'foogallery' ),
 				'type'     => 'watermark_status',

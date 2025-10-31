@@ -220,10 +220,20 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 		 */
 		function check_for_woocommerce_blocks( $result, $request, $path, $handler ) {
 			global $foogallery_is_woocommerce_block;
+
+			// If we are already in a WooCommerce block, just return the result
+			if ( $foogallery_is_woocommerce_block ) {
+				return $result;
+			}
+
 			$paths_to_check = array( '/wc/store/v1/cart', '/wc/store/v1/checkout' );
 			
-			if ( in_array( $path, $paths_to_check ) ) {
-				$foogallery_is_woocommerce_block = true;
+			//Check if this is a cart or checkout request
+			foreach ( $paths_to_check as $path_to_check ) {
+				if ( strpos( $path, $path_to_check ) !== false ) {
+					$foogallery_is_woocommerce_block = true;
+					break;
+				}
 			}
 
 			return $result;
@@ -849,9 +859,35 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 			     array_key_exists( 'foogallery_add_attributes', $cart_item ) ) {
 
 				$item_data  = $cart_item['data'];
+
+				$product_id = isset( $cart_item['product_id'] ) ? intval( $cart_item['product_id'] ) : 0;
+
+				$cart_item_data_keys = array_map( function($item) { return isset( $item['key'] ) ? $item['key'] : false; }, $cart_item_data );
+				
 				$attributes = $item_data->get_attributes();
 				foreach ( $attributes as $attr_key => $attr_value ) {
 					if ( is_string( $attr_value ) ) {
+
+						$already_exist = in_array( $attr_key, $cart_item_data_keys );
+
+						if ( $already_exist ) {
+							//Get out early, as we already have this attribute.
+							continue;
+						}
+
+						if ( $product_id > 0 ) {
+							$attribute = $this->get_product_attribute_name( $product_id, $attr_key );
+							if ( !empty( $attribute ) ) {
+								$already_exist = in_array( $attribute, $cart_item_data_keys );
+							}
+						}
+
+						if ( $already_exist ) {
+							//Get out early, as we already have this attribute.
+							continue;
+						}
+
+						//Only as a last resort, add the attribute.
 						$cart_item_data[] = array(
 							'name'  => $attr_key,
 							'value' => $attr_value,
@@ -860,6 +896,36 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 				}
 			}
 			return $cart_item_data;
+		}
+
+		function get_product_attribute_name( $product_id, $key ) {
+			if ( intval( $product_id ) > 0 ) {
+				global $foogallery_current_product;
+
+				if ( ! isset( $foogallery_current_product ) ) {
+					$foogallery_current_product = wc_get_product( $product_id );
+				}
+
+				if ( $foogallery_current_product instanceof WC_Product ) {
+					$attributes = $foogallery_current_product->get_attributes();
+					if ( isset( $attributes[$key] ) ) {
+						$attribute = $attributes[$key];
+						if ( $attribute instanceof WC_Product_Attribute ) {
+							if ( $attribute->is_taxonomy() ) {
+								$taxonomy = $attribute->get_taxonomy_object();
+								if ( is_array( $taxonomy ) ) {
+									return $taxonomy['label'];
+								} else if ( $taxonomy instanceof stdClass ) {
+									return $taxonomy->attribute_label;
+								}
+							}
+
+							return $attribute->get_name();
+						}
+					}
+				}
+			}
+			return false;
 		}
 
 		/**
@@ -1011,7 +1077,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
                 echo '</div>';
 
                 echo '<div class="foogallery-master-product-modal-sidebar">';
-                $class = $product_id === 0 ? ' hidden' : '';
+                $class = $product_id === 0 ? ' foogallery-hidden' : '';
                 echo '<div class="foogallery-master-product-modal-sidebar-inner foogallery-master-product-modal-details' . $class . '">';
                 echo '<h2>' . __( 'Selected Master Product', 'foogallery' ) . '</h2>';
                 echo '<div class="foogallery-master-product-modal-details-inner">';

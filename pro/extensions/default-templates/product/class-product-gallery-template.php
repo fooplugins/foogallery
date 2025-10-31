@@ -227,7 +227,9 @@ if ( !class_exists( 'FooGallery_Product_Gallery_Template' ) ) {
 				'ecommerce_button_variable' => 'shown',
 				'ecommerce_lightbox_product_information' => 'right',
 				'hover_effect_scale' => 'fg-hover-zoomed',
-                'lightbox_info_enabled' => 'disabled'
+                'lightbox_info_enabled' => 'disabled',
+				'buttons_style' => 'fg-cb-pill',
+				'filtering_style' => 'pill-block',
 			);
 		}
 

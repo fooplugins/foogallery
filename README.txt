@@ -1,20 +1,20 @@
-=== WordPress Gallery Plugin for Photos & Images – FooGallery ===
+=== Gallery by FooGallery ===
 Contributors: fooplugins, bradvin, steveush
 Donate link: https://fooplugins.com
-Tags: gallery, image-gallery, photo-gallery, wordpress-gallery, lightbox
+Tags: gallery, image-gallery, photo-gallery, responsive-gallery, lightbox
 Requires at least: 5.3
 Tested up to: 6.8
-Stable tag: 3.0.0
+Stable tag: 3.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Create stunning photo and image galleries in WordPress with FooGallery — fast, responsive, SEO-optimized, and packed with beautiful layouts.
+Photo Gallery, Image Gallery by FooGallery — fast, responsive, SEO-optimized, and packed with beautiful layouts.
 
 == Description ==
 
-= FooGallery – The Ultimate WordPress Gallery Plugin =
+= Photo & Image Gallery =
 
-FooGallery makes it easy to create stunning photo and image galleries in minutes. It’s responsive, retina-ready, SEO-friendly, and optimized for performance. With beautiful pre-built layouts, a built-in lightbox, and advanced customization options, FooGallery is the perfect gallery solution for any WordPress website.
+FooGallery makes it easy to create stunning photo and image galleries using drag and drop in minutes. It’s responsive, retina-ready, SEO-friendly, and optimized for performance. With beautiful pre-built layouts, a built-in lightbox, and advanced customization options, FooGallery is the perfect gallery solution for any WordPress website.
 
 [Launch Your Own FooGallery Demo (Backend included)](https://app.instawp.io/launch?t=foogallery-free&d=v2)
 
@@ -44,19 +44,11 @@ FooGallery provides live previews as you design your image galleries, and also i
 	*	Responsive album layout - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/wordpress-album-gallery/)
 	*	All-in-one Stack album - [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/wordpress-album-gallery/#all-in-one)
 	*	(just activate the albums feature)
-
-
 *   Import / Export galleries between WP installs - [docs](https://fooplugins.com/documentation/foogallery/getting-started-foogallery/import-export/)
-*	Gutenberg ready (Gallery previews inside the new editor!)
-*	Live gallery previews as you make changes!
-*	Retina thumbnail support
-*	Gallery Widget
-*	Use built-in media library to manage images
 *	Drag n Drop reordering of images and galleries
 *	Custom CSS for both galleries and albums
-*	Copy to clipboard shortcodes
 *	One-click gallery page creation
-*	FooGallery Migrator - easily migrate from your existing gallery solution
+*	FooGallery Migrator - easily migrate from Envira / NextGen / Modula
 *	Multisite Support
 *	Password protected galleries
 
@@ -148,15 +140,15 @@ Our PRO Commerce plan is for the photographers who make a living from selling th
 
 1. Upload `foogallery` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. You will be redirected to the FooGallery Help page to get started with the best gallery plugin
+3. You will be redirected to the FooGallery Help page to get started
 
 == Frequently Asked Questions ==
 
 = Is FooGallery The Best Wordpress Gallery Plugin? =
 
-We certainly think so, but do not take our word for it. We did the research. FooGallery has the best performance and has the most features out of any free WordPress gallery plugin. Read our blog post about it:
+FooGallery has been optimized for performance and has a ton of features in the free version. Read our blog post where we compare FooGallery to other WordPress gallery plugins:
 
-[What is the Best WordPress Gallery Plugin?](https://fooplugins.com/best-wordpress-gallery-plugin/)
+[Best WordPress Gallery Plugins Compared](https://fooplugins.com/best-wordpress-gallery-plugin/)
 
 = Can I add videos to my galleries? =
 
@@ -271,11 +263,31 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 3.0.2 =
+
+This is a bug fix release. Update for maximum compatibility with older browsers.
+
+* Date Updated : 24 Oct 2025
+* Fixed: Text shadows showing when hover effect theme is transparent.
+* Fixed: Classic editor button not showing, and changing setting does nothing.
+* Fixed: Javascript error for URL.parse for older browsers, which would cause gallery images to not load.
+* Update: Updated the wording in the Custom CSS Admin notice and linked to migration documentation.
+[//]: # fs_premium_only_begin
+* Fixed: [Expert Plan] Custom captions show blank in certain edge cases.
+[//]: # fs_premium_only_end
+
+= 3.0.1 =
+
+This is a minor bug fix release, to address some issues with gallery sorting. If you sort your galleries any way other than the default, then you need to update.
+
+* Date Updated : 24 Oct 2025
+* Fixed: Sorting attachments by date and modified was not working.
+
 = 3.0.0 =
 
 This is a major update, where we have modernized every gallery layout, introduced a gallery layout selector and made many more improvements.
 
-* Date Updated : 13 Oct 2025
+* Date Updated : 21 Oct 2025
 * Change : Gallery Templates are now called Gallery Layouts.
 * New : Added visual gallery layout selector in gallery edit page. (MAJOR IMPROVEMENT!!)
 * New : Added 6 more hover effect icons.

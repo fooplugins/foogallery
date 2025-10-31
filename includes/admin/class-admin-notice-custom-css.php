@@ -42,10 +42,14 @@ if ( ! class_exists( 'FooGallery_Admin_Notice_CustomCSS' ) ) {
 
                 $index = foogallery_admin_fields_find_index_of_field( $settings['settings'], 'custom_js' );
 
+                $link_html = '<a target="_blank" href="' . esc_url( 'https://fooplugins.com/documentation/foogallery/troubleshooting-foogallery/foogallery-v3-0-custom-css-migration-guide/' ) . '">' . __( 'Custom CSS v3 Migration Guide', 'foogallery' ) . '</a>';
+
                 $new_settings[] = array(
                     'id'      => 'custom_css_update',
-                    'title'   => __( 'Custom CSS Update!', 'foogallery' ),
-                    'desc'    => __( 'We found outdated custom CSS that needs to be updated. Since FooGallery update v2.5, custom CSS related to captions (specifically when using `fg-caption`), has changed. You will need to update your custom CSS. Please contact support if you need assistance.', 'foogallery' ),
+                    'title'   => __( 'Custom CSS Review!', 'foogallery' ),
+                    'desc'    => __( 'We found custom CSS that needs to be reviewed. Since FooGallery update v3, custom CSS related to captions (specifically when using `fg-caption`), nees to be reivewed and in some cases updated.', 'foogallery' ) . '<br />' . 
+                        __( 'Changes are not always needed, so if you review your Custom CSS and all seems correct, you can safely dismiss the admin notice, and ignore this message.', 'foogallery' ) . '<br />' . 
+                        sprintf( __( 'For more info, please read our %s.', 'foogallery' ), $link_html ),
                     'type'    => 'custom_css_update',
                     'tab'     => 'custom_assets',
                 );

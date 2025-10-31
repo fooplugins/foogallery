@@ -104,6 +104,7 @@
                 border: solid 1px #ddd;
                 padding: 5px;
                 margin-left: 10px;
+                width: 160px;
             }
 
                 .foogallery-master-product-modal-content-inner li:hover,
@@ -123,6 +124,9 @@
                     font-weight: bold;
                     font-size: 1em;
                     margin: 0;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
 
                 .foogallery-master-product-modal-content-inner li > span {
