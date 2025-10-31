@@ -4,7 +4,7 @@ Donate link: https://fooplugins.com
 Tags: gallery, image-gallery, photo-gallery, responsive-gallery, lightbox
 Requires at least: 5.3
 Tested up to: 6.8
-Stable tag: 3.0.2
+Stable tag: 3.0.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -262,6 +262,27 @@ Yes. FooGallery does not collect visitor data, and admin tracking is optional.
 Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 3.0.6 =
+
+This is a small bug fix release, to address a bug with deeplinking not working in lightbox.
+
+* Date Updated : 31 Oct 2025
+* Fixed: Deeplinking not working in lightbox.
+
+= 3.0.5 =
+
+This update includes improvements to the post query datasource, which makes it more powerful.
+
+* Date Updated : 29 Oct 2025
+* New: Added new filter to override any setting 'foogallery_get_setting-{key}'
+* New: Added new filter to override attachments for a gallery 'foogallery_attachments'
+[//]: # fs_premium_only_begin
+* Fixed: [Expert Plan] Multi-select filtering modal now loads correct terms for other datasources.
+* Update: [Expert Plan] Improved post query datasource. Added support for non public post types, included ability to load taxonomy terms for filtering, added multiple override fields, added custom target field, added support for ACF fields.
+* New: [Commerce Plan] Added new ability to add a custom button (based on Custom URL and Custom Target).
+* New: [Commerce Plan] Added new ability to add a ribbon based off the custom class (will only show if the class is set in the custom class field on the attachment)
+[//]: # fs_premium_only_end
 
 = 3.0.2 =
 

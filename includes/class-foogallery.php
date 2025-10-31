@@ -354,6 +354,7 @@ class FooGallery extends stdClass {
 				$orderby = foogallery_sorting_get_posts_orderby_arg( $this->sorting );
 				$order = foogallery_sorting_get_posts_order_arg( $this->sorting );
 				$attachments = foogallery_sort_attachments( $attachments, $orderby, $order );
+				$attachments = apply_filters( 'foogallery_attachments', $attachments, $this );
 			}
 			$this->_attachments = $attachments;
 		}

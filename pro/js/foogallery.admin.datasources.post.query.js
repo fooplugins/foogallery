@@ -52,16 +52,50 @@ FooGallery.utils.ready(function ($) {
             "gallery_post_type": $('#gallery_post_type').val(),
             "no_of_post": $('#no_of_post').val(),
             "exclude": $('#exclude').val(),
-            "link_to": $(".link_to:checked").val()
+            "link_to": $(".link_to:checked").val(),
+            "override_link_property": $('#override_link_property').val(),
+            "override_desc_property": $('#override_desc_property').val(),
+            "override_title_property": $('#override_title_property').val(),
+            "override_class_property": $('#override_class_property').val(),
+            "override_sort_property": $('#override_sort_property').val(),
+            "taxonomy": $('#taxonomy').val(),
+            "custom_target": $('#custom_target').val()
         };
 
         //save the datasource_value
         $('#_foogallery_datasource_value').val(JSON.stringify(value));
 
-        $('#foogallery-datasource-post-query-gallery_post_type').html( $('#gallery_post_type').val() );
-        $('#foogallery-datasource-post-query-no_of_post').html( $('#no_of_post').val() );
-        $('#foogallery-datasource-post-query-exclude').html( $('#exclude').val() );
-        $('#foogallery-datasource-post-query-link_to').html( $(".link_to:checked").val() );
+        var summaryFields = {
+            'foogallery-datasource-post-query-gallery_post_type': $('#gallery_post_type').val(),
+            'foogallery-datasource-post-query-no_of_post': $('#no_of_post').val(),
+            'foogallery-datasource-post-query-exclude': $('#exclude').val(),
+            'foogallery-datasource-post-query-link_to': $(".link_to:checked").val(),
+            'foogallery-datasource-post-query-override_link_property': $('#override_link_property').val(),
+            'foogallery-datasource-post-query-override_desc_property': $('#override_desc_property').val(),
+            'foogallery-datasource-post-query-override_title_property': $('#override_title_property').val(),
+            'foogallery-datasource-post-query-override_class_property': $('#override_class_property').val(),
+            'foogallery-datasource-post-query-override_sort_property': $('#override_sort_property').val(),
+            'foogallery-datasource-post-query-taxonomy': $('#taxonomy').val(),
+            'foogallery-datasource-post-query-custom_target': $('#custom_target').val()
+        };
+
+        $.each(summaryFields, function(id, value) {
+            var $field = $('#' + id);
+            $field.text(value);
+
+            var $wrapper = $field.parent('[data-summary-field]');
+            if (!$wrapper.length) {
+                $wrapper = $field;
+            }
+            if (typeof value === 'string') {
+                value = value.trim();
+            }
+            if (value) {
+                $wrapper.show();
+            } else {
+                $wrapper.hide();
+            }
+        });
 
         $container.show();
 

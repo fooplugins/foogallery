@@ -10,6 +10,7 @@ if ( ! class_exists( 'FooGallery_Attachment_Custom_Class' ) ) {
 		function __construct() {
 			add_filter( 'foogallery_attachment_custom_fields', array( $this, 'add_custom_class_field' ) );
 			add_filter( 'foogallery_attachment_html_link_attributes', array( $this, 'alter_class_attributes' ), 99, 3 );
+			add_action( 'foogallery_attachment_instance_after_load', array( $this, 'load_custom_class_meta' ), 10, 2 );
 		}
 
 		/**
@@ -42,20 +43,34 @@ if ( ! class_exists( 'FooGallery_Attachment_Custom_Class' ) ) {
 		 * @return array
 		 */
 		function alter_class_attributes( $attr, $args, $object ) {
-			$custom_class = get_post_meta( $object->ID, '_foogallery_custom_class', true );
+			//if the object is a FooGalleryAttachment and has a custom class, add it to the custom class
+			if ( $object instanceof FooGalleryAttachment && !empty( $object->custom_class ) ) {
+				if ( !isset( $attr[ 'class' ] ) ) {
+					$attr[ 'class' ] = $object->custom_class;
+				}else{
+					$attr[ 'class' ] .= ' ' . $object->custom_class;
+				}
 
-			if ( ! isset( $attr[ 'class' ] ) ) {
-				$attr[ 'class' ] = $custom_class;
-			}else{
-				$attr[ 'class' ] .= ' ' . $custom_class;
-			}
-
-			//check for any special class names and do some magic!
-			if ( 'nolink' === $custom_class ) {
-				unset( $attr['href'] );
+				//check for any special class names and do some magic!
+				if ( 'nolink' === $object->custom_class ) {
+					unset( $attr['href'] );
+				}
 			}
 
 			return $attr;
+		}
+
+		/**
+		 * Loads any extra custom class data for an attachment.
+		 *
+		 * @param $foogallery_attachment
+		 * @param $post
+		 */
+		public function load_custom_class_meta( $foogallery_attachment, $post ) {
+			$custom_class = get_post_meta( $post->ID, '_foogallery_custom_class', true );
+			if ( !empty( $custom_class ) ) {
+				$foogallery_attachment->custom_class = $custom_class;
+			}
 		}
 	}
 }
