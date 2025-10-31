@@ -8,7 +8,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: FooPlugins <info@fooplugins.com> (https://fooplugins.com)\n"
 "Last-Translator: FooPlugins <info@fooplugins.com> (https://fooplugins.com)\n"
-"POT-Creation-Date: 2025-10-29 10:02+0000\n"
+"POT-Creation-Date: 2025-10-31 14:24+0000\n"
 "Report-Msgid-Bugs-To: https://github.com/fooplugins/foogallery/issues\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -577,7 +577,7 @@ msgstr ""
 msgid "settings"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:603, includes/admin/class-gallery-attachment-modal.php:608, pro/includes/foogallery-media-views-templates.php:234, pro/includes/foogallery-media-views-templates.php:455, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:389
+#: includes/class-foogallery-common-fields.php:603, includes/admin/class-gallery-attachment-modal.php:608, pro/includes/foogallery-media-views-templates.php:234, pro/includes/foogallery-media-views-templates.php:455, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:388
 msgid "Title"
 msgstr ""
 
@@ -3345,7 +3345,7 @@ msgstr ""
 msgid "When creating a new gallery, it can use the settings from an existing gallery as the default settings. This will save you time when creating many galleries that all have the same look and feel."
 msgstr ""
 
-#: includes/admin/class-settings.php:133, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:548
+#: includes/admin/class-settings.php:133, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:547
 msgid "Caption Title Source"
 msgstr ""
 
@@ -3353,7 +3353,7 @@ msgstr ""
 msgid "By default, image caption titles are pulled from the attachment \"Caption\" field. Alternatively, you can choose to use other fields."
 msgstr ""
 
-#: includes/admin/class-settings.php:150, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:567
+#: includes/admin/class-settings.php:150, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:566
 msgid "Caption Description Source"
 msgstr ""
 
@@ -5141,7 +5141,7 @@ msgstr ""
 msgid "Remove Collection"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:366, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:438
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:366, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:437
 msgid "Choose the settings for your gallery below. The gallery will be dynamically populated using the post query settings below."
 msgstr ""
 
@@ -5173,7 +5173,7 @@ msgstr ""
 msgid "Number of posts you want to include in the gallery. Leave empty to include all published posts."
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:452, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:535
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:452, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:534
 msgid "Exclude"
 msgstr ""
 
@@ -5277,7 +5277,7 @@ msgstr ""
 msgid "No. Of Posts : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:630, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:655
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:630, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:654
 msgid "Excludes : "
 msgstr ""
 
@@ -5313,11 +5313,11 @@ msgstr ""
 msgid "Custom Target : "
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:654, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:662
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:654, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:661
 msgid "Change"
 msgstr ""
 
-#: pro/includes/class-foogallery-pro-datasource-post-query.php:657, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:665
+#: pro/includes/class-foogallery-pro-datasource-post-query.php:657, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:664
 msgid "Remove"
 msgstr ""
 
@@ -7165,7 +7165,7 @@ msgstr ""
 msgid "Leave blank if you do not want a caption description."
 msgstr ""
 
-#: includes/compatibility/elementor/class-elementor-foogallery-widget.php:114, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:391
+#: includes/compatibility/elementor/class-elementor-foogallery-widget.php:114, pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:390
 msgid "Content"
 msgstr ""
 
@@ -8077,131 +8077,131 @@ msgstr ""
 msgid "Restart Migration"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:382
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:381
 msgid "Woocommerce is not installed! This datasource is not available."
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:390
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:389
 msgid "Short Description"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:392, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:455
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:391, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:455
 msgid "Price"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:396
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:395
 msgid "Newest First"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:397
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:396
 msgid "Oldest First"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:398
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:397
 msgid "Price (Low to High)"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:399
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:398
 msgid "Price (High to Low)"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:400
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:399
 msgid "Popularity"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:401
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:400
 msgid "Rating"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:405
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:404
 msgid "Any"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:406
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:405
 msgid "In Stock"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:407, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:645, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1100
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:406, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:645, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1100
 msgid "Out Of Stock"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:408, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:654, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1135
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:407, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:654, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1135
 msgid "On Backorder"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:444
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:443
 msgid "Product Categories"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:461
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:460
 msgid "Price Range"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:484
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:483
 msgid "Sort By"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:503
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:502
 msgid "Stock Status"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:522
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:521
 msgid "Number of Products"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:531
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:530
 msgid "Number of products you want to include in the gallery."
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:544
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:543
 msgid "A comma separated list of product id's that you want to exclude from the gallery."
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:629
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:628
 msgid "unlimited"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:633
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:632
 msgid "newest first"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:637
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:636
 msgid "any"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:643
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:642
 msgid "Datasource : WooCommerce Products"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:646
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:645
 msgid "This gallery will be dynamically populated with products, based on the following criteria:"
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:649
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:648
 msgid "Categories : "
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:650
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:649
 msgid "Price Range : "
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:651
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:650
 msgid "Sort by : "
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:652
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:651
 msgid "Stock Status : "
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:653
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:652
 msgid "No. of Products : "
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:657
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:656
 msgid "Caption Title Source : "
 msgstr ""
 
-#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:658
+#: pro/includes/woocommerce/class-foogallery-pro-datasource-products.php:657
 msgid "Caption Desc Source : "
 msgstr ""
 
