@@ -4,6 +4,8 @@
  * Class to handle adding the Template metabox to a gallery
  */
 
+// TODO : remove phpcs:disable comment and work through plugin check warnings.
+
 
 if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Template' ) ) {
 

@@ -53,6 +53,7 @@ if ( ! class_exists( 'FooGallery_Carousel_Gallery_Template' ) ) {
 				$max = is_array( $field['value'] ) ? intval( $field['value']['max'] ): -20;
 				$units = is_array( $field['value'] ) ? $field['value']['units'] : '%';
 				// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped -- Form field generation
+				// TODO : remove phpcs:disable comment and work through plugin check warnings.
 				echo '<label for="FooGallerySettings_' . $id . '_min">' . __( 'Min', 'foogallery' ) . '</label>&nbsp;';
 				echo '<input class="small-text" type="number" step="1" min="-1000" id="FooGallerySettings_' . $id . '_min" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '][min]" value="' . esc_attr( $min ) . '" />';
 				echo '&nbsp;&nbsp;<label for="FooGallerySettings_' . $id . '_max">' . __( 'Max', 'foogallery' ) . '</label>&nbsp;';
