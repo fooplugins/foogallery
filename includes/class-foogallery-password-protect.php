@@ -40,7 +40,7 @@ if ( ! class_exists( 'FooGallery_Password_Protect' ) ) {
                 
                 // Replace the default text with gallery-specific text
 				$output = str_replace(
-					__( 'This content is password protected. To view it please enter your password below:' ),
+					__( 'This content is password protected. To view it please enter your password below:' ), // phpcs:ignore WordPress.WP.I18n.MissingArgDomain
 					__( 'This gallery is password protected. To view it please enter your password below:', 'foogallery' ),
 					$output
 				);
