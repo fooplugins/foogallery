@@ -48,7 +48,7 @@ if ( ! class_exists( 'FooGallery_Admin_Columns' ) ) {
 					break;
 				case FOOGALLERY_CPT_GALLERY . '_count':
 					$gallery = $this->get_local_gallery( $post );
-					echo absint( $gallery->image_count() );
+					echo esc_html( $gallery->image_count() );
 					break;
 				case FOOGALLERY_CPT_GALLERY . '_shortcode':
 					$gallery = $this->get_local_gallery( $post );
