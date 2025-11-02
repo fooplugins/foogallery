@@ -240,13 +240,11 @@ if ( ! class_exists( 'FooGallery_Admin_Notices' ) ) {
 				</style>
 				<div class="foogallery-foobar-notice notice notice-success is-dismissible">
 					<p>
-						<strong><span class="dashicons dashicons-megaphone"></span> Do you want to grow your
-							business?</strong>
+						<strong><span class="dashicons dashicons-megaphone"></span> Do you want to grow your business?</strong>
 						FooBar can help!
 						<br/>
 						FooBar is a free plugin to help grow your business by showing sticky notification bars with
-						call-to-actions. Add unlimited notifications to your site to increase visitor engagement and get
-						your message across!
+						call-to-actions. Add unlimited notifications to your site to increase visitor engagement and get your message across!
 						<br/>
 						<br/>
 						<a class="button button-primary button-large" target="_blank"
@@ -328,5 +326,4 @@ if ( ! class_exists( 'FooGallery_Admin_Notices' ) ) {
 			}
 		}
 	}
-
 }

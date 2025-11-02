@@ -18,7 +18,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 		 */
 		function render_gallery_template_field( $field, $gallery, $template ) {
 			$template_slug = $template['slug'];
-		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped -- Complex form generation with internal template settings, not user input
+			// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped -- Complex form generation with internal template settings, not user input
 
 			//only declare up front so no debug warnings are shown
 			$type = $id = $desc = $default = $placeholder = $choices = $class = $spacer = $opactiy = null;
