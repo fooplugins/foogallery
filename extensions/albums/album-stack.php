@@ -44,10 +44,10 @@ if ( !function_exists( 'foogallery_album_all_in_one_stack_render_gallery_attachm
 		if ( $captions !== false ) {
 			echo '<span class="fg-pile-item-caption">';
 			if ( array_key_exists( 'title', $captions ) ) {
-				echo '<span class="fg-pile-item-title">' . esc_html( $captions['title'] ) . '</span>';
+				echo '<span class="fg-pile-item-title">' . $captions['title'] . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 			if ( array_key_exists( 'desc', $captions ) ) {
-				echo '<span class="fg-pile-item-desc">' . esc_html( $captions['desc'] ) . '</span>';
+				echo '<span class="fg-pile-item-desc">' . $captions['desc'] . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 			echo '</span>';
 		}
