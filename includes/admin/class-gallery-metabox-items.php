@@ -103,7 +103,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Items' ) ) {
 							foogallery_render_gallery( $gallery->ID );
 						} else if ( $has_items && $mode === 'manage' ) {
 							echo '<div style="padding:20px; text-align: center">';
-							echo '<h3>' . __( 'Generating preview...', 'foogallery' ) . '</h3>';
+							echo '<h3>' . esc_html__( 'Generating preview...', 'foogallery' ) . '</h3>';
 							echo '</div>';
 						} else {
 							$this->render_empty_gallery_preview();
