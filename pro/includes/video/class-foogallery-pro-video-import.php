@@ -111,7 +111,7 @@ if ( ! class_exists( "FooGallery_Pro_Video_Import" ) ) {
 					update_post_meta( $result["attachment_id"], FOOGALLERY_VIDEO_POST_META, $video );
 				}
 			}
-
+ 
 			return $response;
 		}
 
@@ -121,28 +121,12 @@ if ( ! class_exists( "FooGallery_Pro_Video_Import" ) ) {
 			//allow for really big imports that take a really long time!
 			@set_time_limit( 300 );
 
-			$response = wp_remote_get( $video["thumbnail"] );
+			$thumbnail_contents = $this->get_file_contents( $video["thumbnail"] );
 
-			if ( is_wp_error( $response ) ) {
+			if ( is_wp_error( $thumbnail_contents ) ) {
 				return array(
 					"type" => "error",
-					"message" => $response->get_error_message()
-				);
-			}
-
-			$response_code = wp_remote_retrieve_response_code( $response );
-			if ( 200 !== $response_code ) {
-				return array(
-					"type" => "error",
-					"message" => "Unable to retrieve thumbnail due to error " . $response_code
-				);
-			}
-
-			$thumbnail          = wp_remote_retrieve_body( $response );
-			if ( empty($thumbnail) ) {
-				return array(
-					"type" => "error",
-					"message" => "Unable to retrieve response body for thumbnail."
+					"message" => $thumbnail_contents->get_error_message()
 				);
 			}
 
@@ -150,17 +134,13 @@ if ( ! class_exists( "FooGallery_Pro_Video_Import" ) ) {
 			if ( $filetype['ext'] === false ){
 				//default to jpg
 				$filetype['ext'] = 'jpg';
-//				return array(
-//					"type" => "error",
-//					"message" => "Unable to determine file type for thumbnail."
-//				);
 			}
 			$thumbnail_filename = $video["id"] . '.' . $filetype['ext'];
 
 			//set the global variable, so that the upload folder can be overridden if required
 			$foogallery_video_upload = $video;
 
-			$upload = wp_upload_bits( $thumbnail_filename, null, $thumbnail );
+			$upload = wp_upload_bits( $thumbnail_filename, null, $thumbnail_contents );
 
 			//reset the global, so that other uploads do not get saved incorrectly
 			$foogallery_video_upload = null;
@@ -215,6 +195,47 @@ if ( ! class_exists( "FooGallery_Pro_Video_Import" ) ) {
 			);
 		}
 
+		/**
+		 * Get the file contents from a URL.
+		 *
+		 * @param string $url The URL to get the file contents from.
+		 * @return string|WP_error The file contents or WP_error if there was an error.
+		 */
+		private function get_file_contents( $url ) {
+			// Get site host
+			$site_url = home_url();
+			$is_local = str_starts_with( $url, $site_url );
+		
+			if ( $is_local ) {
+				$path = str_replace( $site_url, ABSPATH, $url );
+				$path = wp_normalize_path( $path );
+		
+				if ( file_exists( $path ) ) {
+					return file_get_contents( $path );
+				}
+		
+				return new WP_Error( 'file_not_found', 'Local file not found: ' . $path );
+			}
+		
+			$response = wp_remote_get( $url );
+
+			if ( is_wp_error( $response ) ) {
+				return $response;
+			}
+
+			$response_code = wp_remote_retrieve_response_code( $response );
+			if ( 200 !== $response_code ) {
+				return new WP_Error( 'invalid_response_code', 'Invalid response code: ' . $response_code );
+			}
+
+			$thumbnail = wp_remote_retrieve_body( $response );
+			if ( empty($thumbnail) ) {
+				return new WP_Error( 'empty_response_body', 'Empty response body for thumbnail.' );
+			}
+
+			return $thumbnail;
+		}
+		
 		/**
 		 * Retrieve the file type from the file name.
 		 *
