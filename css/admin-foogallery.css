@@ -1186,3 +1186,55 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 .foogallery-hidden {
 	display: none;
 }
+
+
+
+.foogallery-dropzone {
+	display: none;
+	border: 2px dashed #ccc;
+	border-radius: 6px;
+	padding: 30px;
+	text-align: center;
+	margin-bottom: 15px;
+	color: #777;
+	background: #fafafa;
+	position: relative;
+	transition: all 0.2s ease;
+}
+.foogallery-dropzone.visible { display: block; animation: fadeIn 0.15s ease; }
+.foogallery-dropzone.drag-over {
+	border-color: #0073aa;
+	background: #f0f8ff;
+	color: #0073aa;
+}
+.foogallery-dropzone .upload-progress {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	height: 4px;
+	width: 0%;
+	background: #0073aa;
+	transition: width 0.2s ease;
+}
+.foogallery-dropzone .upload-thumbs {
+	display: flex;
+	gap: 8px;
+	justify-content: center;
+	margin-top: 10px;
+}
+.foogallery-dropzone .upload-thumbs .thumb {
+	width: 50px;
+	height: 50px;
+	border-radius: 4px;
+	overflow: hidden;
+	border: 1px solid #ddd;
+}
+.foogallery-dropzone .upload-thumbs .thumb img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+@keyframes fadeIn {
+	from { opacity: 0; transform: scale(0.98); }
+	to { opacity: 1; transform: scale(1); }
+}

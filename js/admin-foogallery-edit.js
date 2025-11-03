@@ -7,6 +7,8 @@ FooGallery.autoEnabled = false;
     FOOGALLERY.attachments = [];
     FOOGALLERY.selected_attachment_id = 0;
     FOOGALLERY.selected_gallery_template = '';
+    FOOGALLERY.dropzoneUploader = null;
+    FOOGALLERY.dropzoneInitialized = false;
 
     // Used for selecting files from the media modal.
     FOOGALLERY.current_media_selector_modals = false;
@@ -735,6 +737,8 @@ FooGallery.autoEnabled = false;
 				}
 			});
 		} );
+
+		FOOGALLERY.initDropzone();
     };
 
 	FOOGALLERY.initMediaSelector = function() {
@@ -1029,6 +1033,206 @@ FooGallery.autoEnabled = false;
 				$loader.removeClass('is-active');
 			},
 		});
+	};
+
+	FOOGALLERY.initDropzone = function() {
+		const $metaBox = $('#foogallery_items .inside');
+
+		if (!$metaBox.length || typeof wp === 'undefined' || !wp.Uploader) {
+			return;
+		}
+
+		if (FOOGALLERY.dropzoneInitialized) {
+			return;
+		}
+
+		let $dropZone = $metaBox.find('.foogallery-dropzone');
+		if (!$dropZone.length) {
+			$dropZone = $(
+				'<div class="foogallery-dropzone">' +
+					'<p class="message">Drop images here to upload</p>' +
+					'<div class="upload-progress"></div>' +
+					'<div class="upload-thumbs"></div>' +
+				'</div>'
+			);
+			$metaBox.prepend($dropZone);
+		}
+
+		FOOGALLERY.dropzoneInitialized = true;
+
+		const $progress = $dropZone.find('.upload-progress').css('width', '0').hide();
+		const $thumbs = $dropZone.find('.upload-thumbs').empty().hide();
+
+		let dragDepth = 0;
+		let uploadActive = false;
+
+		const isFileDrag = function(event) {
+			const dt = event && event.originalEvent && event.originalEvent.dataTransfer;
+
+			if (!dt || !dt.types) {
+				return false;
+			}
+
+			if (typeof dt.types.indexOf === 'function') {
+				return dt.types.indexOf('Files') !== -1;
+			}
+
+			if (typeof dt.types.contains === 'function') {
+				return dt.types.contains('Files');
+			}
+
+			return dt.types === 'Files';
+		};
+
+		$(document)
+			.on('dragenter.foogalleryDropzone', function(event) {
+				if (!isFileDrag(event)) {
+					return;
+				}
+
+				dragDepth++;
+				$dropZone.addClass('visible');
+			})
+			.on('dragleave.foogalleryDropzone', function(event) {
+				if (!isFileDrag(event)) {
+					return;
+				}
+
+				dragDepth = Math.max(dragDepth - 1, 0);
+				if (dragDepth === 0) {
+					if (uploadActive) {
+						$dropZone.removeClass('drag-over');
+					} else {
+						$dropZone.removeClass('visible drag-over');
+					}
+				}
+			})
+			.on('dragover.foogalleryDropzone', function(event) {
+				if (!isFileDrag(event)) {
+					return;
+				}
+
+				event.preventDefault();
+			})
+			.on('drop.foogalleryDropzone', function(event) {
+				if (!isFileDrag(event)) {
+					return;
+				}
+
+				event.preventDefault();
+
+				const isInsideDropZone = $dropZone.is(event.target) || $.contains($dropZone[0], event.target);
+
+				dragDepth = 0;
+				$dropZone.removeClass('drag-over');
+
+				if (!isInsideDropZone) {
+					uploadActive = false;
+					$dropZone.removeClass('visible');
+				} else {
+					uploadActive = true;
+				}
+			});
+
+		$dropZone
+			.on('dropzone:enter.foogalleryDropzone', function() {
+				$dropZone.addClass('visible drag-over');
+			})
+			.on('dropzone:leave.foogalleryDropzone', function() {
+				if (dragDepth === 0) {
+					$dropZone.removeClass('visible drag-over');
+				}
+			});
+
+		const finalizeUI = function() {
+			setTimeout(function() {
+				$dropZone.removeClass('drag-over visible');
+				dragDepth = 0;
+				uploadActive = false;
+
+				$progress.fadeOut(200, function() {
+					$(this).css('width', '0');
+				});
+
+				$thumbs.fadeOut(400, function() {
+					$(this).empty();
+				});
+			}, 400);
+		};
+
+		try {
+			const uploader = new wp.Uploader({
+				container: $dropZone,
+				dropzone: $dropZone,
+				params: {
+					post_id: $('#post_ID').val()
+				},
+				added: function() {
+					uploadActive = true;
+					$dropZone.addClass('visible');
+					$progress.show().css('width', '0');
+
+					if ($thumbs.children().length) {
+						$thumbs.empty();
+					}
+
+					$thumbs.show();
+				},
+				progress: function(attachment) {
+					let percent = 0;
+
+					if (this.uploader && this.uploader.total && typeof this.uploader.total.percent === 'number') {
+						percent = this.uploader.total.percent;
+					} else if (attachment && attachment.get) {
+						percent = attachment.get('percent') || 0;
+					}
+
+					$progress.css('width', percent + '%');
+				},
+				success: function(attachment) {
+					const data = attachment && attachment.toJSON ? attachment.toJSON() : attachment;
+
+					if (!data || !data.id) {
+						return;
+					}
+
+					const previewUrl =
+						(data.sizes && data.sizes.thumbnail && data.sizes.thumbnail.url) ||
+						data.icon ||
+						data.url ||
+						'';
+
+					if (previewUrl) {
+						$('<div>', { 'class': 'thumb' })
+							.append($('<img>', { src: previewUrl, alt: '' }))
+							.appendTo($thumbs);
+					}
+
+					const subtype = data.subtype || (data.mime ? data.mime.split('/')[1] : null);
+
+					FOOGALLERY.addAttachmentToGalleryList({
+						id: data.id,
+						src: previewUrl,
+						subtype: subtype
+					});
+
+					if (!wp.Uploader.queue || !wp.Uploader.queue.length) {
+						finalizeUI();
+					}
+				},
+				error: function(message, responseData, file) {
+					console.error('FooGallery uploader error:', message || responseData, file);
+
+					if (!wp.Uploader.queue || !wp.Uploader.queue.length) {
+						finalizeUI();
+					}
+				}
+			});
+
+			FOOGALLERY.dropzoneUploader = uploader;
+		} catch (error) {
+			console.error('FooGallery failed to initialize dropzone uploader', error);
+		}
 	};
 
 	$(document).ready(function () {
