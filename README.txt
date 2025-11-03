@@ -263,12 +263,21 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 3.1.0-beta.1 =
+
+This is a beta release of FooGallery 3.1.0, which includes a number of fixes/enhancements to meet Plugin Check requirements.
+
+* Date Updated : 02 Nov 2025
+* Fixed: Plugin Check requirements.
+
 = 3.0.6 =
 
 This is a small bug fix release, to address a bug with deeplinking not working in lightbox.
 
 * Date Updated : 31 Oct 2025
+[//]: # fs_premium_only_begin
 * Fixed: Deeplinking not working in lightbox.
+[//]: # fs_premium_only_end
 
 = 3.0.5 =
 
