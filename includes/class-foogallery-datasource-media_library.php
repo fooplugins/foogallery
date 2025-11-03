@@ -106,7 +106,7 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary' ) ) {
             }
 			?>
 			<input type="hidden" data-foogallery-preview="include" name='foogallery_attachments' id="foogallery_attachments" value="<?php echo esc_attr( $attachment_ids ); ?>"/>
-            <div class="foogallery-attachments-list-container <?php echo $show_attachments && $has_attachments ? '' : 'hidden'; ?>">
+            <div class="foogallery-attachments-list-container <?php echo $show_attachments && $has_attachments ? '' : 'foogallery-hidden'; ?>">
                 <ul class="foogallery-attachments-list <?php echo $media_button_start ? 'foogallery-add-media-button-start' : ''; ?>">
                     <?php if ( $media_button_start ) {
                         $this->render_add_media_button( $foogallery->ID );
