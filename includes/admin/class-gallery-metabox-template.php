@@ -57,7 +57,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Template' ) ) {
 						?>
 						<div class="foogallery-template-card <?php echo esc_attr( $selected_class ); ?> <?php echo esc_attr( $extra_class ); ?>" 
 							data-template="<?php echo esc_attr( $template['slug'] ); ?>">
-							<?php echo wp_kses_post( $template['icon'] ); ?>
+							<?php echo $template['icon']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- SVG icon is trusted content from plugin templates ?>
+
 							<h4><?php echo esc_html( $template['name'] ); ?></h4>
 							<?php echo wp_kses_post( $extra_html ); ?>
 						</div>
