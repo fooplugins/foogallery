@@ -1048,20 +1048,22 @@ FooGallery.autoEnabled = false;
 
 		let $dropZone = $metaBox.find('.foogallery-dropzone');
 		if (!$dropZone.length) {
+			const dropzoneMessage = (FOOGALLERY.il8n && FOOGALLERY.il8n.dropzone_message) || 'Drop images here to upload';
+
 			$dropZone = $(
 				'<div class="foogallery-dropzone">' +
-					'<p class="message">Drop images here to upload</p>' +
+					'<p class="message"></p>' +
 					'<div class="upload-progress"></div>' +
-					'<div class="upload-thumbs"></div>' +
 				'</div>'
 			);
 			$metaBox.prepend($dropZone);
+			$dropZone.find('.message').text(dropzoneMessage);
 		}
 
 		FOOGALLERY.dropzoneInitialized = true;
 
 		const $progress = $dropZone.find('.upload-progress').css('width', '0').hide();
-		const $thumbs = $dropZone.find('.upload-thumbs').empty().hide();
+		const $uploadButton = $metaBox.find('.foogallery-upload-direct');
 
 		let dragDepth = 0;
 		let uploadActive = false;
@@ -1153,15 +1155,11 @@ FooGallery.autoEnabled = false;
 				$progress.fadeOut(200, function() {
 					$(this).css('width', '0');
 				});
-
-				$thumbs.fadeOut(400, function() {
-					$(this).empty();
-				});
 			}, 400);
 		};
 
 		try {
-			const uploader = new wp.Uploader({
+			const uploaderSettings = {
 				container: $dropZone,
 				dropzone: $dropZone,
 				params: {
@@ -1171,12 +1169,6 @@ FooGallery.autoEnabled = false;
 					uploadActive = true;
 					$dropZone.addClass('visible');
 					$progress.show().css('width', '0');
-
-					if ($thumbs.children().length) {
-						$thumbs.empty();
-					}
-
-					$thumbs.show();
 				},
 				progress: function(attachment) {
 					let percent = 0;
@@ -1196,23 +1188,14 @@ FooGallery.autoEnabled = false;
 						return;
 					}
 
-					const previewUrl =
-						(data.sizes && data.sizes.thumbnail && data.sizes.thumbnail.url) ||
-						data.icon ||
-						data.url ||
-						'';
-
-					if (previewUrl) {
-						$('<div>', { 'class': 'thumb' })
-							.append($('<img>', { src: previewUrl, alt: '' }))
-							.appendTo($thumbs);
-					}
-
 					const subtype = data.subtype || (data.mime ? data.mime.split('/')[1] : null);
 
 					FOOGALLERY.addAttachmentToGalleryList({
 						id: data.id,
-						src: previewUrl,
+						src: (data.sizes && data.sizes.thumbnail && data.sizes.thumbnail.url) ||
+							data.icon ||
+							data.url ||
+							'',
 						subtype: subtype
 					});
 
@@ -1227,7 +1210,13 @@ FooGallery.autoEnabled = false;
 						finalizeUI();
 					}
 				}
-			});
+			};
+
+			if ($uploadButton.length) {
+				uploaderSettings.browser = $uploadButton;
+			}
+
+			const uploader = new wp.Uploader(uploaderSettings);
 
 			FOOGALLERY.dropzoneUploader = uploader;
 		} catch (error) {

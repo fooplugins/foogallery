@@ -5,6 +5,12 @@
 if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary' ) ) {
 
 	class FooGallery_Datasource_MediaLibrary {
+		/**
+		 * Tracks whether the add-actions wrapper has been opened.
+		 *
+		 * @var bool
+		 */
+		private $add_actions_wrapper_open = false;
 
 		function __construct() {
 			add_filter( 'foogallery_datasource_media_library_item_count', array( $this, 'get_gallery_attachment_count' ), 10, 2 );
@@ -13,9 +19,12 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary' ) ) {
 
             if ( is_admin() ) {
                 add_action('foogallery_gallery_metabox_items_add', array($this, 'output_add_button'), 8, 1);
+				add_action('foogallery_gallery_metabox_items_add', array($this, 'close_add_button_wrapper'), 1000, 1);
                 add_action('foogallery_gallery_metabox_items_list', array($this, 'output_attachment_items'), 10, 1);
 
                 add_action('foogallery_before_save_gallery', array($this, 'save_gallery_attachments'), 10, 2);
+
+				add_filter( 'foogallery_admin_il8n', array( $this, 'add_admin_il8n_strings' ) );
             }
 		}
 
@@ -76,14 +85,58 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary' ) ) {
 		 * @param $foogallery
 		 */
 		public function output_add_button( $foogallery ) {
+			if ( ! $this->add_actions_wrapper_open ) {
+				$this->add_actions_wrapper_open = true;
+				?>
+				<div class="foogallery-add-actions">
+				<?php
+			}
 			?>
 			<button type="button" class="button button-primary button-hero upload_image_button"
-					data-uploader-title="<?php _e( 'Add Media To Gallery', 'foogallery' ); ?>"
-					data-uploader-button-text="<?php _e( 'Add Media', 'foogallery' ); ?>"
-					data-post-id="<?php echo $foogallery->ID; ?>">
-				<span class="dashicons dashicons-admin-media"></span><?php _e( 'Add From Media Library', 'foogallery' ); ?>
+					data-uploader-title="<?php esc_attr_e( 'Add Media To Gallery', 'foogallery' ); ?>"
+					data-uploader-button-text="<?php esc_attr_e( 'Add Media', 'foogallery' ); ?>"
+					data-post-id="<?php esc_attr_e( $foogallery->ID ); ?>">
+				<span class="dashicons dashicons-admin-media"></span>
+				<span class="foogallery-add-button-label"><?php esc_attr_e( 'Add From Media Library', 'foogallery' ); ?></span>
+			</button>
+			<button type="button" class="button button-secondary button-hero foogallery-upload-direct"
+				data-post-id="<?php esc_attr_e( $foogallery->ID ); ?>">
+				<span class="dashicons dashicons-cloud-upload"></span>
+				<span class="foogallery-add-button-label"><?php esc_attr_e( 'Upload From Computer', 'foogallery' ); ?></span>
 			</button>
 			<?php
+		}
+
+		/**
+		 * Closes the add-actions wrapper once all buttons have rendered.
+		 *
+		 * @param FooGallery $foogallery
+		 */
+		public function close_add_button_wrapper( $foogallery ) {
+			if ( $this->add_actions_wrapper_open ) {
+				?>
+				</div>
+				<p><?php esc_html_e( 'hint : you can also drag and drop images here to upload them!', 'foogallery' ); ?></p>
+				<?php
+				$this->add_actions_wrapper_open = false;
+			}
+		}
+
+		/**
+		 * Adds datasource-related admin localisation strings.
+		 *
+		 * @param array $strings
+		 *
+		 * @return array
+		 */
+		public function add_admin_il8n_strings( $strings ) {
+			if ( ! is_array( $strings ) ) {
+				$strings = array();
+			}
+
+			$strings['dropzone_message'] = __( 'Drop images here to upload', 'foogallery' );
+
+			return $strings;
 		}
 
 		/**
@@ -105,9 +158,9 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary' ) ) {
                 $attachment_ids = $foogallery->attachment_id_csv();
             }
 			?>
-			<input type="hidden" data-foogallery-preview="include" name='foogallery_attachments' id="foogallery_attachments" value="<?php echo $attachment_ids; ?>"/>
-            <div class="foogallery-attachments-list-container <?php echo $show_attachments && $has_attachments ? '' : 'foogallery-hidden'; ?>">
-                <ul class="foogallery-attachments-list <?php echo $media_button_start ? 'foogallery-add-media-button-start' : ''; ?>">
+			<input type="hidden" data-foogallery-preview="include" name='foogallery_attachments' id="foogallery_attachments" value="<?php echo esc_attr( $attachment_ids ); ?>"/>
+            <div class="foogallery-attachments-list-container <?php echo esc_attr( $show_attachments && $has_attachments ? '' : 'foogallery-hidden' ); ?>">
+                <ul class="foogallery-attachments-list <?php echo esc_attr( $media_button_start ? 'foogallery-add-media-button-start' : '' ); ?>">
                     <?php if ( $media_button_start ) {
                         $this->render_add_media_button( $foogallery->ID );
                     } ?>
@@ -128,14 +181,14 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary' ) ) {
                     <?php do_action('foogallery_attachments_list_bar_buttons', $foogallery ); ?>
 
                     <button type="button" class="button button-primary button-large alignright upload_image_button"
-                            data-uploader-title="<?php _e( 'Add Media To Gallery', 'foogallery' ); ?>"
-                            data-uploader-button-text="<?php _e( 'Add Media', 'foogallery' ); ?>"
-                            data-post-id="<?php echo $foogallery->ID; ?>">
-                        <?php _e( 'Add Media', 'foogallery' ); ?>
+                            data-uploader-title="<?php esc_attr_e( 'Add Media To Gallery', 'foogallery' ); ?>"
+                            data-uploader-button-text="<?php esc_attr_e( 'Add Media', 'foogallery' ); ?>"
+                            data-post-id="<?php echo esc_attr( $foogallery->ID ); ?>">
+                        <?php esc_attr_e( 'Add Media', 'foogallery' ); ?>
                     </button>
 
                     <button type="button" class="button button-primary button-large alignright remove_all_media">
-		                <?php _e( 'Remove All Media', 'foogallery' ); ?>
+		                <?php esc_attr_e( 'Remove All Media', 'foogallery' ); ?>
                     </button>
 
                 </div>
@@ -146,10 +199,10 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary' ) ) {
 		private function render_add_media_button( $foogallery_id) {
 		    ?>
             <li class="add-attachment datasource-medialibrary">
-                <a href="#" data-uploader-title="<?php _e( 'Add Media To Gallery', 'foogallery' ); ?>"
-                   data-uploader-button-text="<?php _e( 'Add Media', 'foogallery' ); ?>"
-                   data-post-id="<?php echo $foogallery_id; ?>" class="upload_image_button"
-                   title="<?php _e( 'Add From Media Library', 'foogallery' ); ?>">
+                <a href="#" data-uploader-title="<?php esc_attr_e( 'Add Media To Gallery', 'foogallery' ); ?>"
+                   data-uploader-button-text="<?php esc_attr_e( 'Add Media', 'foogallery' ); ?>"
+                   data-post-id="<?php echo esc_attr( $foogallery_id ); ?>" class="upload_image_button"
+                   title="<?php esc_attr_e( 'Add From Media Library', 'foogallery' ); ?>">
                     <div class="dashicons dashicons-plus"></div>
                 </a>
             </li>
@@ -172,17 +225,17 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary' ) ) {
 			$data_attribute = empty($attachment_id) ? '' : "data-attachment-id=\"{$attachment_id}\"";
 			$img_tag        = empty($attachment) ? '<img width="150" height="150" />' : "<img width=\"150\" height=\"150\" data-src=\"{$attachment[0]}\" />";
 			?>
-			<li class="attachment details" <?php echo $data_attribute; ?>>
-				<div class="attachment-preview type-image <?php echo $extra_class; ?>">
+			<li class="attachment details" <?php echo $data_attribute; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Attribute safely built above ?>>
+				<div class="attachment-preview type-image <?php echo esc_attr( $extra_class ); ?>">
 					<div class="thumbnail">
 						<div class="centered">
-							<?php echo $img_tag; ?>
+							<?php echo $img_tag; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Image Tag safely built above ?>
 						</div>
 					</div>
-					<a class="info" href="#" title="<?php _e( 'Edit Info', 'foogallery' ); ?>">
+					<a class="info" href="#" title="<?php esc_attr_e( 'Edit Info', 'foogallery' ); ?>">
 						<span class="dashicons dashicons-info"></span>
 					</a>
-					<a class="remove" href="#" title="<?php _e( 'Remove from gallery', 'foogallery' ); ?>">
+					<a class="remove" href="#" title="<?php esc_attr_e( 'Remove from gallery', 'foogallery' ); ?>">
 						<span class="dashicons dashicons-dismiss"></span>
 					</a>
 				</div>

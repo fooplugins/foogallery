@@ -1188,6 +1188,39 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 }
 
 
+.foogallery-add-actions {
+	display: flex;
+	justify-content: center;
+	align-items: stretch;
+	gap: 18px;
+	flex-wrap: wrap;
+	margin: 15px 0 0;
+}
+
+.foogallery-add-actions .button.button-hero {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	min-width: 160px;
+	min-height: 120px;
+	padding: 20px 24px;
+	font-size: 14px;
+	line-height: 1.4;
+}
+
+.foogallery-add-actions .button.button-hero .dashicons {
+	font-size: 32px;
+	width: 32px;
+	height: 32px;
+	margin-bottom: 8px;
+}
+
+.foogallery-add-actions .foogallery-add-button-label {
+	display: block;
+}
+
 
 .foogallery-dropzone {
 	display: none;
@@ -1215,24 +1248,6 @@ button[data-balloon]{overflow:visible}[data-balloon]{position:relative}[data-bal
 	width: 0%;
 	background: #0073aa;
 	transition: width 0.2s ease;
-}
-.foogallery-dropzone .upload-thumbs {
-	display: flex;
-	gap: 8px;
-	justify-content: center;
-	margin-top: 10px;
-}
-.foogallery-dropzone .upload-thumbs .thumb {
-	width: 50px;
-	height: 50px;
-	border-radius: 4px;
-	overflow: hidden;
-	border: 1px solid #ddd;
-}
-.foogallery-dropzone .upload-thumbs .thumb img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
 }
 @keyframes fadeIn {
 	from { opacity: 0; transform: scale(0.98); }
