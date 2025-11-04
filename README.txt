@@ -256,6 +256,7 @@ Yes. FooGallery does not collect visitor data, and admin tracking is optional.
 7. Frontend example with portfolio layout
 8. Frontend example with single thumbnail layout
 9. Frontend example with carousel layout
+10. Lightbox
 
 == Upgrade Notice ==
 
