@@ -153,10 +153,10 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Datasources' ) ) {
         public function add_datasources_button() {
             $datasources = foogallery_gallery_datasources();
             //we only want to show the datasources button if there are more than 1 datasources
-            if ( count( $datasources ) > 1 ) { ?>
-				<p><?php esc_html_e('or', 'foogallery');?></p>
+			if ( count( $datasources ) > 1 ) { ?>
 				<button type="button" class="button button-secondary button-hero gallery_datasources_button">
-					<span class="dashicons dashicons-format-gallery"></span><?php esc_html_e( 'Add From Another Source', 'foogallery' ); ?>
+					<span class="dashicons dashicons-format-gallery"></span>
+					<span class="foogallery-add-button-label"><?php esc_html_e( 'Add From Another Source', 'foogallery' ); ?></span>
 				</button>
             <?php }
         }
@@ -178,7 +178,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Datasources' ) ) {
 
             ?>
             <?php wp_nonce_field('foogallery_load_galleries', 'foogallery_load_galleries', false); ?>
-            <div class="foogallery-datasources-modal-wrapper" data-foogalleryid="<?php echo esc_attr( $post->ID ); ?>" data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery-datasource-content' )); ?>" style="display: none;">
+            <div class="foogallery-datasources-modal-wrapper" data-foogalleryid="<?php echo esc_attr( $post->ID ); ?>" data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery-datasource-content' ) ); ?>" style="display: none;">
                 <div class="media-modal wp-core-ui">
                     <button type="button" class="media-modal-close">
                         <span class="media-modal-icon"><span class="screen-reader-text">Close media panel</span></span>
