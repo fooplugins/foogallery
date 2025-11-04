@@ -47,6 +47,47 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Template' ) ) {
 				$message = '';
 			}
 
+			// Allow SVG tags for icons (wp_kses_post doesn't support SVG)
+			$svg_allowed = array(
+				'svg' => array(
+					'viewbox' => true,
+					'viewBox' => true,
+					'xmlns' => true,
+					'width' => true,
+					'height' => true,
+					'class' => true,
+				),
+				'g' => array(
+					'transform' => true,
+					'class' => true,
+				),
+				'rect' => array(
+					'x' => true,
+					'y' => true,
+					'width' => true,
+					'height' => true,
+					'class' => true,
+				),
+				'polygon' => array(
+					'points' => true,
+					'class' => true,
+				),
+				'circle' => array(
+					'cx' => true,
+					'cy' => true,
+					'r' => true,
+					'class' => true,
+				),
+				'path' => array(
+					'd' => true,
+					'class' => true,
+				),
+				'polyline' => array(
+					'points' => true,
+					'class' => true,
+				),
+			);
+
 			?>
 			<div class="foogallery-template-card-selector" data-metabox-message="<?php echo esc_attr( $message ); ?>">
 				<div class="foogallery-template-cards-container">
@@ -57,8 +98,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Template' ) ) {
 						?>
 						<div class="foogallery-template-card <?php echo esc_attr( $selected_class ); ?> <?php echo esc_attr( $extra_class ); ?>" 
 							data-template="<?php echo esc_attr( $template['slug'] ); ?>">
-							<?php echo $template['icon']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- SVG icon is trusted content from plugin templates ?>
-
+							<?php echo wp_kses( $template['icon'], $svg_allowed ); ?>
 							<h4><?php echo esc_html( $template['name'] ); ?></h4>
 							<?php echo wp_kses_post( $extra_html ); ?>
 						</div>
