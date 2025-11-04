@@ -52,16 +52,15 @@ if ( ! class_exists( 'FooGallery_Carousel_Gallery_Template' ) ) {
 		        $min  = is_array( $field['value'] ) ? intval( $field['value']['min'] ) : -40;
 				$max = is_array( $field['value'] ) ? intval( $field['value']['max'] ): -20;
 				$units = is_array( $field['value'] ) ? $field['value']['units'] : '%';
-				// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped -- Form field generation
-				// TODO : remove phpcs:disable comment and work through plugin check warnings.
-				echo '<label for="FooGallerySettings_' . $id . '_min">' . __( 'Min', 'foogallery' ) . '</label>&nbsp;';
-				echo '<input class="small-text" type="number" step="1" min="-1000" id="FooGallerySettings_' . $id . '_min" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '][min]" value="' . esc_attr( $min ) . '" />';
-				echo '&nbsp;&nbsp;<label for="FooGallerySettings_' . $id . '_max">' . __( 'Max', 'foogallery' ) . '</label>&nbsp;';
-				echo '<input class="small-text" type="number" step="1" min="-1000" id="FooGallerySettings_' . $id . '_max" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '][max]" value="' . esc_attr( $max ) . '" />';
-				echo '&nbsp;&nbsp;<label for="FooGallerySettings_' . $id . '_units">' . __( 'Units', 'foogallery' ) . '</label>&nbsp;';
-				echo '<select id="FooGallerySettings_' . $id . '_units" name="' . FOOGALLERY_META_SETTINGS . '[' . $id . '][units]">';
-				echo '<option ' . ( $units === '%' ? 'selected="selected" ' : '' ) . 'value="%">' . __( '%', 'foogallery' ) . '</option>';
-				echo '<option ' . ( $units === 'px' ? 'selected="selected" ' : '' ) . 'value="px">' . __( 'px', 'foogallery' ) . '</option>';
+				
+				echo '<label for="FooGallerySettings_' . esc_attr( $id ) . '_min">' . esc_html__( 'Min', 'foogallery' ) . '</label>&nbsp;';
+				echo '<input class="small-text" type="number" step="1" min="-1000" id="FooGallerySettings_' . esc_attr( $id ) . '_min" name="' . esc_attr( FOOGALLERY_META_SETTINGS ) . '[' . esc_attr( $id ) . '][min]" value="' . esc_attr( $min ) . '" />';
+				echo '&nbsp;&nbsp;<label for="FooGallerySettings_' . esc_attr( $id ) . '_max">' . esc_html__( 'Max', 'foogallery' ) . '</label>&nbsp;';
+				echo '<input class="small-text" type="number" step="1" min="-1000" id="FooGallerySettings_' . esc_attr( $id ) . '_max" name="' . esc_attr( FOOGALLERY_META_SETTINGS ) . '[' . esc_attr( $id ) . '][max]" value="' . esc_attr( $max ) . '" />';
+				echo '&nbsp;&nbsp;<label for="FooGallerySettings_' . esc_attr( $id ) . '_units">' . esc_html__( 'Units', 'foogallery' ) . '</label>&nbsp;';
+				echo '<select id="FooGallerySettings_' . esc_attr( $id ) . '_units" name="' . esc_attr( FOOGALLERY_META_SETTINGS ) . '[' . esc_attr( $id ) . '][units]">';
+				echo '<option ' . ( $units === '%' ? 'selected="selected" ' : '' ) . 'value="%">' . esc_html__( '%', 'foogallery' ) . '</option>';
+				echo '<option ' . ( $units === 'px' ? 'selected="selected" ' : '' ) . 'value="px">' . esc_html__( 'px', 'foogallery' ) . '</option>';
 				echo '</select>';
 				?>
 				<script type="text/javascript">
@@ -69,16 +68,16 @@ if ( ! class_exists( 'FooGallery_Carousel_Gallery_Template' ) ) {
 						$('.foogallery-field-carousel-gutter-preset').on('click', function(e) {
 							e.preventDefault();
 
-							$('#FooGallerySettings_<?php echo $id; ?>_min').val( $(this).data('min') );
-							$('#FooGallerySettings_<?php echo $id; ?>_max').val( $(this).data('max') );
-							$('#FooGallerySettings_<?php echo $id; ?>_units').val( $(this).data('units') ).trigger("change");
+							$('#FooGallerySettings_<?php echo esc_js( $id ); ?>_min').val( $(this).data('min') );
+							$('#FooGallerySettings_<?php echo esc_js( $id ); ?>_max').val( $(this).data('max') );
+							$('#FooGallerySettings_<?php echo esc_js( $id ); ?>_units').val( $(this).data('units') ).trigger("change");
 						});
 					});
 				</script>
 				<?php
-				echo '&nbsp;&nbsp;<a data-min="-40" data-max="-20" data-units="%" class="foogallery-field-carousel-gutter-preset" href="#" >' . __( 'Preset 1', 'foogallery' ) . '</a>';
-				echo '&nbsp;&nbsp;<a data-min="5" data-max="10" data-units="px" class="foogallery-field-carousel-gutter-preset" href="#" >' . __( 'Preset 2', 'foogallery' ) . '</a>';
-				// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo '&nbsp;&nbsp;<a data-min="-40" data-max="-20" data-units="%" class="foogallery-field-carousel-gutter-preset" href="#" >' . esc_html__( 'Preset 1', 'foogallery' ) . '</a>';
+				echo '&nbsp;&nbsp;<a data-min="5" data-max="10" data-units="px" class="foogallery-field-carousel-gutter-preset" href="#" >' . esc_html__( 'Preset 2', 'foogallery' ) . '</a>';
+				
 			}
 		}
 

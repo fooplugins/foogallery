@@ -1,5 +1,4 @@
 <?php
-// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped -- Template selection with sanitized values
 /**
  * Class to handle adding the Template metabox to a gallery
  */
@@ -58,17 +57,17 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Template' ) ) {
 						$extra_class = $template['class'] ?? '';
 						$extra_html = $template['html'] ?? '';
 						?>
-						<div class="foogallery-template-card <?php echo $selected_class; ?> <?php echo $extra_class; ?>" 
+						<div class="foogallery-template-card <?php echo esc_attr( $selected_class ); ?> <?php echo esc_attr( $extra_class ); ?>" 
 							data-template="<?php echo esc_attr( $template['slug'] ); ?>">
-							<?php echo $template['icon']; ?>
+							<?php echo wp_kses_post( $template['icon'] ); ?>
 							<h4><?php echo esc_html( $template['name'] ); ?></h4>
-							<?php echo $extra_html; ?>
+							<?php echo wp_kses_post( $extra_html ); ?>
 						</div>
 					<?php } ?>
 				</div>
 				
 				<!-- Keep the hidden select for form submission -->
-				<input type="hidden" id="FooGallerySettings_GalleryTemplate" name="<?php echo FOOGALLERY_META_TEMPLATE; ?>" value="<?php echo esc_attr( $current_gallery_template ); ?>" />
+				<input type="hidden" id="FooGallerySettings_GalleryTemplate" name="<?php echo esc_attr( FOOGALLERY_META_TEMPLATE ); ?>" value="<?php echo esc_attr( $current_gallery_template ); ?>" />
 			</div>
 		<?php
 		}
