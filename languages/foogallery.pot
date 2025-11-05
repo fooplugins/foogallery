@@ -8,7 +8,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: FooPlugins <info@fooplugins.com> (https://fooplugins.com)\n"
 "Last-Translator: FooPlugins <info@fooplugins.com> (https://fooplugins.com)\n"
-"POT-Creation-Date: 2025-11-02 18:06+0000\n"
+"POT-Creation-Date: 2025-11-05 09:42+0000\n"
 "Report-Msgid-Bugs-To: https://github.com/fooplugins/foogallery/issues\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -121,7 +121,7 @@ msgstr ""
 msgid "Choose which lightbox you want to use. The lightbox will generally only work if you set the thumbnail link to \"Full Size Image\"."
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:63, includes/class-foogallery-lightbox.php:150, includes/class-foogallery-lightbox.php:171, includes/class-foogallery-lightbox.php:187, includes/class-foogallery-lightbox.php:506, includes/class-foogallery-lightbox.php:729, includes/class-foogallery-lightbox.php:752, includes/class-foogallery-lightbox.php:771, includes/class-foogallery-lightbox.php:794, includes/class-foogallery-lightbox.php:817, includes/class-foogallery-lightbox.php:840, includes/admin/class-gallery-metabox-settings-helper.php:280, includes/admin/class-pro-promotion.php:827, includes/admin/class-pro-promotion.php:865, includes/admin/class-pro-promotion.php:900, includes/admin/class-pro-promotion.php:1102, includes/admin/class-settings.php:50, pro/includes/class-foogallery-pro-filtering.php:249, pro/includes/class-foogallery-pro-filtering.php:270, pro/includes/class-foogallery-pro-filtering.php:287, pro/includes/class-foogallery-pro-filtering.php:305, pro/includes/class-foogallery-pro-filtering.php:335, pro/includes/class-foogallery-pro-filtering.php:354, pro/includes/class-foogallery-pro-filtering.php:377, pro/includes/class-foogallery-pro-filtering.php:405, pro/includes/class-foogallery-pro-filtering.php:428, pro/includes/class-foogallery-pro-filtering.php:451, pro/includes/class-foogallery-pro-filtering.php:474, pro/includes/class-foogallery-pro-filtering.php:562, pro/includes/class-foogallery-pro-filtering.php:742, extensions/default-templates/carousel/class-carousel-gallery-template.php:168, extensions/default-templates/carousel/class-carousel-gallery-template.php:184, extensions/default-templates/carousel/class-carousel-gallery-template.php:196, extensions/default-templates/carousel/class-carousel-gallery-template.php:208, extensions/default-templates/carousel/class-carousel-gallery-template.php:227, extensions/default-templates/carousel/class-carousel-gallery-template.php:244, extensions/default-templates/carousel/class-carousel-gallery-template.php:257, extensions/default-templates/carousel/class-carousel-gallery-template.php:273, extensions/default-templates/carousel/class-carousel-gallery-template.php:288, extensions/default-templates/carousel/class-carousel-gallery-template.php:303, extensions/default-templates/carousel/class-carousel-gallery-template.php:319, extensions/default-templates/carousel/class-carousel-gallery-template.php:334, extensions/default-templates/default/class-default-gallery-template.php:119, extensions/default-templates/default/class-default-gallery-template.php:134, extensions/default-templates/default/class-default-gallery-template.php:152, extensions/default-templates/default/class-default-gallery-template.php:165, extensions/default-templates/default/class-default-gallery-template.php:180, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:93, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:99, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:115, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:128, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:145, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:162, extensions/default-templates/justified/class-justified-gallery-template.php:83, extensions/default-templates/justified/class-justified-gallery-template.php:99, extensions/default-templates/justified/class-justified-gallery-template.php:114, extensions/default-templates/justified/class-justified-gallery-template.php:128, extensions/default-templates/justified/class-justified-gallery-template.php:141, extensions/default-templates/justified/class-justified-gallery-template.php:159, extensions/default-templates/masonry/class-masonry-gallery-template.php:104, extensions/default-templates/masonry/class-masonry-gallery-template.php:119, extensions/default-templates/masonry/class-masonry-gallery-template.php:134, extensions/default-templates/masonry/class-masonry-gallery-template.php:156, extensions/default-templates/masonry/class-masonry-gallery-template.php:174, extensions/default-templates/masonry/class-masonry-gallery-template.php:196, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:91, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:100, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:114, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:127, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:142, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:117, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:126, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:141, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:159, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:176, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:193, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:196, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:210, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:235, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:254, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:271, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:293, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:313, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:330, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:347, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:128, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:143, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:156, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:171, pro/extensions/default-templates/product/class-product-gallery-template.php:106, pro/extensions/default-templates/product/class-product-gallery-template.php:116, pro/extensions/default-templates/product/class-product-gallery-template.php:131, pro/extensions/default-templates/product/class-product-gallery-template.php:144, pro/extensions/default-templates/product/class-product-gallery-template.php:159, pro/extensions/default-templates/slider/class-slider-gallery-template.php:107, pro/extensions/default-templates/slider/class-slider-gallery-template.php:127, pro/extensions/default-templates/spotlight/class-spotlight-template.php:99, pro/extensions/default-templates/spotlight/class-spotlight-template.php:115, pro/extensions/default-templates/spotlight/class-spotlight-template.php:128, pro/extensions/default-templates/spotlight/class-spotlight-template.php:145, pro/extensions/default-templates/spotlight/class-spotlight-template.php:164, pro/extensions/default-templates/spotlight/class-spotlight-template.php:184, pro/extensions/default-templates/spotlight/class-spotlight-template.php:202
+#: includes/class-foogallery-common-fields.php:63, includes/class-foogallery-lightbox.php:150, includes/class-foogallery-lightbox.php:171, includes/class-foogallery-lightbox.php:187, includes/class-foogallery-lightbox.php:506, includes/class-foogallery-lightbox.php:729, includes/class-foogallery-lightbox.php:752, includes/class-foogallery-lightbox.php:771, includes/class-foogallery-lightbox.php:794, includes/class-foogallery-lightbox.php:817, includes/class-foogallery-lightbox.php:840, includes/admin/class-gallery-metabox-settings-helper.php:280, includes/admin/class-pro-promotion.php:827, includes/admin/class-pro-promotion.php:865, includes/admin/class-pro-promotion.php:900, includes/admin/class-pro-promotion.php:1102, includes/admin/class-settings.php:50, pro/includes/class-foogallery-pro-filtering.php:249, pro/includes/class-foogallery-pro-filtering.php:270, pro/includes/class-foogallery-pro-filtering.php:287, pro/includes/class-foogallery-pro-filtering.php:305, pro/includes/class-foogallery-pro-filtering.php:335, pro/includes/class-foogallery-pro-filtering.php:354, pro/includes/class-foogallery-pro-filtering.php:377, pro/includes/class-foogallery-pro-filtering.php:405, pro/includes/class-foogallery-pro-filtering.php:428, pro/includes/class-foogallery-pro-filtering.php:451, pro/includes/class-foogallery-pro-filtering.php:474, pro/includes/class-foogallery-pro-filtering.php:562, pro/includes/class-foogallery-pro-filtering.php:742, extensions/default-templates/carousel/class-carousel-gallery-template.php:167, extensions/default-templates/carousel/class-carousel-gallery-template.php:183, extensions/default-templates/carousel/class-carousel-gallery-template.php:195, extensions/default-templates/carousel/class-carousel-gallery-template.php:207, extensions/default-templates/carousel/class-carousel-gallery-template.php:226, extensions/default-templates/carousel/class-carousel-gallery-template.php:243, extensions/default-templates/carousel/class-carousel-gallery-template.php:256, extensions/default-templates/carousel/class-carousel-gallery-template.php:272, extensions/default-templates/carousel/class-carousel-gallery-template.php:287, extensions/default-templates/carousel/class-carousel-gallery-template.php:302, extensions/default-templates/carousel/class-carousel-gallery-template.php:318, extensions/default-templates/carousel/class-carousel-gallery-template.php:333, extensions/default-templates/default/class-default-gallery-template.php:119, extensions/default-templates/default/class-default-gallery-template.php:134, extensions/default-templates/default/class-default-gallery-template.php:152, extensions/default-templates/default/class-default-gallery-template.php:165, extensions/default-templates/default/class-default-gallery-template.php:180, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:93, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:99, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:115, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:128, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:145, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:162, extensions/default-templates/justified/class-justified-gallery-template.php:83, extensions/default-templates/justified/class-justified-gallery-template.php:99, extensions/default-templates/justified/class-justified-gallery-template.php:114, extensions/default-templates/justified/class-justified-gallery-template.php:128, extensions/default-templates/justified/class-justified-gallery-template.php:141, extensions/default-templates/justified/class-justified-gallery-template.php:159, extensions/default-templates/masonry/class-masonry-gallery-template.php:104, extensions/default-templates/masonry/class-masonry-gallery-template.php:119, extensions/default-templates/masonry/class-masonry-gallery-template.php:134, extensions/default-templates/masonry/class-masonry-gallery-template.php:156, extensions/default-templates/masonry/class-masonry-gallery-template.php:174, extensions/default-templates/masonry/class-masonry-gallery-template.php:196, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:91, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:100, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:114, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:127, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:142, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:117, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:126, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:141, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:159, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:176, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:193, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:196, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:210, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:235, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:254, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:271, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:293, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:313, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:330, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:347, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:128, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:143, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:156, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:171, pro/extensions/default-templates/product/class-product-gallery-template.php:106, pro/extensions/default-templates/product/class-product-gallery-template.php:116, pro/extensions/default-templates/product/class-product-gallery-template.php:131, pro/extensions/default-templates/product/class-product-gallery-template.php:144, pro/extensions/default-templates/product/class-product-gallery-template.php:159, pro/extensions/default-templates/slider/class-slider-gallery-template.php:107, pro/extensions/default-templates/slider/class-slider-gallery-template.php:127, pro/extensions/default-templates/spotlight/class-spotlight-template.php:99, pro/extensions/default-templates/spotlight/class-spotlight-template.php:115, pro/extensions/default-templates/spotlight/class-spotlight-template.php:128, pro/extensions/default-templates/spotlight/class-spotlight-template.php:145, pro/extensions/default-templates/spotlight/class-spotlight-template.php:164, pro/extensions/default-templates/spotlight/class-spotlight-template.php:184, pro/extensions/default-templates/spotlight/class-spotlight-template.php:202
 msgid "General"
 msgstr ""
 
@@ -161,7 +161,7 @@ msgstr ""
 msgid "The border size applied to each thumbnail"
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:136, includes/class-foogallery-common-fields.php:155, includes/class-foogallery-common-fields.php:175, includes/class-foogallery-common-fields.php:195, includes/class-foogallery-common-fields.php:216, includes/class-foogallery-common-fields.php:241, includes/class-foogallery-common-fields.php:273, includes/class-foogallery-common-fields.php:379, includes/class-foogallery-common-fields.php:402, includes/class-foogallery-common-fields.php:452, includes/class-foogallery-common-fields.php:610, includes/class-foogallery-common-fields.php:632, includes/class-foogallery-lightbox.php:513, includes/class-foogallery-lightbox.php:684, includes/class-foogallery-lightbox.php:711, includes/class-foogallery-paging.php:166, includes/class-foogallery-paging.php:204, includes/functions.php:1199, includes/admin/view-system-info.php:101, includes/compatibility/class-foobox-compatibility.php:216, includes/compatibility/class-foobox-compatibility.php:241, pro/includes/class-foogallery-pro-exif.php:432, pro/includes/class-foogallery-pro-gallery-blueprints.php:538, pro/includes/class-foogallery-pro-instagram-filters.php:53, pro/includes/class-foogallery-pro-ribbons.php:311, extensions/default-templates/carousel/class-carousel-gallery-template.php:212, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:164, pro/includes/video/class-foogallery-pro-video.php:252, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:244, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:303, pro/extensions/default-templates/slider/class-slider-gallery-template.php:193
+#: includes/class-foogallery-common-fields.php:136, includes/class-foogallery-common-fields.php:155, includes/class-foogallery-common-fields.php:175, includes/class-foogallery-common-fields.php:195, includes/class-foogallery-common-fields.php:216, includes/class-foogallery-common-fields.php:241, includes/class-foogallery-common-fields.php:273, includes/class-foogallery-common-fields.php:379, includes/class-foogallery-common-fields.php:402, includes/class-foogallery-common-fields.php:452, includes/class-foogallery-common-fields.php:610, includes/class-foogallery-common-fields.php:632, includes/class-foogallery-lightbox.php:513, includes/class-foogallery-lightbox.php:684, includes/class-foogallery-lightbox.php:711, includes/class-foogallery-paging.php:166, includes/class-foogallery-paging.php:204, includes/functions.php:1199, includes/admin/view-system-info.php:101, includes/compatibility/class-foobox-compatibility.php:216, includes/compatibility/class-foobox-compatibility.php:241, pro/includes/class-foogallery-pro-exif.php:432, pro/includes/class-foogallery-pro-gallery-blueprints.php:538, pro/includes/class-foogallery-pro-instagram-filters.php:53, pro/includes/class-foogallery-pro-ribbons.php:311, extensions/default-templates/carousel/class-carousel-gallery-template.php:211, extensions/default-templates/thumbnail/class-thumbnail-gallery-template.php:164, pro/includes/video/class-foogallery-pro-video.php:252, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:244, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:303, pro/extensions/default-templates/slider/class-slider-gallery-template.php:193
 msgid "None"
 msgstr ""
 
@@ -653,27 +653,39 @@ msgstr ""
 msgid "Crop Position"
 msgstr ""
 
-#: includes/class-foogallery-datasource-media_library.php:81, includes/class-foogallery-datasource-media_library.php:131, includes/class-foogallery-datasource-media_library.php:149
+#: includes/class-foogallery-datasource-media_library.php:96, includes/class-foogallery-datasource-media_library.php:184, includes/class-foogallery-datasource-media_library.php:202
 msgid "Add Media To Gallery"
 msgstr ""
 
-#: includes/class-foogallery-datasource-media_library.php:82, includes/class-foogallery-datasource-media_library.php:132, includes/class-foogallery-datasource-media_library.php:134, includes/class-foogallery-datasource-media_library.php:150
+#: includes/class-foogallery-datasource-media_library.php:97, includes/class-foogallery-datasource-media_library.php:185, includes/class-foogallery-datasource-media_library.php:187, includes/class-foogallery-datasource-media_library.php:203
 msgid "Add Media"
 msgstr ""
 
-#: includes/class-foogallery-datasource-media_library.php:84, includes/class-foogallery-datasource-media_library.php:152
+#: includes/class-foogallery-datasource-media_library.php:100, includes/class-foogallery-datasource-media_library.php:205
 msgid "Add From Media Library"
 msgstr ""
 
-#: includes/class-foogallery-datasource-media_library.php:138
+#: includes/class-foogallery-datasource-media_library.php:105
+msgid "Upload From Computer"
+msgstr ""
+
+#: includes/class-foogallery-datasource-media_library.php:119
+msgid "hint : you can also drag and drop images here to upload them!"
+msgstr ""
+
+#: includes/class-foogallery-datasource-media_library.php:137
+msgid "Drop images here to upload"
+msgstr ""
+
+#: includes/class-foogallery-datasource-media_library.php:191
 msgid "Remove All Media"
 msgstr ""
 
-#: includes/class-foogallery-datasource-media_library.php:182
+#: includes/class-foogallery-datasource-media_library.php:235
 msgid "Edit Info"
 msgstr ""
 
-#: includes/class-foogallery-datasource-media_library.php:185
+#: includes/class-foogallery-datasource-media_library.php:238
 msgid "Remove from gallery"
 msgstr ""
 
@@ -861,7 +873,7 @@ msgstr ""
 msgid "Top"
 msgstr ""
 
-#: includes/class-foogallery-lightbox.php:395, includes/class-foogallery-lightbox.php:822, includes/class-foogallery-lightbox.php:916, includes/class-foogallery-lightbox.php:941, includes/class-foogallery-lightbox.php:965, includes/class-foogallery-lightbox.php:988, includes/class-foogallery-lightbox.php:1011, includes/admin/class-settings.php:209, pro/includes/class-foogallery-pro-buttons.php:352, pro/includes/class-foogallery-pro-ribbons.php:353, extensions/default-templates/carousel/class-carousel-gallery-template.php:293, extensions/default-templates/carousel/class-carousel-gallery-template.php:308, extensions/default-templates/carousel/class-carousel-gallery-template.php:324, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:850, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:911, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:969, pro/extensions/default-templates/spotlight/class-spotlight-template.php:150
+#: includes/class-foogallery-lightbox.php:395, includes/class-foogallery-lightbox.php:822, includes/class-foogallery-lightbox.php:916, includes/class-foogallery-lightbox.php:941, includes/class-foogallery-lightbox.php:965, includes/class-foogallery-lightbox.php:988, includes/class-foogallery-lightbox.php:1011, includes/admin/class-settings.php:209, pro/includes/class-foogallery-pro-buttons.php:352, pro/includes/class-foogallery-pro-ribbons.php:353, extensions/default-templates/carousel/class-carousel-gallery-template.php:292, extensions/default-templates/carousel/class-carousel-gallery-template.php:307, extensions/default-templates/carousel/class-carousel-gallery-template.php:323, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:850, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:911, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:969, pro/extensions/default-templates/spotlight/class-spotlight-template.php:150
 msgid "Hidden"
 msgstr ""
 
@@ -897,7 +909,7 @@ msgstr ""
 msgid "Best Fit"
 msgstr ""
 
-#: includes/class-foogallery-lightbox.php:480, extensions/albums/functions.php:35, extensions/albums/functions.php:149, extensions/default-templates/carousel/class-carousel-gallery-template.php:166, extensions/default-templates/default/class-default-gallery-template.php:117, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:98, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:179, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:126, pro/extensions/default-templates/product/class-product-gallery-template.php:114
+#: includes/class-foogallery-lightbox.php:480, extensions/albums/functions.php:35, extensions/albums/functions.php:149, extensions/default-templates/carousel/class-carousel-gallery-template.php:165, extensions/default-templates/default/class-default-gallery-template.php:117, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:98, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:179, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:126, pro/extensions/default-templates/product/class-product-gallery-template.php:114
 msgid "Thumbnail Size"
 msgstr ""
 
@@ -905,7 +917,7 @@ msgstr ""
 msgid "Adjust the size of the thumbnail image to display as either small (square) or large (landscape)."
 msgstr ""
 
-#: includes/class-foogallery-lightbox.php:487, extensions/albums/functions.php:168, extensions/albums/functions.php:191, extensions/default-templates/carousel/class-carousel-gallery-template.php:214
+#: includes/class-foogallery-lightbox.php:487, extensions/albums/functions.php:168, extensions/albums/functions.php:191, extensions/default-templates/carousel/class-carousel-gallery-template.php:213
 msgid "Normal"
 msgstr ""
 
@@ -1113,7 +1125,7 @@ msgstr ""
 msgid "Whether of not to show the Fullscreen button"
 msgstr ""
 
-#: includes/class-foogallery-lightbox.php:915, includes/class-foogallery-lightbox.php:940, includes/class-foogallery-lightbox.php:964, includes/class-foogallery-lightbox.php:987, includes/class-foogallery-lightbox.php:1010, pro/includes/class-foogallery-pro-buttons.php:351, pro/includes/class-foogallery-pro-ribbons.php:352, extensions/default-templates/carousel/class-carousel-gallery-template.php:292, extensions/default-templates/carousel/class-carousel-gallery-template.php:307, extensions/default-templates/carousel/class-carousel-gallery-template.php:323, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:910, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:968
+#: includes/class-foogallery-lightbox.php:915, includes/class-foogallery-lightbox.php:940, includes/class-foogallery-lightbox.php:964, includes/class-foogallery-lightbox.php:987, includes/class-foogallery-lightbox.php:1010, pro/includes/class-foogallery-pro-buttons.php:351, pro/includes/class-foogallery-pro-ribbons.php:352, extensions/default-templates/carousel/class-carousel-gallery-template.php:291, extensions/default-templates/carousel/class-carousel-gallery-template.php:306, extensions/default-templates/carousel/class-carousel-gallery-template.php:322, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:910, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:968
 msgid "Shown"
 msgstr ""
 
@@ -2261,11 +2273,11 @@ msgstr ""
 msgid "View Troubleshooting Documentation"
 msgstr ""
 
-#: includes/admin/class-admin.php:96, includes/admin/class-menu.php:44, includes/admin/view-system-info.php:87, extensions/albums/admin/class-metaboxes.php:45
+#: includes/admin/class-admin.php:109, includes/admin/class-menu.php:44, includes/admin/view-system-info.php:87, extensions/albums/admin/class-metaboxes.php:45
 msgid "Settings"
 msgstr ""
 
-#: includes/admin/class-admin.php:98, includes/admin/class-menu.php:52, pro/includes/foogallery-media-views-templates.php:195
+#: includes/admin/class-admin.php:111, includes/admin/class-menu.php:52, pro/includes/foogallery-media-views-templates.php:195
 msgid "Help"
 msgstr ""
 
@@ -2297,11 +2309,15 @@ msgstr ""
 msgid "Usage"
 msgstr ""
 
-#: includes/admin/class-columns.php:84
+#: includes/admin/class-columns.php:57
+msgid "Copy shortcode"
+msgstr ""
+
+#: includes/admin/class-columns.php:92
 msgid "Not used!"
 msgstr ""
 
-#: includes/admin/class-columns.php:102, includes/admin/class-gallery-metaboxes.php:349, extensions/albums/admin/class-columns.php:62, extensions/albums/admin/class-metaboxes.php:268
+#: includes/admin/class-columns.php:163, includes/admin/class-gallery-metaboxes.php:349, extensions/albums/admin/class-columns.php:62, extensions/albums/admin/class-metaboxes.php:268
 msgid "Shortcode copied to clipboard :)"
 msgstr ""
 
@@ -2505,10 +2521,6 @@ msgstr ""
 msgid "Save Attachment Details"
 msgstr ""
 
-#: includes/admin/class-gallery-datasources.php:157, includes/admin/view-help-pro.php:19, pro/includes/class-foogallery-pro-gallery-blueprints.php:534, pro/includes/foogallery-media-views-templates.php:178
-msgid "or"
-msgstr ""
-
 #: includes/admin/class-gallery-datasources.php:159
 msgid "Add From Another Source"
 msgstr ""
@@ -2633,11 +2645,11 @@ msgstr ""
 msgid "No items were found for this gallery."
 msgstr ""
 
-#: includes/admin/class-gallery-metabox-template.php:27, extensions/albums/admin/class-metaboxes.php:558
+#: includes/admin/class-gallery-metabox-template.php:26, extensions/albums/admin/class-metaboxes.php:558
 msgid "Gallery Layout"
 msgstr ""
 
-#: includes/admin/class-gallery-metabox-template.php:47
+#: includes/admin/class-gallery-metabox-template.php:46
 msgid "Once you are happy with your selected layout, you can minimize this section to save space"
 msgstr ""
 
@@ -3815,7 +3827,7 @@ msgstr ""
 msgid "Simple Portfolio"
 msgstr ""
 
-#: includes/admin/view-help-demos.php:49, extensions/default-templates/carousel/class-carousel-gallery-template.php:141
+#: includes/admin/view-help-demos.php:49, extensions/default-templates/carousel/class-carousel-gallery-template.php:140
 msgid "Carousel"
 msgstr ""
 
@@ -4013,6 +4025,10 @@ msgstr ""
 
 #: includes/admin/view-help-pro.php:17
 msgid "Choose from a PRO Plan that suits your requirements and budget : "
+msgstr ""
+
+#: includes/admin/view-help-pro.php:19, pro/includes/class-foogallery-pro-gallery-blueprints.php:534, pro/includes/foogallery-media-views-templates.php:178
+msgid "or"
 msgstr ""
 
 #: includes/admin/view-help-pro.php:24
@@ -6717,151 +6733,151 @@ msgstr ""
 msgid "No album layout found!"
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:57
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:56
 msgid "Min"
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:59
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:58
 msgid "Max"
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:61
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:60
 msgid "Units"
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:63
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:62
 msgid "%"
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:64
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:63
 msgid "px"
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:79
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:78
 msgid "Preset 1"
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:80
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:79
 msgid "Preset 2"
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:167, extensions/default-templates/default/class-default-gallery-template.php:118, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:99, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:127, pro/extensions/default-templates/product/class-product-gallery-template.php:115
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:166, extensions/default-templates/default/class-default-gallery-template.php:118, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:99, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:127, pro/extensions/default-templates/product/class-product-gallery-template.php:115
 msgid "Choose the size of your thumbnails."
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:182, extensions/default-templates/default/class-default-gallery-template.php:163, extensions/default-templates/justified/class-justified-gallery-template.php:112, extensions/default-templates/masonry/class-masonry-gallery-template.php:117, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:125, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:194, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:154, pro/extensions/default-templates/product/class-product-gallery-template.php:142
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:181, extensions/default-templates/default/class-default-gallery-template.php:163, extensions/default-templates/justified/class-justified-gallery-template.php:112, extensions/default-templates/masonry/class-masonry-gallery-template.php:117, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:125, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:194, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:154, pro/extensions/default-templates/product/class-product-gallery-template.php:142
 msgid "Thumbnail Gap"
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:183
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:182
 msgid "The minimum gap or spacing to apply to thumbnails. Negative values create an overlap. "
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:194
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:193
 msgid "Max Items To Show"
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:195
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:194
 msgid "The total number of items displayed in the carousel. This should be an ODD number as the active item is the center and the remainder make up each side."
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:206
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:205
 msgid "Scaling"
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:207
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:206
 msgid "How to scale the items that are not in the center. Each item to the side is scaled down by this factor."
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:213
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:212
 msgid "Less"
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:215
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:214
 msgid "More"
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:216
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:215
 msgid "Most"
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:225
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:224
 msgid "Side Items Click"
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:226
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:225
 msgid "What happens when an item in the carousel is clicked."
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:232
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:231
 msgid "Center The Clicked Item"
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:233
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:232
 msgid "Open The Item In Lightbox"
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:242
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:241
 msgid "Autoplay Time"
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:243
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:242
 msgid "The number in seconds an item is displayed. Set to zero to turn off autoplay."
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:255
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:254
 msgid "Autoplay Mode"
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:256
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:255
 msgid "Specifies what occurs once/when a user has interacted with the carousel. Please Note: for touch devices autoplay is paused on \"touchstart\" and is only resumed once the user has not interacted with the carousel for the supplied time."
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:261
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:260
 msgid "Pause - autoplay will resume a short time after the user stops interacting with the carousel"
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:262
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:261
 msgid "Disable - autoplay is simply turned off once the carousel has been interacted with"
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:271
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:270
 msgid "Invert Control Theme"
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:272
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:271
 msgid "Inverts the theme used for the carousel controls (paging and navigation buttons) based on the theme under appearance."
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:277
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:276
 msgid "Same"
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:278
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:277
 msgid "Inverted"
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:287
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:286
 msgid "Show Nav. Arrows"
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:302
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:301
 msgid "Show Pagination Dots"
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:317
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:316
 msgid "Show Progress Bar"
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:318
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:317
 msgid "The progress bar is only shown when the carousel is in autoplay mode (set Autoplay Time to a value greater than 0)."
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:333, extensions/default-templates/default/class-default-gallery-template.php:151, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:114, extensions/default-templates/justified/class-justified-gallery-template.php:127, extensions/default-templates/masonry/class-masonry-gallery-template.php:213, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:113, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:228, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:142, pro/extensions/default-templates/product/class-product-gallery-template.php:130, pro/extensions/default-templates/spotlight/class-spotlight-template.php:114
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:332, extensions/default-templates/default/class-default-gallery-template.php:151, extensions/default-templates/image-viewer/class-image-viewer-gallery-template.php:114, extensions/default-templates/justified/class-justified-gallery-template.php:127, extensions/default-templates/masonry/class-masonry-gallery-template.php:213, extensions/default-templates/simple-portfolio/class-simple-portfolio-gallery-template.php:113, pro/extensions/default-templates/foogrid/class-foogrid-gallery-template.php:228, pro/extensions/default-templates/polaroid/class-polaroid-gallery-template.php:142, pro/extensions/default-templates/product/class-product-gallery-template.php:130, pro/extensions/default-templates/spotlight/class-spotlight-template.php:114
 msgid "Thumbnail Link"
 msgstr ""
 
-#: extensions/default-templates/carousel/class-carousel-gallery-template.php:337, extensions/default-templates/default/class-default-gallery-template.php:155
+#: extensions/default-templates/carousel/class-carousel-gallery-template.php:336, extensions/default-templates/default/class-default-gallery-template.php:155
 msgid "You can choose to link each thumbnail to the full size image, the image's attachment page, a custom URL, or you can choose to not link to anything."
 msgstr ""
 

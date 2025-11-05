@@ -264,12 +264,17 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 3.1.0-beta.1 =
+= 3.1.0-beta.2 =
 
-This is a beta release of FooGallery 3.1.0, which includes a number of fixes/enhancements to meet Plugin Check requirements.
+This is a beta release of FooGallery 3.1.0, which includes a number of fixes/enhancements.
 
-* Date Updated : 02 Nov 2025
+* Date Updated : 05 Nov 2025
+* New: Added dropzone to gallery edit page, so images can be uploaded by dropping them onto the page.
+* New: On te gallery listing page, the shortcode column changes to a small copy button on tablet size screens.
 * Fixed: Plugin Check requirements.
+[//]: # fs_premium_only_begin
+* Fixed: [Expert Plan] Better support for video imports when importing local videos.
+[//]: # fs_premium_only_end
 
 = 3.0.6 =
 
