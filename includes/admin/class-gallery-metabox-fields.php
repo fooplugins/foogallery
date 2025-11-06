@@ -145,7 +145,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Fields' ) ) {
 					foreach ( $choices as $value => $label ) {
 
 						$checked = '';
-						if ( isset($field['value'][$value]) && $field['value'][$value] == $value ) {
+						if ( in_array( $value, $field['value'] ) ) {
 							$checked = 'checked="checked"';
 						}
 
