@@ -270,7 +270,7 @@ This is a beta release of FooGallery 3.1.0, which includes a number of fixes/enh
 
 * Date Updated : 05 Nov 2025
 * New: Added dropzone to gallery edit page, so images can be uploaded by dropping them onto the page.
-* New: On te gallery listing page, the shortcode column changes to a small copy button on tablet size screens.
+* New: On the gallery listing page, the shortcode column changes to a small copy button on tablet size screens.
 * Fixed: Plugin Check requirements.
 [//]: # fs_premium_only_begin
 * Fixed: [Expert Plan] Better support for video imports when importing local videos.
