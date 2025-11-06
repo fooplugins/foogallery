@@ -759,7 +759,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce_Master_Product' ) ) {
 				return;
 			}
 			$product_id = $this->get_master_product_id_from_current_gallery();
-			if ( $product_id > 0 ) {
+			if ( $product_id > 0 && function_exists( 'wc_get_product' ) ) {
 				$foogallery_attachment->product = wc_get_product( $product_id );
 
 				FooGallery_Pro_Woocommerce::determine_extra_data_for_product( $foogallery_attachment, $foogallery_attachment->product );

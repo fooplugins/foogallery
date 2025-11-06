@@ -502,7 +502,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 		public function add_to_lightbox_options( $options ) {
 			$ecommerce_lightbox_product_information = foogallery_gallery_template_setting( 'ecommerce_lightbox_product_information', 'none' );
 
-			if ( 'none' !== $ecommerce_lightbox_product_information ) {
+			if ( 'none' !== $ecommerce_lightbox_product_information && function_exists( 'wc_get_cart_url' ) ) {
 				$time                   = time();
 				$options['cart']        = $ecommerce_lightbox_product_information;
 				$options['cartVisible'] = true;

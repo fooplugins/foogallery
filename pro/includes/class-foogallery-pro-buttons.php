@@ -48,13 +48,17 @@ if ( ! class_exists( 'FooGallery_Pro_Buttons' ) ) {
 		 *
 		 * @return mixed
 		 */
-		function add_buttons_to_attachments( &$attachments, $gallery ) {
+		function add_buttons_to_attachments( $attachments, $gallery ) {
 			$add_custom_button = foogallery_gallery_template_setting( 'add_custom_button' );
 
 			if ( !empty( $add_custom_button ) ) {
 				$custom_button_text = foogallery_gallery_template_setting( 'custom_button_text' );
 
 				foreach ( $attachments as $attachment ) {
+					if ( empty( $attachment->custom_url ) ) {
+						continue;
+					}
+
 					$attachment->buttons[] = array(
 						'url'   => $attachment->custom_url,
 						'target' => $attachment->custom_target,
@@ -361,7 +365,7 @@ if ( ! class_exists( 'FooGallery_Pro_Buttons' ) ) {
 			$new_fields[] = array(
 				'id'       => 'add_custom_button',
 				'title'    => __( 'Add Custom Button', 'foogallery' ),
-				'desc'     => __( 'Add a custom button to the gallery, using the Custom URL and Custom Target fields.', 'foogallery' ),
+				'desc'     => __( 'Add a custom button to the gallery, using the Custom URL and Custom Target fields. No button will be added if the Custom URL is empty.', 'foogallery' ),
 				'section'  => __( 'Ecommerce', 'foogallery' ),
 				'subsection' => array( 'ecommerce-buttons' => __( 'Buttons', 'foogallery' ) ),
 				'type'     => 'radio',

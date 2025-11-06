@@ -21,6 +21,10 @@ if ( ! class_exists( 'FooGallery_Password_Protect' ) ) {
 		public function customize_password_form_for_galleries( $output, $post, $invalid_password ) {
 			global $current_foogallery;
 
+			if ( empty( $current_foogallery ) ) {
+				return $output;
+			}
+
 			// Check if we're in gallery context
 			$gallery = foogallery::get( $post );
 			
