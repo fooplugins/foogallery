@@ -7190,7 +7190,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			 * @name id
 			 * @type {string}
 			 */
-			self.id = self.opt.id;
+			self.id = `${ self.opt.id }`;
 			/**
 			 * @memberof FooGallery.Item#
 			 * @name productId
@@ -7591,7 +7591,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			self.isError = self.$el.hasClass(cls.error);
 
 			var data = self.$anchor.data();
-			self.id = data.id || data.attachmentId || self.id;
+			self.id = `${ data.id || data.attachmentId || self.id }`;
 			self.productId = data.productId || self.productId;
 			self.tags = data.tags || self.tags;
 			self.href = data.href || self.$anchor.attr('href') || self.href;
