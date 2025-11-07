@@ -1028,7 +1028,7 @@
 	-webkit-box-orient: vertical;
 	clip-path: content-box;
 	min-height: fit-content;
-	flex: 0;
+	flex: 0 0 fit-content;
 }
 .foogallery .fg-caption-desc {
 	padding: 0;
