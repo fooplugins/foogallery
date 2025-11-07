@@ -363,18 +363,18 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 		public function render_datasource_modal_content( $foogallery_id, $datasource_value ) {
 			?>
             <p>
-				<?php _e('Choose the settings for your gallery below. The gallery will be dynamically populated using the post query settings below.', 'foogallery' ); ?><br />
-				<?php _e('Please Note : Only posts with a featured image will be displayed!', 'foogallery' ); ?>
+				<?php esc_html_e('Choose the settings for your gallery below. The gallery will be dynamically populated using the post query settings below.', 'foogallery' ); ?><br />
+				<?php esc_html_e('Please Note : Only posts with a featured image will be displayed!', 'foogallery' ); ?>
             </p>
 	            <form action="" method="post" name="post_query_gallery_form">
                 <table class="form-table">
                     <tbody>
                     <tr>
-                        <th scope="row"><?php _e( 'Post type', 'foogallery' ) ?></th>
+                        <th scope="row"><?php esc_html_e( 'Post type', 'foogallery' ) ?></th>
                         <td>
                             <select class="regular-text foogallery_post_query_input" name="post_type"
                                     id="gallery_post_type">
-                                <option value=""><?php _e( 'Select a post type' ) ?></option>
+                                <option value=""><?php esc_html_e( 'Select a post type' ) ?></option>
 								<?php
 								$current_post_type = isset( $datasource_value['gallery_post_type'] ) ? $datasource_value['gallery_post_type'] : '';
 								$post_types        = get_post_types( array(), 'objects' );
@@ -432,37 +432,37 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 								}
 								?>
                             </select>
-							<p class="description"><?php _e( 'The post type you want to query for the gallery. Only published posts will be included.', 'foogallery' ) ?></p>
+							<p class="description"><?php esc_html_e( 'The post type you want to query for the gallery. Only published posts will be included.', 'foogallery' ) ?></p>
 						</td>
                     </tr>
                     <tr>
-                        <th scope="row"><?php _e( 'Number of posts', 'foogallery' ); ?></th>
+                        <th scope="row"><?php esc_html_e( 'Number of posts', 'foogallery' ); ?></th>
                         <td>
                             <input
                                     type="number"
                                     class="regular-text foogallery_post_query_input"
                                     name="no_of_post"
                                     id="no_of_post"
-                                    value="<?php echo isset( $datasource_value['no_of_post'] ) ? $datasource_value['no_of_post'] : '' ?>"
+                                    value="<?php echo isset( $datasource_value['no_of_post'] ) ? esc_attr( $datasource_value['no_of_post'] ) : ''; ?>"
                             />
-                            <p class="description"><?php _e( 'Number of posts you want to include in the gallery. Leave empty to include all published posts.', 'foogallery' ) ?></p>
+                            <p class="description"><?php esc_html_e( 'Number of posts you want to include in the gallery. Leave empty to include all published posts.', 'foogallery' ) ?></p>
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><?php _e( 'Exclude', 'foogallery' ); ?></th>
+                        <th scope="row"><?php esc_html_e( 'Exclude', 'foogallery' ); ?></th>
                         <td>
                             <input
                                     type="text"
                                     class="regular-text foogallery_post_query_input"
                                     name="exclude"
                                     id="exclude"
-                                    value="<?php echo isset( $datasource_value['exclude'] ) ? $datasource_value['exclude'] : '' ?>"
+                                    value="<?php echo isset( $datasource_value['exclude'] ) ? esc_attr( $datasource_value['exclude'] ) : ''; ?>"
                             />
-                            <p class="description"><?php _e( 'A comma separated list of post id\'s that you want to exclude from the gallery.', 'foogallery' ) ?></p>
+                            <p class="description"><?php esc_html_e( 'A comma separated list of post id\'s that you want to exclude from the gallery.', 'foogallery' ) ?></p>
                         </td>
                     </tr>
 					<tr>
-						<th scope="row"><?php _e( 'Link To', 'foogallery' ); ?></th>
+						<th scope="row"><?php esc_html_e( 'Link To', 'foogallery' ); ?></th>
 						<td>
 							<fieldset>
 								<label>
@@ -473,7 +473,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
                                             class="link_to foogallery_post_query_input"
 									<?php echo ( isset( $datasource_value['link_to'] ) && $datasource_value['link_to'] === 'post' ) ? 'checked="checked"' : '' ?>
                                     />
-                                    <span><?php _e( 'Post Permalink', 'foogallery' ) ?></span>
+                                    <span><?php esc_html_e( 'Post Permalink', 'foogallery' ) ?></span>
                                 </label>
                                 <br>
                                 <label>
@@ -484,13 +484,13 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
                                             class="link_to foogallery_post_query_input"
 									<?php echo ( isset( $datasource_value['link_to'] ) && $datasource_value['link_to'] === 'image' ) ? 'checked="checked"' : '' ?>
                                     />
-                                    <span><?php _e( 'Featured Image', 'foogallery' ) ?></span>
+                                    <span><?php esc_html_e( 'Featured Image', 'foogallery' ) ?></span>
 								</label>
 							</fieldset>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><?php _e( 'Taxonomy', 'foogallery' ); ?></th>
+						<th scope="row"><?php esc_html_e( 'Taxonomy', 'foogallery' ); ?></th>
 						<td>
 							<input
 								type="text"
@@ -499,11 +499,11 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 								id="taxonomy"
 								value="<?php echo isset( $datasource_value['taxonomy'] ) ? esc_attr( $datasource_value['taxonomy'] ) : ''; ?>"
 							/>
-							<p class="description"><?php _e( 'Provide the taxonomy slug to use for gallery filtering (for example, category or post_tag). Leave blank to not include taxonomy terms.', 'foogallery' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Provide the taxonomy slug to use for gallery filtering (for example, category or post_tag). Leave blank to not include taxonomy terms.', 'foogallery' ); ?></p>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><?php _e( 'Custom Target', 'foogallery' ); ?></th>
+						<th scope="row"><?php esc_html_e( 'Custom Target', 'foogallery' ); ?></th>
 						<td>
 							<input
 								type="text"
@@ -512,11 +512,11 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 								id="custom_target"
 								value="<?php echo isset( $datasource_value['custom_target'] ) ? esc_attr( $datasource_value['custom_target'] ) : ''; ?>"
 							/>
-							<p class="description"><?php _e( 'Specify a custom target attribute for the link (for example, _blank). Leave empty to use the default behaviour.', 'foogallery' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Specify a custom target attribute for the link (for example, _blank). Leave empty to use the default behaviour.', 'foogallery' ); ?></p>
 						</td>
 					</tr>					
 					<tr>
-						<th scope="row"><?php _e( 'Override Link Property', 'foogallery' ); ?></th>
+						<th scope="row"><?php esc_html_e( 'Override Link Property', 'foogallery' ); ?></th>
 						<td>
 							<input
 								type="text"
@@ -525,11 +525,11 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 								id="override_link_property"
 								value="<?php echo isset( $datasource_value['override_link_property'] ) ? esc_attr( $datasource_value['override_link_property'] ) : ''; ?>"
 							/>
-							<p class="description"><?php _e( 'Override the property of the post object to use as the link. By default, the Link To option will be used.', 'foogallery' ) ?></p>
+							<p class="description"><?php esc_html_e( 'Override the property of the post object to use as the link. By default, the Link To option will be used.', 'foogallery' ) ?></p>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><?php _e( 'Override Desc Property', 'foogallery' ); ?></th>
+						<th scope="row"><?php esc_html_e( 'Override Desc Property', 'foogallery' ); ?></th>
 						<td>
 							<input
 								type="text"
@@ -538,11 +538,11 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 								id="override_desc_property"
 								value="<?php echo isset( $datasource_value['override_desc_property'] ) ? esc_attr( $datasource_value['override_desc_property'] ) : ''; ?>"
 							/>
-							<p class="description"><?php _e( 'Override the property of the post object to use as the description. By default, post_excerpt will be used.', 'foogallery' ) ?></p>
+							<p class="description"><?php esc_html_e( 'Override the property of the post object to use as the description. By default, post_excerpt will be used.', 'foogallery' ) ?></p>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><?php _e( 'Override Title Property', 'foogallery' ); ?></th>
+						<th scope="row"><?php esc_html_e( 'Override Title Property', 'foogallery' ); ?></th>
 						<td>
 							<input
 								type="text"
@@ -551,11 +551,11 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 								id="override_title_property"
 								value="<?php echo isset( $datasource_value['override_title_property'] ) ? esc_attr( $datasource_value['override_title_property'] ) : ''; ?>"
 							/>
-							<p class="description"><?php _e( 'Override the property of the post object to use as the title. By default, post_title will be used.', 'foogallery' ) ?></p>
+							<p class="description"><?php esc_html_e( 'Override the property of the post object to use as the title. By default, post_title will be used.', 'foogallery' ) ?></p>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><?php _e( 'Override Class Property', 'foogallery' ); ?></th>
+						<th scope="row"><?php esc_html_e( 'Override Class Property', 'foogallery' ); ?></th>
 						<td>
 							<input
 								type="text"
@@ -564,11 +564,11 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 								id="override_class_property"
 								value="<?php echo isset( $datasource_value['override_class_property'] ) ? esc_attr( $datasource_value['override_class_property'] ) : ''; ?>"
 							/>
-							<p class="description"><?php _e( 'Override the property of the post object to use for the CSS class(es). Classes will be added to the anchor link.', 'foogallery' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Override the property of the post object to use for the CSS class(es). Classes will be added to the anchor link.', 'foogallery' ); ?></p>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><?php _e( 'Override Sort Property', 'foogallery' ); ?></th>
+						<th scope="row"><?php esc_html_e( 'Override Sort Property', 'foogallery' ); ?></th>
 						<td>
 							<input
 								type="text"
@@ -577,15 +577,15 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 								id="override_sort_property"
 								value="<?php echo isset( $datasource_value['override_sort_property'] ) ? esc_attr( $datasource_value['override_sort_property'] ) : ''; ?>"
 							/>
-							<p class="description"><?php _e( 'Override the property of the post object to use for the sort order, eg. "menu_order". Leave blank to keep the default sort.', 'foogallery' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Override the property of the post object to use for the sort order, eg. "menu_order". Leave blank to keep the default sort.', 'foogallery' ); ?></p>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><?php _e( 'Override Help', 'foogallery' ); ?></th>
+						<th scope="row"><?php esc_html_e( 'Override Help', 'foogallery' ); ?></th>
 						<td>
-							<p class="description"><?php _e( 'For all overrides, you can provide the name of a property of the post object to use as the value. For example, "post_title".', 'foogallery' ) ?></p>
-							<p class="description"><?php _e( 'You can also use the name of a post meta field to use as the value. Simply provide the name of the meta key.', 'foogallery' ) ?></p>
-							<p class="description"><?php _e( 'You can also use the name of an ACF field to use as the value. Simply provide the name of the ACF field prefixed with "acf:", for example "acf:my_acf_field".', 'foogallery' ) ?></p>
+							<p class="description"><?php esc_html_e( 'For all overrides, you can provide the name of a property of the post object to use as the value. For example, "post_title".', 'foogallery' ) ?></p>
+							<p class="description"><?php esc_html_e( 'You can also use the name of a post meta field to use as the value. Simply provide the name of the meta key.', 'foogallery' ) ?></p>
+							<p class="description"><?php esc_html_e( 'You can also use the name of an ACF field to use as the value. Simply provide the name of the ACF field prefixed with "acf:", for example "acf:my_acf_field".', 'foogallery' ) ?></p>
 						</td>
 					</tr>
 					</tbody>
@@ -617,10 +617,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 			?>
             <div <?php echo $show_container ? '' : 'style="display:none" '; ?>class="foogallery-datasource-item foogallery-datasource-post_query">
                 <h3>
-					<?php _e( 'Datasource : Post Query', 'foogallery' ); ?>
+					<?php esc_html_e( 'Datasource : Post Query', 'foogallery' ); ?>
                 </h3>
                 <p>
-					<?php _e( 'This gallery will be dynamically populated with the featured images from the following post query:', 'foogallery' ); ?>
+					<?php esc_html_e( 'This gallery will be dynamically populated with the featured images from the following post query:', 'foogallery' ); ?>
                 </p>
 	                <div class="foogallery-items-html">
 	                <?php
@@ -651,10 +651,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 	                </div>
                 <br/>
                 <button type="button" class="button edit">
-					<?php _e( 'Change', 'foogallery' ); ?>
+					<?php esc_html_e( 'Change', 'foogallery' ); ?>
                 </button>
                 <button type="button" class="button remove">
-					<?php _e( 'Remove', 'foogallery' ); ?>
+					<?php esc_html_e( 'Remove', 'foogallery' ); ?>
                 </button>
             </div>
 			<?php
