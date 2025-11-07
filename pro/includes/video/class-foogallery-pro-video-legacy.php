@@ -244,19 +244,19 @@ if ( ! class_exists( 'FooGallery_Pro_Video_Legacy' ) ) {
 			?>
 			<div class="notice error">
 				<p>
-					<strong><?php _e('FooGallery Video Migration Required!', 'foogallery'); ?></strong><br/>
+					<strong><?php esc_html_e('FooGallery Video Migration Required!', 'foogallery'); ?></strong><br/>
 					<?php if ( class_exists( 'Foo_Video' ) ) { ?>
-						<?php _e('You have both FooGallery PRO and the legacy FooVideo extension activated. FooGallery PRO now includes all the video features that FooVideo had, plus more! Which means the FooVideo extension is now redundant.', 'foogallery'); ?>
+						<?php esc_html_e('You have both FooGallery PRO and the legacy FooVideo extension activated. FooGallery PRO now includes all the video features that FooVideo had, plus more! Which means the FooVideo extension is now redundant.', 'foogallery'); ?>
 						<br/>
-						<?php _e('Your video galleries will continue to work, but we recommend you migrate them across to use the video features in FooGallery PRO as soon as possible.', 'foogallery'); ?>
+						<?php esc_html_e('Your video galleries will continue to work, but we recommend you migrate them across to use the video features in FooGallery PRO as soon as possible.', 'foogallery'); ?>
 					<?php } else { ?>
-						<?php _e('At some point you had the FooVideo extension installed. FooGallery PRO now includes all the video features that FooVideo had, plus more! Which means the FooVideo extension is now redundant.', 'foogallery'); ?>
+						<?php esc_html_e('At some point you had the FooVideo extension installed. FooGallery PRO now includes all the video features that FooVideo had, plus more! Which means the FooVideo extension is now redundant.', 'foogallery'); ?>
 						<br/>
-						<?php _e('You will need to migrate your video galleries across to use the new video features in FooGallery PRO as soon as possible.', 'foogallery'); ?>
+						<?php esc_html_e('You will need to migrate your video galleries across to use the new video features in FooGallery PRO as soon as possible.', 'foogallery'); ?>
 					<?php } ?>
 					<br/>
 					<br/>
-					<a href="<?php echo $url; ?>" class="button button-primary button-large"><?php _e('Migrate Video Galleries', 'foogallery'); ?></a>
+					<a href="<?php echo esc_url( $url ); ?>" class="button button-primary button-large"><?php esc_html_e('Migrate Video Galleries', 'foogallery'); ?></a>
 					<br/>
 				</p>
 			</div>
