@@ -1072,7 +1072,7 @@ if ( ! class_exists( 'FooGallery_Lightbox' ) ) {
 		 * @return mixed
 		 */
 		function add_lightbox($lightboxes) {
-			$lightboxes['foogallery'] = __( 'FooGallery Lightbox', 'foogallery' );
+            $lightboxes['foogallery'] = foogallery_lightbox_name();
 			return $lightboxes;
 		}
 

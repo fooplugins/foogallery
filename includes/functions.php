@@ -2588,3 +2588,12 @@ function foogallery_sort_attachments( $attachments, $orderby, $order ) {
 
 	return apply_filters( 'foogallery_sort_attachments', $attachments, $orderby, $order );
 }
+
+/**
+ * Returns the lightbox name for the plugin, that is whitelable safe.
+ *
+ * @return string
+ */
+function foogallery_lightbox_name() {
+    return sprintf( __( '%s Lightbox', 'foogallery' ), foogallery_plugin_name() );
+}
