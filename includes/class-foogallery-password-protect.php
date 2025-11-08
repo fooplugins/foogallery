@@ -18,7 +18,7 @@ if ( ! class_exists( 'FooGallery_Password_Protect' ) ) {
 		 * @param string $invalid_password The invalid password message
 		 * @return string Modified password form HTML
 		 */
-		public function customize_password_form_for_galleries( $output, $post, $invalid_password ) {
+		public function customize_password_form_for_galleries( $output, $post, $invalid_password = '') {
 			global $current_foogallery;
 
 			if ( empty( $current_foogallery ) ) {
