@@ -39,7 +39,9 @@ return array(
 				'default_captions_type'         => '',
 				'default_caption_title_source'  => '',
 				'default_caption_desc_source'   => 'none',
-				'default_captions_limit_length' => '',
+				'default_captions_limit_length' => 'clamp',
+				'default_caption_title_clamp'   => '1',
+				'default_caption_desc_clamp'    => '2',
 				'default_caption_alignment'     => 'fg-c-c',
 
 				//Hover Effects - Showcasing PRO presets
@@ -108,7 +110,9 @@ return array(
 				'default_captions_type'         => '',
 				'default_caption_title_source'  => 'none',
 				'default_caption_desc_source'   => 'none',
-				'default_captions_limit_length' => '',
+				'default_captions_limit_length' => 'clamp',
+				'default_caption_title_clamp'   => '1',
+				'default_caption_desc_clamp'    => '2',
 				'default_caption_alignment'     => 'fg-c-c',
 				'default_caption_invert_color'  => 'fg-transparent-overlays',
 

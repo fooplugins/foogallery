@@ -39,7 +39,9 @@ return array(
 				'default_captions_type'         => '',
 				'default_caption_title_source'  => '',
 				'default_caption_desc_source'   => '',
-				'default_captions_limit_length' => '',
+				'default_captions_limit_length' => 'clamp',
+				'default_caption_title_clamp'   => '2',
+				'default_caption_desc_clamp'    => '3',
 
 				//Hover Effects
 				
@@ -95,7 +97,6 @@ return array(
 				'image-viewer_alignment'             => 'fg-center',
 				'image-viewer_looping'               => 'enabled',
 
-
 				//Appearance
 				'image-viewer_theme'                 => 'fg-light',              // options : 'fg-light', 'fg-dark', 'fg-custom'
 				'image-viewer_border_size'           => 'fg-border-medium',      // options : '', 'fg-border-thin', 'fg-border-medium', 'fg-border-thick'
@@ -113,8 +114,6 @@ return array(
 				'image-viewer_caption_desc_source'   => '',
 				'image-viewer_captions_limit_length' => '',
 
-
-
 				//Hover Effects
 				'image-viewer_gutter_width'                    => '10',
 				'image-viewer_hover_effect_caption_visibility' => 'fg-caption-always',  // options : '', 'fg-caption-hover', 'fg-caption-always', 'fg-captions-bottom'
@@ -125,7 +124,6 @@ return array(
 				'image-viewer_hover_effect_transition'         => 'fg-hover-fade',     // options : 'fg-hover-instant', 'fg-hover-fade', 'fg-hover-slide-up', 'fg-hover-slide-down', 'fg-hover-slide-left', 'fg-hover-slide-right', 'fg-hover-push'
 				'image-viewer_hover_effect_type'               => 'normal',            // options : 'none', 'normal', 'preset'
 				'image-viewer_caption_invert_color'            => 'fg-light-overlays',                  // options : '', 'fg-light-overlays', 'fg-transparent-overlays'
-
 
 				//Filtering
 				'image-viewer_filtering_type' => '',
@@ -183,6 +181,7 @@ return array(
 				'justified_captions_limit_length' => 'clamp',
 				'justified_caption_alignment'     => 'fg-c-c',
 				'justified_caption_title_clamp'   => '1',
+				'justified_caption_desc_clamp'    => '2',
 
 				//Hover Effects
 				'justified_hover_effect_caption_visibility' => 'fg-caption-always', // options : '', 'fg-caption-hover', 'fg-caption-always', 'fg-captions-bottom'
@@ -388,7 +387,9 @@ return array(
 				'simple_portfolio_captions_type'         => '',
 				'simple_portfolio_caption_title_source'  => '',
 				'simple_portfolio_caption_desc_source'   => 'none',
-				'simple_portfolio_captions_limit_length' => '',
+				'simple_portfolio_captions_limit_length' => 'clamp',
+				'simple_portfolio_caption_title_clamp'   => '1',
+				'simple_portfolio_caption_desc_clamp'    => '0',
 				'simple_portfolio_caption_alignment'     => 'fg-c-c',
 
 				//Hover Effects
@@ -458,7 +459,7 @@ return array(
 				'thumbnail_caption_desc_source'   => '',
 				'thumbnail_captions_limit_length' => 'clamp',
 				'thumbnail_caption_title_clamp'   => '1',
-				'thumbnail_caption_desc_clamp'    => '2',
+				'thumbnail_caption_desc_clamp'    => '1',
 				'thumbnail_caption_alignment'     => 'fg-c-c',
 				'thumbnail_caption_title'         => '{{gallery-title}}',
 				'thumbnail_caption_description'   => '{{gallery-count}} Images',
@@ -540,7 +541,9 @@ return array(
                 'carousel_captions_type'         => '',
                 'carousel_caption_title_source'  => '',
                 'carousel_caption_desc_source'   => 'none',
-                'carousel_captions_limit_length' => '',
+                'carousel_captions_limit_length' => 'clamp',
+                'carousel_caption_title_clamp'   => '1',
+                'carousel_caption_desc_clamp'    => '1',
 
                 //Hover Effects
                 'carousel_hover_effect_caption_visibility' => '', // options : '', 'fg-caption-hover', 'fg-caption-always', 'fg-captions-bottom'
@@ -620,7 +623,9 @@ return array(
                 'carousel_captions_type'         => '',
                 'carousel_caption_title_source'  => '',
                 'carousel_caption_desc_source'   => 'none',
-                'carousel_captions_limit_length' => '',
+                'carousel_captions_limit_length' => 'clamp',
+				'carousel_caption_title_clamp'   => '1',
+				'carousel_caption_desc_clamp'    => '1',
 				'carousel_caption_visibility_no_hover_effect' => '',
 
                 //Hover Effects
