@@ -264,6 +264,12 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 3.1.1 =
+
+* Date Updated : 08 Nov 2025
+* Fixed: Fixed bug where captions were being limited to 2 lines by default, even if no limiting was set.
+* Fixed: Made passowrd protect code backwards compatible with WP 5.9
+
 = 3.1.0 =
 
 This release includes a number of fixes/enhancements, but the biggest 2 are a bug fix for caption titles not showing in Firefox, and a new dropzone for uploading images to galleries.
