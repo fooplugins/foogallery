@@ -315,6 +315,17 @@
 	line-height: 2;
 }
 
+.foogallery-warning {
+    box-shadow: 0px 0px 2px #dba617;
+    -webkit-box-shadow: 0px 0px 2px #dba617;
+    background-color: #fffcf4;
+}
+
+.foogallery-warning .dashicons,
+.foogallery-warning h4 {
+	color: #dba617;
+}
+
 tr.foogallery_template_field[data-foogallery-hidden] {
 	display: none;
 }
