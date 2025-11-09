@@ -350,6 +350,7 @@ class FooGallery extends stdClass {
 		//lazy load the attachments for performance
 		if ( $this->_attachments === false ) {
 			$attachments = $this->apply_datasource_filter( 'attachments', array() );
+            $attachments = apply_filters( 'foogallery_attachments_pre_sort', $attachments, $this );
 			if ( ! empty( $attachments ) && $this->apply_datasource_filter( 'must_sort', true ) ) {
 				$orderby = foogallery_sorting_get_posts_orderby_arg( $this->sorting );
 				$order = foogallery_sorting_get_posts_order_arg( $this->sorting );
