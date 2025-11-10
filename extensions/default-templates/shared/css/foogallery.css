@@ -3497,10 +3497,10 @@ html.fg-panel-no-scroll body {
     border-color: #232323;
 }
 
-.fg-panel.fg-light :is(.fg-media-caption-title,.fg-media-caption-exif,.fg-media-product-body,.fg-media-comments-body,.fg-comments-form,.fg-comments-form-title,.fg-comments-form-control-input,.fg-comments-form-leave-reply-wrap) {
+.fg-panel.fg-light :is(.fg-media-caption-title,.fg-media-caption-exif,.fg-media-product-body,.fg-media-comments-body,.fg-comments-error,.fg-comments-error-title,.fg-comments-form,.fg-comments-form-title,.fg-comments-form-control-input,.fg-comments-form-leave-reply-wrap) {
     border-color: #e2e2e2;
 }
-.fg-panel.fg-dark :is(.fg-media-caption-title,.fg-media-caption-exif,.fg-media-product-body,.fg-media-comments-body,.fg-comments-form,.fg-comments-form-title,.fg-comments-form-control-input,.fg-comments-form-leave-reply-wrap) {
+.fg-panel.fg-dark :is(.fg-media-caption-title,.fg-media-caption-exif,.fg-media-product-body,.fg-media-comments-body,.fg-comments-error,.fg-comments-error-title,.fg-comments-form,.fg-comments-form-title,.fg-comments-form-control-input,.fg-comments-form-leave-reply-wrap) {
     border-color: #767676;
 }
 /* Background Color */
