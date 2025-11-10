@@ -4,7 +4,7 @@ Donate link: https://fooplugins.com
 Tags: gallery, image-gallery, photo-gallery, responsive-gallery, lightbox
 Requires at least: 5.3
 Tested up to: 6.8
-Stable tag: 3.0.6
+Stable tag: 3.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -266,7 +266,12 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 = 3.1.1 =
 
+This release includes a change in how FooGallery assets are loaded to make way for a future major optimization that is planned.
+
 * Date Updated : 08 Nov 2025
+* Added: Added new filter 'foogallery_attachments_pre_sort' that runs before a gallery sorts attachments.
+* Added: Added new filters for asset management: 'foogallery_feature_style_deps' and 'foogallery_feature_script_deps'. These allow you to add dependencies to the scripts and styles for a feature.
+* Update: Updated the way FooGallery enqueues scripts and styles. The FooGallery core script is now split into 2 scripts.
 * Fixed: Fixed bug where captions were being limited to 2 lines by default, even if no limiting was set.
 * Fixed: Made passowrd protect code backwards compatible with WP 5.9
 
