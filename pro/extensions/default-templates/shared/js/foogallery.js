@@ -5803,6 +5803,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		srcset: "data-srcset-fg",
 		src: "data-src-fg",
 		protected: false,
+        cors: null,
 		template: {},
 		regex: {
 			theme: /(?:\s|^)(fg-(?:light|dark|custom))(?:\s|$)/,
@@ -8191,9 +8192,12 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 					});
 				}
 
-				if ( img.crossOrigin === null && _.isCrossOrigin(self.src) ) {
-					img.crossOrigin = 'anonymous';
-				}
+                const { opt: { cors } } = self.tmpl;
+                if ( _is.string( cors ) ) {
+                    if ( img.crossOrigin === null && _.isCrossOrigin(self.src) ) {
+                        img.crossOrigin = cors;
+                    }
+                }
 				img.src = self.src;
 				if (!_is.empty(self.srcset)){
 					img.srcset = self.srcset;
@@ -13599,7 +13603,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
     FooGallery.utils.obj,
     FooGallery.utils.transition
 );
-(function($, _, _utils, _obj){
+(function($, _, _utils, _is, _obj){
 
     _.Panel.Image = _.Panel.Media.extend({
         construct: function(panel, item){
@@ -13652,6 +13656,12 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                     img.onload = img.onerror = null;
                     def.rejectWith("error loading image");
                 };
+                const { opt: { cors } } = self.panel.tmpl;
+                if ( _is.string( cors ) ) {
+                    if ( img.crossOrigin === null && _.isCrossOrigin(self.item.href) ) {
+                        img.crossOrigin = cors;
+                    }
+                }
                 // set everything in motion by setting the src
                 img.src = self.item.href;
                 if (img.complete){
@@ -13687,6 +13697,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
     FooGallery.$,
     FooGallery,
     FooGallery.utils,
+    FooGallery.utils.is,
     FooGallery.utils.obj
 );
 (function($, _, _utils, _obj){
@@ -13869,7 +13880,18 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         doCreateContent: function(){
             this.urls = this.parseHref();
             this.isSelfHosted = $.map(this.urls, function(url){ return url.source.selfHosted ? true : null; }).length > 0;
-            return this.isSelfHosted ? $('<video/>', this.opt.attrs.video) : $('<iframe/>', this.opt.attrs.iframe).addClass("fitvidsignore");
+
+            const { opt: { cors } } = this.panel.tmpl;
+            const attr = { ...this.opt.attrs.video };
+            if ( _is.string( cors ) ) {
+                const first = this.urls.at( 0 );
+                if ( _is.string( first ) && _is.string( attr?.crossOrigin ) && _.isCrossOrigin( first ) ) {
+                    attr.crossOrigin = cors;
+                }
+            }
+            return this.isSelfHosted
+                ? $('<video/>', attr)
+                : $('<iframe/>', this.opt.attrs.iframe).addClass("fitvidsignore");
         },
         doLoad: function(){
             var self = this;
