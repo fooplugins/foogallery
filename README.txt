@@ -264,7 +264,7 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 3.1.1 =
+= 3.1.1-beta.1 =
 
 This release includes a change in how FooGallery assets are loaded to make way for a future major optimization that is planned.
 
