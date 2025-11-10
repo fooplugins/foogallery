@@ -268,7 +268,8 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 * Date Updated : 08 Nov 2025
 * Fixed: Fixed bug where captions were being limited to 2 lines by default, even if no limiting was set.
-* Fixed: Made passowrd protect code backwards compatible with WP 5.9
+* Fixed: Made password protect code backwards compatible with WP 5.9
+* Fixed: Removed CORS error when loading images from a remote server.
 
 = 3.1.0 =
 
