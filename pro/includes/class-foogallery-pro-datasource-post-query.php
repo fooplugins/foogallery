@@ -186,17 +186,24 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Post_Query' ) ) {
 			foreach ( $posts as $post ) {
 				$attachment = new FooGalleryAttachment();
 				$attachment->post_query_datasource_used = true;
+
+                $post_thumbnail_id = 0;
 				
 				if ( 'attachment' === $postType ) {
 					$post_thumbnail_id = $post->ID;
 				} elseif ( FOOGALLERY_CPT_GALLERY === $postType ) {
 					$foogallery = FooGallery::get_by_id( $post->ID );
-					$post_thumbnail_id = $foogallery->featured_attachment()->ID;
+                    $featured_attachment = $foogallery->featured_attachment();
+                    if ( $featured_attachment ) {
+                        $post_thumbnail_id = $featured_attachment->ID;
+                    }
 				} else {
 					$post_thumbnail_id = get_post_thumbnail_id( $post );
 				}
 
-				$attachment->load_attachment_image_data( $post_thumbnail_id );
+                if ( $post_thumbnail_id ) {
+                    $attachment->load_attachment_image_data( $post_thumbnail_id );
+                }
 
 				if ( $link_to == 'image' ) {
 					$url = $attachment->url;
