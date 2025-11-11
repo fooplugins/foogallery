@@ -264,7 +264,7 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 3.1.1-beta.1 =
+= 3.1.1-beta.2 =
 
 This release includes a change in how FooGallery assets are loaded to make way for a future major optimization that is planned.
 
@@ -275,6 +275,8 @@ This release includes a change in how FooGallery assets are loaded to make way f
 * Fixed: Fixed bug where captions were being limited to 2 lines by default, even if no limiting was set.
 * Fixed: Made password protect code backwards compatible with WP 5.9
 * Fixed: Removed CORS error when loading images from a remote server.
+* Fixed: Fixed some PHP Warnings that were showing up in the debug log.
+* Update: Update to Freemius SDK 2.13.0
 
 = 3.1.0 =
 
