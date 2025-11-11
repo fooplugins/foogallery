@@ -40,7 +40,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 					add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_protection_fields' ), 20, 2 );
 
 					// Render a custom field for a gallery template.
-					add_filter( 'foogallery_render_gallery_template_field_custom', array( $this, 'render_custom_field' ), 10, 3 );
+					add_action( 'foogallery_render_gallery_template_field_custom', array( $this, 'render_custom_field' ), 10, 3 );
 
 					// Set the settings icon for protection.
 					add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons' ) );
