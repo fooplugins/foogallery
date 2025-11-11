@@ -8,7 +8,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: FooPlugins <info@fooplugins.com> (https://fooplugins.com)\n"
 "Last-Translator: FooPlugins <info@fooplugins.com> (https://fooplugins.com)\n"
-"POT-Creation-Date: 2025-11-10 09:39+0000\n"
+"POT-Creation-Date: 2025-11-11 15:44+0000\n"
 "Report-Msgid-Bugs-To: https://github.com/fooplugins/foogallery/issues\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -17,51 +17,51 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: foogallery.php:223, includes/admin/class-pro-promotion.php:160, pro/includes/class-foogallery-pro-bulk-copy.php:269
+#: foogallery.php:224, includes/admin/class-pro-promotion.php:160, pro/includes/class-foogallery-pro-bulk-copy.php:269
 msgid "Bulk Copy"
 msgstr ""
 
-#: foogallery.php:225, foogallery.php:237, foogallery.php:249, foogallery.php:261, foogallery.php:273, foogallery.php:285, foogallery.php:297, foogallery.php:309, foogallery.php:321
+#: foogallery.php:226, foogallery.php:238, foogallery.php:250, foogallery.php:262, foogallery.php:274, foogallery.php:286, foogallery.php:298, foogallery.php:310, foogallery.php:322
 msgid "Read documentation"
 msgstr ""
 
-#: foogallery.php:235, pro/extensions/whitelabelling/foogallery-whitelabelling-extension.php:208
+#: foogallery.php:236, pro/extensions/whitelabelling/foogallery-whitelabelling-extension.php:208
 msgid "White Labeling"
 msgstr ""
 
-#: foogallery.php:247, includes/admin/class-pro-promotion.php:633, pro/includes/class-foogallery-pro-exif.php:290, pro/includes/class-foogallery-pro-exif.php:407, pro/includes/class-foogallery-pro-exif.php:424, pro/includes/class-foogallery-pro-exif.php:449, pro/includes/class-foogallery-pro-exif.php:472, pro/includes/class-foogallery-pro-exif.php:679
+#: foogallery.php:248, includes/admin/class-pro-promotion.php:633, pro/includes/class-foogallery-pro-exif.php:290, pro/includes/class-foogallery-pro-exif.php:407, pro/includes/class-foogallery-pro-exif.php:424, pro/includes/class-foogallery-pro-exif.php:449, pro/includes/class-foogallery-pro-exif.php:472, pro/includes/class-foogallery-pro-exif.php:679
 msgid "EXIF"
 msgstr ""
 
-#: foogallery.php:259, includes/admin/class-pro-promotion.php:662, pro/includes/class-foogallery-pro-filtering.php:246, pro/includes/class-foogallery-pro-filtering.php:248, pro/includes/class-foogallery-pro-filtering.php:269, pro/includes/class-foogallery-pro-filtering.php:286, pro/includes/class-foogallery-pro-filtering.php:304, pro/includes/class-foogallery-pro-filtering.php:334, pro/includes/class-foogallery-pro-filtering.php:353, pro/includes/class-foogallery-pro-filtering.php:376, pro/includes/class-foogallery-pro-filtering.php:404, pro/includes/class-foogallery-pro-filtering.php:427, pro/includes/class-foogallery-pro-filtering.php:450, pro/includes/class-foogallery-pro-filtering.php:473, pro/includes/class-foogallery-pro-filtering.php:498, pro/includes/class-foogallery-pro-filtering.php:515, pro/includes/class-foogallery-pro-filtering.php:540, pro/includes/class-foogallery-pro-filtering.php:561, pro/includes/class-foogallery-pro-filtering.php:582, pro/includes/class-foogallery-pro-filtering.php:607, pro/includes/class-foogallery-pro-filtering.php:632, pro/includes/class-foogallery-pro-filtering.php:653, pro/includes/class-foogallery-pro-filtering.php:674, pro/includes/class-foogallery-pro-filtering.php:699, pro/includes/class-foogallery-pro-filtering.php:720, pro/includes/class-foogallery-pro-filtering.php:741, pro/includes/class-foogallery-pro-filtering.php:768, pro/includes/class-foogallery-pro-filtering.php:786, pro/includes/class-foogallery-pro-filtering.php:805, pro/includes/class-foogallery-pro-filtering.php:837, pro/includes/class-foogallery-pro-filtering.php:1075, pro/includes/class-foogallery-pro-filtering.php:1084, pro/includes/class-foogallery-pro-filtering.php:1093, pro/includes/class-foogallery-pro-filtering.php:1102
+#: foogallery.php:260, includes/admin/class-pro-promotion.php:662, pro/includes/class-foogallery-pro-filtering.php:246, pro/includes/class-foogallery-pro-filtering.php:248, pro/includes/class-foogallery-pro-filtering.php:269, pro/includes/class-foogallery-pro-filtering.php:286, pro/includes/class-foogallery-pro-filtering.php:304, pro/includes/class-foogallery-pro-filtering.php:334, pro/includes/class-foogallery-pro-filtering.php:353, pro/includes/class-foogallery-pro-filtering.php:376, pro/includes/class-foogallery-pro-filtering.php:404, pro/includes/class-foogallery-pro-filtering.php:427, pro/includes/class-foogallery-pro-filtering.php:450, pro/includes/class-foogallery-pro-filtering.php:473, pro/includes/class-foogallery-pro-filtering.php:498, pro/includes/class-foogallery-pro-filtering.php:515, pro/includes/class-foogallery-pro-filtering.php:540, pro/includes/class-foogallery-pro-filtering.php:561, pro/includes/class-foogallery-pro-filtering.php:582, pro/includes/class-foogallery-pro-filtering.php:607, pro/includes/class-foogallery-pro-filtering.php:632, pro/includes/class-foogallery-pro-filtering.php:653, pro/includes/class-foogallery-pro-filtering.php:674, pro/includes/class-foogallery-pro-filtering.php:699, pro/includes/class-foogallery-pro-filtering.php:720, pro/includes/class-foogallery-pro-filtering.php:741, pro/includes/class-foogallery-pro-filtering.php:768, pro/includes/class-foogallery-pro-filtering.php:786, pro/includes/class-foogallery-pro-filtering.php:805, pro/includes/class-foogallery-pro-filtering.php:837, pro/includes/class-foogallery-pro-filtering.php:1075, pro/includes/class-foogallery-pro-filtering.php:1084, pro/includes/class-foogallery-pro-filtering.php:1093, pro/includes/class-foogallery-pro-filtering.php:1102
 msgid "Filtering"
 msgstr ""
 
-#: foogallery.php:271
+#: foogallery.php:272
 msgid "Gallery Blueprints"
 msgstr ""
 
-#: foogallery.php:283
+#: foogallery.php:284
 msgid "Pagination"
 msgstr ""
 
-#: foogallery.php:295, includes/admin/class-pro-promotion.php:991, pro/includes/protection/class-foogallery-pro-protection.php:569, pro/includes/protection/class-foogallery-pro-protection.php:577, pro/includes/protection/class-foogallery-pro-protection.php:595, pro/includes/protection/class-foogallery-pro-protection.php:613, pro/includes/protection/class-foogallery-pro-protection.php:642
+#: foogallery.php:296, includes/admin/class-pro-promotion.php:991, pro/includes/protection/class-foogallery-pro-protection.php:569, pro/includes/protection/class-foogallery-pro-protection.php:577, pro/includes/protection/class-foogallery-pro-protection.php:595, pro/includes/protection/class-foogallery-pro-protection.php:613, pro/includes/protection/class-foogallery-pro-protection.php:642
 msgid "Protection"
 msgstr ""
 
-#: foogallery.php:307, includes/admin/class-pro-promotion.php:746, pro/includes/video/class-foogallery-pro-video.php:228, pro/includes/video/class-foogallery-pro-video.php:246, pro/includes/video/class-foogallery-pro-video.php:273, pro/includes/video/class-foogallery-pro-video.php:295, pro/includes/video/class-foogallery-pro-video.php:317, pro/includes/video/class-foogallery-pro-video.php:328, pro/includes/video/class-foogallery-pro-video.php:354, pro/includes/video/class-foogallery-pro-video.php:652, pro/includes/video/class-foogallery-pro-video.php:777
+#: foogallery.php:308, includes/admin/class-pro-promotion.php:746, pro/includes/video/class-foogallery-pro-video.php:228, pro/includes/video/class-foogallery-pro-video.php:246, pro/includes/video/class-foogallery-pro-video.php:273, pro/includes/video/class-foogallery-pro-video.php:295, pro/includes/video/class-foogallery-pro-video.php:317, pro/includes/video/class-foogallery-pro-video.php:328, pro/includes/video/class-foogallery-pro-video.php:354, pro/includes/video/class-foogallery-pro-video.php:652, pro/includes/video/class-foogallery-pro-video.php:777
 msgid "Video"
 msgstr ""
 
-#: foogallery.php:319, includes/admin/class-pro-promotion.php:948, pro/includes/class-foogallery-pro-buttons.php:319, pro/includes/class-foogallery-pro-buttons.php:328, pro/includes/class-foogallery-pro-buttons.php:350, pro/includes/class-foogallery-pro-buttons.php:369, pro/includes/class-foogallery-pro-buttons.php:388, pro/includes/class-foogallery-pro-ribbons.php:338, pro/includes/class-foogallery-pro-ribbons.php:347, pro/includes/class-foogallery-pro-ribbons.php:366, pro/includes/class-foogallery-pro-ribbons.php:382, pro/includes/class-foogallery-pro-ribbons.php:401, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:456, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:464, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:483, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:502, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:524, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:547, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1368, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:834, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:843, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:863, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:887, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:906, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:925, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:945, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:964, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:983, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1002, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1011, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1027, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1046, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1062, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1081, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1097, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1116, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1132, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1164, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1180, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1189, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1209, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1232, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1255, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1279, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1302, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1325, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1348, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1389, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1590
+#: foogallery.php:320, includes/admin/class-pro-promotion.php:948, pro/includes/class-foogallery-pro-buttons.php:319, pro/includes/class-foogallery-pro-buttons.php:328, pro/includes/class-foogallery-pro-buttons.php:350, pro/includes/class-foogallery-pro-buttons.php:369, pro/includes/class-foogallery-pro-buttons.php:388, pro/includes/class-foogallery-pro-ribbons.php:338, pro/includes/class-foogallery-pro-ribbons.php:347, pro/includes/class-foogallery-pro-ribbons.php:366, pro/includes/class-foogallery-pro-ribbons.php:382, pro/includes/class-foogallery-pro-ribbons.php:401, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:456, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:464, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:483, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:502, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:524, pro/includes/woocommerce/class-foogallery-pro-woocommerce-master-product.php:547, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1368, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:834, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:843, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:863, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:887, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:906, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:925, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:945, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:964, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:983, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1002, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1011, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1027, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1046, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1062, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1081, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1097, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1116, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1132, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1164, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1180, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1189, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1209, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1232, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1255, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1279, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1302, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1325, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1348, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1389, pro/includes/woocommerce/class-foogallery-pro-woocommerce.php:1590
 msgid "Ecommerce"
 msgstr ""
 
-#: foogallery.php:343
+#: foogallery.php:344
 msgid "FooGallery Opt-In"
 msgstr ""
 
-#: foogallery.php:344
+#: foogallery.php:345
 msgid "Activation"
 msgstr ""
 
@@ -225,7 +225,7 @@ msgstr ""
 msgid "An animated loading icon can be shown while the thumbnails are busy loading."
 msgstr ""
 
-#: includes/class-foogallery-common-fields.php:217, includes/class-foogallery-common-fields.php:303, includes/class-foogallery-common-fields.php:486, includes/class-foogallery-common-fields.php:587, includes/class-foogallery-lightbox.php:439, includes/class-foogallery-lightbox.php:464, includes/class-foogallery-lightbox.php:584, includes/class-foogallery-lightbox.php:821, includes/class-foogallery-paging.php:227, includes/functions.php:578, includes/functions.php:1856, includes/functions.php:2292, extensions/albums/functions.php:81, includes/admin/class-pro-promotion.php:199, includes/admin/class-settings.php:185, includes/admin/view-help-demos.php:44, pro/includes/class-foogallery-pro-advanced-thumbnails.php:56, pro/includes/class-foogallery-pro-buttons.php:333, pro/includes/class-foogallery-pro-datasource-folders.php:476, pro/includes/class-foogallery-pro-filtering.php:309, pro/includes/class-foogallery-pro-filtering.php:381, extensions/albums/admin/class-metaboxes.php:543, extensions/default-templates/default/class-default-gallery-template.php:139, pro/includes/video/class-foogallery-pro-video.php:277, pro/includes/video/class-foogallery-pro-video.php:662, pro/extensions/default-templates/slider/class-slider-gallery-template.php:237
+#: includes/class-foogallery-common-fields.php:217, includes/class-foogallery-common-fields.php:303, includes/class-foogallery-common-fields.php:486, includes/class-foogallery-common-fields.php:587, includes/class-foogallery-lightbox.php:439, includes/class-foogallery-lightbox.php:464, includes/class-foogallery-lightbox.php:584, includes/class-foogallery-lightbox.php:821, includes/class-foogallery-paging.php:227, includes/functions.php:578, includes/functions.php:1856, includes/functions.php:2295, extensions/albums/functions.php:81, includes/admin/class-pro-promotion.php:199, includes/admin/class-settings.php:185, includes/admin/view-help-demos.php:44, pro/includes/class-foogallery-pro-advanced-thumbnails.php:56, pro/includes/class-foogallery-pro-buttons.php:333, pro/includes/class-foogallery-pro-datasource-folders.php:476, pro/includes/class-foogallery-pro-filtering.php:309, pro/includes/class-foogallery-pro-filtering.php:381, extensions/albums/admin/class-metaboxes.php:543, extensions/default-templates/default/class-default-gallery-template.php:139, pro/includes/video/class-foogallery-pro-video.php:277, pro/includes/video/class-foogallery-pro-video.php:662, pro/extensions/default-templates/slider/class-slider-gallery-template.php:237
 msgid "Default"
 msgstr ""
 
@@ -1703,19 +1703,19 @@ msgstr ""
 msgid "A dummy thumbnail engine that can be used for testing. (uses dummyimage.com)"
 msgstr ""
 
-#: includes/functions.php:2293, extensions/albums/admin/class-metaboxes.php:544, pro/includes/video/class-foogallery-pro-video.php:663
+#: includes/functions.php:2296, extensions/albums/admin/class-metaboxes.php:544, pro/includes/video/class-foogallery-pro-video.php:663
 msgid "New tab (_blank)"
 msgstr ""
 
-#: includes/functions.php:2294, extensions/albums/admin/class-metaboxes.php:545, pro/includes/video/class-foogallery-pro-video.php:664
+#: includes/functions.php:2297, extensions/albums/admin/class-metaboxes.php:545, pro/includes/video/class-foogallery-pro-video.php:664
 msgid "Same tab (_self)"
 msgstr ""
 
-#: includes/functions.php:2295, includes/compatibility/class-foobox-compatibility.php:328, pro/includes/video/class-foogallery-pro-video.php:665
+#: includes/functions.php:2298, includes/compatibility/class-foobox-compatibility.php:328, pro/includes/video/class-foogallery-pro-video.php:665
 msgid "FooBox"
 msgstr ""
 
-#: includes/functions.php:2598
+#: includes/functions.php:2601
 msgid "%s Lightbox"
 msgstr ""
 
