@@ -273,7 +273,8 @@ This release includes a change in how FooGallery assets are loaded to make way f
 * Added: Added new filters for asset management: 'foogallery_feature_style_deps' and 'foogallery_feature_script_deps'. These allow you to add dependencies to the scripts and styles for a feature.
 * Update: Updated the way FooGallery enqueues scripts and styles. The FooGallery core script is now split into 2 scripts.
 * Fixed: Fixed bug where captions were being limited to 2 lines by default, even if no limiting was set.
-* Fixed: Made passowrd protect code backwards compatible with WP 5.9
+* Fixed: Made password protect code backwards compatible with WP 5.9
+* Fixed: Removed CORS error when loading images from a remote server.
 
 = 3.1.0 =
 
