@@ -1972,7 +1972,10 @@ function foogallery_is_activation_page() {
  * @param array $array an array of data to render.
  */
 function foogallery_render_debug_array( $array, $level = 0 ) {
-	foreach ( $array as $key => $value ) {
+	if ( !is_array( $array ) ) {
+		return;
+	}
+    foreach ( $array as $key => $value ) {
 		if ( ! empty( $value ) ) {
 			if ( $level > 0 ) {
 				echo esc_html( str_repeat( '   ', $level ) );

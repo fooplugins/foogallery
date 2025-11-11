@@ -843,19 +843,15 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 				if ( 'clamp' === $captions_limit_length ) {
 					$caption_title_clamp = intval( foogallery_gallery_template_setting( 'caption_title_clamp', '0' ) );
 					$caption_desc_clamp = intval( foogallery_gallery_template_setting( 'caption_desc_clamp', '0' ) );
-
-					$style = "--fg-title-line-clamp: {$caption_title_clamp};";
-					$style .= "--fg-description-line-clamp: {$caption_desc_clamp};";
-
-					if ( empty($attributes['style']) ) {
-						$attributes['style'] = $style;
-					} else {
-						$attributes['style'] .= $style;
-					}
 				} else {
-					$attributes['style'] .= "--fg-title-line-clamp: 0;";
-					$attributes['style'] .= "--fg-description-line-clamp: 0;";
+                    $caption_title_clamp = $caption_desc_clamp = 0;
 				}
+                $style = "--fg-title-line-clamp: {$caption_title_clamp}; --fg-description-line-clamp: {$caption_desc_clamp};";
+                if ( empty( $attributes['style'] ) ) {
+                    $attributes['style'] = $style;
+                } else {
+                    $attributes['style'] .= $style;
+                }
 			}
 
 			return $attributes;
