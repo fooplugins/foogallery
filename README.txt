@@ -264,11 +264,11 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 3.1.1-beta.2 =
+= 3.1.1-beta.3 =
 
 This release includes a change in how FooGallery assets are loaded to make way for a future major optimization that is planned.
 
-* Date Updated : 08 Nov 2025
+* Date Updated : 12 Nov 2025
 * Added: Added new filter 'foogallery_attachments_pre_sort' that runs before a gallery sorts attachments.
 * Added: Added new filters for asset management: 'foogallery_feature_style_deps' and 'foogallery_feature_script_deps'. These allow you to add dependencies to the scripts and styles for a feature.
 * Update: Updated the way FooGallery enqueues scripts and styles. The FooGallery core script is now split into 2 scripts.
@@ -276,6 +276,7 @@ This release includes a change in how FooGallery assets are loaded to make way f
 * Fixed: Made password protect code backwards compatible with WP 5.9
 * Fixed: Removed CORS error when loading images from a remote server.
 * Fixed: Fixed some PHP Warnings that were showing up in the debug log.
+* Fixed: Made the Elementor widget more reliable, when editing a page with multiple galleries.
 * Update: Update to Freemius SDK 2.13.0
 
 = 3.1.0 =
