@@ -10860,7 +10860,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 overlay: false,
                 visible: true,
                 autoHide: false,
-                toggle: !!panel.opt.buttons[name]
+                toggle: !!panel.opt.buttons[name],
+                priority: 99
             }, options), _obj.extend({
                 toggle: this.__cls(cls.toggle, name, true),
                 visible: this.__cls(cls.visible, name),
@@ -10880,7 +10881,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         },
         registerButton: function(){
             var btn = new _.Panel.SideAreaButton(this);
-            this.panel.buttons.register(btn);
+            this.panel.buttons.register(btn, this.opt.priority);
             return btn;
         },
         doCreate: function(){
@@ -10963,7 +10964,8 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 autoHide: panel.opt.infoAutoHide,
                 align: panel.opt.infoAlign,
                 waitForUnload: false,
-                group: "overlay"
+                group: "overlay",
+                priority: 90
             }, panel.cls.info);
         },
         doCreate: function(){
