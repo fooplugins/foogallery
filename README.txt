@@ -22,6 +22,8 @@ FooGallery provides live previews as you design your image galleries, and also i
 
 [Visit the FooGallery Homepage](https://fooplugins.com/foogallery-wordpress-gallery-plugin/)
 
+[All FooGallery Demos](https://fooplugins.com/foogallery-wordpress-gallery-plugin/demos/)
+
 = Key Features =
 
 *	7 Beautiful Free Gallery layouts:
@@ -46,6 +48,7 @@ FooGallery provides live previews as you design your image galleries, and also i
 	*	(just activate the albums feature)
 *   Import / Export galleries between WP installs - [docs](https://fooplugins.com/documentation/foogallery/getting-started-foogallery/import-export/)
 *	Drag n Drop reordering of images and galleries
+*   Drag n Drop images into gallery to upload into gallery (and media library)
 *	Custom CSS for both galleries and albums
 *	One-click gallery page creation
 *	FooGallery Migrator - easily migrate from Envira / NextGen / Modula
@@ -108,8 +111,17 @@ Our PRO Commerce plan is for the photographers who make a living from selling th
     Add custom buttons and attention grabbing ribbons to your images. [demo](https://fooplugins.com/foogallery-wordpress-gallery-plugin/sale-ribbons-and-buttons/)
 *	Gallery Blueprints
     Clone settings easily across galleries - [docs](https://fooplugins.com/documentation/foogallery/pro-commerce/use-master-gallery/)
-*   White Labeling
-    Rebrand FooGallery for client sites. [docs](https://fooplugins.com/documentation/foogallery/pro-commerce/white-labeling/)
+
+**PRO Addons**
+
+We also have a collection of powerful add-ons available to enhance your gallery experience. All the Addons work with the FREE version too!
+
+*   User Uploads Addon:
+    Allow visitors to upload images into galleries. Includes image moderation, form field customization, email notifications and more. [more info](https://fooplugins.com/foogallery-wordpress-gallery-plugin/user-uploads/)
+*   Social Addon:
+    Allow your visitors to like, comment and share images to social networks. [more info](https://fooplugins.com/foogallery-wordpress-gallery-plugin/social/)
+*   Whitelabel:
+    Allow power users to rename or rebrand "FooGallery", modify the shortcode, menu, and disable features. [more info](https://fooplugins.com/foogallery-wordpress-gallery-plugin/whitelabel/)
 
 [See More Demos](https://fooplugins.com/foogallery-wordpress-gallery-plugin/demos/)
 
@@ -233,6 +245,14 @@ Simply go to the FooGallery Features page and activate the Albums feature.
 
 Yes, our PRO Commerce plan includes image watermarking.
 
+= Can I allow my visitors to comment or like images in a gallery? =
+
+Yes, with the Social Addon [more info](https://fooplugins.com/foogallery-wordpress-gallery-plugin/social/)
+
+= I want visitors to be able to upload their own images to my gallery, including moderation. Do you support this feature? =
+
+Yes, with the User Uploads Addon [more info](https://fooplugins.com/foogallery-wordpress-gallery-plugin/user-uploads/)
+
 = Can I add external links to items in the gallery? =
 
 Yes, you can link to any external website by choosing "Custom URL" for the Thumbnail Link setting. You also then need to set a custom URL for the items in your gallery, which is done by editing the attachment.
@@ -264,19 +284,21 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 3.1.1-beta.3 =
+= 3.1.1 =
 
 This release includes a change in how FooGallery assets are loaded to make way for a future major optimization that is planned.
 
-* Date Updated : 12 Nov 2025
+* Date Updated : 19 Nov 2025
 * Added: Added new filter 'foogallery_attachments_pre_sort' that runs before a gallery sorts attachments.
 * Added: Added new filters for asset management: 'foogallery_feature_style_deps' and 'foogallery_feature_script_deps'. These allow you to add dependencies to the scripts and styles for a feature.
+* Added: Addedd page argument to foogallery shortcode, to allow only a specific page of attachments to be shown.
 * Update: Updated the way FooGallery enqueues scripts and styles. The FooGallery core script is now split into 2 scripts.
 * Fixed: Fixed bug where captions were being limited to 2 lines by default, even if no limiting was set.
 * Fixed: Made password protect code backwards compatible with WP 5.9
 * Fixed: Removed CORS error when loading images from a remote server.
 * Fixed: Fixed some PHP Warnings that were showing up in the debug log.
 * Fixed: Made the Elementor widget more reliable, when editing a page with multiple galleries.
+* Fixed: offset argument in foogallery shortcode was not working.
 * Update: Update to Freemius SDK 2.13.0
 
 = 3.1.0 =
