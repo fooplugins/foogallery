@@ -28,6 +28,7 @@ require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-advanced-capti
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-advanced-thumbnails.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-bulk-management.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-exif.php';
+require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-media-folders.php';
 
 require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-pro-protection.php';
 require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-watermark.php';
