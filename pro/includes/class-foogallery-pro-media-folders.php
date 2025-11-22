@@ -82,6 +82,7 @@ if ( ! class_exists( 'FooGallery_Pro_Media_Folders' ) ) {
                     'id'     => (int) $term->term_id,
                     'name'   => $term->name,
                     'parent' => (int) $term->parent,
+                    'count'  => (int) $term->count,
                     'order'  => (int) get_term_meta( $term->term_id, '_foogallery_folder_order', true ),
                 );
             }
@@ -113,7 +114,8 @@ if ( ! class_exists( 'FooGallery_Pro_Media_Folders' ) ) {
 			return '<ul><li>' . __( 'Select a folder in the list to show all attachments in that folder.', 'foogallery' ) . '</li>' .
 			 '<li>' . __( 'Drag attachments into a folder to assign them.', 'foogallery' ) . '</li>' .
 			 '<li>' . sprintf( __( 'Drag attachments onto %s to remove them from the folder.', 'foogallery' ), '<em>' . __( 'Unassign', 'foogallery' ) . '</em>' ) . '</li>' .
-			 '<li>' . sprintf( __( 'Use the %s button to rename or delete folders.', 'foogallery' ), '<i class="dashicons dashicons-admin-generic"></i>' ) . '</li>' .
+			 '<li>' . sprintf( __( 'Use the %s button to rename, delete or reorder folders.', 'foogallery' ), '<i class="dashicons dashicons-admin-generic"></i>' ) . '</li>' .
+			 '<li>' . __( 'Drag folders to reorder or nest them.', 'foogallery' ) . '</li>' .
 			 '<li>' . __( 'Click + to add a new folder.', 'foogallery' ) . '</li></ul>';
 		}
 

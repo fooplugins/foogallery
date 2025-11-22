@@ -124,6 +124,17 @@
 	height: unset;
 }
 
+.foogallery-folder-count {
+    margin-left: 6px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    background: #eef1f4;
+    color: #555;
+    font-size: 11px;
+    line-height: 1.2;
+    flex-shrink: 0;
+}
+
 .foogallery-folder-edit-input,
 .foogallery-folder-new-input {
     width: 100%;

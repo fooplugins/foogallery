@@ -254,6 +254,11 @@
                 $labelContainer.append( '<span class="foogallery-folder-drag-handle dashicons dashicons-menu-alt2"></span>' );
             }
             $labelContainer.append( $label );
+            var count = parseInt( term.count, 10 );
+            if ( ! isNaN( count ) ) {
+                var $pill = $( '<span class="foogallery-folder-count" />' ).text( count );
+                $labelContainer.append( $pill );
+            }
             $labelWrapper.append( $labelContainer );
 
             if ( this.manageMode && ! isRoot ) {
@@ -512,7 +517,7 @@
         },
 
         moveFolder: function( folderId, newParentId, $rowSpinner ) {
-            this.setStatus( 'Moving folder…' );
+            this.setStatus( 'Moving folder...' );
             MediaFolders.apiRequest( {
                 path: '/wp/v2/' + settings.taxonomy + '/' + folderId,
                 method: 'POST',
@@ -563,7 +568,7 @@
             }
 
             var self = this;
-            this.setStatus( 'Reordering…' );
+            this.setStatus( 'Reordering...' );
             $.post( settings.ajaxUrl, {
                 action: 'foogallery_reorder_media_categories',
                 nonce: settings.nonce,
@@ -669,7 +674,7 @@
                 return;
             }
 
-            this.setStatus( 'Saving…' );
+            this.setStatus( 'Saving...' );
             MediaFolders.apiRequest( {
                 path: '/wp/v2/' + settings.taxonomy + '/' + folderId,
                 method: 'POST',
@@ -697,7 +702,7 @@
                 return;
             }
 
-            this.setStatus( 'Saving…' );
+            this.setStatus( 'Saving...' );
             MediaFolders.apiRequest( {
                 path: '/wp/v2/' + settings.taxonomy,
                 method: 'POST',
@@ -730,7 +735,7 @@
         },
 
         removeFolder: function( folderId ) {
-            this.setStatus( 'Deleting…' );
+            this.setStatus( 'Deleting...' );
             MediaFolders.apiRequest( {
                 path: '/wp/v2/' + settings.taxonomy + '/' + folderId + '?force=true',
                 method: 'DELETE',
@@ -755,7 +760,7 @@
             var currentFolder = this.library && this.library.props ? this.library.props.get( 'foogallery_folder' ) : this.selected || 0;
             var isUnassign = folderId === 0;
 
-            $status.text( isUnassign ? 'Unassigning…' : settings.strings.assigning );
+            $status.text( isUnassign ? 'Unassigning...' : settings.strings.assigning );
 
             wp.ajax.post( 'foogallery_assign_media_categories', {
                 term_id: folderId,
@@ -771,6 +776,7 @@
                     this.library.props.set( 'foogallery_folder', currentFolder );
                 }
                 this.selected = currentFolder;
+                this.updateCountsAfterAssign( currentFolder, folderId, ids.length );
                 this.highlightSelection();
 
                 // If we unassigned while viewing a folder, remove those items from the current collection immediately.
@@ -801,6 +807,39 @@
                     $rowSpinner.removeClass( 'is-active' ).hide();
                 }
             } );
+        },
+
+        updateCountsAfterAssign: function( sourceId, targetId, delta ) {
+            delta = delta || 0;
+            if ( delta <= 0 ) {
+                return;
+            }
+
+            var changed = false;
+            if ( sourceId > 0 ) {
+                this.terms = this.terms.map( function( t ) {
+                    if ( t.id === sourceId ) {
+                        t.count = Math.max( 0, ( parseInt( t.count, 10 ) || 0 ) - delta );
+                        changed = true;
+                    }
+                    return t;
+                } );
+            }
+
+            if ( targetId > 0 ) {
+                this.terms = this.terms.map( function( t ) {
+                    if ( t.id === targetId ) {
+                        t.count = ( parseInt( t.count, 10 ) || 0 ) + delta;
+                        changed = true;
+                    }
+                    return t;
+                } );
+            }
+
+            if ( changed ) {
+                this.termLookup = this.buildTermLookup( this.terms );
+                this.render();
+            }
         },
 
         highlightSelection: function() {
