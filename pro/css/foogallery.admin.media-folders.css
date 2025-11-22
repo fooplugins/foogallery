@@ -1,21 +1,42 @@
 .foogallery-browser-with-folders {
     display: flex;
+    gap: 12px;
 }
 
 .foogallery-browser-with-folders .foogallery-media-folders-wrapper {
     flex: 0 0 220px;
     border-right: 1px solid #e2e4e7;
     padding: 12px 12px 12px 0;
-    margin-right: 12px;
+    margin-right: 0;
     overflow-y: auto;
 }
 
-.foogallery-browser-with-folders .attachments-browser {
-    flex: 1;
+.foogallery-browser-with-folders .attachments-wrapper {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+/* Override core absolute positioning so the grid sits next to the folders. Specificity beats core selectors. */
+.attachments-browser.has-load-more .foogallery-browser-with-folders .attachments-wrapper,
+.attachments-browser:not(.has-load-more) .foogallery-browser-with-folders .attachments,
+.attachments-browser .foogallery-browser-with-folders .attachments {
+    left: 240px !important;
+}
+
+.foogallery-attachment-dragging .uploader-inline,
+.foogallery-attachment-dragging .media-frame-uploader {
+    display: none !important;
+}
+
+.foogallery-has-folders .attachments-browser .media-toolbar {
+    left: 240px !important;
 }
 
 .foogallery-media-folders-header {
     margin-bottom: 8px;
+	margin-left: 8px;
+	display: flex;
+	justify-content: space-between;
 }
 
 .foogallery-folder-title {
@@ -26,7 +47,7 @@
 .foogallery-media-folders-children {
     list-style: none;
     margin: 0;
-    padding-left: 0;
+    padding-left: 10px;
 }
 
 .foogallery-media-folders-children {
@@ -35,35 +56,131 @@
 
 .foogallery-folder-node {
     margin: 0;
-    padding: 2px 4px;
+    padding: 2px 0;
+}
+
+.foogallery-folder-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.foogallery-folder-actions {
+    margin-left: auto;
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.foogallery-folder-row:hover {
+    background: #f8f9fa;
+}
+
+.foogallery-folder-node.is-active > .foogallery-folder-row {
+    background: #eff4f8;
 }
 
 .foogallery-folder-label {
     display: block;
-    padding: 6px 8px;
-    border-radius: 4px;
+    flex: 1 1 auto;
     color: #1e1e1e;
     text-decoration: none;
+    padding: 4px 6px;
+    border-radius: 3px;
 }
 
-.foogallery-folder-label:hover,
-.foogallery-folder-node.is-active > .foogallery-folder-label {
-    background: #f0f6ff;
+.foogallery-folder-node.is-active > .foogallery-folder-row .foogallery-folder-label {
+    font-weight: bold;
 }
 
-.foogallery-folder-node.is-drag-over > .foogallery-folder-label {
+.foogallery-folder-node.is-drag-over > .foogallery-folder-row {
     background: #e8f0fe;
-    border: 1px dashed #6fa4f2;
+    border-color: #6fa4f2;
+    border-style: dashed;
 }
 
-.foogallery-folder-label.is-root {
-    font-weight: 600;
+.foogallery-folder-label-container.is-editing .foogallery-folder-label {
+    display: none;
+}
+
+.foogallery-folder-edit-input,
+.foogallery-folder-new-input {
+    width: 100%;
+    max-width: 200px;
+}
+
+.foogallery-folder-actions button {
+    border: none;
+    background: none;
+    padding: 4px;
+    line-height: 1;
+    cursor: pointer;
+	color: #2271b1;
+	border-radius: 3px;
+	cursor: pointer;
+}
+
+.foogallery-folder-actions button:hover {
+	color: #124361;
+	background: white;
+}
+
+.foogallery-folder-actions .dashicons {
+    font-size: 16px;
+	width: unset;
+	height: unset;
 }
 
 .foogallery-media-folders-status {
-    margin-top: 10px;
+    margin-left: auto;
     font-size: 12px;
-    color: #3c434a;
+    color: #aaa;
+    text-align: right;
+}
+
+/* Keep folders visible above the modal footer and allow scrolling when tall. */
+.foogallery-has-folders .foogallery-media-folders-wrapper {
+    max-height: calc(100vh - 220px);
+    padding-bottom: 72px;
+}
+
+.foogallery-folder-help-toggle {
+    border: none;
+    padding: 0;
+    background: none;
+}
+
+.foogallery-folder-help-toggle .dashicons {
+    font-size: 18px;
+	color: #ddd;
+}
+
+.foogallery-folder-help {
+    padding: 8px;
+    border-radius: 8px;
+    border: solid 1px #ddd;
+    background: #eee;
+    margin: 0 0 0px 10px;
+}
+
+.foogallery-folder-help ul {
+	list-style: disc;
+	margin: 0;
+}
+
+.foogallery-folder-help ul li {
+	margin-left: 15px;
+}
+
+.foogallery-folder-help .dashicons {
+	font-size: 12px;
+	width: unset;
+	height: unset;
+	line-height: 12px;
 }
 
 @media screen and (max-width: 960px) {

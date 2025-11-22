@@ -100,11 +100,20 @@ if ( ! class_exists( 'FooGallery_Pro_Media_Folders' ) ) {
                     'assignmentSuccess'  => __( 'Folder assignment saved.', 'foogallery' ),
                     'assignmentFailure'  => __( 'Could not update folder. Please try again.', 'foogallery' ),
                     'dragToFolder'       => __( 'Drag selected items to a folder to assign it.', 'foogallery' ),
+                    'helpHtml'           => wp_kses_post( $this->build_html_help() ),
                 ),
-            );
+			);
 
             wp_localize_script( $script_handle, 'FOOGALLERY_MEDIA_FOLDERS', $localizedData );
         }
+
+		private function build_html_help() {
+			return '<ul><li>' . __( 'Select a folder in the list to show all attachments in that folder.', 'foogallery' ) . '</li>' .
+			 '<li>' . __( 'Drag attachments into a folder to assign them.', 'foogallery' ) . '</li>' .
+			 '<li>' . sprintf( __( 'Drag attachments onto %s to remove them from the folder.', 'foogallery' ), '<em>' . __( 'Unassign', 'foogallery' ) . '</em>' ) . '</li>' .
+			 '<li>' . sprintf( __( 'Use the %s button to rename or delete folders.', 'foogallery' ), '<i class="dashicons dashicons-admin-generic"></i>' ) . '</li>' .
+			 '<li>' . __( 'Click + to add a new folder.', 'foogallery' ) . '</li></ul>';
+		}
 
         /**
          * Add a tax_query for media categories when a folder filter is present.
@@ -159,18 +168,36 @@ if ( ! class_exists( 'FooGallery_Pro_Media_Folders' ) ) {
             $term_id = isset( $_POST['term_id'] ) ? absint( $_POST['term_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
             $ids     = isset( $_POST['attachment_ids'] ) ? (array) $_POST['attachment_ids'] : array(); // phpcs:ignore WordPress.Security.NonceVerification.Missing
             $ids     = array_filter( array_map( 'absint', $ids ) );
+            $source_term_id = isset( $_POST['source_term_id'] ) ? absint( $_POST['source_term_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
-            if ( $term_id <= 0 || empty( $ids ) ) {
-                wp_send_json_error( array( 'message' => __( 'Invalid folder or attachments.', 'foogallery' ) ), 400 );
-            }
-
-            $term = get_term( $term_id, FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY );
-            if ( ! $term || is_wp_error( $term ) ) {
+            if ( $term_id < 0 || empty( $ids ) ) {
                 wp_send_json_error( array( 'message' => __( 'Invalid folder or attachments.', 'foogallery' ) ), 400 );
             }
 
             if ( ! current_user_can( $taxonomy->cap->assign_terms ) ) {
                 wp_send_json_error( array( 'message' => __( 'You cannot assign folders.', 'foogallery' ) ), 403 );
+            }
+
+            // term_id 0 means unassign all folder terms.
+            if ( 0 === $term_id ) {
+                $updated = 0;
+                foreach ( $ids as $attachment_id ) {
+                    if ( current_user_can( 'edit_post', $attachment_id ) ) {
+                        if ( $source_term_id > 0 ) {
+                            wp_remove_object_terms( $attachment_id, array( $source_term_id ), FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY );
+                            $updated++;
+                        } else {
+                            wp_set_object_terms( $attachment_id, array(), FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY, false );
+                            $updated++;
+                        }
+                    }
+                }
+                wp_send_json_success( array( 'updated' => $updated ) );
+            }
+
+            $term = get_term( $term_id, FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY );
+            if ( ! $term || is_wp_error( $term ) ) {
+                wp_send_json_error( array( 'message' => __( 'Invalid folder or attachments.', 'foogallery' ) ), 400 );
             }
 
             $updated = 0;
