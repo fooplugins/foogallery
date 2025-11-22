@@ -101,6 +101,16 @@
     border-style: dashed;
 }
 
+.foogallery-folder-dropzone {
+    height: 2px;
+    margin: 1px 0;
+    border-top: 2px solid transparent;
+}
+
+.foogallery-folder-dropzone.is-active {
+    border-top-color: #1e73be;
+}
+
 .foogallery-folder-label-container.is-editing .foogallery-folder-label {
     display: none;
 }

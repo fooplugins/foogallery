@@ -14,6 +14,7 @@ if ( ! class_exists( 'FooGallery_Pro_Media_Folders' ) ) {
             add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_media_modal_assets' ) );
             add_filter( 'ajax_query_attachments_args', array( $this, 'filter_attachments_by_folder' ) );
             add_action( 'wp_ajax_foogallery_assign_media_categories', array( $this, 'ajax_assign_media_categories' ) );
+            add_action( 'wp_ajax_foogallery_reorder_media_categories', array( $this, 'ajax_reorder_media_categories' ) );
         }
 
         /**
@@ -81,6 +82,7 @@ if ( ! class_exists( 'FooGallery_Pro_Media_Folders' ) ) {
                     'id'     => (int) $term->term_id,
                     'name'   => $term->name,
                     'parent' => (int) $term->parent,
+                    'order'  => (int) get_term_meta( $term->term_id, '_foogallery_folder_order', true ),
                 );
             }
 
@@ -204,6 +206,49 @@ if ( ! class_exists( 'FooGallery_Pro_Media_Folders' ) ) {
             foreach ( $ids as $attachment_id ) {
                 if ( current_user_can( 'edit_post', $attachment_id ) ) {
                     wp_set_object_terms( $attachment_id, $term_id, FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY, true );
+                    $updated++;
+                }
+            }
+
+            wp_send_json_success( array( 'updated' => $updated ) );
+        }
+
+        /**
+         * Ajax handler to save folder order for siblings.
+         */
+        public function ajax_reorder_media_categories() {
+            if ( ! check_ajax_referer( 'foogallery-assign-media-categories', 'nonce', false ) ) {
+                wp_send_json_error( array( 'message' => __( 'Security check failed.', 'foogallery' ) ), 403 );
+            }
+
+            if ( ! taxonomy_exists( FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY ) ) {
+                wp_send_json_error( array( 'message' => __( 'Folders are unavailable.', 'foogallery' ) ), 400 );
+            }
+
+            $taxonomy = get_taxonomy( FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY );
+            if ( ! $taxonomy ) {
+                wp_send_json_error( array( 'message' => __( 'Folders are unavailable.', 'foogallery' ) ), 400 );
+            }
+
+            if ( ! current_user_can( $taxonomy->cap->assign_terms ) ) {
+                wp_send_json_error( array( 'message' => __( 'You cannot reorder folders.', 'foogallery' ) ), 403 );
+            }
+
+            $parent_id   = isset( $_POST['parent_id'] ) ? absint( $_POST['parent_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+            $ordered_ids = isset( $_POST['ordered_ids'] ) ? (array) $_POST['ordered_ids'] : array(); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+            $ordered_ids = array_filter( array_map( 'absint', $ordered_ids ) );
+
+            if ( empty( $ordered_ids ) ) {
+                wp_send_json_error( array( 'message' => __( 'Invalid order.', 'foogallery' ) ), 400 );
+            }
+
+            $updated = 0;
+            foreach ( $ordered_ids as $index => $term_id ) {
+                $term = get_term( $term_id, FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY );
+                if ( ! $term || is_wp_error( $term ) || (int) $term->parent !== $parent_id ) {
+                    continue;
+                }
+                if ( update_term_meta( $term_id, '_foogallery_folder_order', $index ) ) {
                     $updated++;
                 }
             }

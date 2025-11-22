@@ -22,6 +22,7 @@
     var MediaFolders = {
         draggedIds: [],
         draggedFolderId: 0,
+        draggedFolderParent: 0,
         apiRequest: function( args ) {
             if ( wp.apiRequest ) {
                 return wp.apiRequest( args );
@@ -36,6 +37,10 @@
 
         setDraggedFolder: function( id ) {
             this.draggedFolderId = id || 0;
+        },
+
+        setDraggedFolderParent: function( id ) {
+            this.draggedFolderParent = id || 0;
         },
 
         getDraggedIds: function( selection, fallbackId ) {
@@ -131,6 +136,9 @@
             'dragover li.foogallery-folder-node': 'onDragOver',
             'dragleave li.foogallery-folder-node': 'onDragLeave',
             'drop li.foogallery-folder-node': 'onDrop',
+            'dragover .foogallery-folder-dropzone': 'onDropzoneOver',
+            'dragleave .foogallery-folder-dropzone': 'onDropzoneLeave',
+            'drop .foogallery-folder-dropzone': 'onDropzoneDrop',
             'dragstart .foogallery-folder-row': 'onFolderDragStart',
             'dragend .foogallery-folder-row': 'onFolderDragEnd',
             'click .foogallery-manage-folders': 'toggleManageMode',
@@ -160,6 +168,16 @@
             terms.forEach( function( term ) {
                 lookup[ term.parent ] = lookup[ term.parent ] || [];
                 lookup[ term.parent ].push( term );
+            } );
+            Object.keys( lookup ).forEach( function( parent ) {
+                lookup[ parent ].sort( function( a, b ) {
+                    var ao = typeof a.order === 'number' ? a.order : 0;
+                    var bo = typeof b.order === 'number' ? b.order : 0;
+                    if ( ao !== bo ) {
+                        return ao - bo;
+                    }
+                    return a.name.localeCompare( b.name );
+                } );
             } );
             return lookup;
         },
@@ -193,7 +211,13 @@
             }
         }
 
-        ( this.termLookup[ parentId ] || [] ).forEach( function( term ) {
+        var children = this.termLookup[ parentId ] || [];
+
+        children.forEach( function( term ) {
+            if ( this.manageMode ) {
+                $list.append( this.renderDropzone( parentId, term.id, 'before' ) );
+            }
+
             var $node = this.renderNode( term, false );
             var $children = this.renderList( term.id, false );
             if ( $children.children().length ) {
@@ -234,6 +258,8 @@
 
             if ( this.manageMode && ! isRoot ) {
                 $labelWrapper.attr( 'draggable', true );
+            } else {
+                $labelWrapper.removeAttr( 'draggable' );
             }
 
             // Manage actions.
@@ -269,6 +295,10 @@
 
             $node.append( $labelWrapper );
             return $node;
+        },
+
+        renderDropzone: function( parentId, siblingId, position ) {
+            return $( '<div class="foogallery-folder-dropzone" data-parent-id="' + parentId + '" data-sibling-id="' + siblingId + '" data-position="' + position + '"></div>' );
         },
 
         renderNewFolderRow: function() {
@@ -341,6 +371,7 @@
             var folderId = parseInt( $target.data( 'folderId' ), 10 );
             var currentFolder = this.library && this.library.props ? this.library.props.get( 'foogallery_folder' ) : this.selected || 0;
             var isFolderDrag = this.manageMode && MediaFolders.draggedFolderId;
+            var targetTerm = this.getTermById( folderId );
 
             // Show spinner on the target while assigning.
             var $row = $target.children( '.foogallery-folder-row' );
@@ -355,10 +386,11 @@
 
             if ( isFolderDrag ) {
                 var movingId = MediaFolders.draggedFolderId;
-                if ( movingId === folderId || folderId === 0 || this.isDescendant( movingId, folderId ) ) {
+                if ( movingId === folderId || this.isDescendant( movingId, folderId ) ) {
                     $rowSpinner.removeClass( 'is-active' ).hide();
                     return;
                 }
+                // Nest under the target folder.
                 this.moveFolder( movingId, folderId, $rowSpinner );
                 return;
             }
@@ -389,6 +421,50 @@
             this.assignToFolder( ids, folderId, $rowSpinner );
         },
 
+        onDropzoneOver: function( event ) {
+            event.preventDefault();
+            event.stopPropagation();
+            var $zone = $( event.currentTarget );
+            if ( ! ( this.manageMode && MediaFolders.draggedFolderId ) ) {
+                return;
+            }
+            $zone.addClass( 'is-active' );
+        },
+
+        onDropzoneLeave: function( event ) {
+            event.stopPropagation();
+            $( event.currentTarget ).removeClass( 'is-active' );
+        },
+
+        onDropzoneDrop: function( event ) {
+            event.preventDefault();
+            event.stopPropagation();
+            var $zone = $( event.currentTarget );
+            $zone.removeClass( 'is-active' );
+
+            if ( ! ( this.manageMode && MediaFolders.draggedFolderId ) ) {
+                return;
+            }
+
+            var parentId = parseInt( $zone.data( 'parentId' ), 10 );
+            var siblingId = parseInt( $zone.data( 'siblingId' ), 10 );
+            var position = $zone.data( 'position' ) || 'before';
+            var movingId = MediaFolders.draggedFolderId;
+            var movingParent = MediaFolders.draggedFolderParent;
+
+            if ( parentId !== movingParent ) {
+                // If parent differs, treat as nesting under new parent.
+                this.moveFolder( movingId, parentId, null );
+                return;
+            }
+
+            if ( siblingId === movingId ) {
+                return;
+            }
+
+            this.reorderSiblings( parentId, movingId, siblingId, position, null );
+        },
+
         onFolderDragStart: function( event ) {
             if ( ! this.manageMode ) {
                 return;
@@ -398,6 +474,8 @@
                 return;
             }
             MediaFolders.setDraggedFolder( folderId );
+            var term = this.getTermById( folderId );
+            MediaFolders.setDraggedFolderParent( term ? term.parent : 0 );
             if ( event.originalEvent && event.originalEvent.dataTransfer ) {
                 event.originalEvent.dataTransfer.effectAllowed = 'move';
                 event.originalEvent.dataTransfer.setData( 'text/plain', 'folder:' + folderId );
@@ -406,7 +484,18 @@
 
         onFolderDragEnd: function() {
             MediaFolders.setDraggedFolder( 0 );
+            MediaFolders.setDraggedFolderParent( 0 );
             this.$el.find( '.is-drag-over' ).removeClass( 'is-drag-over' );
+        },
+
+        getTermById: function( id ) {
+            id = parseInt( id, 10 );
+            for ( var i = 0; i < this.terms.length; i++ ) {
+                if ( this.terms[ i ].id === id ) {
+                    return this.terms[ i ];
+                }
+            }
+            return null;
         },
 
         isDescendant: function( parentId, maybeChildId ) {
@@ -432,6 +521,7 @@
                 this.terms = this.terms.map( function( t ) {
                     if ( t.id === folderId ) {
                         t.parent = term && typeof term.parent !== 'undefined' ? term.parent : newParentId;
+                        t.order = 0;
                     }
                     return t;
                 } );
@@ -442,6 +532,59 @@
                 this.setStatus( 'Could not move folder.' );
             }.bind( this ) ).always( function() {
                 MediaFolders.setDraggedFolder( 0 );
+                if ( $rowSpinner ) {
+                    $rowSpinner.removeClass( 'is-active' ).hide();
+                }
+            } );
+        },
+
+        reorderSiblings: function( parentId, movingId, targetId, position, $rowSpinner ) {
+            var siblings = ( this.termLookup[ parentId ] || [] ).slice( 0 );
+            var filtered = siblings.filter( function( t ) { return t.id !== movingId; } );
+            var newOrder = [];
+
+            if ( targetId === 0 ) {
+                newOrder = filtered.map( function( t ) { return t.id; } );
+                newOrder.push( movingId );
+            } else {
+                for ( var i = 0; i < filtered.length; i++ ) {
+                    var sibId = filtered[ i ].id;
+                    if ( sibId === targetId && position === 'before' ) {
+                        newOrder.push( movingId );
+                    }
+                    newOrder.push( sibId );
+                    if ( sibId === targetId && position === 'after' ) {
+                        newOrder.push( movingId );
+                    }
+                }
+                if ( newOrder.indexOf( movingId ) === -1 ) {
+                    newOrder.push( movingId );
+                }
+            }
+
+            var self = this;
+            this.setStatus( 'Reordering…' );
+            $.post( settings.ajaxUrl, {
+                action: 'foogallery_reorder_media_categories',
+                nonce: settings.nonce,
+                parent_id: parentId,
+                ordered_ids: newOrder,
+            } ).done( function() {
+                // Update local orders to match newOrder.
+                self.terms = self.terms.map( function( t ) {
+                    if ( newOrder.indexOf( t.id ) !== -1 ) {
+                        t.order = newOrder.indexOf( t.id );
+                    }
+                    return t;
+                } );
+                self.termLookup = self.buildTermLookup( self.terms );
+                self.render();
+                self.setStatus( 'Folder reordered.' );
+            } ).fail( function() {
+                self.setStatus( 'Could not reorder folder.' );
+            } ).always( function() {
+                MediaFolders.setDraggedFolder( 0 );
+                MediaFolders.setDraggedFolderParent( 0 );
                 if ( $rowSpinner ) {
                     $rowSpinner.removeClass( 'is-active' ).hide();
                 }
