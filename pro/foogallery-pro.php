@@ -82,6 +82,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 				new FooGallery_Pro_Filtering();
 				new FooGallery_Pro_Video();
 				new FooGallery_Pro_Video_Legacy();
+                new FooGallery_Pro_Media_Folders();
 				
 				//Standard Datasources
 				new FooGallery_Pro_Datasource_MediaCategories();
@@ -89,7 +90,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 				new FooGallery_Pro_Datasource_Folders();
 				new FooGallery_Pro_Datasource_Post_Query();
 				
-				//3rd Part Datasources
+				//3rd Party Datasources
 				new FooGallery_Pro_Datasource_Lightroom();
 				new FooGallery_Pro_WPLR_Support();
 				new FooGallery_Pro_Datasource_RealMediaLibrary();

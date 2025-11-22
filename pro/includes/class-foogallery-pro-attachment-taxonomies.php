@@ -354,7 +354,7 @@ if ( ! class_exists( 'FooGallery_Pro_Attachment_Taxonomies' ) ) {
                 'show_in_menu'      => false,
                 'public'            => false,  /**makes taxonomy not be visible publicly for front-end users.**/
                 'show_ui'           => true,    /** allow a UI for managing terms in this taxonomy in the admin **/
-
+				'show_in_rest'      => true,
                 'update_count_callback' => '_update_generic_term_count'
             );
 
