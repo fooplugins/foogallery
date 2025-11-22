@@ -12,7 +12,6 @@
         foldersHeading: 'Folders',
         allFolders: 'All Folders',
         unassignLabel: 'Unassign',
-        dropHere: 'Drop to move selected items here',
         assigning: 'Assigning...',
         assignmentSuccess: 'Folder assignment saved.',
         assignmentFailure: 'Could not update folder. Please try again.',
@@ -22,6 +21,7 @@
 
     var MediaFolders = {
         draggedIds: [],
+        draggedFolderId: 0,
         apiRequest: function( args ) {
             if ( wp.apiRequest ) {
                 return wp.apiRequest( args );
@@ -32,6 +32,10 @@
 
         setDraggedIds: function( ids ) {
             this.draggedIds = ids;
+        },
+
+        setDraggedFolder: function( id ) {
+            this.draggedFolderId = id || 0;
         },
 
         getDraggedIds: function( selection, fallbackId ) {
@@ -127,6 +131,8 @@
             'dragover li.foogallery-folder-node': 'onDragOver',
             'dragleave li.foogallery-folder-node': 'onDragLeave',
             'drop li.foogallery-folder-node': 'onDrop',
+            'dragstart .foogallery-folder-row': 'onFolderDragStart',
+            'dragend .foogallery-folder-row': 'onFolderDragEnd',
             'click .foogallery-manage-folders': 'toggleManageMode',
             'click .foogallery-add-folder': 'startAddFolder',
             'click .foogallery-folder-edit': 'startRename',
@@ -212,8 +218,7 @@
                 'class': 'foogallery-folder-label',
                 'href': '#',
                 'data-folder-id': term.id,
-                'text': term.name,
-                'title': isRoot ? settings.strings.allFolders : settings.strings.dropHere,
+                'text': term.name
             } );
 
             if ( isRoot ) {
@@ -221,8 +226,15 @@
             }
 
             var $labelContainer = $( '<span class="foogallery-folder-label-container" />' );
+            if ( this.manageMode && ! isRoot ) {
+                $labelContainer.append( '<span class="foogallery-folder-drag-handle dashicons dashicons-menu-alt2"></span>' );
+            }
             $labelContainer.append( $label );
             $labelWrapper.append( $labelContainer );
+
+            if ( this.manageMode && ! isRoot ) {
+                $labelWrapper.attr( 'draggable', true );
+            }
 
             // Manage actions.
             if ( isRoot ) {
@@ -328,6 +340,7 @@
             var $target  = $( event.currentTarget );
             var folderId = parseInt( $target.data( 'folderId' ), 10 );
             var currentFolder = this.library && this.library.props ? this.library.props.get( 'foogallery_folder' ) : this.selected || 0;
+            var isFolderDrag = this.manageMode && MediaFolders.draggedFolderId;
 
             // Show spinner on the target while assigning.
             var $row = $target.children( '.foogallery-folder-row' );
@@ -340,10 +353,21 @@
 
             $target.removeClass( 'is-drag-over' );
 
+            if ( isFolderDrag ) {
+                var movingId = MediaFolders.draggedFolderId;
+                if ( movingId === folderId || folderId === 0 || this.isDescendant( movingId, folderId ) ) {
+                    $rowSpinner.removeClass( 'is-active' ).hide();
+                    return;
+                }
+                this.moveFolder( movingId, folderId, $rowSpinner );
+                return;
+            }
+
             if ( ! settings.canAssign || ! folderId ) {
                 if ( folderId === 0 && currentFolder ) {
                     // Allow unassign via All Folders only when a folder is selected.
                 } else {
+                    $rowSpinner.removeClass( 'is-active' ).hide();
                     return;
                 }
             }
@@ -358,10 +382,70 @@
             }
 
             if ( ! ids.length ) {
+                $rowSpinner.removeClass( 'is-active' ).hide();
                 return;
             }
 
             this.assignToFolder( ids, folderId, $rowSpinner );
+        },
+
+        onFolderDragStart: function( event ) {
+            if ( ! this.manageMode ) {
+                return;
+            }
+            var folderId = parseInt( $( event.currentTarget ).find( '.foogallery-folder-label' ).data( 'folderId' ), 10 );
+            if ( ! folderId ) {
+                return;
+            }
+            MediaFolders.setDraggedFolder( folderId );
+            if ( event.originalEvent && event.originalEvent.dataTransfer ) {
+                event.originalEvent.dataTransfer.effectAllowed = 'move';
+                event.originalEvent.dataTransfer.setData( 'text/plain', 'folder:' + folderId );
+            }
+        },
+
+        onFolderDragEnd: function() {
+            MediaFolders.setDraggedFolder( 0 );
+            this.$el.find( '.is-drag-over' ).removeClass( 'is-drag-over' );
+        },
+
+        isDescendant: function( parentId, maybeChildId ) {
+            var children = this.termLookup[ parentId ] || [];
+            for ( var i = 0; i < children.length; i++ ) {
+                if ( children[ i ].id === maybeChildId ) {
+                    return true;
+                }
+                if ( this.isDescendant( children[ i ].id, maybeChildId ) ) {
+                    return true;
+                }
+            }
+            return false;
+        },
+
+        moveFolder: function( folderId, newParentId, $rowSpinner ) {
+            this.setStatus( 'Moving folder…' );
+            MediaFolders.apiRequest( {
+                path: '/wp/v2/' + settings.taxonomy + '/' + folderId,
+                method: 'POST',
+                data: { parent: newParentId },
+            } ).done( function( term ) {
+                this.terms = this.terms.map( function( t ) {
+                    if ( t.id === folderId ) {
+                        t.parent = term && typeof term.parent !== 'undefined' ? term.parent : newParentId;
+                    }
+                    return t;
+                } );
+                this.termLookup = this.buildTermLookup( this.terms );
+                this.render();
+                this.setStatus( 'Folder moved.' );
+            }.bind( this ) ).fail( function() {
+                this.setStatus( 'Could not move folder.' );
+            }.bind( this ) ).always( function() {
+                MediaFolders.setDraggedFolder( 0 );
+                if ( $rowSpinner ) {
+                    $rowSpinner.removeClass( 'is-active' ).hide();
+                }
+            } );
         },
 
         toggleManageMode: function( event ) {
@@ -681,7 +765,6 @@
                 model: state,
                 scrollElement: document,
                 autoSelect: true,
-                dragInfoText: settings.strings.dropHere,
                 suggestedWidth: options.suggestedWidth,
                 suggestedHeight: options.suggestedHeight,
             } );
@@ -715,7 +798,6 @@
                 model: state,
                 scrollElement: document,
                 autoSelect: true,
-                dragInfoText: settings.strings.dropHere,
                 suggestedWidth: options.suggestedWidth,
                 suggestedHeight: options.suggestedHeight,
             } );
@@ -743,7 +825,6 @@
                     model: state,
                     scrollElement: document,
                     autoSelect: true,
-                    dragInfoText: settings.strings.dropHere,
                     suggestedWidth: options.suggestedWidth,
                     suggestedHeight: options.suggestedHeight,
                 } );

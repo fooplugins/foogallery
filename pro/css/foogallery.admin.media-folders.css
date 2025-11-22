@@ -67,6 +67,7 @@
     border-radius: 4px;
     cursor: pointer;
     border: 1px solid transparent;
+    min-height: 28px;
 }
 
 .foogallery-folder-actions {
@@ -85,12 +86,9 @@
 }
 
 .foogallery-folder-label {
-    display: block;
-    flex: 1 1 auto;
-    color: #1e1e1e;
     text-decoration: none;
-    padding: 4px 6px;
-    border-radius: 3px;
+    outline: none !important;
+    flex: 1 1 auto;
 }
 
 .foogallery-folder-node.is-active > .foogallery-folder-row .foogallery-folder-label {
@@ -105,6 +103,15 @@
 
 .foogallery-folder-label-container.is-editing .foogallery-folder-label {
     display: none;
+}
+
+.foogallery-folder-drag-handle {
+    margin-right: 4px;
+    color: #aaa;
+    cursor: move;
+	font-size: 16px;
+	width: unset;
+	height: unset;
 }
 
 .foogallery-folder-edit-input,
