@@ -107,7 +107,7 @@ JS;
 			}
 
 			// Check nonce
-			if ( ! check_admin_referer( 'foogallery_admin_import_pro_demos' ) ) {
+			if ( ! check_ajax_referer( 'foogallery_admin_import_pro_demos' ) ) {
 				wp_die( esc_html__( 'Security check failed.', 'foogallery' ) );
 			}
 
