@@ -363,7 +363,7 @@ if ( ! class_exists( 'FooGallery_Pro_Gallery_Blueprints' ) ) {
 
 		                $('.foogallery_gallery_blueprint_spinner').addClass('is-active');
 		                var data = 'action=foogallery_gallery_blueprint_toggle' +
-		                           '&foogallery=<?php echo esc_js( $post->ID ); ?>' +
+		                           '&foogallery=<?php echo intval( $post->ID ); ?>' +
 		                           '&foogallery_gallery_blueprint_toggle_nonce=' + $('#foogallery_gallery_blueprint_toggle_nonce').val() +
 		                           '&_wp_http_referer=' + encodeURIComponent($('input[name="_wp_http_referer"]').val());
 
@@ -382,7 +382,7 @@ if ( ! class_exists( 'FooGallery_Pro_Gallery_Blueprints' ) ) {
 
 		                $('.foogallery_gallery_blueprint_set_spinner').addClass('is-active');
 		                var data = 'action=foogallery_gallery_blueprint_set' +
-		                           '&foogallery=<?php echo esc_js( $post->ID ); ?>' +
+		                           '&foogallery=<?php echo intval( $post->ID ); ?>' +
 		                           '&blueprint=' + $('#foogallery_gallery_blueprint_select').val() +
 		                           '&foogallery_gallery_blueprint_set_nonce=' + $('#foogallery_gallery_blueprint_set_nonce').val() +
 		                           '&_wp_http_referer=' + encodeURIComponent($('input[name="_wp_http_referer"]').val());
@@ -413,7 +413,7 @@ if ( ! class_exists( 'FooGallery_Pro_Gallery_Blueprints' ) ) {
                             url: ajaxurl,
                             data: {
                                 action: 'foogallery_gallery_blueprint_bulk_assign_get_galleries',
-                                foogallery: <?php echo esc_js( $post->ID ); ?>,
+                                foogallery: <?php echo intval( $post->ID ); ?>,
                                 foogallery_gallery_blueprint_bulk_assign_nonce: $('#foogallery_gallery_blueprint_bulk_assign_nonce').val()
                             },
                             success: function(data) {
@@ -444,7 +444,7 @@ if ( ! class_exists( 'FooGallery_Pro_Gallery_Blueprints' ) ) {
                             url: ajaxurl,
                             data: {
                                 action: 'foogallery_gallery_blueprint_bulk_assign_save',
-                                foogallery: <?php echo esc_js( $post->ID ); ?>,
+                                foogallery: <?php echo intval( $post->ID ); ?>,
                                 galleries: selectedGalleries,
                                 foogallery_gallery_blueprint_bulk_assign_save_nonce: $('#foogallery_gallery_blueprint_bulk_assign_save_nonce').val()
                             },
