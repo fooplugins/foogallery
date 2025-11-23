@@ -646,7 +646,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Products' ) ) {
                 </p>
                 <div class="foogallery-items-html">
 	                <?php echo esc_html__( 'Categories : ', 'foogallery' ); ?><span id="foogallery-datasource-woocommerce-categories"><?php echo wp_kses_post( $categories_html ); ?></span><br />
-					        <?php echo esc_html__( 'Price Range : ', 'foogallery' ); ?><span id="foogallery-datasource-woocommerce-price-range"><?php echo esc_html( $min_price_range ); ?> - <?php echo esc_html( $max_price_range ); ?></span><br />
+					<?php echo esc_html__( 'Price Range : ', 'foogallery' ); ?><span id="foogallery-datasource-woocommerce-price-range"><?php echo esc_html( $min_price_range ); ?> - <?php echo esc_html( $max_price_range ); ?></span><br />
 	                <?php echo esc_html__( 'Sort by : ', 'foogallery' ); ?><span id="foogallery-datasource-woocommerce-sort"><?php echo esc_html( $sort ); ?></span><br />
 	                <?php echo esc_html__( 'Stock Status : ', 'foogallery' ); ?><span id="foogallery-datasource-woocommerce-stock"><?php echo esc_html( $stock ); ?></span><br />
 	                <?php echo esc_html__( 'No. of Products : ', 'foogallery' ); ?><span id="foogallery-datasource-woocommerce-no_of_post"><?php echo esc_html( $no_of_post ); ?></span><br />
