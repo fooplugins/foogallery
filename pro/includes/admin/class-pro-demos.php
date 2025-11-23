@@ -31,7 +31,7 @@ if ( ! class_exists( 'FooGallery_Pro_Demos' ) ) {
 			$markup = wpautop( wp_kses_post( $notice ) );
 
 			echo '<div class="' . esc_attr( 'notice notice-info is-dismissible foogallery-gallery-notice' ) . '" data-post-id="' . absint( $post->ID ) . '" data-nonce="' . esc_attr( $nonce ) . '">';
-			echo wp_kses_post( $markup );
+			echo $markup; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- already sanitized above
 			echo '</div>';
 		}
 
