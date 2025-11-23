@@ -2,7 +2,7 @@
 /*
 Plugin Name: FooGallery
 Description: FooGallery is the most intuitive and extensible gallery management tool ever created for WordPress
-Version:     3.1.0-beta.2
+Version:     3.1.1
 Author:      FooPlugins
 Plugin URI:  https://fooplugins.com/foogallery-wordpress-gallery-plugin/
 Author URI:  https://fooplugins.com
@@ -28,7 +28,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 		define( 'FOOGALLERY_PATH', plugin_dir_path( __FILE__ ) );
 		define( 'FOOGALLERY_URL', plugin_dir_url( __FILE__ ) );
 		define( 'FOOGALLERY_FILE', __FILE__ );
-		define( 'FOOGALLERY_VERSION', '3.1.0-beta.2' );
+		define( 'FOOGALLERY_VERSION', '3.1.1' );
 		define( 'FOOGALLERY_SETTINGS_VERSION', '2' );
 
 		require_once FOOGALLERY_PATH . 'includes/constants.php';
@@ -130,6 +130,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 					new FooGallery_Admin();
 					add_action( 'wpmu_new_blog', array( $this, 'set_default_extensions_for_multisite_network_activated' ) );
 					foogallery_fs()->add_filter( 'plugin_icon', array( $this, 'freemius_plugin_icon' ), 10, 1 );
+                    foogallery_fs()->add_filter( 'pricing/show_annual_in_monthly', '__return_false' );
 					add_action( 'foogallery_admin_menu_before', array( $this, 'add_freemius_activation_menu' ) );
 				} else {
 					new FooGallery_Public();

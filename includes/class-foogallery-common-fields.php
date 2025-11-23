@@ -647,7 +647,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'title'   => __( 'Limit Caption Length', 'foogallery' ),
 					'desc'    => __( 'You can limit the length of caption title and descriptions in the thumbnails. This will NOT limit the length of captions from within the lightbox.', 'foogallery' ),
 					'section' => __( 'Captions', 'foogallery' ),
-					'default' => '',
+					'default' => 'clamp',
 					'type'    => 'radio',
 					'class'    => 'foogallery-radios-stacked',
 					'choices' => array(
@@ -713,7 +713,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'section' => __( 'Captions', 'foogallery' ),
 					'type'    => 'number',
 					'class'   => 'small-text',
-					'default' => 0,
+					'default' => 1,
 					'step'    => '1',
 					'min'     => '0',
 					'row_data' => array(
@@ -732,7 +732,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 					'section' => __( 'Captions', 'foogallery' ),
 					'type'    => 'number',
 					'class'   => 'small-text',
-					'default' => 0,
+					'default' => 2,
 					'step'    => '1',
 					'min'     => '0',
 					'row_data' => array(
@@ -823,7 +823,7 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 				$options['item']['showCaptionTitle']       = $caption_title !== 'none';
 				$options['item']['showCaptionDescription'] = $caption_desc !== 'none';
 
-				$captions_limit_length = foogallery_gallery_template_setting( 'captions_limit_length', '' );
+				$captions_limit_length = foogallery_gallery_template_setting( 'captions_limit_length', 'clamp' );
 
 				if ( 'yes' === $captions_limit_length ) {
 					$caption_title_length                    = foogallery_gallery_template_setting( 'caption_title_length', '0' );
@@ -838,21 +838,20 @@ if ( ! class_exists( 'FooGallery_Common_Fields' ) ) {
 		function add_common_fields_attributes($attributes, $gallery) {
 			//check the template supports common fields
 			if ( foogallery_current_gallery_check_template_has_supported_feature('common_fields_support' ) ) {
-				$captions_limit_length = foogallery_gallery_template_setting( 'captions_limit_length', '' );
+				$captions_limit_length = foogallery_gallery_template_setting( 'captions_limit_length', 'clamp' );
 
 				if ( 'clamp' === $captions_limit_length ) {
 					$caption_title_clamp = intval( foogallery_gallery_template_setting( 'caption_title_clamp', '0' ) );
 					$caption_desc_clamp = intval( foogallery_gallery_template_setting( 'caption_desc_clamp', '0' ) );
-
-					$style = "--fg-title-line-clamp: {$caption_title_clamp};";
-					$style .= "--fg-description-line-clamp: {$caption_desc_clamp};";
-
-					if ( empty($attributes['style']) ) {
-						$attributes['style'] = $style;
-					} else {
-						$attributes['style'] .= $style;
-					}
+				} else {
+                    $caption_title_clamp = $caption_desc_clamp = 0;
 				}
+                $style = "--fg-title-line-clamp: {$caption_title_clamp}; --fg-description-line-clamp: {$caption_desc_clamp};";
+                if ( empty( $attributes['style'] ) ) {
+                    $attributes['style'] = $style;
+                } else {
+                    $attributes['style'] .= $style;
+                }
 			}
 
 			return $attributes;

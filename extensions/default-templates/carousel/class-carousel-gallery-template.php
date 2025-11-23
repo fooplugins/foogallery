@@ -77,7 +77,6 @@ if ( ! class_exists( 'FooGallery_Carousel_Gallery_Template' ) ) {
 				<?php
 				echo '&nbsp;&nbsp;<a data-min="-40" data-max="-20" data-units="%" class="foogallery-field-carousel-gutter-preset" href="#" >' . esc_html__( 'Preset 1', 'foogallery' ) . '</a>';
 				echo '&nbsp;&nbsp;<a data-min="5" data-max="10" data-units="px" class="foogallery-field-carousel-gutter-preset" href="#" >' . esc_html__( 'Preset 2', 'foogallery' ) . '</a>';
-				
 			}
 		}
 

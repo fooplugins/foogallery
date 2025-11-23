@@ -21,8 +21,8 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 			'foogallery-exif'              => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/exif-data/',
 			'foogallery-bulk-copy'         => 'https://fooplugins.com/bulk-copy-foogallery-pro/',
 			'foogallery-trial'             => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/start-trial/',
-			'foogallery-pricing'           => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/pricing/',
-			'foogallery-plans'             => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/pricing/#plans',
+			'foogallery-pricing'           => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/compare-plans/',
+			'foogallery-plans'             => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/compare-plans/#compare',
 			'foobox-pro'                   => 'https://fooplugins.com/foobox/',
 			'foogallery-datasources'       => 'https://fooplugins.com/load-galleries-from-other-sources/',
 			'foogallery-commerce'          => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/woocommerce-integration/',
@@ -265,7 +265,7 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 		function render_datasource_modal_content_folders_promo( $foogallery_id, $datasource_value ) {
 			$this->render_datasource_modal_content(
 				__('Server Folder Datasource', 'foogallery' ),
-				__('Create a dynamic gallery by loadings images directly from a folder/directory on your server.<br>This allows you to FTP or upload images directly to your server, and then your gallery will dynamically change to include all newly added/updated images.', 'foogallery' )
+				__('Create a dynamic gallery by loadings images directly from a folder/directory on your server. This allows you to FTP or upload images directly to your server, and then your gallery will dynamically change to include all newly added/updated images.', 'foogallery' )
 			);
 		}
 
@@ -1037,7 +1037,7 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 		function render_datasource_modal_content_products_promo( $foogallery_id, $datasource_value ) {
 			$this->render_datasource_modal_content(
 				__( 'WooCommerce Product Datasource', 'foogallery' ),
-				__( 'Create a dynamic gallery from your WooCommerce products.<br>You can limit how many products, only show certain categories or exclude specific products from your product gallery. Your gallery will dynamically update when you add or change any of your products.', 'foogallery' ),
+				__( 'Create a dynamic gallery from your WooCommerce products. You can limit how many products, only show certain categories or exclude specific products from your product gallery. Your gallery will dynamically update when you add or change any of your products.', 'foogallery' ),
 				'foogallery-product-gallery',
 				__( 'PRO Commerce', 'foogallery' ),
 				'foogallery_promo_commerce'

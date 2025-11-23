@@ -5,7 +5,12 @@
      */
     var FooGalleryWidgetHandler = function( $scope, $ ) {
         if ( FooGallery ) {
-            FooGallery.load();
+            const $gallery = $scope.find('.foogallery');
+            const instance = $gallery.data(FooGallery.DATA_TEMPLATE);
+            if ( instance instanceof FooGallery.Template ) {
+                return;
+            }
+            $gallery.foogallery(FooGallery.autoDefaults);
         }
     };
 

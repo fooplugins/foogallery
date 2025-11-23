@@ -1972,7 +1972,10 @@ function foogallery_is_activation_page() {
  * @param array $array an array of data to render.
  */
 function foogallery_render_debug_array( $array, $level = 0 ) {
-	foreach ( $array as $key => $value ) {
+	if ( !is_array( $array ) ) {
+		return;
+	}
+    foreach ( $array as $key => $value ) {
 		if ( ! empty( $value ) ) {
 			if ( $level > 0 ) {
 				echo esc_html( str_repeat( '   ', $level ) );
@@ -2587,4 +2590,13 @@ function foogallery_sort_attachments( $attachments, $orderby, $order ) {
 	}
 
 	return apply_filters( 'foogallery_sort_attachments', $attachments, $orderby, $order );
+}
+
+/**
+ * Returns the lightbox name for the plugin, that is whitelable safe.
+ *
+ * @return string
+ */
+function foogallery_lightbox_name() {
+    return sprintf( __( '%s Lightbox', 'foogallery' ), foogallery_plugin_name() );
 }

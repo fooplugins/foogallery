@@ -301,12 +301,17 @@ if ( ! class_exists( 'FooGallery_Datasource_MediaLibrary_Query_Helper' ) ) {
 
 				//check if a limit has been applied
 				if ( isset( $current_foogallery_arguments['limit'] ) ) {
-					$attachment_query_args['posts_per_page'] = $current_foogallery_arguments['limit'];
+					$attachment_query_args['posts_per_page'] = intval( $current_foogallery_arguments['limit'] );
 				}
 
 				//check if an offset has been applied
 				if ( isset( $current_foogallery_arguments['offset'] ) ) {
-					$attachment_query_args['offset'] = $current_foogallery_arguments['offset'];
+					$attachment_query_args['offset'] = intval( $current_foogallery_arguments['offset'] );
+
+                    $posts_per_page = isset( $attachment_query_args['posts_per_page'] ) ? intval( $attachment_query_args['posts_per_page'] ) : 0;
+                    if ( $posts_per_page <= 0 ) {
+                        $attachment_query_args['posts_per_page'] = PHP_INT_MAX;
+                    }
 				}
 			}
 

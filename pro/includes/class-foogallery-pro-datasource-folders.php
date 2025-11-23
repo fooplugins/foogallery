@@ -403,7 +403,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Folders' ) ) {
 		 * @param $filename
 		 * @param $json_data
 		 *
-		 * @return bool
+		 * @return mixed
 		 */
 		public function find_json_data_for_file( $filename, $json_data ) {
 			if ( array_key_exists( 'items', $json_data ) ) {

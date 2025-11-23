@@ -41,7 +41,9 @@ return array(
 				'foogridpro_captions_type'         => 'fg-captions-bottom',
 				'foogridpro_caption_title_source'  => 'title',
 				'foogridpro_caption_desc_source'   => 'desc',
-				'foogridpro_captions_limit_length' => 'yes',
+				'foogridpro_captions_limit_length' => 'clamp',
+				'foogridpro_caption_title_clamp'   => '1',
+				'foogridpro_caption_desc_clamp'    => '2',
 				'foogridpro_caption_alignment'     => 'fg-c-c',
 
 				//Hover Effects
@@ -152,7 +154,7 @@ return array(
 				'polaroid_new_caption_position'      => '',
 				'polaroid_new_caption_title_source'  => 'title',
 				'polaroid_new_captions_limit_length' => 'clamp',
-				'polaroid_new_caption_title_clamp'   => '2',
+				'polaroid_new_caption_title_clamp'   => '1',
 
 				//Hover Effects
 				'polaroid_new_hover_effect_caption_visibility' => 'fg-caption-always',

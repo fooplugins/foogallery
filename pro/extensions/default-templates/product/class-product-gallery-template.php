@@ -230,6 +230,7 @@ if ( !class_exists( 'FooGallery_Product_Gallery_Template' ) ) {
                 'lightbox_info_enabled' => 'disabled',
 				'buttons_style' => 'fg-cb-pill',
 				'filtering_style' => 'pill-block',
+				'filtering_limit' => '10',
 			);
 		}
 
