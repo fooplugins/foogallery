@@ -14,10 +14,42 @@ if (! class_exists('FooGallery_Pro_Media_Folders')) {
 		 */
 		public function __construct()
 		{
-			add_action('admin_enqueue_scripts', array($this, 'enqueue_media_modal_assets'));
-			add_filter('ajax_query_attachments_args', array($this, 'filter_attachments_by_folder'));
-			add_action('wp_ajax_foogallery_assign_media_categories', array($this, 'ajax_assign_media_categories'));
-			add_action('wp_ajax_foogallery_reorder_media_categories', array($this, 'ajax_reorder_media_categories'));
+			add_action( 'admin_init', array( $this, 'init' ) );
+		}
+
+		public function init()
+		{
+			if ( foogallery_feature_enabled( 'foogallery-filtering' ) ) {
+				add_filter( 'foogallery_admin_settings_override', array( $this, 'add_settings' ) );
+
+				if ( foogallery_get_setting( 'disable_media_category_sidebar' ) === 'on' ) {
+					return;
+				}
+				
+				add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_media_modal_assets' ) );
+				add_filter( 'ajax_query_attachments_args', array( $this, 'filter_attachments_by_folder' ) );
+				add_action( 'wp_ajax_foogallery_assign_media_categories', array( $this, 'ajax_assign_media_categories' ) );
+				add_action( 'wp_ajax_foogallery_reorder_media_categories', array( $this, 'ajax_reorder_media_categories' ) );
+			}
+		}
+
+		/**
+         * Add some admin settings
+         * 
+         * @param $settings
+         *
+         * @return array
+         */
+        function add_settings( $settings ) {
+            $settings['settings'][] = array(
+                'id'      => 'disable_media_category_sidebar',
+                'title'   => __( 'Disable Media Category Modal Sidebar', 'foogallery' ),
+                'type'    => 'checkbox',
+                'desc'    => __('Disable the media category modal sidebar in the media attachments modal.', 'foogallery'),
+                'tab'     => 'advanced'
+            );
+
+			return $settings;
 		}
 
 		/**
