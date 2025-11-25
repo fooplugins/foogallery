@@ -100,45 +100,55 @@ if (! class_exists('FooGallery_Pro_Media_Folders')) {
 				'nonce'     => wp_create_nonce('foogallery-assign-media-categories'),
 				'canAssign' => $can_assign,
 				'strings'   => array(
-					'foldersHeading'     => __('Folders', 'foogallery'),
-					'allFolders'         => __('All Folders', 'foogallery'),
-					'unassignLabel'      => __('Unassign', 'foogallery'),
+					'foldersHeading'     => $this->get_taxonomy_label($taxonomy),
+					'allFolders'         => __('All', 'foogallery'),
+					'unassignLabel'      => __('Drop here to unassign', 'foogallery'),
 					'dropHere'           => __('Drop to move selected items here', 'foogallery'),
 					'assigning'          => __('Assigning...', 'foogallery'),
 					'unassigning'        => __('Unassigning...', 'foogallery'),
-					'assignmentSuccess'  => __('Folder assignment saved.', 'foogallery'),
-					'assignmentFailure'  => __('Could not update folder. Please try again.', 'foogallery'),
-					'dragToFolder'       => __('Drag selected items to a folder to assign it.', 'foogallery'),
-					'helpHtml'           => wp_kses_post($this->build_html_help()),
-					'toggleHelp'         => __('Toggle folder help', 'foogallery'),
-					'moving'             => __('Moving folder...', 'foogallery'),
-					'movingDone'         => __('Folder moved.', 'foogallery'),
-					'movingFail'         => __('Could not move folder.', 'foogallery'),
+					'assignmentSuccess'  => __('Assignment saved.', 'foogallery'),
+					'assignmentFailure'  => __('Could not update. Please try again.', 'foogallery'),
+					'dragToFolder'       => __('Drag selected items to assign them.', 'foogallery'),
+					'helpHtml'           => wp_kses_post($this->build_html_help($taxonomy)),
+					'toggleHelp'         => __('Toggle help', 'foogallery'),
+					'moving'             => __('Moving...', 'foogallery'),
+					'movingDone'         => __('Moved.', 'foogallery'),
+					'movingFail'         => __('Could not move.', 'foogallery'),
 					'reordering'         => __('Reordering...', 'foogallery'),
-					'reordered'          => __('Folder reordered.', 'foogallery'),
-					'reorderFail'        => __('Could not reorder folder.', 'foogallery'),
-					'nameRequired'       => __('A folder name is required.', 'foogallery'),
+					'reordered'          => __('Reordered.', 'foogallery'),
+					'reorderFail'        => __('Could not reorder.', 'foogallery'),
+					'namePlaceholder'    => __('Category name', 'foogallery'),
+					'nameRequired'       => __('A name is required.', 'foogallery'),
+					'newSave'            => __('Save new category', 'foogallery'),
+					'newCancel'          => __('Cancel', 'foogallery'),
 					'saving'             => __('Saving...', 'foogallery'),
-					'created'            => __('Folder created.', 'foogallery'),
-					'createFail'         => __('Could not create folder.', 'foogallery'),
+					'created'            => __('Created.', 'foogallery'),
+					'createFail'         => __('Could not create.', 'foogallery'),
 					'deleting'           => __('Deleting...', 'foogallery'),
-					'deleted'            => __('Folder deleted.', 'foogallery'),
-					'deleteFail'         => __('Could not delete folder.', 'foogallery'),
-					'deleteConfirm'      => __('Delete this folder and its children?', 'foogallery'),
+					'deleted'            => __('Deleted.', 'foogallery'),
+					'deleteFail'         => __('Could not delete!', 'foogallery'),
+					'deleteConfirm'      => __('Are you sure you want to delete? No attachments will be deleted.', 'foogallery'),
 				),
 			);
 
 			wp_localize_script($script_handle, 'FOOGALLERY_MEDIA_FOLDERS', $localizedData);
 		}
 
-		private function build_html_help()
+		private function build_html_help($taxonomy)
 		{
-			return '<ul><li>' . __('Select a folder in the list to show all attachments in that folder.', 'foogallery') . '</li>' .
-				'<li>' . __('Drag attachments into a folder to assign them.', 'foogallery') . '</li>' .
-				'<li>' . sprintf(__('Drag attachments onto %s to remove them from the folder.', 'foogallery'), '<em>' . __('Unassign', 'foogallery') . '</em>') . '</li>' .
-				'<li>' . sprintf(__('Use the %s button to rename, delete or reorder folders.', 'foogallery'), '<i class="dashicons dashicons-admin-generic"></i>') . '</li>' .
-				'<li>' . __('Drag folders to reorder or nest them.', 'foogallery') . '</li>' .
-				'<li>' . __('Click + to add a new folder.', 'foogallery') . '</li></ul>';
+			$singular_lower = strtolower( $taxonomy->labels->singular_name );
+			$plural_lower   = strtolower( $this->get_taxonomy_label( $taxonomy ) );
+			return '<ul><li>' . sprintf( __( 'Select a %s in the list to show all attachments in that %s.', 'foogallery'), $singular_lower, $singular_lower ) . '</li>' .
+				'<li>' . sprintf( __( 'Drag attachments into a %s to assign them.', 'foogallery'), $singular_lower ) . '</li>' .
+				'<li>' . sprintf( __( 'Drag attachments onto %s to remove them from the %s.', 'foogallery'), '<em>' . __( 'Unassign', 'foogallery' ) . '</em>', $singular_lower ) . '</li>' .
+				'<li>' . sprintf( __( 'Use the %s button to rename, delete or reorder %s.', 'foogallery'), '<i class="dashicons dashicons-admin-generic"></i>', $plural_lower ) . '</li>' .
+				'<li>' . sprintf( __( 'Drag %s to reorder or nest them.', 'foogallery'), $plural_lower ) . '</li>' .
+				'<li>' . sprintf( __( 'Click + to add a new %s.', 'foogallery'), $singular_lower ) . '</li></ul>';
+		}
+
+		private function get_taxonomy_label($taxonomy)
+		{
+			return trim(str_replace('Media', '', $taxonomy->label)); //strip "Media" from the label if it exists
 		}
 
 		/**
@@ -185,12 +195,12 @@ if (! class_exists('FooGallery_Pro_Media_Folders')) {
 			}
 
 			if (! taxonomy_exists(FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY)) {
-				wp_send_json_error(array('message' => __('Folders are unavailable.', 'foogallery')), 400);
+				wp_send_json_error(array('message' => __('Taxonomy is unavailable.', 'foogallery')), 400);
 			}
 
 			$taxonomy = get_taxonomy(FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY);
 			if (! $taxonomy) {
-				wp_send_json_error(array('message' => __('Folders are unavailable.', 'foogallery')), 400);
+				wp_send_json_error(array('message' => __('Taxonomy is unavailable.', 'foogallery')), 400);
 			}
 
 			$term_id = isset($_POST['term_id']) ? absint($_POST['term_id']) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
@@ -199,11 +209,11 @@ if (! class_exists('FooGallery_Pro_Media_Folders')) {
 			$source_term_id = isset($_POST['source_term_id']) ? absint($_POST['source_term_id']) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 			if ($term_id < 0 || empty($ids)) {
-				wp_send_json_error(array('message' => __('Invalid folder or attachments.', 'foogallery')), 400);
+				wp_send_json_error(array('message' => __('Invalid term or attachments.', 'foogallery')), 400);
 			}
 
 			if (! current_user_can($taxonomy->cap->assign_terms)) {
-				wp_send_json_error(array('message' => __('You cannot assign folders.', 'foogallery')), 403);
+				wp_send_json_error(array('message' => __('You cannot assign terms.', 'foogallery')), 403);
 			}
 
 			// term_id 0 means unassign all folder terms.
@@ -225,7 +235,7 @@ if (! class_exists('FooGallery_Pro_Media_Folders')) {
 
 			$term = get_term($term_id, FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY);
 			if (! $term || is_wp_error($term)) {
-				wp_send_json_error(array('message' => __('Invalid folder or attachments.', 'foogallery')), 400);
+				wp_send_json_error(array('message' => __('Invalid term or attachments.', 'foogallery')), 400);
 			}
 
 			$updated = 0;
@@ -249,16 +259,16 @@ if (! class_exists('FooGallery_Pro_Media_Folders')) {
 			}
 
 			if (! taxonomy_exists(FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY)) {
-				wp_send_json_error(array('message' => __('Folders are unavailable.', 'foogallery')), 400);
+				wp_send_json_error(array('message' => __('Taxonomy is unavailable.', 'foogallery')), 400);
 			}
 
 			$taxonomy = get_taxonomy(FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY);
 			if (! $taxonomy) {
-				wp_send_json_error(array('message' => __('Folders are unavailable.', 'foogallery')), 400);
+				wp_send_json_error(array('message' => __('Taxonomy is unavailable.', 'foogallery')), 400);
 			}
 
 			if (! current_user_can($taxonomy->cap->assign_terms)) {
-				wp_send_json_error(array('message' => __('You cannot reorder folders.', 'foogallery')), 403);
+				wp_send_json_error(array('message' => __('You cannot reorder terms.', 'foogallery')), 403);
 			}
 
 			$parent_id   = isset($_POST['parent_id']) ? absint($_POST['parent_id']) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing

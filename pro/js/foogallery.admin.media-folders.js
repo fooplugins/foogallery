@@ -9,30 +9,32 @@
 
 	settings.terms = settings.terms || [];
 	settings.strings = $.extend({
-		foldersHeading: 'Folders',
-		allFolders: 'All Folders',
+		foldersHeading: 'Categories',
+		allFolders: 'All Categories',
 		unassignLabel: 'Unassign',
 		unassigning: 'Unassigning...',
 		assigning: 'Assigning...',
-		assignmentSuccess: 'Folder assignment saved.',
-		assignmentFailure: 'Could not update folder. Please try again.',
-		dragToFolder: 'Drag selected items to a folder to assign it.',
+		assignmentFailure: 'Could not update category. Please try again.',
+		dragToFolder: 'Drag selected items to a category to assign it.',
 		helpHtml: '',
-		toggleHelp: 'Toggle folder help',
-		moving: 'Moving folder...',
-		movingDone: 'Folder moved.',
-		movingFail: 'Could not move folder.',
+		toggleHelp: 'Toggle category help',
+		moving: 'Moving category...',
+		movingDone: 'Category moved.',
+		movingFail: 'Could not move category.',
 		reordering: 'Reordering...',
-		reordered: 'Folder reordered.',
-		reorderFail: 'Could not reorder folder.',
-		nameRequired: 'A folder name is required.',
+		reordered: 'Category reordered.',
+		reorderFail: 'Could not reorder category.',
+		namePlaceholder: 'New category name',
+		newSave: 'Save',
+		newCancel: 'Cancel',
+		nameRequired: 'A category name is required.',
 		saving: 'Saving...',
-		created: 'Folder created.',
-		createFail: 'Could not create folder.',
+		created: 'Category created.',
+		createFail: 'Could not create category.',
 		deleting: 'Deleting...',
-		deleted: 'Folder deleted.',
-		deleteFail: 'Could not delete folder.',
-		deleteConfirm: 'Delete this folder and its children?',
+		deleted: 'Category deleted.',
+		deleteFail: 'Could not delete category.',
+		deleteConfirm: 'Delete this category and its children?',
 	}, settings.strings || {});
 
 	var MediaFolders = {
@@ -325,10 +327,10 @@
 		renderNewFolderRow: function () {
 			var $node = $('<li class="foogallery-folder-node foogallery-folder-node-new" />');
 			var $row = $('<div class="foogallery-folder-row" />');
-			var $input = $('<input type="text" class="foogallery-folder-new-input" placeholder="New folder name" />');
+			var $input = $('<input type="text" class="foogallery-folder-new-input" placeholder="' + settings.strings.namePlaceholder + '" />');
 			var $actions = $('<span class="foogallery-folder-actions" />');
-			var $save = $('<button type="button" class="foogallery-folder-new-save" aria-label="Save new folder"><span class="dashicons dashicons-yes" aria-hidden="true"></span></button>');
-			var $cancel = $('<button type="button" class="foogallery-folder-new-cancel" aria-label="Cancel add folder"><span class="dashicons dashicons-no" aria-hidden="true"></span></button>');
+			var $save = $('<button type="button" class="foogallery-folder-new-save" aria-label="' + settings.strings.newSave + '"><span class="dashicons dashicons-yes" aria-hidden="true"></span></button>');
+			var $cancel = $('<button type="button" class="foogallery-folder-new-cancel" aria-label="' + settings.strings.newCancel + '"><span class="dashicons dashicons-no" aria-hidden="true"></span></button>');
 			$actions.append($save, $cancel);
 			$row.append($input).append($actions);
 			$node.append($row);
