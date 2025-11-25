@@ -173,7 +173,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Lightroom' ) ) {
             }
 
             $wplr_url = 'https://fooplugins.com/refer/wp-lr-sync/';
-            $wplr_link = '<a href="' . $wplr_url . '" target="_blank">' . __('WP/LR Sync', 'foogallery') . '</a>';
+            $wplr_link = '<a href="' . esc_url( $wplr_url ) . '" target="_blank">' . esc_html__( 'WP/LR Sync', 'foogallery' ) . '</a>';
 
 			?>
 			<style>
@@ -244,7 +244,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Lightroom' ) ) {
 
                         var data = 'action=foogallery_datasource_lightroom_select' +
                             '&collectionId=' + encodeURIComponent(collectionId) +
-                            '&nonce=<?php echo wp_create_nonce( 'foogallery_datasource_lightroom_select' ); ?>';
+                            '&nonce=<?php echo esc_js( wp_create_nonce( 'foogallery_datasource_lightroom_select' ) ); ?>';
 
                         $.ajax({
                             type: "POST",
@@ -259,8 +259,8 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Lightroom' ) ) {
 				});
 			</script>
 			<?php if ( class_exists( 'Meow_WPLR_Sync_API' ) ) {?>
-				<p><?php _e('Select a lightroom collection from the list below. The gallery will then dynamically load all images that are inside the selected collection.', 'foogallery'); ?></p>
-				<p><?php _e('Selected Collection : ', 'foogallery'); ?><span class="foogallery-datasource-lightroom-selected"><?php echo empty($collection) ? __('nothing yet', 'foogallery') : $collection; ?></span></p>
+				<p><?php esc_html_e( 'Select a lightroom collection from the list below. The gallery will then dynamically load all images that are inside the selected collection.', 'foogallery' ); ?></p>
+				<p><?php esc_html_e( 'Selected Collection : ', 'foogallery' ); ?><span class="foogallery-datasource-lightroom-selected"><?php echo empty( $collection ) ? esc_html__( 'nothing yet', 'foogallery' ) : esc_html( $collection ); ?></span></p>
 				<div class="foogallery-datasource-lightroom-list">
 					<?php
 						global $wplr;
@@ -309,10 +309,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Lightroom' ) ) {
 					<div class="foogallery-datasource-lightroom-collection-info"></div>
 				</div>
 			<?php } else { ?>
-				<h3><?php esc_html_e('* This uses a 3rd Party Plugin by another company.', 'foogallery'); ?></h3>
-				<p><?php echo sprintf( __('You need to purchase the %s plugin in order to sync your Adobe Lightroom collections with your WordPress Media Library.','foogallery'), $wplr_link ); ?></p>
-				<p><?php echo __('WP/LR Sync is a Lightroom Publishing Service for WordPress. It exports your photos to WordPress, the folders and collections from Adobe Lightroom and keeps it all synchronized.', 'foogallery'); ?></p>
-				<a href="<?php echo $wplr_url; ?>" target="_blank"><img src="https://store.meowapps.com/wp-content/uploads/2017/03/meow-apps.png" width="500" /></a>
+				<h3><?php esc_html_e( '* This uses a 3rd Party Plugin by another company.', 'foogallery' ); ?></h3>
+				<p><?php echo wp_kses_post( sprintf( __( 'You need to purchase the %s plugin in order to sync your Adobe Lightroom collections with your WordPress Media Library.', 'foogallery' ), wp_kses_post( $wplr_link ) ) ); ?></p>
+				<p><?php esc_html_e( 'WP/LR Sync is a Lightroom Publishing Service for WordPress. It exports your photos to WordPress, the folders and collections from Adobe Lightroom and keeps it all synchronized.', 'foogallery' ); ?></p>
+				<a href="<?php echo esc_url( $wplr_url ); ?>" target="_blank"><img src="https://store.meowapps.com/wp-content/uploads/2017/03/meow-apps.png" width="500" alt="" /></a>
 			<?php } ?>
             <?php
 		}
@@ -325,7 +325,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Lightroom' ) ) {
 						echo '<li><a href="#" data-collection="' . esc_attr( $item['name'] ) . '" data-collection-id="' . esc_attr( $item['id'] ) . '"><i class="dashicons dashicons-images-alt2"></i>' . esc_html( $item['name'] ) . '</a></li>';
 					} elseif ( $item['type'] === 'folder' ) {
 						echo '<li><i class="dashicons dashicons-category"></i>';
-						echo $item['name'];
+						echo esc_html( $item['name'] );
 						if ( array_key_exists( 'children', $item ) ) {
 							$children = $item['children'];
 							$this->output_lightroom_hierarchy( $children );
@@ -343,7 +343,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Lightroom' ) ) {
 				global $wplr;
 				$collection = $wplr->get_collection( $collectionId );
 				$media = $wplr->get_media_from_collection( $collectionId );
-				echo sprintf( __('%s contains %d images.', 'foogallery'), $collection->name, count( $media ) );
+				echo sprintf( esc_html__( '%s contains %d images.', 'foogallery' ), esc_html( $collection->name ), count( $media ) );
 			}
 
 			die();
@@ -382,10 +382,10 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Lightroom' ) ) {
                         $(this).parents('.foogallery-datasource-lightroom').hide();
 
                         //clear the datasource value
-                        $('#<?php echo FOOGALLERY_META_DATASOURCE_VALUE; ?>').val('');
+                        $('#<?php echo esc_js( FOOGALLERY_META_DATASOURCE_VALUE ); ?>').val('');
 
                         //clear the datasource
-                        $('#<?php echo FOOGALLERY_META_DATASOURCE; ?>').val('');
+                        $('#<?php echo esc_js( FOOGALLERY_META_DATASOURCE ); ?>').val('');
 
                         //make sure the modal insert button is not active
                         $('.foogallery-datasource-modal-insert').attr('disabled','disabled');
@@ -419,7 +419,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Lightroom' ) ) {
 
 						$('#_foogallery_datasource_value').val(JSON.stringify(document.foogallery_datasource_value_temp));
 
-						$container.find('.foogallery-items-html').html(document.foogallery_datasource_value_temp.collection);
+						$container.find('.foogallery-items-html').text(document.foogallery_datasource_value_temp.collection);
 
 						$container.show();
 
@@ -435,16 +435,16 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Lightroom' ) ) {
 			$show_container = isset( $gallery->datasource_name) && 'lightroom' === $gallery->datasource_name;
 			$value = ($show_container && isset( $gallery->datasource_value['collection'] )) ? $gallery->datasource_value['collection'] : '';
 			?>
-			<div <?php echo $show_container ? '' : 'style="display:none" '; ?>class="foogallery-datasource-lightroom">
-				<h3><?php _e('Datasource : Lightroom Collection', 'foogallery'); ?></h3>
-				<p><?php _e('This gallery will be dynamically populated with all images within the following collection in Adobe Lightroom:', 'foogallery'); ?></p>
-				<div class="foogallery-items-html"><?php echo $value ?></div>
+			<div class="foogallery-datasource-lightroom" <?php echo $show_container ? '' : 'style="display:none"'; ?>>
+				<h3><?php esc_html_e( 'Datasource : Lightroom Collection', 'foogallery' ); ?></h3>
+				<p><?php esc_html_e( 'This gallery will be dynamically populated with all images within the following collection in Adobe Lightroom:', 'foogallery' ); ?></p>
+				<div class="foogallery-items-html"><?php echo esc_html( $value ); ?></div>
 				<br />
 				<button type="button" class="button edit">
-					<?php _e( 'Change Collection', 'foogallery' ); ?>
+					<?php esc_html_e( 'Change Collection', 'foogallery' ); ?>
 				</button>
 				<button type="button" class="button remove">
-					<?php _e( 'Remove Collection', 'foogallery' ); ?>
+					<?php esc_html_e( 'Remove Collection', 'foogallery' ); ?>
 				</button>
 			</div><?php
 		}

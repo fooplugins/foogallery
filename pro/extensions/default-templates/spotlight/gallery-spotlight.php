@@ -18,17 +18,17 @@ $dots_position = foogallery_gallery_template_setting( 'dots_position', '' );
 $link = foogallery_gallery_template_setting( 'thumbnail_link', 'image' );
 $classes = foogallery_build_class_attribute_safe( $current_foogallery, 'foogallery-link-' . $link, 'foogallery-lightbox-' . $lightbox, $alignment, $dots_position, 'fg-image-viewer fg-spotlight fg-overlay-controls' );
 $attributes = foogallery_build_container_attributes_safe( $current_foogallery, array( 'class' => $classes ) );
-?><div <?php echo $attributes; ?>>
+?><div <?php echo $attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- generated via foogallery_build_container_attributes_safe() ?>>
 	<div class="fiv-inner">
 		<div class="fiv-inner-container">
 			<?php foreach ( foogallery_current_gallery_attachments_for_rendering() as $attachment ) {
-				echo foogallery_attachment_html( $attachment );
+				echo foogallery_attachment_html( $attachment ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- function returns pre-escaped HTML
 			} ?>
 		</div>
 		<div class="fiv-ctrls">
-			<div class="fiv-prev"><?php echo $prev_arrow; ?></div>
-			<div class="fiv-next"><?php echo $next_arrow; ?></div>
-			<nav id="<?php echo $current_foogallery->container_id() . '_paging-bottom'; ?>" class="fg-paging-container fg-ph-dots"></nav>
+			<div class="fiv-prev"><?php echo $prev_arrow; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitized SVG ?></div>
+			<div class="fiv-next"><?php echo $next_arrow; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitized SVG ?></div>
+			<nav id="<?php echo esc_attr( $current_foogallery->container_id() . '_paging-bottom' ); ?>" class="fg-paging-container fg-ph-dots"></nav>
 		</div>
 	</div>
 </div>

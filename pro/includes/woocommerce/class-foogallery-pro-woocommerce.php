@@ -1587,7 +1587,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
         public function attachment_modal_display_tab() { ?>
             <div class="foogallery-img-modal-tab-wrapper" data-tab_id="foogallery-panel-commerce">
                 <input type="radio" name="tabset" id="foogallery-tab-commerce" aria-controls="foogallery-panel-commerce">
-                <label for="foogallery-tab-commerce"><?php _e('Ecommerce', 'foogallery'); ?></label>
+                <label for="foogallery-tab-commerce"><?php esc_html_e('Ecommerce', 'foogallery'); ?></label>
             </div>
         <?php }
 
@@ -1626,14 +1626,14 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
                                 <?php esc_html_e( 'Force a specific ribbon to always show for this image.', 'foogallery' ); ?>
                             </p>
 							<span class="setting has-description" data-setting="ribbon-text">
-								<label for="attachment-details-two-column-ribbon-text" class="name"><?php _e('Ribbon Text', 'foogallery'); ?></label>
+								<label for="attachment-details-two-column-ribbon-text" class="name"><?php esc_html_e('Ribbon Text', 'foogallery'); ?></label>
 								<input type="text" name="foogallery[ribbon-text]" id="attachment-details-two-column-ribbon-text" value="<?php echo esc_attr( $modal_data['foogallery_ribbon_text'] ); ?>">
 							</span>
 							<p class="description">
                                 <?php esc_html_e( 'The ribbon text that will show, if a ribbon is selected above.', 'foogallery' ); ?>
                             </p>
 							<span class="setting has-description" data-setting="product-id">
-								<label for="attachment-details-two-column-product-id" class="name"><?php _e('Product ID', 'foogallery'); ?></label>
+								<label for="attachment-details-two-column-product-id" class="name"><?php esc_html_e('Product ID', 'foogallery'); ?></label>
 								<input type="text" name="foogallery[product-id]" id="attachment-details-two-column-product-id" value="<?php echo esc_attr( $modal_data['foogallery_product'] ); ?>">
 							</span>
 							<p class="description">

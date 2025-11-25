@@ -83,8 +83,7 @@ $show_demos = apply_filters( 'foogallery_admin_help_show_demos', true );
 					var $this = $(this),
 						data = {
 							'action': $this.data( 'action' ),
-							'_wpnonce': $this.data( 'nonce' ),
-							'_wp_http_referer': encodeURIComponent( $( 'input[name="_wp_http_referer"]' ).val() )
+							'_wpnonce': $this.data( 'nonce' )
 						};
 
 					$this.prop('disable', true).addClass("foogallery-admin-help-loading");
