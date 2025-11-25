@@ -521,7 +521,7 @@
 	</div>
 
 	<div class="fgi-splash fgi-import-status">
-		<h2><?php printf( esc_html__( 'Importing %s please wait...', 'foogallery' ), esc_html( $video ) ); ?></h2>
+		<h2><?php printf( esc_html__( 'Importing %s please wait...', 'foogallery' ), $video ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $video contains JavaScript template syntax ?></h2>
 		<div class="fgi-import-progress">
 			<div class="fgi-import-progress-value"></div>
 			<div class="fgi-import-progress-text"></div>
@@ -551,16 +551,21 @@
 	$try_again_failed = sprintf( '<a href="#try-again-failed">%s</a>', sprintf( esc_html__( 'try importing %s again', 'foogallery' ), $video_try_again ) );
 	$toggle_failed_title = esc_html__( 'Toggle failed list', 'foogallery' );
 	$toggle_failed_message = sprintf( esc_html__( 'failed to import. Would you like to %s?', 'foogallery' ), wp_kses_post( $try_again_failed ) );
+	$toggle_failed = sprintf( '<span title="%s">{{failed}} %s</span>', esc_attr( $toggle_failed_title ), $toggle_failed_message ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $toggle_failed_message already escaped via wp_kses_post()
 	$video_cancelled_1 = esc_html__( 'it', 'foogallery' );
 	$videos_cancelled_1 = esc_html__( 'them', 'foogallery' );
 	$import_cancelled = sprintf( '<a href="#import-cancelled">%s</a>', sprintf( esc_html__( 'import %s', 'foogallery' ), $video_cancelled_1 ) );
 	$toggle_cancelled_title = esc_html__( 'Toggle cancelled list', 'foogallery' );
 	$toggle_cancelled_message = sprintf( esc_html__( 'were cancelled. Would you like to %s?', 'foogallery' ), wp_kses_post( $import_cancelled ) );
+	$toggle_cancelled = sprintf( '<span title="%s">{{cancelled}} %s</span>', esc_attr( $toggle_cancelled_title ), $toggle_cancelled_message ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $toggle_cancelled_message already escaped via wp_kses_post()
 ?>
 	<div class="fgi-splash fgi-import-notification">
 
 		<# if (data.imported.length){ var imported = data.imported.length; #>
-			<h2><?php printf( esc_html__( 'Successfully imported %1$s %2$s', 'foogallery' ), '{{imported}}', esc_html( $video_imported ) ); ?></h2>
+			<h2><?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $video_imported contains JavaScript template syntax {{...}} that cannot be escaped
+			printf( esc_html__( 'Successfully imported %1$s %2$s', 'foogallery' ), '{{imported}}', $video_imported );
+			?></h2>
 			<# if (imported !== 1){ #>
 				<p><?php printf( esc_html__( 'All imported videos have been added to the current %s selection.', 'foogallery' ), wp_kses_post( $media_library ) ); ?></p>
 			<# } else { #>
