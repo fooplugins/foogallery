@@ -732,8 +732,8 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
 
 				foreach ( $gallery->video_embeds as $embed ) {
 					?>
-					<div id="<?php echo $embed['id']; ?>" data-provider="<?php echo $embed['provider']; ?>">
-						<?php echo $embed['html']; ?>
+					<div id="<?php echo esc_attr( $embed['id'] ); ?>" data-provider="<?php echo esc_attr( $embed['provider'] ); ?>">
+						<?php echo $embed['html']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Trusted video embed HTML from provider ?>
 					</div>
 					<?php
 				}
@@ -774,7 +774,7 @@ if ( ! class_exists( 'FooGallery_Pro_Video' ) ) {
         public function attachment_modal_display_tab() { ?>
             <div class="foogallery-img-modal-tab-wrapper" data-tab_id="foogallery-panel-video">
                 <input type="radio" name="tabset" id="foogallery-tab-video" aria-controls="foogallery-panel-video">
-                <label for="foogallery-tab-video"><?php _e('Video', 'foogallery'); ?></label>
+                <label for="foogallery-tab-video"><?php esc_html_e('Video', 'foogallery'); ?></label>
             </div>
         <?php }
 

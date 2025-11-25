@@ -30,13 +30,9 @@ if ( ! class_exists( 'FooGallery_Pro_Demos' ) ) {
 			$nonce  = wp_create_nonce( 'foogallery_dismiss_gallery_notice' );
 			$markup = wpautop( wp_kses_post( $notice ) );
 
-			printf(
-				'<div class="%1$s" data-post-id="%2$d" data-nonce="%3$s">%4$s</div>',
-				esc_attr( 'notice notice-info is-dismissible foogallery-gallery-notice' ),
-				absint( $post->ID ),
-				esc_attr( $nonce ),
-				$markup
-			);
+			echo '<div class="' . esc_attr( 'notice notice-info is-dismissible foogallery-gallery-notice' ) . '" data-post-id="' . absint( $post->ID ) . '" data-nonce="' . esc_attr( $nonce ) . '">';
+			echo $markup; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- already sanitized above
+			echo '</div>';
 		}
 
 		/**
@@ -107,26 +103,30 @@ JS;
 		function create_pro_demo_galleries() {
 			// Check if user has permission
 			if ( ! current_user_can( 'manage_options' ) ) {
-				wp_die( __( 'You do not have sufficient permissions to access this page.', 'foogallery' ) );
+				wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'foogallery' ) );
 			}
 
 			// Check nonce
-			if ( ! check_admin_referer( 'foogallery_admin_import_pro_demos' ) ) {
-				wp_die( __( 'Security check failed.', 'foogallery' ) );
+			if ( ! check_ajax_referer( 'foogallery_admin_import_pro_demos' ) ) {
+				wp_die( esc_html__( 'Security check failed.', 'foogallery' ) );
 			}
 
 			// Check if PRO is active
 			if ( ! foogallery_is_pro() ) {
-				echo __( 'PRO features are not available. Please upgrade to PRO to create demo galleries.', 'foogallery' );
+				esc_html_e( 'PRO features are not available. Please upgrade to PRO to create demo galleries.', 'foogallery' );
 				die();
 			}
 
 			$results = $this->create_pro_demo_content();
 
 			if ( $results === false ) {
-				echo __( 'There was a problem creating the PRO demo galleries!', 'foogallery' );
+				esc_html_e( 'There was a problem creating the PRO demo galleries!', 'foogallery' );
 			} else {
-				echo sprintf( __( '%d sample images imported, and %d PRO demo galleries created!', 'foogallery' ), $results['attachments'], $results['galleries'] );
+				printf(
+					esc_html__( '%1$d sample images imported, and %2$d PRO demo galleries created!', 'foogallery' ),
+					absint( $results['attachments'] ),
+					absint( $results['galleries'] )
+				);
 			}
 			die();
 		}
