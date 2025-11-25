@@ -1,7 +1,7 @@
 <script type="text/html" id="tmpl-fg-importer">
 	<?php
-	$nonce = wp_create_nonce('fgi_nonce');
-	echo "<input type=\"hidden\" class=\"fgi_nonce\" value=\"{$nonce}\"/>";
+	$nonce = wp_create_nonce( 'fgi_nonce' );
+	printf( '<input type="hidden" class="fgi_nonce" value="%s"/>', esc_attr( $nonce ) );
 	?>
 
 	<div class="fgi-region-query"></div>
@@ -15,7 +15,7 @@
 		<h2>{{data.title}}</h2>
 		<p>{{data.message}}</p>
 		<div class="button-hero-container">
-			<button type="button" class="button button-hero fgi-ok"><?php _e("OK", "foogallery") ?></button>
+			<button type="button" class="button button-hero fgi-ok"><?php esc_html_e( 'OK', 'foogallery' ); ?></button>
 		</div>
 	</div>
 
@@ -170,29 +170,29 @@
 <script type="text/html" id="tmpl-fgi-getting-started">
 
 <?php
-	$help = sprintf('<a href="#toggle-help">%s</a>', __("help", "foogallery"));
+	$help = sprintf( '<a href="#toggle-help">%s</a>', esc_html__( 'help', 'foogallery' ) );
 ?>
 
 	<div class="fgi-splash fgi-getting-started-instructions">
-		<h2><?php _e("Enter a supported URL or a YouTube search term, playlist or video ID in the input above.", "foogallery") ?></h2>
-		<p><?php _e("or", "foogallery") ?></p>
+		<h2><?php esc_html_e( 'Enter a supported URL or a YouTube search term, playlist or video ID in the input above.', 'foogallery' ); ?></h2>
+		<p><?php esc_html_e( 'or', 'foogallery' ); ?></p>
 		<button type="button" class="button button-hero fgi-select"
-						data-options='{"type": "video/mp4,video/ogg,video/ogv,video/webm", "title":"<?php _e("Select a video", "foogallery") ?>", "button":"<?php _e("Select Video", "foogallery") ?>"}'>
-			<?php _e("Choose a video from your Media Library", "foogallery") ?>
+						data-options='{"type": "video/mp4,video/ogg,video/ogv,video/webm", "title":"<?php echo esc_attr__( 'Select a video', 'foogallery' ); ?>", "button":"<?php echo esc_attr__( 'Select Video', 'foogallery' ); ?>"}'>
+			<?php esc_html_e( 'Choose a video from your Media Library', 'foogallery' ); ?>
 		</button>
-		<p><small><?php printf(__("See the %s for more information.", "foogallery"), $help) ?></small></p>
+		<p><small><?php printf( esc_html__( 'See the %s for more information.', 'foogallery' ), wp_kses_post( $help ) ); ?></small></p>
 	</div>
 
 </script>
 <script type="text/html" id="tmpl-fgi-query">
 
 	<div class="fgi-query-left">
-		<input type="text" class="fgi-query-input" placeholder="<?php _e("Enter a supported URL or a YouTube search term, playlist or video ID", "foogallery") ?>" spellcheck="false"/>
+		<input type="text" class="fgi-query-input" placeholder="<?php echo esc_attr__( 'Enter a supported URL or a YouTube search term, playlist or video ID', 'foogallery' ); ?>" spellcheck="false"/>
 		<span class="fgi-query-input-spinner"></span>
 	</div>
 
 	<div class="fgi-query-right">
-		<a href="#toggle-help"><?php _e("Help", "foogallery") ?></a>
+		<a href="#toggle-help"><?php esc_html_e( 'Help', 'foogallery' ); ?></a>
 	</div>
 
 </script>
@@ -205,45 +205,45 @@
 ?>
 
 	<div class="fgi-self-hosted-notification">
-		<p><?php _e("Enter the details for your video below and then click the Import button.", "foogallery") ?></p>
+		<p><?php esc_html_e( 'Enter the details for your video below and then click the Import button.', 'foogallery' ); ?></p>
 	</div>
 	<div class="fgi-self-hosted-details">
 		<div class="fgi-form">
 			<input type="hidden" name="id" value="{{data.id}}"/>
 			<input type="hidden" name="provider" value="{{data.mode}}"/>
 			<label class="fgi-row">
-				<span class="fgi-col-label"><?php _e("Thumbnail", "foogallery") ?> *</span>
+				<span class="fgi-col-label"><?php esc_html_e( 'Thumbnail', 'foogallery' ); ?> *</span>
 				<span class="fgi-col-input">
 					<span class="fgi-browse">
 						<span class="fgi-browse-inner">
 							<span class="fgi-browse-col-input">
 								<input type="text" name="thumbnail" value="{{data.thumbnail}}" spellcheck="false"
-											 data-messages='{"required":"<?php _e("You must supply a thumbnail for the video.", "foogallery") ?>","pattern":"<?php _e("Please enter a .jpg, .jpeg, .png or .gif file.", "foogallery") ?>"}'
+											 data-messages='{"required":"<?php echo esc_attr__( 'You must supply a thumbnail for the video.', 'foogallery' ); ?>","pattern":"<?php echo esc_attr__( 'Please enter a .jpg, .jpeg, .png or .gif file.', 'foogallery' ); ?>"}'
 											 data-pattern="(?:\/|=)(?<name>[^\/]+?)\.(?<ext>jpg|jpeg|png|gif)(?:$|\?|&|#|,)" data-required="true"/>
 							</span>
 							<span class="fgi-browse-col-button">
 								<button type="button" class="button button-secondary"
-												data-options='{"type": "image/png,image/jpg,image/jpeg,image/gif", "title":"<?php _e("Select a thumbnail for the video", "foogallery") ?>", "button":"<?php _e("Select Image", "foogallery") ?>"}'
-								><?php _e("Select", "foogallery") ?></button>
+												data-options='{"type": "image/png,image/jpg,image/jpeg,image/gif", "title":"<?php echo esc_attr__( 'Select a thumbnail for the video', 'foogallery' ); ?>", "button":"<?php echo esc_attr__( 'Select Image', 'foogallery' ); ?>"}'
+								><?php esc_html_e( 'Select', 'foogallery' ); ?></button>
 							</span>
 						</span>
 					</span>
 				</span>
 			</label>
 			<label class="fgi-row">
-				<span class="fgi-col-label"><?php _e("Title", "foogallery") ?></span>
+				<span class="fgi-col-label"><?php esc_html_e( 'Title', 'foogallery' ); ?></span>
 				<span class="fgi-col-input">
 					<input type="text" name="title" value="{{data.title}}"/>
 				</span>
 			</label>
 			<label class="fgi-row">
-				<span class="fgi-col-label"><?php _e("Description", "foogallery") ?></span>
+				<span class="fgi-col-label"><?php esc_html_e( 'Description', 'foogallery' ); ?></span>
 				<span class="fgi-col-input">
 					<textarea name="description" rows="5">{{data.description}}</textarea>
 				</span>
 			</label>
 			<label class="fgi-row">
-				<span class="fgi-col-label"><?php _e("URL(s)", "foogallery") ?> *</span>
+				<span class="fgi-col-label"><?php esc_html_e( 'URL(s)', 'foogallery' ); ?> *</span>
 				<span class="fgi-col-input">
 					<# var first = true; _(data.urls).each(function(url, name){ var type = data.types[name]; #>
 						<span class="fgi-browse">
@@ -254,31 +254,31 @@
 								<span class="fgi-browse-col-input">
 									<# if (first){ first = false; #>
 									<input type="text" name="urls[{{name}}]" value="{{url}}" spellcheck="false" data-type="{{name}}"
-												 data-messages='{"required":"<?php _e("You must supply at least one URL.", "foogallery") ?>","pattern":"<?php printf(__("Please enter a %s file.", "foogallery"), "{{type.text}}") ?>"}'
+												 data-messages='{"required":"<?php echo esc_attr__( 'You must supply at least one URL.', 'foogallery' ); ?>","pattern":"<?php printf( esc_attr__( 'Please enter a %s file.', 'foogallery' ), "{{type.text}}" ); ?>"}'
 												 data-pattern="(?:\/|=)(?<name>[^\/]+?)\.(?<ext>{{type.pattern}})(?:$|\?|&|#|,)" data-required="[name^='urls[']"/>
 									<# } else { #>
 									<input type="text" name="urls[{{name}}]" value="{{url}}" spellcheck="false" data-type="{{name}}"
-												 data-messages='{"pattern":"<?php printf(__("Please enter a %s file.", "foogallery"), "{{type.text}}") ?>"}'
+												 data-messages='{"pattern":"<?php printf( esc_attr__( 'Please enter a %s file.', 'foogallery' ), "{{type.text}}" ); ?>"}'
 												 data-pattern="(?:\/|=)(?<name>[^\/]+?)\.(?<ext>{{type.pattern}})(?:$|\?|&|#|,)"/>
 									<# } #>
 								</span>
 								<span class="fgi-browse-col-button">
 									<button type="button" class="button button-secondary"
-													data-options='{"type": {{type.mime}}, "title":"<?php printf(__("Select a %s video", "foogallery"), "{{type.text}}") ?>", "button":"<?php _e("Select Video", "foogallery") ?>"}'
-									><?php _e("Select", "foogallery") ?></button>
+													data-options='{"type": {{type.mime}}, "title":"<?php printf( esc_attr__( 'Select a %s video', 'foogallery' ), "{{type.text}}" ); ?>", "button":"<?php echo esc_attr__( 'Select Video', 'foogallery' ); ?>"}'
+									><?php esc_html_e( 'Select', 'foogallery' ); ?></button>
 								</span>
 							</span>
 						</span>
 					<# }) #>
 					<span class="fgi-input-description">
-						<?php _e("We recommend using .mp4 videos for the best cross browser compatibility however the more types you supply the better the compatibility becomes. If you already have the URL you can simply paste it into the appropriate input.", "foogallery") ?>
+						<?php esc_html_e( 'We recommend using .mp4 videos for the best cross browser compatibility however the more types you supply the better the compatibility becomes. If you already have the URL you can simply paste it into the appropriate input.', 'foogallery' ); ?>
 					</span>
 					<span class="fgi-input-description">
-						<?php _e("As you enter URLs above the below compatibility list will be updated giving you an idea of which browsers will be able to play your video.", "foogallery") ?>
+						<?php esc_html_e( 'As you enter URLs above the below compatibility list will be updated giving you an idea of which browsers will be able to play your video.', 'foogallery' ); ?>
 					</span>
 					<span class="fgi-video-compatibility"></span>
 					<span class="fgi-input-description">
-						<?php printf(__("For more information on compatibility please see the following links: %s, %s and %s", "foogallery"), $mp4, $webm, $ogg) ?>
+						<?php printf( esc_html__( 'For more information on compatibility please see the following links: %s, %s and %s', 'foogallery' ), wp_kses_post( $mp4 ), wp_kses_post( $webm ), wp_kses_post( $ogg ) ); ?>
 					</span>
 				</span>
 			</label>
@@ -311,9 +311,9 @@
 <script type="text/html" id="tmpl-fgi-query-result-notification">
 
 	<# if (data.total === 1){ #>
-		<p><?php _e("Confirm the video is correct and then click the Import button.", "foogallery") ?></p>
+		<p><?php esc_html_e( "Confirm the video is correct and then click the Import button.", "foogallery" ); ?></p>
 	<# } else { #>
-		<p><?php _e("Select the videos to import by clicking the thumbnails and then click the Import button.", "foogallery") ?></p>
+		<p><?php esc_html_e( "Select the videos to import by clicking the thumbnails and then click the Import button.", "foogallery" ); ?></p>
 	<# } #>
 
 </script>
@@ -340,18 +340,18 @@
 
 <?php
 	$offset = '<span class="fgi-query-result-offset">{{data.offset}}</span>';
-	$total = '<span class="fgi-query-result-total">{{data.total}}</span>';
-	$load_more = sprintf('<a href="#load-more">%s</a>', __("load more", "foogallery"));
-	$try_again = sprintf('<a href="#try-again">%s</a>', __("try again", "foogallery"));
+	$total  = '<span class="fgi-query-result-total">{{data.total}}</span>';
+	$load_more = sprintf( '<a href="#load-more">%s</a>', esc_html__( 'load more', 'foogallery' ) );
+	$try_again = sprintf( '<a href="#try-again">%s</a>', esc_html__( 'try again', 'foogallery' ) );
 ?>
 
 	<p>
-		<?php printf(__("Displaying %s of %s results.", "foogallery"), $offset, $total) ?>
+		<?php printf( wp_kses_post( __( 'Displaying %1$s of %2$s results.', 'foogallery' ) ), wp_kses_post( $offset ), wp_kses_post( $total ) ); ?>
 		<# if (data.total !== 1 && data.nextPage !== 0){ #>
 			<span class="fgi-query-result-paged">
-				<span class="fgi-query-result-loading"><?php _e("Loading...", "foogallery") ?></span>
-				<span class="fgi-query-result-load-more"><?php printf(__("Would you like to %s?", "foogallery"), $load_more) ?></span>
-				<span class="fgi-query-result-try-again"><?php printf(__("An error occurred loading additional results, %s?", "foogallery"), $try_again) ?></span>
+				<span class="fgi-query-result-loading"><?php esc_html_e( 'Loading...', 'foogallery' ); ?></span>
+				<span class="fgi-query-result-load-more"><?php printf( wp_kses_post( __( 'Would you like to %s?', 'foogallery' ) ), wp_kses_post( $load_more ) ); ?></span>
+				<span class="fgi-query-result-try-again"><?php printf( wp_kses_post( __( 'An error occurred loading additional results, %s?', 'foogallery' ) ), wp_kses_post( $try_again ) ); ?></span>
 			</span>
 		<# } #>
 	</p>
@@ -360,105 +360,105 @@
 <script type="text/html" id="tmpl-fgi-album-notification">
 
 <?php
-	$import_album = sprintf('<a href="#import-album">%s</a>', __("import the entire showcase", "foogallery"));
+	$import_album = sprintf( '<a href="#import-album">%s</a>', esc_html__( 'import the entire showcase', 'foogallery' ) );
 ?>
 
 	<# if (data.total === 1){ #>
-		<p><?php _e("Confirm the video is correct and then click the Import button.", "foogallery") ?></p>
+		<p><?php esc_html_e( "Confirm the video is correct and then click the Import button.", "foogallery" ); ?></p>
 	<# } else { #>
-		<p><?php printf(__("Select the videos to import by clicking the thumbnails and then click the Import button, or would you like to %s?", "foogallery"), $import_album) ?></p>
+		<p><?php printf( esc_html__( 'Select the videos to import by clicking the thumbnails and then click the Import button, or would you like to %s?', 'foogallery' ), wp_kses_post( $import_album ) ); ?></p>
 	<# } #>
 
 </script>
 <script type="text/html" id="tmpl-fgi-channel-notification">
 
 <?php
-	$import_channel = sprintf('<a href="#import-channel">%s</a>', __("import the entire channel", "foogallery"));
+	$import_channel = sprintf( '<a href="#import-channel">%s</a>', esc_html__( 'import the entire channel', 'foogallery' ) );
 ?>
 
 	<# if (data.total === 1){ #>
-		<p><?php _e("Confirm the video is correct and then click the Import button.", "foogallery") ?></p>
+		<p><?php esc_html_e( "Confirm the video is correct and then click the Import button.", "foogallery" ); ?></p>
 	<# } else { #>
-		<p><?php printf(__("Select the videos to import by clicking the thumbnails and then click the Import button, or would you like to %s?", "foogallery"), $import_channel) ?></p>
+		<p><?php printf( esc_html__( 'Select the videos to import by clicking the thumbnails and then click the Import button, or would you like to %s?', 'foogallery' ), wp_kses_post( $import_channel ) ); ?></p>
 	<# } #>
 
 </script>
 <script type="text/html" id="tmpl-fgi-playlist-notification">
 
 <?php
-	$import_playlist = sprintf('<a href="#import-playlist">%s</a>', __("import the entire playlist", "foogallery"));
+	$import_playlist = sprintf( '<a href="#import-playlist">%s</a>', esc_html__( 'import the entire playlist', 'foogallery' ) );
 ?>
 
 	<# if (data.total === 1){ #>
-		<p><?php _e("Confirm the video is correct and then click the Import button.", "foogallery") ?></p>
+		<p><?php esc_html_e( "Confirm the video is correct and then click the Import button.", "foogallery" ); ?></p>
 	<# } else { #>
-		<p><?php printf(__("Select the videos to import by clicking the thumbnails and then click the Import button, or would you like to %s?", "foogallery"), $import_playlist) ?></p>
+		<p><?php printf( esc_html__( 'Select the videos to import by clicking the thumbnails and then click the Import button, or would you like to %s?', 'foogallery' ), wp_kses_post( $import_playlist ) ); ?></p>
 	<# } #>
 
 </script>
 <script type="text/html" id="tmpl-fgi-user-notification">
 
 <?php
-	$import_user = sprintf('<a href="#import-user">%s</a>', __("import all videos for the user", "foogallery"));
+	$import_user = sprintf( '<a href="#import-user">%s</a>', esc_html__( 'import all videos for the user', 'foogallery' ) );
 ?>
 
 	<# if (data.total === 1){ #>
-		<p><?php _e("Confirm the video is correct and then click the Import button.", "foogallery") ?></p>
+		<p><?php esc_html_e( "Confirm the video is correct and then click the Import button.", "foogallery" ); ?></p>
 	<# } else { #>
-		<p><?php printf(__("Select the videos to import by clicking the thumbnails and then click the Import button, or would you like to %s?", "foogallery"), $import_user) ?></p>
+		<p><?php printf( esc_html__( 'Select the videos to import by clicking the thumbnails and then click the Import button, or would you like to %s?', 'foogallery' ), wp_kses_post( $import_user ) ); ?></p>
 	<# } #>
 
 </script>
 <script type="text/html" id="tmpl-fgi-oembed">
 
 	<div class="fgi-oembed-notification">
-		<p><?php _e("Enter any missing details for the oEmbed video below and then click the Import button.", "foogallery") ?></p>
+		<p><?php esc_html_e( "Enter any missing details for the oEmbed video below and then click the Import button.", "foogallery" ); ?></p>
 	</div>
 	<div class="fgi-oembed-details">
 		<div class="fgi-form">
 			<input type="hidden" name="id" value="{{data.id}}"/>
 			<label class="fgi-row">
-				<span class="fgi-col-label"><?php _e("URL", "foogallery") ?></span>
+				<span class="fgi-col-label"><?php esc_html_e( "URL", "foogallery" ); ?></span>
 				<span class="fgi-col-input">
 					<input type="text" name="url" value="{{data.url}}" readonly="readonly"/>
 				</span>
 			</label>
 			<label class="fgi-row">
-				<span class="fgi-col-label"><?php _e("Provider", "foogallery") ?></span>
+				<span class="fgi-col-label"><?php esc_html_e( "Provider", "foogallery" ); ?></span>
 				<span class="fgi-col-input">
 					<input type="text" name="provider" value="{{data.provider}}" readonly="readonly"/>
 					<span class="fgi-input-description">
-						<?php _e("The oEmbed standards do not specify that a provider must supply a thumbnail, title or description but to display a video within a gallery it must have an image to use as a thumbnail. The inputs below allow you to edit or supply any missing information and then continue with the import.", "foogallery") ?>
+						<?php esc_html_e( "The oEmbed standards do not specify that a provider must supply a thumbnail, title or description but to display a video within a gallery it must have an image to use as a thumbnail. The inputs below allow you to edit or supply any missing information and then continue with the import.", "foogallery" ); ?>
 					</span>
 				</span>
 			</label>
 			<label class="fgi-row">
-				<span class="fgi-col-label"><?php _e("Thumbnail", "foogallery") ?></span>
+				<span class="fgi-col-label"><?php esc_html_e( "Thumbnail", "foogallery" ); ?></span>
 				<span class="fgi-col-input">
 					<span class="fgi-browse">
 						<span class="fgi-browse-inner">
 							<span class="fgi-browse-col-input">
 								<input type="text" name="thumbnail" value="{{data.thumbnail}}" spellcheck="false"
-											 data-messages='{"required":"<?php _e("You must supply a thumbnail for the video.", "foogallery") ?>","pattern":"<?php _e("Please enter a .jpg, .jpeg, .png or .gif file.", "foogallery") ?>"}'
+											 data-messages='{"required":"<?php esc_html_e( "You must supply a thumbnail for the video.", "foogallery" ); ?>","pattern":"<?php esc_html_e( "Please enter a .jpg, .jpeg, .png or .gif file.", "foogallery" ); ?>"}'
 											 data-pattern="(?:\/|=)(?<name>[^\/]+?)\.(?<ext>jpg|jpeg|png|gif)(?:$|\?|&|#|,)" data-required="true"/>
 							</span>
 							<span class="fgi-browse-col-button">
 								<button type="button" class="button button-secondary"
-												data-options='{"type": "image/png,image/jpg,image/jpeg,image/gif", "title":"<?php _e("Select a thumbnail for the video", "foogallery") ?>", "button":"<?php _e("Select Image", "foogallery") ?>"}'
-								><?php _e("Select", "foogallery") ?></button>
+												data-options='{"type": "image/png,image/jpg,image/jpeg,image/gif", "title":"<?php esc_html_e( "Select a thumbnail for the video", "foogallery" ); ?>", "button":"<?php esc_html_e( "Select Image", "foogallery" ); ?>"}'
+								><?php esc_html_e( "Select", "foogallery" ); ?></button>
 							</span>
 						</span>
 					</span>
 				</span>
 			</label>
 			<label class="fgi-row">
-				<span class="fgi-col-label"><?php _e("Title", "foogallery") ?></span>
+				<span class="fgi-col-label"><?php esc_html_e( "Title", "foogallery" ); ?></span>
 				<span class="fgi-col-input">
 					<input type="text" name="title" value="{{data.title}}"/>
 				</span>
 			</label>
 			<label class="fgi-row">
-				<span class="fgi-col-label"><?php _e("Description", "foogallery") ?></span>
+				<span class="fgi-col-label"><?php esc_html_e( "Description", "foogallery" ); ?></span>
 				<span class="fgi-col-input">
 					<textarea name="description" rows="5">{{data.description}}</textarea>
 				</span>
@@ -470,66 +470,66 @@
 <script type="text/html" id="tmpl-fgi-vimeo">
 
 	<?php
-	$help = sprintf('<a href="#toggle-help">%s</a>', __("help", "foogallery"));
+	$help = sprintf( '<a href="#toggle-help">%s</a>', esc_html__( 'help', 'foogallery' ) );
 	?>
 
 	<div class="fgi-splash fgi-vimeo-access-token">
-		<h2><?php _e("Vimeo API access token is required.", "foogallery") ?></h2>
-		<p><?php _e("Create a new app on Vimeo to generate an access token.", "foogallery") ?></p>
+		<h2><?php esc_html_e( "Vimeo API access token is required.", "foogallery" ); ?></h2>
+		<p><?php esc_html_e( "Create a new app on Vimeo to generate an access token.", "foogallery" ); ?></p>
 		<div class="button-hero-container">
-			<input type="text" name="access_token" value="{{data.access_token}}" spellcheck="false" placeholder="<?php _e("Your access token", "foogallery") ?>"/>
-			<button type="button" class="button fgi-save" disabled="disabled"><?php _e("Save", "foogallery") ?></button>
+			<input type="text" name="access_token" value="{{data.access_token}}" spellcheck="false" placeholder="<?php esc_html_e( "Your access token", "foogallery" ); ?>"/>
+			<button type="button" class="button fgi-save" disabled="disabled"><?php esc_html_e( "Save", "foogallery" ); ?></button>
 			<p class="fgi-vimeo-error-message"></p>
 		</div>
-		<p><small><?php printf(__("See the %s for more information.", "foogallery"), $help) ?></small></p>
+		<p><small><?php printf( esc_html__( 'See the %s for more information.', 'foogallery' ), wp_kses_post( $help ) ); ?></small></p>
 	</div>
 
 </script>
 <script type="text/html" id="tmpl-fgi-youtube">
 
 	<?php
-	$help = sprintf('<a href="#toggle-help">%s</a>', __("help", "foogallery"));
-	$developers_console = sprintf('<a href="https://console.developers.google.com/" target="_blank">%s</a>', __("Google Developers Console", "foogallery"));
+	$help = sprintf( '<a href="#toggle-help">%s</a>', esc_html__( 'help', 'foogallery' ) );
+	$developers_console = sprintf( '<a href="https://console.developers.google.com/" target="_blank" rel="noopener">%s</a>', esc_html__( 'Google Developers Console', 'foogallery' ) );
 	?>
 
 	<div class="fgi-splash fgi-youtube-api-key">
-		<h2><?php _e("YouTube API key is required.", "foogallery") ?></h2>
-		<p><?php printf(__("Create a new project in your %s to generate an api key.", "foogallery"), $developers_console) ?></p>
+		<h2><?php esc_html_e( "YouTube API key is required.", "foogallery" ); ?></h2>
+		<p><?php printf( esc_html__( 'Create a new project in your %s to generate an api key.', 'foogallery' ), wp_kses_post( $developers_console ) ); ?></p>
 		<div class="button-hero-container">
-			<input type="text" name="api_key" value="{{data.api_key}}" spellcheck="false" placeholder="<?php _e("Your api key", "foogallery") ?>"/>
-			<button type="button" class="button fgi-save" disabled="disabled"><?php _e("Save", "foogallery") ?></button>
+			<input type="text" name="api_key" value="{{data.api_key}}" spellcheck="false" placeholder="<?php esc_html_e( "Your api key", "foogallery" ); ?>"/>
+			<button type="button" class="button fgi-save" disabled="disabled"><?php esc_html_e( "Save", "foogallery" ); ?></button>
 			<p class="fgi-youtube-error-message"></p>
 		</div>
-		<p><small><?php printf(__("See the %s for more information.", "foogallery"), $help) ?></small></p>
+		<p><small><?php printf( esc_html__( 'See the %s for more information.', 'foogallery' ), wp_kses_post( $help ) ); ?></small></p>
 	</div>
 
 </script>
 <script type="text/html" id="tmpl-fgi-import">
 <?php
-	$single = __("video", "foogallery");
-	$plural = __("videos", "foogallery");
+	$single = esc_html__( 'video', 'foogallery' );
+	$plural = esc_html__( 'videos', 'foogallery' );
 	$video = sprintf("{{data.total > 1 ? \"%s\" : \"%s\"}}", $plural, $single);
 ?>
 	<div class="fgi-splash fgi-import-confirm">
-		<h2><?php _e("Confirm multiple video import", "foogallery") ?></h2>
-		<p><?php _e("Please note that depending on the source of the videos this process may take some time. If you like you can click the No button and change your selection.", "foogallery") ?></p>
-		<p><?php printf(__("Are you sure you want to import %s videos?", "foogallery"), "{{data.total}}") ?></p>
+		<h2><?php esc_html_e( "Confirm multiple video import", "foogallery" ); ?></h2>
+		<p><?php esc_html_e( "Please note that depending on the source of the videos this process may take some time. If you like you can click the No button and change your selection.", "foogallery" ); ?></p>
+		<p><?php printf( esc_html__( 'Are you sure you want to import %s videos?', 'foogallery' ), '{{data.total}}' ); ?></p>
 		<div class="button-hero-container">
-			<button type="button" class="button button-hero fgi-import-back"><?php _e("No - Change Selection", "foogallery") ?></button>
-			<button type="button" class="button button-hero button-primary fgi-import-yes"><?php _e("Yes - Import Videos", "foogallery") ?></button>
+			<button type="button" class="button button-hero fgi-import-back"><?php esc_html_e( "No - Change Selection", "foogallery" ); ?></button>
+			<button type="button" class="button button-hero button-primary fgi-import-yes"><?php esc_html_e( "Yes - Import Videos", "foogallery" ); ?></button>
 		</div>
 	</div>
 
 	<div class="fgi-splash fgi-import-status">
-		<h2><?php printf(__("Importing %s please wait...", "foogallery"), $video) ?></h2>
+		<h2><?php printf( esc_html__( 'Importing %s please wait...', 'foogallery' ), $video ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $video contains JavaScript template syntax ?></h2>
 		<div class="fgi-import-progress">
 			<div class="fgi-import-progress-value"></div>
 			<div class="fgi-import-progress-text"></div>
 		</div>
 		<# if (data.total !== 1){ #>
-			<p><?php _e("Cancelling the import will not remove any videos already imported into your Media Library, it simply stops the process as soon as possible.", "foogallery") ?></p>
+			<p><?php esc_html_e( "Cancelling the import will not remove any videos already imported into your Media Library, it simply stops the process as soon as possible.", "foogallery" ); ?></p>
 			<div class="button-hero-container">
-				<button type="button" class="button button-hero fgi-import-cancel"><?php _e("Cancel", "foogallery") ?></button>
+				<button type="button" class="button button-hero fgi-import-cancel"><?php esc_html_e( "Cancel", "foogallery" ); ?></button>
 			</div>
 		<# } #>
 	</div>
@@ -538,40 +538,45 @@
 <script type="text/html" id="tmpl-fgi-import-result">
 
 <?php
-	$single = __("video", "foogallery");
-	$plural = __("videos", "foogallery");
+	$single = esc_html__( 'video', 'foogallery' );
+	$plural = esc_html__( 'videos', 'foogallery' );
 	$video_imported = sprintf("{{imported > 1 ? \"%s\" : \"%s\"}}", $plural, $single);
 	$video_failed = sprintf("{{failed > 1 ? \"%s\" : \"%s\"}}", $plural, $single);
 	$video_cancelled = sprintf("{{cancelled > 1 ? \"%s\" : \"%s\"}}", $plural, $single);
-	$media_library = sprintf('<a href="#media-library">%s</a>', __("Media Library", "foogallery"));
-	$single_1 = __("this video", "foogallery");
-	$plural_1 = __("these videos", "foogallery");
-	$video_try_again = sprintf("{{failed > 1 ? \"%s\" : \"%s\"}}", $plural_1, $single_1);
-	$try_again_failed = sprintf('<a href="#try-again-failed">%s</a>', sprintf(__("try importing %s again", "foogallery"), $video_try_again));
-	$toggle_failed_title = __("Toggle failed list", "foogallery");
-	$toggle_failed_message = sprintf(__("failed to import. Would you like to %s?", "foogallery"), $try_again_failed);
-	$toggle_failed = sprintf('<a href="#toggle-failed" title="%s">{{failed}} %s</a> %s', $toggle_failed_title, $video_failed, $toggle_failed_message);
-	$video_cancelled_1 = sprintf("{{cancelled > 1 ? \"%s\" : \"%s\"}}", $plural_1, $single_1);
-	$import_cancelled = sprintf('<a href="#import-cancelled">%s</a>', sprintf(__("import %s", "foogallery"), $video_cancelled_1));
-	$toggle_cancelled_title = __("Toggle cancelled list", "foogallery");
-	$toggle_cancelled_message = sprintf(__("were cancelled. Would you like to %s?", "foogallery"), $import_cancelled);
-	$toggle_cancelled = sprintf('<a href="#toggle-cancelled" title="%s">{{cancelled}} %s</a> %s', $toggle_cancelled_title, $video_cancelled, $toggle_cancelled_message);
+	$media_library = sprintf( '<a href="#media-library">%s</a>', esc_html__( 'Media Library', 'foogallery' ) );
+	$single_1 = esc_html__( 'this video', 'foogallery' );
+	$plural_1 = esc_html__( 'these videos', 'foogallery' );
+	$video_try_again = esc_html__( 'it', 'foogallery' );
+	$videos_try_again = esc_html__( 'them', 'foogallery' );
+	$try_again_failed = sprintf( '<a href="#try-again-failed">%s</a>', sprintf( esc_html__( 'try importing %s again', 'foogallery' ), $video_try_again ) );
+	$toggle_failed_title = esc_html__( 'Toggle failed list', 'foogallery' );
+	$toggle_failed_message = sprintf( esc_html__( 'failed to import. Would you like to %s?', 'foogallery' ), wp_kses_post( $try_again_failed ) );
+	$toggle_failed = sprintf( '<span title="%s">{{failed}} %s</span>', esc_attr( $toggle_failed_title ), $toggle_failed_message ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $toggle_failed_message already escaped via wp_kses_post()
+	$video_cancelled_1 = esc_html__( 'it', 'foogallery' );
+	$videos_cancelled_1 = esc_html__( 'them', 'foogallery' );
+	$import_cancelled = sprintf( '<a href="#import-cancelled">%s</a>', sprintf( esc_html__( 'import %s', 'foogallery' ), $video_cancelled_1 ) );
+	$toggle_cancelled_title = esc_html__( 'Toggle cancelled list', 'foogallery' );
+	$toggle_cancelled_message = sprintf( esc_html__( 'were cancelled. Would you like to %s?', 'foogallery' ), wp_kses_post( $import_cancelled ) );
+	$toggle_cancelled = sprintf( '<span title="%s">{{cancelled}} %s</span>', esc_attr( $toggle_cancelled_title ), $toggle_cancelled_message ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $toggle_cancelled_message already escaped via wp_kses_post()
 ?>
 	<div class="fgi-splash fgi-import-notification">
 
 		<# if (data.imported.length){ var imported = data.imported.length; #>
-			<h2><?php printf(__("Successfully imported %s %s", "foogallery"), "{{imported}}", $video_imported) ?></h2>
+			<h2><?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $video_imported contains JavaScript template syntax {{...}} that cannot be escaped
+			printf( esc_html__( 'Successfully imported %1$s %2$s', 'foogallery' ), '{{imported}}', $video_imported );
+			?></h2>
 			<# if (imported !== 1){ #>
-				<p><?php printf(__("All imported videos have been added to the current %s selection.", "foogallery"), $media_library) ?></p>
+				<p><?php printf( esc_html__( 'All imported videos have been added to the current %s selection.', 'foogallery' ), wp_kses_post( $media_library ) ); ?></p>
 			<# } else { #>
-				<p><?php printf(__("The imported video has been added to the current %s selection.", "foogallery"), $media_library) ?></p>
+				<p><?php printf( esc_html__( 'The imported video has been added to the current %s selection.', 'foogallery' ), wp_kses_post( $media_library ) ); ?></p>
 			<# } #>
 		<# } else { #>
-			<h2><?php _e("No videos were imported.", "foogallery") ?></h2>
+			<h2><?php esc_html_e( "No videos were imported.", "foogallery" ); ?></h2>
 		<# } #>
 
 		<# if (data.failed.length){ var failed = data.failed.length; #>
-			<p><?php echo $toggle_failed ?></p>
+			<p><?php echo wp_kses_post( $toggle_failed ); ?></p>
 			<ul class="fgi-import-failed">
 				<# _.each(data.failed, function(video, i){ #>
 					<# if (video.urls){ #>
@@ -584,7 +589,7 @@
 		<# } #>
 
 		<# if (data.cancelled.length){ var cancelled = data.cancelled.length; #>
-			<p><?php echo $toggle_cancelled ?></p>
+			<p><?php echo wp_kses_post( $toggle_cancelled ); ?></p>
 			<ul class="fgi-import-cancelled">
 				<# _.each(data.cancelled, function(video){ #>
 					<# if (video.urls){ #>
@@ -597,8 +602,8 @@
 		<# } #>
 
 		<div class="button-hero-container">
-			<button type="button" class="button button-hero button-secondary fgi-import-more-videos"><?php _e("Import More Videos", "foogallery") ?></button>
-			<button type="button" class="button button-hero button-primary fgi-import-add-videos"><?php _e("Add Videos to Gallery", "foogallery") ?></button>
+			<button type="button" class="button button-hero button-secondary fgi-import-more-videos"><?php esc_html_e( "Import More Videos", "foogallery" ); ?></button>
+			<button type="button" class="button button-hero button-primary fgi-import-add-videos"><?php esc_html_e( "Add Videos to Gallery", "foogallery" ); ?></button>
 		</div>
 	</div>
 

@@ -926,8 +926,12 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 
 			$file_path = foogallery_local_url_to_path( $test_image_url );
 
-			echo esc_html( __('Test Image URL', 'foogallery') ) . ': ' . $test_image_url . '<br />';
-			echo esc_html( __('Test Image Path', 'foogallery') ) . ': ' . $file_path . '<br />';
+			if ( ! empty( $test_image_url ) ) {
+				echo esc_html__( 'Test Image URL', 'foogallery' ) . ': ' . esc_url( $test_image_url ) . '<br />';
+			}
+			if ( ! empty( $file_path ) ) {
+				echo esc_html__( 'Test Image Path', 'foogallery' ) . ': ' . esc_html( $file_path ) . '<br />';
+			}
 
 			// Create the image.
 			$editor = wp_get_image_editor( $file_path, array( 'methods' => array( 'get_image' ) ) );
@@ -951,11 +955,11 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
 
 			$watermark->get_image_editor_helper()->cleanup( $image );
 
-			echo '<img src="data:image/png;base64,' . $image_base64 . '" />';
+			echo '<img src="data:image/png;base64,' . esc_attr( $image_base64 ) . '" alt="watermarked" />';
 
 			echo '<h3>' . esc_html( __( 'Original Image', 'foogallery' ) ) . '</h3>';
 
-			echo '<img src="' . esc_url( $test_image_url ) . '" />';
+			echo '<img src="' . esc_url( $test_image_url ) . '" alt="original" />';
 		}
 
         /**
@@ -964,7 +968,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
         public function attachment_modal_display_tab_watermark() { ?>
             <div class="foogallery-img-modal-tab-wrapper" data-tab_id="foogallery-panel-watermark">
                 <input type="radio" name="tabset" id="foogallery-tab-watermark" aria-controls="foogallery-panel-watermark">
-                <label for="foogallery-tab-watermark"><?php _e('Watermark', 'foogallery'); ?></label>
+                <label for="foogallery-tab-watermark"><?php esc_html_e( 'Watermark', 'foogallery' ); ?></label>
             </div>
         <?php }
 
@@ -998,14 +1002,14 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
                     <section id="foogallery-panel-watermark" class="tab-panel">
                         <div id="foogallery-panel-watermark-status" class="settings">
 							<span class="setting" data-setting="watermark-status">
-								<label for="attachments-watermark-status" class="name"><?php _e('Watermark Status', 'foogallery'); ?></label>
+								<label for="attachments-watermark-status" class="name"><?php esc_html_e( 'Watermark Status', 'foogallery' ); ?></label>
 								<span><?php echo esc_html( $watermark_status ); ?></span>
 							</span>
                         </div>
                         <?php if ( $has_watermark ) { ?>
                             <div id="foogallery-panel-watermark-preview" class="settings <?php echo isset( $modal_data['attachment_watermark']['url'] ) ? 'watermark-preview-show' : ''; ?>">
 							<span class="setting" data-setting="watermark-image-preview">
-								<label for="attachments-watermark-image-preview" class="name"><?php _e('Watermark Image Preview', 'foogallery'); ?></label>
+								<label for="attachments-watermark-image-preview" class="name"><?php esc_html_e( 'Watermark Image Preview', 'foogallery' ); ?></label>
 								<a id="attachments-watermark-image-preview" href="<?php echo esc_url( $modal_data['attachment_watermark']['url'] ); ?>" target="_blank">
 									<img width="150" src="<?php echo esc_url( $modal_data['attachment_watermark']['url'] ); ?>" alt="watermark">
 								</a>
@@ -1014,7 +1018,7 @@ if ( ! class_exists( 'FooGallery_Pro_Protection' ) ) {
                         <?php } ?>
                         <div class="foogallery_metabox_field-watermark_status settings">
 							<span class="setting" data-setting="watermark-generate-button">
-								<label class="name"><?php _e('Generate Watermark', 'foogallery'); ?></label>
+								<label class="name"><?php esc_html_e( 'Generate Watermark', 'foogallery' ); ?></label>
                                 <div>
                                     <button id="attachments-watermark-generate-btn" type="button" style="width: 100px"
                                             class="button button-primary button-large attachment_modal_watermark_generate"
