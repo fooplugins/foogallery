@@ -10693,9 +10693,17 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 self.areas.push( self.comments );
             }
 
-            if ( _.Panel.Share ){
-                self.share = new _.Panel.Share(self);
-                self.areas.push( self.share );
+            // Make sure only one side area can occupy the same position, overrides supplied options
+            // There can be only one...
+            const highlanders = self.areas.filter( a => a instanceof _.Panel.SideArea && a.isVisible && a.opt.group === 'overlay' );
+            while ( highlanders.length > 0 ) {
+                const theOne = highlanders.shift();
+                highlanders.forEach( challenger => {
+                    if ( challenger.isTargetingSamePosition( theOne ) ) {
+                        challenger.isVisible = false;
+                        challenger.button.isPressed = false;
+                    }
+                } );
             }
 
             self.$el = null;
@@ -11679,7 +11687,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 var enabled = self.isEnabled();
                 self.toggle(enabled);
                 self.disable(!enabled);
-                if (self.isToggle) self.press( self.opt.pressed );
+                if (self.isToggle) self.press( self.isPressed );
             }
             return self.isCreated;
         },
@@ -11797,19 +11805,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         },
         isTargetingSamePosition: function( button ) {
             if ( button instanceof _.Panel.SideAreaButton ) {
-                const ov1 = this?.area?.opt?.overlay,
-                    ov2 = button?.area?.opt?.overlay;
-                // check if the overlay state is the same
-                if ( ov1 === ov2 ) {
-                    if ( ov1 === true ) {
-                        // all overlays are counted as the same position as they overlap
-                        return true;
-                    }
-                    // overlay state is the same so check the position
-                    const pos1 = this?.area?.opt?.position,
-                        pos2 = button?.area?.opt?.position;
-                    return _is.string( pos1 ) && _is.string( pos2 ) && pos1 === pos2;
-                }
+                return button.area.isTargetingSamePosition( this.area );
             }
             return false;
         },
@@ -12458,6 +12454,20 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         onToggleClick: function(e){
             e.preventDefault();
             e.data.self.toggle();
+        },
+        isTargetingSamePosition: function( area ) {
+            if ( area instanceof _.Panel.SideArea ) {
+                const ov1 = this.opt.overlay,
+                    ov2 = area.opt.overlay;
+                // check if the overlay state is the same
+                if ( ov1 === ov2 ) {
+                    // overlay state is the same so check the position
+                    const pos1 = this.opt.position,
+                        pos2 = area.opt.position;
+                    return _is.string( pos1 ) && _is.string( pos2 ) && pos1 === pos2;
+                }
+            }
+            return false;
         }
     });
 
@@ -15045,12 +15055,12 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			return $("<div/>", {"class": self.cls.inner}).append(
 					$("<div/>", {"class": self.cls.innerContainer}),
 					$("<div/>", {"class": self.cls.controls}).append(
-							$("<div/>", {"class": self.cls.prev})
+							$("<button/>", {"class": self.cls.prev, type: 'button', title: self.il8n.prev})
 									.append($("<span/>", {text: self.il8n.prev})),
 							$("<label/>", {"class": self.cls.count, text: self.il8n.count})
 									.prepend($("<span/>", {"class": self.cls.countCurrent, text: "0"}))
 									.append($("<span/>", {"class": self.cls.countTotal, text: "0"})),
-							$("<div/>", {"class": self.cls.next})
+							$("<button/>", {"class": self.cls.next, type: 'button', title: self.il8n.next})
 									.append($("<span/>", {text: self.il8n.next}))
 					)
 			);
@@ -15070,7 +15080,13 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 			self.$current = self.$el.find(self.sel.countCurrent);
 			self.$total = self.$el.find(self.sel.countTotal);
 			self.$prev = self.$el.find(self.sel.prev);
+            if ( !self.$prev.attr('title') ) {
+                self.$prev.attr('title', self.il8n.prev);
+            }
 			self.$next = self.$el.find(self.sel.next);
+            if ( !self.$next.attr('title') ) {
+                self.$next.attr('title', self.il8n.next);
+            }
 		},
 		onInit: function (event) {
 			var self = this;
@@ -15349,13 +15365,14 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
          * @param {object} cls
          * @param {object} sel
          */
-        construct: function(template, opt, cls, sel){
+        construct: function(template, opt, cls, sel, i18n){
             const self = this;
             self.tmpl = template;
             self.el = template.el;
             self.opt = opt;
             self.cls = cls;
             self.sel = sel;
+            self.i18n = i18n;
             self.elem = {
                 inner: null,
                 center: null,
@@ -15501,6 +15518,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             } );
             if ( self.elem.prev.type !== "button" ) self.elem.prev.type = "button";
             self.elem.prev.appendChild( _icons.element( "arrow-left" ) );
+            self.elem.prev.title = self.i18n.prev;
 
             self._listeners.add( self.elem.next, "click", function( event ){
                 event.preventDefault();
@@ -15509,6 +15527,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             } );
             if ( self.elem.next.type !== "button" ) self.elem.next.type = "button";
             self.elem.next.appendChild( _icons.element( "arrow-right" ) );
+            self.elem.prev.title = self.i18n.next;
         },
         initPagination: function(){
             const self = this;
@@ -15517,7 +15536,11 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 const bullet = document.createElement( "button" );
                 bullet.type = "button";
                 bullet.classList.add( self.cls.bullet );
-                if ( i === 0 ) bullet.classList.add( self.cls.activeBullet );
+                bullet.title = self.i18n.bullet.replace( /\{ITEM}/g, `${ i + 1 }` );
+                if ( i === 0 ){
+                    bullet.classList.add( self.cls.activeBullet );
+                    bullet.title = self.i18n.activeBullet.replace( /\{ITEM}/g, `${ i + 1 }` );
+                }
                 self._listeners.add( bullet, "click", function( event ){
                     event.preventDefault();
                     self.interacted = true;
@@ -15889,7 +15912,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         },
         onPreInit: function(){
             const self = this;
-            self.carousel = new _.Carousel( self, self.template, self.cls.carousel, self.sel.carousel );
+            self.carousel = new _.Carousel( self, self.template, self.cls.carousel, self.sel.carousel, self.il8n.carousel );
         },
         onInit: function(){
             this.carousel.init();
@@ -15962,6 +15985,13 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             prevItem: "fg-item-prev",
             nextItem: "fg-item-next",
             progress: "fg-carousel-progress"
+        }
+    }, {
+        carousel: {
+            prev: "Previous",
+            next: "Next",
+            bullet: "Item {ITEM}",
+            activeBullet: "Item {ITEM} - Current"
         }
     });
 

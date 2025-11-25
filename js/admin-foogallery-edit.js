@@ -531,9 +531,9 @@ FooGallery.autoEnabled = false;
 
 			var createModal = $.isFunction(wp.foogallery) ? wp.foogallery : wp.media;
 
-			// Create our FooGallery media frame.
+			// Create our FooGallery media frame (use the child Select when available so extensions can override it).
 			FOOGALLERY.media_uploader = createModal({
-				frame: "select",
+				frame: ( wp.foogallery && wp.foogallery.media && wp.foogallery.media.Select ) ? "select-child" : "select",
 				multiple: 'add',
 				title: FOOGALLERY.mediaModalTitle,
 				button: {

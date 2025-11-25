@@ -28,6 +28,7 @@ require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-advanced-capti
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-advanced-thumbnails.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-bulk-management.php';
 require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-exif.php';
+require_once FOOGALLERY_PATH . 'pro/includes/class-foogallery-pro-media-folders.php';
 
 require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-pro-protection.php';
 require_once FOOGALLERY_PATH . 'pro/includes/protection/class-foogallery-watermark.php';
@@ -81,6 +82,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 				new FooGallery_Pro_Filtering();
 				new FooGallery_Pro_Video();
 				new FooGallery_Pro_Video_Legacy();
+                new FooGallery_Pro_Media_Folders();
 				
 				//Standard Datasources
 				new FooGallery_Pro_Datasource_MediaCategories();
@@ -88,7 +90,7 @@ if ( ! class_exists( 'FooGallery_Pro' ) ) {
 				new FooGallery_Pro_Datasource_Folders();
 				new FooGallery_Pro_Datasource_Post_Query();
 				
-				//3rd Part Datasources
+				//3rd Party Datasources
 				new FooGallery_Pro_Datasource_Lightroom();
 				new FooGallery_Pro_WPLR_Support();
 				new FooGallery_Pro_Datasource_RealMediaLibrary();
