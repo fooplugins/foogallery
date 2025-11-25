@@ -284,6 +284,16 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 3.1.2 =
+
+The big feature in this release is the new Media Category "Folder" sidebar feature, that now shows in the attachment modal.
+
+* Date Updated : 25 Nov 2025
+[//]: # fs_premium_only_begin
+* Fixed: Multiple fixes for Plugin Check requirements.
+* Added: [Expert Plan] Added new Media Category "Folder" sidebar feature, that now shows in the attachment modal.
+[//]: # fs_premium_only_end
+
 = 3.1.1 =
 
 This release includes a change in how FooGallery assets are loaded to make way for a future major optimization that is planned.
