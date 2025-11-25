@@ -376,7 +376,12 @@
 		onDragOver: function (event) {
 			event.preventDefault();
 			event.stopPropagation();
-			$(event.currentTarget).addClass('is-drag-over');
+			var $li = $(event.currentTarget).closest('li.foogallery-folder-node');
+			// Clear highlight from other nodes to avoid lingering drop styling.
+			this.$el.find('.foogallery-folder-node.is-drag-over').not($li).removeClass('is-drag-over').removeData('dragcount');
+			var count = parseInt($li.data('dragcount') || 0, 10) + 1;
+			$li.data('dragcount', count);
+			$li.addClass('is-drag-over');
 			if (event.originalEvent && event.originalEvent.dataTransfer) {
 				event.originalEvent.dataTransfer.dropEffect = 'move';
 			}
@@ -384,7 +389,13 @@
 
 		onDragLeave: function (event) {
 			event.stopPropagation();
-			$(event.currentTarget).removeClass('is-drag-over');
+			var $li = $(event.currentTarget).closest('li.foogallery-folder-node');
+			var count = parseInt($li.data('dragcount') || 1, 10) - 1;
+			if (count <= 0) {
+				$li.removeClass('is-drag-over').data('dragcount', 0);
+			} else {
+				$li.data('dragcount', count);
+			}
 		},
 
 		onDrop: function (event) {
@@ -488,28 +499,41 @@
 			this.reorderSiblings(parentId, movingId, siblingId, position, null);
 		},
 
-		onFolderDragStart: function (event) {
-			if (!this.manageMode) {
-				return;
-			}
-			var folderId = parseInt($(event.currentTarget).find('.foogallery-folder-label').data('folderId'), 10);
+        onFolderDragStart: function (event) {
+            if (!this.manageMode) {
+                return;
+            }
+            var folderId = parseInt($(event.currentTarget).find('.foogallery-folder-label').data('folderId'), 10);
 			if (!folderId) {
 				return;
 			}
-			MediaFolders.setDraggedFolder(folderId);
-			var term = this.getTermById(folderId);
-			MediaFolders.setDraggedFolderParent(term ? term.parent : 0);
-			if (event.originalEvent && event.originalEvent.dataTransfer) {
-				event.originalEvent.dataTransfer.effectAllowed = 'move';
-				event.originalEvent.dataTransfer.setData('text/plain', 'folder:' + folderId);
-			}
+            MediaFolders.setDraggedFolder(folderId);
+            var term = this.getTermById(folderId);
+            MediaFolders.setDraggedFolderParent(term ? term.parent : 0);
+            if (this.controller && this.controller.$el) {
+                this.controller.$el.addClass('foogallery-folder-dragging');
+                // Block uploader drop handlers while moving folders.
+                this._folderDragBlocker = this._folderDragBlocker || function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                };
+                this.controller.$el.on('dragenter.foogalleryfolders dragover.foogalleryfolders drop.foogalleryfolders', this._folderDragBlocker);
+            }
+            if (event.originalEvent && event.originalEvent.dataTransfer) {
+                event.originalEvent.dataTransfer.effectAllowed = 'move';
+                event.originalEvent.dataTransfer.setData('text/plain', 'folder:' + folderId);
+            }
 		},
 
-		onFolderDragEnd: function () {
-			MediaFolders.setDraggedFolder(0);
-			MediaFolders.setDraggedFolderParent(0);
-			this.$el.find('.is-drag-over').removeClass('is-drag-over');
-		},
+        onFolderDragEnd: function () {
+            MediaFolders.setDraggedFolder(0);
+            MediaFolders.setDraggedFolderParent(0);
+            if (this.controller && this.controller.$el) {
+                this.controller.$el.removeClass('foogallery-folder-dragging');
+                this.controller.$el.off('dragenter.foogalleryfolders dragover.foogalleryfolders drop.foogalleryfolders', this._folderDragBlocker);
+            }
+            this.$el.find('.is-drag-over').removeClass('is-drag-over');
+        },
 
 		getTermById: function (id) {
 			id = parseInt(id, 10);

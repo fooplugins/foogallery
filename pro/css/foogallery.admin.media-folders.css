@@ -163,6 +163,18 @@
 	height: unset;
 }
 
+/* Prevent drag flicker by disabling pointer events on action controls while dragging attachments. */
+.foogallery-attachment-dragging .foogallery-folder-actions,
+.foogallery-attachment-dragging .foogallery-folder-drag-handle,
+.foogallery-attachment-dragging .foogallery-folder-count {
+    pointer-events: none;
+}
+
+/* Hide core dropzone while dragging folders. */
+.foogallery-folder-dragging .uploader-inline {
+    display: none !important;
+}
+
 .foogallery-media-folders-status {
     margin-left: auto;
     font-size: 12px;
