@@ -9,6 +9,7 @@ FooGallery.autoEnabled = false;
     FOOGALLERY.selected_gallery_template = '';
     FOOGALLERY.dropzoneUploader = null;
     FOOGALLERY.dropzoneInitialized = false;
+    FOOGALLERY.suppressPreviewRefresh = false;
 
     // Used for selecting files from the media modal.
     FOOGALLERY.current_media_selector_modals = false;
@@ -132,6 +133,85 @@ FooGallery.autoEnabled = false;
 
 		FOOGALLERY.selected_gallery_template = selectedTemplate;
 
+		var previousSuppressState = FOOGALLERY.suppressPreviewRefresh;
+		FOOGALLERY.suppressPreviewRefresh = true;
+
+		var persistedCount = 0;
+
+		//check for persist settings
+		$('.foogallery-settings-container-' + previousSelectedTemplate + ' [data-foogallery-persist]').each(function() {
+			var $this = $(this),
+				settingId = $this.data('foogallery-setting-id'),
+				settingType = $this.data('foogallery-setting-type'),
+				$newSetting = $settingsToShow.find('[data-foogallery-setting-id="' + settingId + '"]');
+			
+			if ( $this.hasClass('foogallery_template_field_template_hidden') ) {
+				return;
+			}
+			
+			if ( $newSetting.length ) {
+				switch ( settingType ) {
+					case 'radio':
+					case 'icon':
+					case 'htmlicon':
+						var selectedRadio = $this.find('input:checked').val();
+						if ( selectedRadio !== undefined ) {
+							var $newRadio = $newSetting.find('input[value="' + selectedRadio + '"]'),
+								currentRadio = $newSetting.find('input:checked').val();
+							if ( $newRadio.length && currentRadio !== selectedRadio ) {
+								$newRadio.prop('checked', true).trigger('change');
+								persistedCount++;
+							}
+						}
+						break;
+					case 'checkbox':
+						var isChecked = $this.find('input[type="checkbox"]').is(':checked'),
+							$newCheckbox = $newSetting.find('input[type="checkbox"]');
+						if ( $newCheckbox.length && $newCheckbox.is(':checked') !== isChecked ) {
+							$newCheckbox.prop('checked', isChecked).trigger('change');
+							persistedCount++;
+						}
+						break;
+					case 'select':
+						var selectVal = $this.find('select').val(),
+							$newSelect = $newSetting.find('select');
+						if ( $newSelect.length && $newSelect.val() !== selectVal ) {
+							$newSelect.val(selectVal).trigger('change');
+							persistedCount++;
+						}
+						break;
+					case 'text':
+					case 'textarea':
+					case 'number':
+					case 'slider':
+						var $input = $this.find(':input, range-input').first(),
+							value = $input.is('range-input') ? $input.attr('value') : $input.val(),
+							$newInput = $newSetting.find(':input, range-input').first(),
+							currentValue = $newInput.is('range-input') ? $newInput.attr('value') : ($newInput.is(':checkbox') ? $newInput.is(':checked') : $newInput.val());
+						
+						if ( $newInput.length && currentValue !== value ) {
+							if ( $newInput.is('range-input') ) {
+								$newInput.attr('value', value);
+							} else if ( $newInput.is(':checkbox') ) {
+								$newInput.prop('checked', $input.is(':checked'));
+							} else {
+								$newInput.val(value);
+							}
+							$newInput.trigger('change');
+							persistedCount++;
+						}
+						break;
+					default:
+						console.log('Field type ' + settingType + ' is not supported for persisted settings.');
+						break;
+				}
+			}
+		});
+
+		console.log('Persisted ' + persistedCount + ' settings.');
+
+		FOOGALLERY.suppressPreviewRefresh = previousSuppressState;
+
 		//hide all template fields
 		$settingsToHide.hide()
 			.removeClass('foogallery-settings-container-active')
@@ -211,6 +291,10 @@ FooGallery.autoEnabled = false;
 	};
 
 	FOOGALLERY.reloadGalleryPreview = function() {
+		if ( FOOGALLERY.suppressPreviewRefresh ) {
+			return;
+		}
+
 		//make sure the fields that should be hidden or shown are doing what they need to do
 		FOOGALLERY.handleSettingsShowRules();
 
@@ -340,6 +424,55 @@ FooGallery.autoEnabled = false;
 					.end().find('.colorpicker').spectrum("enable");
 			}
 		});
+
+		FOOGALLERY.handleSettingsTabs();
+	};
+
+	FOOGALLERY.handleSettingsTabs = function() {
+			var $activeSettings = $('.foogallery-settings-container-active'),
+				$tabs = $activeSettings.find('.foogallery-vertical-tab');
+
+			$tabs.each(function() {
+			var $tab = $(this),
+				tabName = $tab.data('name'),
+				$content = $activeSettings.find('.foogallery-tab-content[data-name="' + tabName + '"]'),
+				hasVisibleFields = $content.find('tr:not(.foogallery_template_field_template_hidden)').length > 0;
+
+			$tab.find('.foogallery-vertical-child-tab').each(function() {
+				var $childTab = $(this),
+					childName = $childTab.data('name'),
+					$childContent = $activeSettings.find('.foogallery-tab-content[data-name="' + childName + '"]'),
+					childHasVisibleFields = $childContent.find('tr:not(.foogallery_template_field_template_hidden)').length > 0;
+
+				if (childHasVisibleFields) {
+					$childTab.show();
+					hasVisibleFields = true;
+				} else {
+					$childTab.hide().removeClass('foogallery-tab-active');
+					$childContent.removeClass('foogallery-tab-active');
+				}
+			});
+
+			if (hasVisibleFields) {
+				$tab.show();
+			} else {
+				$tab.hide().removeClass('foogallery-tab-active');
+				$content.removeClass('foogallery-tab-active');
+			}
+		});
+
+		var $activeTab = $activeSettings.find('.foogallery-vertical-tab.foogallery-tab-active:visible'),
+			$visibleTabs = $activeSettings.find('.foogallery-vertical-tab:visible');
+
+		if ($activeTab.length === 0 && $visibleTabs.length) {
+			$visibleTabs.first().click();
+		} else if ($activeTab.length) {
+			var $visibleChildren = $activeTab.find('.foogallery-vertical-child-tab:visible');
+
+			if ($visibleChildren.length && $visibleChildren.filter('.foogallery-tab-active').length === 0) {
+				$visibleChildren.first().click();
+			}
+		}
 	};
 
 	FOOGALLERY.initSettings = function() {
@@ -1225,12 +1358,12 @@ FooGallery.autoEnabled = false;
 		}
 	};
 
-	$(document).ready(function () {
+	// $(document).ready(function () {
 
-        FOOGALLERY.initAttachments();
+    //     FOOGALLERY.initAttachments();
 
-        FOOGALLERY.galleryTemplateChanged(false);
-    });
+    //     FOOGALLERY.galleryTemplateChanged(false);
+    // });
 
 }(window.FOOGALLERY = window.FOOGALLERY || {}, jQuery));
 
