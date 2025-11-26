@@ -9214,6 +9214,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             self.isSmallScreen = false;
             self.isMediumScreen = false;
             self.isLargeScreen = false;
+            self.isMobileLayout = false;
 
             self.breakpointClassNames = self.opt.breakpoints.map(function(bp){
                 return "fg-" + bp.name + " fg-" + bp.name + "-width" + " fg-" + bp.name + "-height";
@@ -9279,7 +9280,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             self.areas.forEach(function(area){
                 area.appendTo( self.$el );
             });
-            self.buttons.appendTo( self.content.$el );
+            self.buttons.appendTo( self.$el );
             return true;
         },
         createElem: function(){
@@ -9411,6 +9412,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             self.isLargeScreen = self.$el.hasClass("fg-large");
             self.isXLargeScreen = self.$el.hasClass("fg-x-large");
             self.isSmallScreen = !self.isMediumScreen && !self.isLargeScreen && !self.isXLargeScreen;
+            self.isMobileLayout = self.isSmallScreen && !self.opt.noMobile;
             self.areas.forEach(function (area) {
                 area.resize();
             });
@@ -9791,7 +9793,9 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 inner: "fg-panel-area-inner"
             },
 
-            content: {},
+            content: {
+                buttons: "fg-panel-content-buttons"
+            },
 
             sideArea: {
                 toggle: "fg-panel-area-toggle",
@@ -10087,6 +10091,11 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         },
 
         resize: function(){
+            const prev = this.get("prev");
+            const next = this.get("next");
+            const target = this.panel.isMobileLayout ? this.$el : this.panel.content.$buttons;
+            if ( next ) next.prependTo( target );
+            if ( prev ) prev.prependTo( target );
             this.each(function(button){
                 button.resize();
             });
@@ -10170,16 +10179,31 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             return !this.isCreated;
         },
         appendTo: function(parent){
+            if ( this.isAttached ) {
+                this.detach();
+            }
             if ((this.isCreated || this.create()) && !this.isAttached){
                 this.$el.appendTo(parent);
+                this.isAttached = true;
+            }
+            return this.isAttached;
+        },
+        prependTo: function(parent){
+            if ( this.isAttached ) {
+                this.detach();
+            }
+            if ((this.isCreated || this.create()) && !this.isAttached){
+                this.$el.prependTo(parent);
+                this.isAttached = true;
             }
             return this.isAttached;
         },
         detach: function(){
             if (this.isCreated && this.isAttached){
                 this.$el.detach();
+                this.isAttached = false;
             }
-            return !this.isAttached;
+            return this.isAttached;
         },
         toggle: function(visible){
             if (!this.isCreated) return;
@@ -10742,11 +10766,13 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             this._super(panel, "content", {
                 waitForUnload: false
             }, panel.cls.content);
+            this.$buttons = null;
             this.robserver = null;
         },
         doCreate: function(){
             var self = this;
             if (self._super()){
+                self.$buttons = $( "<div/>" ).addClass( self.cls.buttons ).appendTo( self.$el );
                 if (self.panel.opt.swipe){
                     self.$inner.fgswipe({data: {self: self}, swipe: self.onSwipe, allowPageScroll: true});
                 }
@@ -10928,15 +10954,9 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         },
         isTargetingSamePosition: function( area ) {
             if ( area instanceof _.Panel.SideArea ) {
-                const ov1 = this.opt.overlay,
-                    ov2 = area.opt.overlay;
-                // check if the overlay state is the same
-                if ( ov1 === ov2 ) {
-                    // overlay state is the same so check the position
-                    const pos1 = this.opt.position,
-                        pos2 = area.opt.position;
-                    return _is.string( pos1 ) && _is.string( pos2 ) && pos1 === pos2;
-                }
+                const pos1 = this.opt.position,
+                    pos2 = area.opt.position;
+                return _is.string( pos1 ) && _is.string( pos2 ) && pos1 === pos2;
             }
             return false;
         }
