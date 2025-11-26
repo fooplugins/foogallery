@@ -1005,6 +1005,7 @@ FooGallery.autoEnabled = false;
 			data: {
 				'img_id': img_id,
 				'gallery_id': gallery_id,
+				'override_attachments': $('#foogallery_attachments').val(),
 				'current_tab': current_tab,
 				'nonce': nonce,
 				'action': 'foogallery_attachment_modal_open'

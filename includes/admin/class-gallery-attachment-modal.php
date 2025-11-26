@@ -376,6 +376,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
             if ( is_array ( $data ) && isset( $data['img_id'] ) && isset( $data['gallery_id'] ) ) {
                 $modal_data['img_id'] = $attachment_id = intval( sanitize_text_field( $data['img_id'] ) );
                 $modal_data['gallery_id'] = $gallery_id = intval( sanitize_text_field( $data['gallery_id'] ) );
+				$modal_data['override_attachments'] = isset( $data['override_attachments'] ) ? sanitize_text_field( $data['override_attachments'] ) : '';
                 $modal_data['current_tab'] = isset( $data['current_tab'] ) ? sanitize_text_field( $data['current_tab'] ) : '';
                 $modal_data['nonce'] = wp_create_nonce( 'foogallery-modal-nonce' );
                 $modal_data = apply_filters( 'foogallery_attachment_modal_data', $modal_data, $data, $attachment_id, $gallery_id );
@@ -495,6 +496,20 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 			return $modal_data;
 		}
 
+		private function get_attachments_for_modal( $modal_data, $gallery_id ) {
+			if ( isset( $modal_data['override_attachments'] ) ) {
+				return explode( ',', $modal_data['override_attachments'] );
+			}
+			
+			$gallery_attachments = get_post_meta( $gallery_id, FOOGALLERY_META_ATTACHMENTS, true);
+
+			if ( is_array( $gallery_attachments ) && !empty ( $gallery_attachments ) ) {
+				return $gallery_attachments;
+			}
+
+			return array();
+		}
+
 		/**
 		 * Image modal info tab data update
 		 */
@@ -505,35 +520,25 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
                 $full_img_path = wp_get_attachment_image_src( $attachment_id, 'full' );
                 $modal_data['img_path'] = $full_img_path[0];
 
-                $gallery_attachments = get_post_meta( $gallery_id, FOOGALLERY_META_ATTACHMENTS, true);
+                $gallery_attachments = $this->get_attachments_for_modal( $modal_data, $gallery_id );
 
                 if ( is_array( $gallery_attachments ) && !empty ( $gallery_attachments ) ) {
                     $modal_data['gallery_attachments'] = $gallery_attachments;
 
-                    $current_slide_id = 0;
-                    $prev_slide_enabled = false;
-                    $next_slide_enabled = false;
-                    $prev_slide_id = 0;
-                    $next_slide_id = 0;
-                    foreach ( $gallery_attachments as $gallery_attachment_id ) {
-                        if ( $attachment_id === intval( $gallery_attachment_id ) ) {
-                            $prev_slide_enabled = $prev_slide_id > 0;
-                            $current_slide_id = $attachment_id;
-                        } else if ( $next_slide_id > 0 ) {
-                            break;
-                        } else if ( $current_slide_id > 0 ) {
-                            $next_slide_id = intval($gallery_attachment_id);
-                            $next_slide_enabled = true;
-                        } else {
-                            $prev_slide_id = intval( $gallery_attachment_id );
-                        }
-                    }
+                    $gallery_attachment_ids = array_map( 'intval', $gallery_attachments );
+                    $current_index = array_search( $attachment_id, $gallery_attachment_ids, true );
+                    $attachment_count = count( $gallery_attachment_ids );
 
-                    if ( $current_slide_id >= 0 ) {
-                        $modal_data['prev_slide'] = $prev_slide_enabled;
-                        $modal_data['next_slide'] = $next_slide_enabled;
-                        $modal_data['prev_img_id'] = $prev_slide_id;
-                        $modal_data['next_img_id'] = $next_slide_id;
+                    if ( false !== $current_index ) {
+                        // Wrap around so first item points to last and last item points to first.
+                        $has_multiple = $attachment_count > 1;
+                        $prev_index = ( 0 === $current_index ) ? $attachment_count - 1 : $current_index - 1;
+                        $next_index = ( $current_index === $attachment_count - 1 ) ? 0 : $current_index + 1;
+
+                        $modal_data['prev_slide'] = $has_multiple;
+                        $modal_data['next_slide'] = $has_multiple;
+                        $modal_data['prev_img_id'] = $has_multiple ? intval( $gallery_attachment_ids[ $prev_index ] ) : 0;
+                        $modal_data['next_img_id'] = $has_multiple ? intval( $gallery_attachment_ids[ $next_index ] ) : 0;
                     }
                 }
             }
