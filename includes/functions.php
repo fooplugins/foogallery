@@ -646,6 +646,9 @@ function foogallery_activate_default_templates_extension() {
 function foogallery_enqueue_style( $handle, $src, $deps = array(), $ver = false, $media = 'all' ) {
 	$src = apply_filters( 'foogallery_enqueue_style_src', $src, $handle );
 
+	//resolve the asset URL to a fingerprinted version if available.
+	$src = foogallery_resolve_asset_url( $src );
+
 	wp_enqueue_style( $handle, $src, $deps, $ver, $media );
 	do_action( 'foogallery_enqueue_style', $handle, $src, $deps, $ver, $media );
 }
@@ -2599,4 +2602,27 @@ function foogallery_sort_attachments( $attachments, $orderby, $order ) {
  */
 function foogallery_lightbox_name() {
     return sprintf( __( '%s Lightbox', 'foogallery' ), foogallery_plugin_name() );
+}
+
+/**
+ * Resolve an asset path to its fingerprinted version (if present).
+ * Returns the correct URL for enqueueing.
+ *
+ * @param string $relative_path  Path relative to the plugin root.
+ * @return string                Full URL to the asset (fingerprinted or original).
+ */
+function foogallery_resolve_asset_url( $relative_path ) {
+    static $manifest = null;
+
+    if ( $manifest === null ) {
+        $manifest_file = FOOGALLERY_PATH . 'includes/asset-manifest.php';
+        $manifest = file_exists( $manifest_file ) ? include $manifest_file : [];
+    }
+
+    // Use fingerprinted version if available
+    $asset_path = isset( $manifest[ $relative_path ] )
+        ? $manifest[ $relative_path ]
+        : $relative_path;
+
+    return FOOGALLERY_URL . $asset_path;
 }

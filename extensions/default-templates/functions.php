@@ -46,6 +46,9 @@ function foogallery_enqueue_core_gallery_template_script( $deps = null ) {
         $deps[] = 'foogallery-polyfills';
     }
 
+	//resolve the asset URL to a fingerprinted version if available.
+	$js = foogallery_resolve_asset_url( $js );
+
 	wp_enqueue_script( 'foogallery-core', $js, $deps, FOOGALLERY_VERSION );
 	do_action( 'foogallery_enqueue_script-core', $js );
 	$feature_deps = array( 'foogallery-core' );
@@ -61,9 +64,12 @@ function foogallery_enqueue_core_gallery_template_script( $deps = null ) {
 			$feature_deps[] = 'foogallery-custom';
 		}
 	}
+
+	//resolve the asset URL to a fingerprinted version if available.
+	$ready_src = foogallery_resolve_asset_url( FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'js/foogallery.ready' . $filename_suffix . '.js' );
 	
 	//enqueue the ready script
-	wp_enqueue_script( 'foogallery-ready', FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'js/foogallery.ready' . $filename_suffix . '.js', $feature_deps, FOOGALLERY_VERSION );
+	wp_enqueue_script( 'foogallery-ready', $ready_src, $feature_deps, FOOGALLERY_VERSION );
 }
 
 /**
@@ -73,5 +79,9 @@ function foogallery_enqueue_core_gallery_template_script( $deps = null ) {
 function foogallery_enqueue_polyfills() {
     $suffix = foogallery_is_debug() ? '' : '.min';
     $src    = apply_filters( 'foogallery_polyfills_src', FOOGALLERY_DEFAULT_TEMPLATES_EXTENSION_SHARED_URL . 'js/foogallery.polyfills' . $suffix . '.js', $suffix );
+
+	//resolve the asset URL to a fingerprinted version if available.
+	$src = foogallery_resolve_asset_url( $src );
+
     wp_enqueue_script( 'foogallery-polyfills', $src, array(), FOOGALLERY_VERSION );
 }
