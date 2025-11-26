@@ -15538,7 +15538,9 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             } );
             if ( self.elem.prev.type !== "button" ) self.elem.prev.type = "button";
             self.elem.prev.appendChild( _icons.element( "arrow-left" ) );
-            self.elem.prev.title = self.i18n.prev;
+            if ( !self.elem.prev.title?.length ) {
+                self.elem.prev.title = self.i18n.prev;
+            }
 
             self._listeners.add( self.elem.next, "click", function( event ){
                 event.preventDefault();
@@ -15547,7 +15549,9 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             } );
             if ( self.elem.next.type !== "button" ) self.elem.next.type = "button";
             self.elem.next.appendChild( _icons.element( "arrow-right" ) );
-            self.elem.prev.title = self.i18n.next;
+            if ( !self.elem.next.title?.length ) {
+                self.elem.next.title = self.i18n.next;
+            }
         },
         initPagination: function(){
             const self = this;
@@ -15932,7 +15936,7 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
         },
         onPreInit: function(){
             const self = this;
-            self.carousel = new _.Carousel( self, self.template, self.cls.carousel, self.sel.carousel, self.il8n.carousel );
+            self.carousel = new _.Carousel( self, self.template, self.cls.carousel, self.sel.carousel, self.il8n );
         },
         onInit: function(){
             this.carousel.init();
@@ -16007,12 +16011,10 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             progress: "fg-carousel-progress"
         }
     }, {
-        carousel: {
-            prev: "Previous",
-            next: "Next",
-            bullet: "Item {ITEM}",
-            activeBullet: "Item {ITEM} - Current"
-        }
+        prev: "Previous",
+        next: "Next",
+        bullet: "Item {ITEM}",
+        activeBullet: "Item {ITEM} - Current"
     });
 
 })(
