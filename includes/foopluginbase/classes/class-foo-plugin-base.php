@@ -108,7 +108,7 @@ if ( !class_exists( 'Foo_Plugin_Base_v2_4' ) ) {
 			$this->_options = new Foo_Plugin_Options_v2_1( $this->plugin_slug );
 
 			//check we are using php 5
-			foo_check_php_version( $this->plugin_title, '5.0.0' );
+			foo_check_php_version( $this->plugin_title, '5.4.0' );
 
 			// Load plugin text domain
 			add_action( 'init', array( $this, 'load_plugin_textdomain' ) );

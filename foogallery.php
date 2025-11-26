@@ -9,6 +9,7 @@ Author URI:  https://fooplugins.com
 Text Domain: foogallery
 License:     GPL-2.0+
 Domain Path: /languages
+Requires PHP: 5.4
 
 @fs_premium_only /pro/
  */
