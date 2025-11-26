@@ -241,6 +241,11 @@ class FooGallery extends stdClass {
 	 * @return mixed|null
 	 */
 	function get_setting( $key, $default ) {
+		$override_setting = apply_filters( 'foogallery_instance_get_setting', null, $key, $default, $this );
+		if ( null !== $override_setting ) {
+			return $override_setting;
+		}
+
 		return $this->get_meta( "{$this->gallery_template}_$key", $default );
 	}
 

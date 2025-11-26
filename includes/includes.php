@@ -44,6 +44,9 @@ require_once FOOGALLERY_PATH . 'includes/class-foogallery-extensions-compatibili
 require_once FOOGALLERY_PATH . 'includes/class-foogallery-crop-position.php';
 require_once FOOGALLERY_PATH . 'includes/class-foogallery-force-https.php';
 
+//Handle preview scenarios.
+require_once FOOGALLERY_PATH . 'includes/class-previews.php';
+
 // Datasource includes.
 require_once FOOGALLERY_PATH . 'includes/class-foogallery-datasource-media_library.php';
 

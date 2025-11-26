@@ -2649,3 +2649,48 @@ function foogallery_resolve_asset_url( $path ) {
     // Finally, reconstruct full URL.
     return trailingslashit( $plugin_url ) . ltrim( $resolved, '/' );
 }
+
+/**
+ * Returns true if the current request is a REST API request.
+ *
+ * @return bool
+ */
+function foogallery_is_rest_request() {
+	// Must be a real REST API request
+	if ( ! ( defined('REST_REQUEST') && REST_REQUEST ) ) {
+		return false;
+	}
+
+	// Must be targeting a REST route (sanity check)
+	$uri = $_SERVER['REQUEST_URI'] ?? '';
+	if ( strpos( $uri, '/' . rest_get_url_prefix() . '/' ) === false ) {
+		return false;
+	}
+
+	return true;
+}
+
+/**
+ * Returns true if the current request is a REST API request from the admin.
+ *
+ * @return bool
+ */
+function foogallery_is_rest_request_from_admin() {
+	if ( ! foogallery_is_rest_request() ) {
+		return false;
+	}
+
+	// Must have an admin referer
+	$ref = $_SERVER['HTTP_REFERER'] ?? '';
+	if ( empty( $ref ) ) {
+		return false;
+	}
+
+	// Check referer starts with /wp-admin/
+	if ( strpos( $ref, admin_url() ) === 0 ) {
+		// Finally, ensures the user is logged in.
+		return is_user_logged_in();
+	}
+
+	return false;
+}
