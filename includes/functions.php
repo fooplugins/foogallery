@@ -2605,24 +2605,47 @@ function foogallery_lightbox_name() {
 }
 
 /**
- * Resolve an asset path to its fingerprinted version (if present).
- * Returns the correct URL for enqueueing.
+ * Resolve a relative asset path OR a full plugin URL into a fingerprinted URL.
+ * External URLs (non-plugin) are returned unchanged.
  *
- * @param string $relative_path  Path relative to the plugin root.
- * @return string                Full URL to the asset (fingerprinted or original).
+ * @param string $path Relative path OR full URL.
+ * @return string Fully-resolved URL (fingerprinted if applicable, otherwise original).
  */
-function foogallery_resolve_asset_url( $relative_path ) {
+function foogallery_resolve_asset_url( $path ) {
     static $manifest = null;
 
+    // Load manifest only once
     if ( $manifest === null ) {
         $manifest_file = FOOGALLERY_PATH . 'includes/asset-manifest.php';
         $manifest = file_exists( $manifest_file ) ? include $manifest_file : [];
     }
 
-    // Use fingerprinted version if available
-    $asset_path = isset( $manifest[ $relative_path ] )
-        ? $manifest[ $relative_path ]
-        : $relative_path;
+    $plugin_url = rtrim( FOOGALLERY_URL, '/' );
 
-    return FOOGALLERY_URL . $asset_path;
+    // First, check if $path is a full URL
+    if ( preg_match( '#^https?://#i', $path ) ) {
+
+        // If NOT a local asset, then get out early.
+        if ( strpos( $path, $plugin_url ) !== 0 ) {
+            return $path;
+        }
+
+        // Normalize plugin full URL to a relative path.
+        $relative_path = ltrim( substr( $path, strlen( $plugin_url ) ), '/' );
+    } else {
+		$relative_path = $path;
+	}
+
+    // Try to resolve through manifest.
+    $resolved = isset( $manifest[ $relative_path ] )
+        ? $manifest[ $relative_path ]
+        : null;
+
+	// If we do not resolve to anything then return the original AS IS.
+	if ( $resolved === null ) {
+		return $path;
+	}
+
+    // Finally, reconstruct full URL.
+    return trailingslashit( $plugin_url ) . ltrim( $resolved, '/' );
 }

@@ -9,29 +9,80 @@ const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
 
-// List of assets to fingerprint (full relative paths)
+// List of assets to fingerprint (full relative paths).
+// Optionally use { source: 'path/to/file.ext', outputDir: 'existing/output/folder' }
+// to write the fingerprinted file into a different folder when that folder exists.
 const ASSETS_TO_FINGERPRINT = [
-    'extensions/default-templates/shared/css/foogallery.css',
-    'extensions/default-templates/shared/js/foogallery.js'
+    { source: 'extensions/default-templates/shared/css/foogallery.css', outputDir: 'assets/css' },
+	{ source: 'extensions/default-templates/shared/css/foogallery.min.css', outputDir: 'assets/css' },
+    { source: 'extensions/default-templates/shared/js/foogallery.js', outputDir: 'assets/js' },
+	{ source: 'extensions/default-templates/shared/js/foogallery.min.js', outputDir: 'assets/js' },
+	{ source: 'extensions/default-templates/shared/js/foogallery.ready.js', outputDir: 'assets/js' },
+	{ source: 'extensions/default-templates/shared/js/foogallery.ready.min.js', outputDir: 'assets/js' },
+	{ source: 'extensions/default-templates/shared/js/foogallery.polyfills.js', outputDir: 'assets/js' },
+	{ source: 'extensions/default-templates/shared/js/foogallery.polyfills.min.js', outputDir: 'assets/js' },
+
+	{ source: 'pro/extensions/default-templates/shared/css/foogallery.css', outputDir: 'pro/assets/css' },
+	{ source: 'pro/extensions/default-templates/shared/css/foogallery.min.css', outputDir: 'pro/assets/css' },
+	{ source: 'pro/extensions/default-templates/shared/js/foogallery.js', outputDir: 'pro/assets/js' },
+	{ source: 'pro/extensions/default-templates/shared/js/foogallery.min.js', outputDir: 'pro/assets/js' }
 ];
+
+function normalizeAssetConfig(asset) {
+    if (typeof asset === "string") {
+        return { source: asset };
+    }
+
+    if (asset && typeof asset === "object" && asset.source) {
+        return {
+            source: asset.source,
+            outputDir: asset.outputDir
+        };
+    }
+
+    throw new Error("ASSETS_TO_FINGERPRINT entries must be a string path or an object with a 'source' property.");
+}
+
+function getAssetTargetDir(assetConfig) {
+    const sourceDir = path.dirname(assetConfig.source);
+
+    if (assetConfig.outputDir && fs.existsSync(assetConfig.outputDir) && fs.statSync(assetConfig.outputDir).isDirectory()) {
+        return assetConfig.outputDir;
+    }
+
+    return sourceDir;
+}
 
 // Delete old fingerprinted files
 function deleteOldFingerprints() {
-    ASSETS_TO_FINGERPRINT.forEach(originalPath => {
-        const dir  = path.dirname(originalPath);
-        const ext  = path.extname(originalPath);
-        const base = path.basename(originalPath, ext);
+    ASSETS_TO_FINGERPRINT.forEach(assetEntry => {
+        const assetConfig = normalizeAssetConfig(assetEntry);
+        const sourceDir = path.dirname(assetConfig.source);
+        const possibleDirs = [sourceDir];
 
-        const files = fs.readdirSync(dir);
+        if (assetConfig.outputDir && fs.existsSync(assetConfig.outputDir) && fs.statSync(assetConfig.outputDir).isDirectory()) {
+            possibleDirs.push(assetConfig.outputDir);
+        }
 
-        files.forEach(file => {
-            // match foogallery.fp-1a2b3c4d.css
-            const regex = new RegExp(`^${base}\\.v-[a-f0-9]{8}\\${ext}$`);
+        const ext  = path.extname(assetConfig.source);
+        const base = path.basename(assetConfig.source, ext);
 
-            if (regex.test(file)) {
-                fs.unlinkSync(path.join(dir, file));
-                console.log("Deleted old fingerprint:", file);
+        possibleDirs.forEach(dir => {
+            if (!fs.existsSync(dir)) {
+                return;
             }
+
+            const files = fs.readdirSync(dir);
+
+            files.forEach(file => {
+                // match foogallery.fp-1a2b3c4d.css
+                const regex = new RegExp(`^${base}\\.v-[a-f0-9]{8}\\${ext}$`);
+
+                if (regex.test(file)) {
+                    fs.unlinkSync(path.join(dir, file));
+                    console.log("Deleted old fingerprint:", path.join(dir, file));
+                }
+            });
         });
     });
 }
@@ -42,27 +93,29 @@ function fingerprintAssets(cb) {
 
     const manifest = {};
 
-    ASSETS_TO_FINGERPRINT.forEach(originalPath => {
-        if (!fs.existsSync(originalPath)) {
-            console.warn("Missing asset:", originalPath);
+    ASSETS_TO_FINGERPRINT.forEach(assetEntry => {
+        const assetConfig = normalizeAssetConfig(assetEntry);
+
+        if (!fs.existsSync(assetConfig.source)) {
+            console.warn("Missing asset:", assetConfig.source);
             return;
         }
 
-        const content = fs.readFileSync(originalPath);
+        const content = fs.readFileSync(assetConfig.source);
         const hash = crypto.createHash("md5").update(content).digest("hex").slice(0, 8);
 
-        const dir  = path.dirname(originalPath);
-        const ext  = path.extname(originalPath);
-        const base = path.basename(originalPath, ext);
+        const targetDir = getAssetTargetDir(assetConfig);
+        const ext  = path.extname(assetConfig.source);
+        const base = path.basename(assetConfig.source, ext);
 
         const fingerprintedName = `${base}.v-${hash}${ext}`;
-        const fingerprintedPath = path.join(dir, fingerprintedName);
+        const fingerprintedPath = path.join(targetDir, fingerprintedName);
 
         // Copy file to fingerprinted filename
-        fs.copyFileSync(originalPath, fingerprintedPath);
+        fs.copyFileSync(assetConfig.source, fingerprintedPath);
 
         // Add to manifest using full relative paths
-        manifest[originalPath] = fingerprintedPath;
+        manifest[assetConfig.source] = fingerprintedPath;
     });
 
     // Build PHP file contents
