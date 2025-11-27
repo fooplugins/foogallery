@@ -15553,6 +15553,9 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 self.elem.next.title = self.i18n.next;
             }
         },
+        getBulletTitle: function( str, num ) {
+            return str.replace( /\{ITEM}/g, `${ num }` );
+        },
         initPagination: function(){
             const self = this;
             const count = self.tmpl.items.count();
@@ -15560,10 +15563,10 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
                 const bullet = document.createElement( "button" );
                 bullet.type = "button";
                 bullet.classList.add( self.cls.bullet );
-                bullet.title = self.i18n.bullet.replace( /\{ITEM}/g, `${ i + 1 }` );
+                bullet.title = self.getBulletTitle( self.i18n.bullet, i + 1 );
                 if ( i === 0 ){
                     bullet.classList.add( self.cls.activeBullet );
-                    bullet.title = self.i18n.activeBullet.replace( /\{ITEM}/g, `${ i + 1 }` );
+                    bullet.title = self.getBulletTitle( self.i18n.activeBullet, i + 1 );
                 }
                 self._listeners.add( bullet, "click", function( event ){
                     event.preventDefault();
@@ -15853,7 +15856,11 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
             const ai = self.tmpl.items.indexOf( self.activeItem );
             Array.from( self.el.querySelectorAll( self.sel.bullet ) ).forEach( function( node, i ){
                 node.classList.remove( self.cls.activeBullet );
-                if ( i === ai ) node.classList.add( self.cls.activeBullet );
+                node.title = self.getBulletTitle( self.i18n.bullet, i + 1 );
+                if ( i === ai ){
+                    node.classList.add( self.cls.activeBullet );
+                    node.title = self.getBulletTitle( self.i18n.activeBullet, i + 1 );
+                }
             } );
             return true;
         },
