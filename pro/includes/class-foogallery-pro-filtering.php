@@ -264,6 +264,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-change-selector' => 'input',
 						'data-foogallery-preview'         => 'shortcode',
 						'data-foogallery-value-selector'  => 'input:checked',
+						'data-foogallery-persist'         => true,
 					)
 				);
 
@@ -322,7 +323,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_type',
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -347,7 +349,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_type',
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -370,7 +373,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_type',
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -397,7 +401,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_type',
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-persist'                  => true,
 					),
 					'class' => 'foogallery-radios-8em',
 				);
@@ -421,7 +426,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_type',
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -444,7 +450,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
 						'data-foogallery-value-selector'           => 'input:checked',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -467,7 +474,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
 						'data-foogallery-value-selector'           => 'input:checked',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -489,7 +497,9 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_hideall',
 						'data-foogallery-show-when-field-value'    => 'hide',
 						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-value-selector'           => 'input:checked',
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -534,7 +544,9 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_type',
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-value-selector'           => 'input:checked',
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -555,7 +567,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_type',
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -576,7 +589,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_type',
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -602,6 +616,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-change-selector'          => 'input',
 						'data-foogallery-preview'                  => 'shortcode',
 						'data-foogallery-value-selector'           => 'input:checked',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -627,6 +642,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-change-selector'          => 'input',
 						'data-foogallery-preview'                  => 'shortcode',
 						'data-foogallery-value-selector'           => 'input:checked',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -648,6 +664,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_adjust_size',
 						'data-foogallery-show-when-field-operator' => '===',
 						'data-foogallery-show-when-field-value'    => 'yes',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -669,6 +686,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_adjust_size',
 						'data-foogallery-show-when-field-operator' => '===',
 						'data-foogallery-show-when-field-value'    => 'yes',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -694,6 +712,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-change-selector'          => 'input',
 						'data-foogallery-preview'                  => 'shortcode',
 						'data-foogallery-value-selector'           => 'input:checked',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -715,6 +734,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_adjust_opacity',
 						'data-foogallery-show-when-field-operator' => '===',
 						'data-foogallery-show-when-field-value'    => 'yes',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -736,6 +756,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_adjust_opacity',
 						'data-foogallery-show-when-field-operator' => '===',
 						'data-foogallery-show-when-field-value'    => 'yes',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -762,7 +783,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_type',
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -780,7 +802,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_type',
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -800,6 +823,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-change-selector'          => 'input',
 						'data-foogallery-preview'                  => 'shortcode',
 						'data-foogallery-value-selector'           => 'input:checked',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -830,7 +854,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
 						'data-foogallery-value-selector'           => 'input:checked',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-persist'                  => true,
 					),
 					'class' => 'foogallery-radios-12em'
 				);
