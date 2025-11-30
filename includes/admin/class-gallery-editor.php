@@ -53,7 +53,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 
 			?>
 				<button type="button" class="button foogallery-modal-trigger"
-					title="<?php esc_attr_e( sprintf( __( 'Add Gallery From %s', 'foogallery' ), foogallery_plugin_name() ) ); ?>"
+					title="<?php echo esc_attr( sprintf( __( 'Add Gallery From %s', 'foogallery' ), foogallery_plugin_name() ) ); ?>"
 					style="padding-left: .4em;"
 					data-editor="<?php esc_attr_e( $editor_id ); ?>">
 					<span class="wp-media-buttons-icon dashicons dashicons-format-gallery"></span> <?php echo esc_html( sprintf( __( 'Add %s', 'foogallery' ), foogallery_plugin_name() ) ); ?>
