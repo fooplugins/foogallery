@@ -39,6 +39,7 @@ require_once FOOGALLERY_PATH . 'includes/class-thumbnail-dimensions.php';
 require_once FOOGALLERY_PATH . 'includes/class-foogallery-common-fields.php';
 require_once FOOGALLERY_PATH . 'includes/class-foogallery-lazyload.php';
 require_once FOOGALLERY_PATH . 'includes/class-foogallery-paging.php';
+require_once FOOGALLERY_PATH . 'includes/class-foogallery-license-constant-handler.php';
 require_once FOOGALLERY_PATH . 'includes/class-foogallery-attachment-custom-class.php';
 require_once FOOGALLERY_PATH . 'includes/class-foogallery-extensions-compatibility.php';
 require_once FOOGALLERY_PATH . 'includes/class-foogallery-crop-position.php';

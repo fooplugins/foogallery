@@ -103,10 +103,12 @@ if ( function_exists( 'foogallery_fs' ) ) {
 			 */
 			private function __construct() {
 
-				// include everything we need!
-				require_once FOOGALLERY_PATH . 'includes/includes.php';
+                                // include everything we need!
+                                require_once FOOGALLERY_PATH . 'includes/includes.php';
 
-				register_activation_hook( __FILE__, array( 'FooGallery_Plugin', 'activate' ) );
+                                register_activation_hook( __FILE__, array( 'FooGallery_Plugin', 'activate' ) );
+
+                                FooGallery_License_Constant_Handler::init();
 
 				// init FooPluginBase.
 				$this->init( FOOGALLERY_FILE, FOOGALLERY_SLUG, FOOGALLERY_VERSION, 'FooGallery' );
@@ -380,18 +382,20 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				restore_current_blog();
 			}
 
-			/**
-			 * Fired when the plugin is activated.
-			 *
-			 * @since    1.0.0
-			 *
-			 * @param    boolean $network_wide       True if WPMU superadmin uses
-			 *                                       "Network Activate" action, false if
-			 *                                       WPMU is disabled or plugin is
-			 *                                       activated on an individual blog.
-			 */
-			public static function activate( $network_wide ) {
-				if ( function_exists( 'is_multisite' ) && is_multisite() ) {
+				/**
+				 * Fired when the plugin is activated.
+				 *
+				 * @since    1.0.0
+				 *
+				 * @param    boolean $network_wide       True if WPMU superadmin uses
+				 *                                       "Network Activate" action, false if
+				 *                                       WPMU is disabled or plugin is
+				 *                                       activated on an individual blog.
+				 */
+				public static function activate( $network_wide ) {
+					FooGallery_License_Constant_Handler::flag_activation();
+
+                                if ( function_exists( 'is_multisite' ) && is_multisite() ) {
 
 					if ( $network_wide ) {
 
