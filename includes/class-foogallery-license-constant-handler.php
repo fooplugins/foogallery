@@ -19,7 +19,7 @@ class FooGallery_License_Constant_Handler {
 
     const LICENSE_CONSTANT = 'FOOGALLERY_LICENSE_KEY';
 
-    const OPTION_STATE = 'foogallery_constant_license_activation_state';
+    const OPTION_STATE = 'foogallery_license_activation_state';
 
     /**
      * Mark that activation just ran so we can attempt license application on the next admin load.
@@ -46,7 +46,6 @@ class FooGallery_License_Constant_Handler {
 
         $handler = new self();
 
-        add_action( 'foogallery_fs_loaded', array( $handler, 'license_key_auto_activation' ) );
         add_action( 'admin_init', array( $handler, 'license_key_auto_activation' ) );
     }
 
@@ -84,10 +83,6 @@ class FooGallery_License_Constant_Handler {
 
         $fs = foogallery_fs();
 
-        if ( ! $fs->has_api_connectivity() ) {
-            return;
-        }
-
         if ( $fs->has_active_valid_license() ) {
             $this->mark_state( 'done' );
 
@@ -95,7 +90,7 @@ class FooGallery_License_Constant_Handler {
         }
 
         try {
-            $next_page = $fs->activate_migrated_license( $license_key, null, null, array(), get_current_blog_id() );
+            $next_page = $fs->activate_migrated_license( $license_key, null, null, array(), null );
         } catch ( Exception $exception ) {
             $this->mark_state( 'unexpected_error' );
 
@@ -104,10 +99,6 @@ class FooGallery_License_Constant_Handler {
 
         if ( $fs->can_use_premium_code() ) {
             $this->mark_state( 'done' );
-
-            if ( is_string( $next_page ) ) {
-                fs_redirect( $next_page );
-            }
         } else {
             $this->mark_state( 'failed' );
         }
@@ -120,23 +111,31 @@ class FooGallery_License_Constant_Handler {
      *
      * @return string
      */
-    private function sanitize_license_constant( $license_constant ) {
-        if ( ! is_string( $license_constant ) ) {
-            return '';
-        }
+	    private function sanitize_license_constant( $license_constant ) {
+	        if ( ! is_string( $license_constant ) ) {
+	            return '';
+	        }
 
-        $license_key = trim( $license_constant );
+	        $license_key = trim( $license_constant );
 
-        if ( '' === $license_key ) {
-            return '';
-        }
+	        if ( '' === $license_key ) {
+	            return '';
+	        }
 
-        if ( ! preg_match( '/^[A-Za-z0-9-]{10,}$/', $license_key ) ) {
-            return '';
-        }
+	        if ( 32 !== strlen( $license_key ) ) {
+	            return '';
+	        }
 
-        return $license_key;
-    }
+	        if ( 0 !== strncmp( $license_key, 'sk_', 3 ) ) {
+	            return '';
+	        }
+
+	        if ( false !== strpbrk( $license_key, " \t\n\r\0\x0B" ) ) {
+	            return '';
+	        }
+
+	        return $license_key;
+	    }
 
     /**
      * Update the activation attempt state.
