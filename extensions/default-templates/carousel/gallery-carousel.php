@@ -4,6 +4,9 @@
  */
 global $current_foogallery;
 
+$text_prev = foogallery_get_setting( 'language_carousel_previous_text',  __( 'Previous', 'foogallery' ) );
+$text_next = foogallery_get_setting( 'language_carousel_next_text', __( 'Next', 'foogallery' ) );
+
 $lightbox = foogallery_gallery_template_setting_lightbox();
 $inverted = foogallery_gallery_template_setting( 'inverted', '' );
 $show_nav_arrows = foogallery_gallery_template_setting( 'show_nav_arrows', '' );
@@ -14,7 +17,7 @@ $foogallery_default_attributes = foogallery_build_container_attributes_safe( $cu
 $foogallery_active_class = 'fg-item-active';
 $args = foogallery_gallery_template_arguments();
 ?><div <?php echo $foogallery_default_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
-	<button type="button" class="fg-carousel-prev"></button>
+	<button type="button" class="fg-carousel-prev" title="<?php echo esc_attr( $text_prev ); ?>"></button>
 	<div class="fg-carousel-inner">
 		<div class="fg-carousel-center"></div>
 		<?php foreach ( foogallery_current_gallery_attachments_for_rendering() as $attachment ) {
@@ -25,5 +28,5 @@ $args = foogallery_gallery_template_arguments();
 	</div>
 	<div class="fg-carousel-bottom"></div>
 	<div class="fg-carousel-progress"></div>
-	<button type="button" class="fg-carousel-next"></button>
+	<button type="button" class="fg-carousel-next" title="<?php echo esc_attr( $text_next ); ?>"></button>
 </div>

@@ -161,11 +161,11 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings_Helper' ) ) {
 					if ( isset( $field['row_data'] ) ) {
 						$field_row_data = array_map( 'esc_attr', $field['row_data'] );
 						foreach ( $field_row_data as $field_row_data_name => $field_row_data_value ) {
-							$field_row_data_html .= " $field_row_data_name=" . '"' . $field_row_data_value . '"';
+							$field_row_data_html .= " $field_row_data_name=" . '"' . esc_attr( $field_row_data_value ) . '"';
 						}
 					}
 					?>
-					<tr class="<?php echo $field_class; ?>"<?php echo $field_row_data_html; ?>>
+					<tr data-foogallery-setting-id="<?php echo esc_attr( $field['id'] ); ?>" data-foogallery-setting-type="<?php echo esc_attr( $field_type ); ?>" class="<?php echo esc_attr( $field_class ); ?>"<?php echo $field_row_data_html; ?>>
 						<?php 
                         if ( 'warning' === $field_type ) { ?>
 							<td colspan="2">

@@ -438,6 +438,46 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 			);
 
 			$settings[] = array(
+				'id'      => 'language_carousel_previous_text',
+				'title'   => __( 'Carousel "Previous" Text', 'foogallery' ),
+				'desc'    => __( 'The text that is shown when you hover over the previous arrow in the carousel.'), 
+				'type'    => 'text',
+				'default' => __( 'Previous', 'foogallery' ),
+				'section' => __( 'Carousel Template', 'foogallery' ),
+				'tab'     => 'language'
+			);
+
+			$settings[] = array(
+				'id'      => 'language_carousel_next_text',
+				'title'   => __( 'Carousel "Next" Text', 'foogallery' ),
+				'desc'    => __( 'The text that is shown when you hover over the next arrow in the carousel.'), 
+				'type'    => 'text',
+				'default' => __( 'Next', 'foogallery' ),
+				'section' => __( 'Carousel Template', 'foogallery' ),
+				'tab'     => 'language'
+			);
+
+			$settings[] = array(
+				'id'      => 'language_carousel_bullet_text',
+				'title'   => __( 'Carousel "Bullet" Text', 'foogallery' ),
+				'desc'    => __( 'The text that is shown when you hover over the bullet in the carousel.'), 
+				'type'    => 'text',
+				'default' => __( 'Item {ITEM}', 'foogallery' ),
+				'section' => __( 'Carousel Template', 'foogallery' ),
+				'tab'     => 'language'
+			);
+
+			$settings[] = array(
+				'id'      => 'language_carousel_bullet_active_text',
+				'title'   => __( 'Carousel "Bullet" Active Text', 'foogallery' ),
+				'desc'    => __( 'The text that is shown when you hover over the bullet in the carousel that is currently active.'), 
+				'type'    => 'text',
+				'default' => __( 'Item {ITEM} - Current', 'foogallery' ),
+				'section' => __( 'Carousel Template', 'foogallery' ),
+				'tab'     => 'language'
+			);
+
+			$settings[] = array(
 				'id'      => 'language_images_count_none_text',
 				'title'   => __( 'Image Count None Text', 'foogallery' ),
 				'type'    => 'text',

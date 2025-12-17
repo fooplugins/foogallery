@@ -123,7 +123,7 @@ $premium_count = count( array_filter( $extensions, function ( $extension ) {
 	<?php
 	if ( isset( $result ) ) { ?>
 		<div class="foogallery-message-<?php echo esc_attr( $result['type'] ); ?>">
-			<p><?php echo esc_html( $result['message'] ); ?></p>
+			<p><?php echo wp_kses_post( $result['message'] ); ?></p>
 		</div>
 	<?php } ?>
 	<hr />

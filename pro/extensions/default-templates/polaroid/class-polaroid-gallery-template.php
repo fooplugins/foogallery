@@ -351,10 +351,10 @@ if ( !class_exists( 'FooGallery_Polaroid_Gallery_Template' ) ) {
                 ?>
                 <div class="notice error">
                     <p>
-                        <strong><?php _e('Polaroid Extension Redundant!', 'foogallery'); ?></strong><br/>
-                        <?php _e('You have both FooGallery PRO and the old Polaroid extension activated. FooGallery PRO includes the Polaroid PRO gallery template, which makes the free Polaroid extension redundant.', 'foogallery'); ?>
+                        <strong><?php esc_html_e('Polaroid Extension Redundant!', 'foogallery'); ?></strong><br/>
+                        <?php esc_html_e('You have both FooGallery PRO and the old Polaroid extension activated. FooGallery PRO includes the Polaroid PRO gallery template, which makes the free Polaroid extension redundant.', 'foogallery'); ?>
                         <br/>
-                        <?php _e('Please edit all galleries that use the old Polaroid gallery template and change them to use the Polaroid PRO gallery template. Once this is done, you can delete the free Polaroid extension.', 'foogallery'); ?>
+                        <?php esc_html_e('Please edit all galleries that use the old Polaroid gallery template and change them to use the Polaroid PRO gallery template. Once this is done, you can delete the free Polaroid extension.', 'foogallery'); ?>
                         <br/>
                     </p>
                 </div>

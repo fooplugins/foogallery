@@ -116,7 +116,7 @@ if ( ! class_exists( 'FooGallery_Admin_Menu' ) ) {
 		}
 
 		function create_demo_galleries() {
-			if ( check_admin_referer( 'foogallery_admin_import_demos' ) ) {
+			if ( check_ajax_referer( 'foogallery_admin_import_demos' ) ) {
 
 				$results = foogallery_create_demo_content();
 

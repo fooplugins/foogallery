@@ -31,9 +31,9 @@ $foogallery_imageviewer_attributes = foogallery_build_container_attributes_safe(
 			} ?>
 		</div>
 		<div class="fiv-ctrls">
-			<div class="fiv-prev"><span><?php echo esc_html( $text_prev ); ?></span></div>
+			<button type="button" class="fiv-prev" title="<?php echo esc_attr( $text_prev ); ?>"><span><?php echo esc_html( $text_prev ); ?></span></button>
 			<label class="fiv-count"><span class="fiv-count-current">1</span><?php echo esc_html( $text_of ); ?><span class="fiv-count-total"><?php echo esc_html( $current_foogallery->attachment_count() ); ?></span></label>
-			<div class="fiv-next"><span><?php echo esc_html( $text_next ); ?></span></div>
+			<button type="button" class="fiv-next" title="<?php echo esc_attr( $text_next ); ?>"><span><?php echo esc_html( $text_next ); ?></span></button>
 		</div>
 	</div>
 </div>

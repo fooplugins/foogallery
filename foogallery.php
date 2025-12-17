@@ -2,13 +2,14 @@
 /*
 Plugin Name: FooGallery
 Description: FooGallery is the most intuitive and extensible gallery management tool ever created for WordPress
-Version:     3.1.1
+Version:     3.1.4
 Author:      FooPlugins
 Plugin URI:  https://fooplugins.com/foogallery-wordpress-gallery-plugin/
 Author URI:  https://fooplugins.com
 Text Domain: foogallery
 License:     GPL-2.0+
 Domain Path: /languages
+Requires PHP: 5.4
 
 @fs_premium_only /pro/
  */
@@ -28,7 +29,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
 		define( 'FOOGALLERY_PATH', plugin_dir_path( __FILE__ ) );
 		define( 'FOOGALLERY_URL', plugin_dir_url( __FILE__ ) );
 		define( 'FOOGALLERY_FILE', __FILE__ );
-		define( 'FOOGALLERY_VERSION', '3.1.1' );
+		define( 'FOOGALLERY_VERSION', '3.1.4' );
 		define( 'FOOGALLERY_SETTINGS_VERSION', '2' );
 
 		require_once FOOGALLERY_PATH . 'includes/constants.php';
@@ -118,7 +119,6 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				// load text domain.
 				add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
-
 				// setup gallery post type.
 				new FooGallery_PostTypes();
 
@@ -137,6 +137,9 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				} else {
 					new FooGallery_Public();
 				}
+
+				// handles previews. Needed on both frontend and backend.
+				new FooGallery_Previews();
 
 				// initialize the thumbnail manager.
 				new FooGallery_Thumb_Manager();

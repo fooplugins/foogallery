@@ -291,7 +291,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 				<div style="clear: both;"></div> <!-- Clearfix to ensure the next section starts on a new line -->
 		
 				<!-- Selection Mode Section -->
-				<div class="foogallery-taxonomy-selection-mode-<?php echo $this->datasource_name; ?>" style="margin-top: 20px;">
+				<div class="foogallery-taxonomy-selection-mode-<?php echo esc_attr( $this->datasource_name ); ?>" style="margin-top: 20px;">
 					<p><?php esc_html_e( 'Selection mode changes which images are included in the gallery based off either a union (OR) or an intersect (AND) mode. If you choose AND, then only the images that have ALL the terms will be included in the gallery.', 'foogallery' ); ?></p>
 					
 					<h4><?php esc_html_e( 'Select Selection Mode:', 'foogallery' ); ?></h4>
@@ -339,26 +339,26 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 			<script type="text/javascript">
 				jQuery(function ($) {
 					$(document).on('foogallery-datasource-changed', function(e, activeDatasource) {
-						$('.foogallery-datasource-taxonomy-<?php echo $this->taxonomy; ?>').hide();
-						if ( activeDatasource !== '<?php echo $this->datasource_name; ?>' ) {
-							$('.foogallery-datasource-modal-container-inner.<?php echo $this->datasource_name; ?>').find('a.button-primary').removeClass('button-primary');
+						$('.foogallery-datasource-taxonomy-<?php echo esc_js( $this->taxonomy ); ?>').hide();
+						if ( activeDatasource !== '<?php echo esc_js( $this->datasource_name ); ?>' ) {
+							$('.foogallery-datasource-modal-container-inner.<?php echo esc_js( $this->datasource_name ); ?>').find('a.button-primary').removeClass('button-primary');
 						}
 					});
 
-					$(document).on('change', '.foogallery-taxonomy-selection-mode-<?php echo $this->datasource_name; ?> input[name="selection_mode"]', function() {
-						$('.foogallery-datasource-taxonomy-selection-mode-<?php echo $this->datasource_name; ?>').html( $(this).val() );
+					$(document).on('change', '.foogallery-taxonomy-selection-mode-<?php echo esc_js( $this->datasource_name ); ?> input[name="selection_mode"]', function() {
+						$('.foogallery-datasource-taxonomy-selection-mode-<?php echo esc_js( $this->datasource_name ); ?>').html( $(this).val() );
 
 						//Make sure we get the correct data.
-						foogallery_datasource_taxonomy_set_data( '<?php echo $this->datasource_name; ?>', '<?php echo $this->taxonomy; ?>' );
+						foogallery_datasource_taxonomy_set_data( '<?php echo esc_js( $this->datasource_name ); ?>', '<?php echo esc_js( $this->taxonomy ); ?>' );
 
 						$('.foogallery-datasource-modal-insert').removeAttr( 'disabled' );
 					});
 
-					$(document).on('foogallery-datasource-changed-<?php echo $this->datasource_name; ?>', function() {
-						var $container = $('.foogallery-datasource-taxonomy-<?php echo $this->taxonomy; ?>');
+					$(document).on('foogallery-datasource-changed-<?php echo esc_js( $this->datasource_name ); ?>', function() {
+						var $container = $('.foogallery-datasource-taxonomy-<?php echo esc_js( $this->taxonomy ); ?>');
 
 						var value = document.foogallery_datasource_value_temp;
-						var selectionMode = $('.foogallery-taxonomy-selection-mode-<?php echo $this->datasource_name; ?> input[name="selection_mode"]:checked').val();
+						var selectionMode = $('.foogallery-taxonomy-selection-mode-<?php echo esc_js( $this->datasource_name ); ?> input[name="selection_mode"]:checked').val();
 						if ( selectionMode === 'AND' ) {
 							value.selection_mode = 'AND';
 						} else {
@@ -372,7 +372,7 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 
 						$container.find('.foogallery-items-html').html(document.foogallery_datasource_value_temp.html);
 
-						$container.find('.foogallery-datasource-taxonomy-selection-mode-<?php echo $this->datasource_name; ?>').html(value.selection_mode)
+						$container.find('.foogallery-datasource-taxonomy-selection-mode-<?php echo esc_js( $this->datasource_name ); ?>').html(value.selection_mode)
 
 						$container.show();
 
@@ -384,48 +384,48 @@ if ( ! class_exists( 'FooGallery_Pro_Datasource_Taxonomy_Base' ) ) {
 					});
 				});
 			</script>
-			<div class="foogallery-datasource-taxonomy foogallery-datasource-taxonomy-<?php echo $this->taxonomy; ?>" data-media-title="<?php _e('Media Library', 'foogallery'); ?>" data-media-button="<?php _e('Close', 'foogallery'); ?>" <?php echo $show_container ? '' : 'style="display:none" '; ?>>
-				<h3><?php echo sprintf( __('Datasource : %s', 'foogallery'), $datasource['name'] ); ?></h3>
-				<p><?php echo sprintf( __('This gallery will be dynamically populated with all attachments assigned to the following %s:', 'foogallery'), $datasource['name'] ); ?></p>
+			<div class="foogallery-datasource-taxonomy foogallery-datasource-taxonomy-<?php echo esc_attr( $this->taxonomy ); ?>" data-media-title="<?php echo esc_attr__( 'Media Library', 'foogallery' ); ?>" data-media-button="<?php echo esc_attr__( 'Close', 'foogallery' ); ?>" <?php echo $show_container ? '' : 'style="display:none" '; ?>>
+				<h3><?php echo sprintf( esc_html__( 'Datasource : %s', 'foogallery' ), esc_html( $datasource['name'] ) ); ?></h3>
+				<p><?php echo sprintf( esc_html__( 'This gallery will be dynamically populated with all attachments assigned to the following %s:', 'foogallery' ), esc_html( $datasource['name'] ) ); ?></p>
 				
-				<div class="foogallery-items-html"><?php echo $html; ?></div>
+				<div class="foogallery-items-html"><?php echo wp_kses_post( $html ); ?></div>
 
 				<p>
-					<?php _e('Selection Mode:', 'foogallery'); ?>
-					<strong class="foogallery-datasource-taxonomy-selection-mode-<?php echo $this->datasource_name; ?>"><?php echo esc_html( $selection_mode ); ?></strong>
+					<?php esc_html_e( 'Selection Mode:', 'foogallery' ); ?>
+					<strong class="foogallery-datasource-taxonomy-selection-mode-<?php echo esc_attr( $this->datasource_name ); ?>"><?php echo esc_html( $selection_mode ); ?></strong>
 				</p>
 
-				<button type="button" class="button edit" data-datasource="<?php echo $this->datasource_name; ?>">
-					<?php echo sprintf( __( 'Change %s', 'foogallery' ), $datasource['name'] ); ?>
+				<button type="button" class="button edit" data-datasource="<?php echo esc_attr( $this->datasource_name ); ?>">
+					<?php echo sprintf( esc_html__( 'Change %s', 'foogallery' ), esc_html( $datasource['name'] ) ); ?>
 				</button>
 				
 				<button type="button" class="button remove">
-					<?php echo sprintf( __( 'Remove All %s', 'foogallery' ), $datasource['name'] ); ?>
+					<?php echo sprintf( esc_html__( 'Remove All %s', 'foogallery' ), esc_html( $datasource['name'] ) ); ?>
 				</button>
 				
 				<?php if ( $show_media_button ) { ?>
 				<button type="button" class="button media">
-					<?php _e( 'Open Media Library', 'foogallery' ); ?>
+					<?php esc_html_e( 'Open Media Library', 'foogallery' ); ?>
 				</button>
 				<?php } ?>
 				
 				<button type="button" class="button bulk_media_management">
-					<?php _e( 'Bulk Taxonomy Manager', 'foogallery' ); ?>
+					<?php esc_html_e( 'Bulk Taxonomy Manager', 'foogallery' ); ?>
 				</button>
 				
 				<button type="button" class="button help">
-					<?php _e( 'Show Help', 'foogallery' ); ?>
+					<?php esc_html_e( 'Show Help', 'foogallery' ); ?>
 				</button>
 
 				<div style="display: none" class="foogallery-datasource-taxonomy-help">
-					<h4><?php echo sprintf( __('%s Datasource Help', 'foogallery'), $datasource['name'] ); ?></h4>
-					<p><?php echo sprintf( __('You can change which %s are assigned to this gallery by clicking "Change %s".', 'foogalley' ), $datasource['name'], $datasource['name'] ); ?></p>
-					<p><?php echo sprintf( __('You can remove all %s from this gallery by clicking "Remove All %s".', 'foogalley' ), $datasource['name'], $datasource['name'] ); ?></p>
+					<h4><?php echo sprintf( esc_html__( '%s Datasource Help', 'foogallery' ), esc_html( $datasource['name'] ) ); ?></h4>
+					<p><?php echo sprintf( esc_html__( 'You can change which %s are assigned to this gallery by clicking "Change %s".', 'foogallery' ), esc_html( $datasource['name'] ), esc_html( $datasource['name'] ) ); ?></p>
+					<p><?php echo sprintf( esc_html__( 'You can remove all %s from this gallery by clicking "Remove All %s".', 'foogallery' ), esc_html( $datasource['name'] ), esc_html( $datasource['name'] ) ); ?></p>
 					<?php if ( $show_media_button ) { ?>
-					<p><?php echo sprintf( __('You can assign %s to attachments within the WordPress Media Library. Launch by clicking "Open Media Library".', 'foogalley' ), $datasource['name'] ); ?></p>
+					<p><?php echo sprintf( esc_html__( 'You can assign %s to attachments within the WordPress Media Library. Launch by clicking "Open Media Library".', 'foogallery' ), esc_html( $datasource['name'] ) ); ?></p>
 					<?php } ?>
-					<p><?php echo sprintf( __('When an attachment is assigned to one of the %s, it will automatically be shown in the gallery.', 'foogalley' ), $datasource['name'] ); ?></p>
-					<p><?php echo __('Click on the "Gallery Preview" to see which attachments will be loaded into the gallery.', 'foogallery'); ?></p>
+					<p><?php echo sprintf( esc_html__( 'When an attachment is assigned to one of the %s, it will automatically be shown in the gallery.', 'foogallery' ), esc_html( $datasource['name'] ) ); ?></p>
+					<p><?php esc_html_e( 'Click on the "Gallery Preview" to see which attachments will be loaded into the gallery.', 'foogallery' ); ?></p>
 				</div>
 			</div>
 			<?php

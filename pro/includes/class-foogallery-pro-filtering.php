@@ -15,8 +15,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 		function load_feature() {
             if ( foogallery_feature_enabled( 'foogallery-filtering' ) ) {
                 if ( is_admin() ) {
-					//add extra fields to the templates that support filtering
-					add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_filtering_fields' ), 10, 2 );
+                    //add extra fields to the templates that support filtering
+                    add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_filtering_fields' ), 10, 2 );
 	
 					//set the settings icon for filtering
 					add_filter( 'foogallery_gallery_settings_metabox_section_icon', array( $this, 'add_section_icons' ) );
@@ -24,18 +24,18 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 					//add a global setting to change the All filter
 					add_filter( 'foogallery_admin_settings_override', array( $this, 'add_language_settings' ), 30 );
 	
-					//output the multi-level filtering custom field
-					add_action( 'foogallery_render_gallery_template_field_custom', array( $this, 'render_multi_field' ), 10, 3 );
-	
-					//enqueue assets needed for the multi-level modal
-					add_action( 'foogallery_admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) );
+                    //output the multi-level filtering custom field
+                    add_action( 'foogallery_render_gallery_template_field_custom', array( $this, 'render_multi_field' ), 10, 3 );
+
+                    //enqueue assets needed for the multi-level modal
+                    add_action( 'foogallery_admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) );
 	
 					//output the modal
 					add_action( 'admin_footer', array( $this, 'render_multi_level_modal' ) );
 	
-					//ajax handler to render the modal content
-					add_action( 'wp_ajax_foogallery_multi_filtering_content', array( $this, 'ajax_load_modal_content' ) );
-				}
+                    //ajax handler to render the modal content
+                    add_action( 'wp_ajax_foogallery_multi_filtering_content', array( $this, 'ajax_load_modal_content' ) );
+                }
 	
 				//adds the filtering property to a FooGallery
 				add_action( 'foogallery_located_template', array( $this, 'determine_filtering' ), 10, 2 );
@@ -152,7 +152,12 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 							$classes[] = 'fg-search-' . $filtering_options['searchPosition'];
 						}
 
-						echo '<nav id="' . $foogallery->container_id() . '_filtering-' . $position . '" class="' . esc_attr( implode( ' ', $classes ) ) . '"></nav>';
+						$nav_id = $foogallery->container_id() . '_filtering-' . $position;
+						printf(
+							'<nav id="%1$s" class="%2$s"></nav>',
+							esc_attr( $nav_id ),
+							esc_attr( implode( ' ', $classes ) )
+						);
 					}
 				}
 			}
@@ -259,6 +264,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-change-selector' => 'input',
 						'data-foogallery-preview'         => 'shortcode',
 						'data-foogallery-value-selector'  => 'input:checked',
+						'data-foogallery-persist'         => true,
 					)
 				);
 
@@ -317,7 +323,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_type',
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -342,7 +349,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_type',
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -365,7 +373,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_type',
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -392,7 +401,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_type',
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-persist'                  => true,
 					),
 					'class' => 'foogallery-radios-8em',
 				);
@@ -416,7 +426,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_type',
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -439,7 +450,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
 						'data-foogallery-value-selector'           => 'input:checked',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -462,7 +474,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
 						'data-foogallery-value-selector'           => 'input:checked',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -484,7 +497,9 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_hideall',
 						'data-foogallery-show-when-field-value'    => 'hide',
 						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-value-selector'           => 'input:checked',
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -529,7 +544,9 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_type',
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-value-selector'           => 'input:checked',
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -550,7 +567,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_type',
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -571,7 +589,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_type',
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -597,6 +616,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-change-selector'          => 'input',
 						'data-foogallery-preview'                  => 'shortcode',
 						'data-foogallery-value-selector'           => 'input:checked',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -622,6 +642,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-change-selector'          => 'input',
 						'data-foogallery-preview'                  => 'shortcode',
 						'data-foogallery-value-selector'           => 'input:checked',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -643,6 +664,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_adjust_size',
 						'data-foogallery-show-when-field-operator' => '===',
 						'data-foogallery-show-when-field-value'    => 'yes',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -664,6 +686,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_adjust_size',
 						'data-foogallery-show-when-field-operator' => '===',
 						'data-foogallery-show-when-field-value'    => 'yes',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -689,6 +712,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-change-selector'          => 'input',
 						'data-foogallery-preview'                  => 'shortcode',
 						'data-foogallery-value-selector'           => 'input:checked',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -710,6 +734,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_adjust_opacity',
 						'data-foogallery-show-when-field-operator' => '===',
 						'data-foogallery-show-when-field-value'    => 'yes',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -731,6 +756,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_adjust_opacity',
 						'data-foogallery-show-when-field-operator' => '===',
 						'data-foogallery-show-when-field-value'    => 'yes',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -757,7 +783,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_type',
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -775,7 +802,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field'          => 'filtering_type',
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -795,6 +823,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-change-selector'          => 'input',
 						'data-foogallery-preview'                  => 'shortcode',
 						'data-foogallery-value-selector'           => 'input:checked',
+						'data-foogallery-persist'                  => true,
 					)
 				);
 
@@ -825,7 +854,8 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 						'data-foogallery-show-when-field-value'    => '',
 						'data-foogallery-change-selector'          => 'input',
 						'data-foogallery-value-selector'           => 'input:checked',
-						'data-foogallery-preview'                  => 'shortcode'
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-persist'                  => true,
 					),
 					'class' => 'foogallery-radios-12em'
 				);
@@ -1132,14 +1162,20 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 			        if ( isset( $levels ) ) {
 				        $has_levels = true;
 			            echo '<table style="margin-bottom: 10px;" class="filtering-multi-table wp-list-table striped widefat"><thead><tr>';
-			            echo '<th style="width: 10%;">' . __( 'Level #', 'foogallery' ) . '</th>';
-				        echo '<th style="width: 10%;">' . __( 'All Text', 'foogallery' ) . '</th>';
-				        echo '<th>' . __( 'Terms', 'foogallery' ) . '</th></th></thead><tbody>';
+			            echo '<th style="width: 10%;">' . esc_html__( 'Level #', 'foogallery' ) . '</th>';
+				        echo '<th style="width: 10%;">' . esc_html__( 'All Text', 'foogallery' ) . '</th>';
+				        echo '<th>' . esc_html__( 'Terms', 'foogallery' ) . '</th></tr></thead><tbody>';
 			            foreach ( $levels as $index => $level ) {
+							$level_all = isset( $level['all'] ) ? sanitize_text_field( $level['all'] ) : '';
+							$level_tags = array();
+							if ( isset( $level['tags'] ) && is_array( $level['tags'] ) ) {
+								$level_tags = array_map( 'sanitize_text_field', $level['tags'] );
+							}
 			                echo '<tr>';
-			                echo '<td><strong>' . ($index + 1) . '</strong></td>';
-				            echo '<td>' . $level['all'] . '</td>';
-				            echo '<td><code>' . implode(', ', $level['tags'] ) . '</code></td>';
+			                echo '<td><strong>' . esc_html( $index + 1 ) . '</strong></td>';
+				            echo '<td>' . esc_html( $level_all ) . '</td>';
+				            echo '<td><code>' . esc_html( implode( ', ', $level_tags ) ) . '</code></td>';
+							echo '</tr>';
                         }
 			            echo '</tbody></table>';
                     }
@@ -1147,14 +1183,15 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 
 			    if ( !$has_levels ) {
 				    echo '<table style="margin-bottom: 10px; display: none" class="filtering-multi-table wp-list-table striped widefat"><thead><tr>';
-				    echo '<th style="width: 10%;">' . __( 'Level #', 'foogallery' ) . '</th>';
-				    echo '<th style="width: 10%;">' . __( 'All Text', 'foogallery' ) . '</th>';
-				    echo '<th>' . __( 'Terms', 'foogallery' ) . '</th></th></thead><tbody>';
+				    echo '<th style="width: 10%;">' . esc_html__( 'Level #', 'foogallery' ) . '</th>';
+				    echo '<th style="width: 10%;">' . esc_html__( 'All Text', 'foogallery' ) . '</th>';
+				    echo '<th>' . esc_html__( 'Terms', 'foogallery' ) . '</th></tr></thead><tbody>';
 				    echo '</tbody></table>';
                 }
 
-				echo '<button class="button button-primary button-small filtering-multi-builder">' . __( 'Select Levels', 'foogallery' ) . '</button>';
-				echo '<input class="filtering-multi-input" type="hidden" name=' . esc_attr( FOOGALLERY_META_SETTINGS . '[' . $template['slug'] . '_filtering_multi_override]' ) . ' value="' . esc_html( $field['value'] ) . '" />';
+				echo '<button class="button button-primary button-small filtering-multi-builder">' . esc_html__( 'Select Levels', 'foogallery' ) . '</button>';
+				$value = isset( $field['value'] ) ? $field['value'] : '';
+				echo '<input class="filtering-multi-input" type="hidden" name=' . esc_attr( FOOGALLERY_META_SETTINGS . '[' . $template['slug'] . '_filtering_multi_override]' ) . ' value="' . esc_attr( $value ) . '" />';
 			}
 		}
 
@@ -1180,17 +1217,17 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 			}
 
 			?>
-			<div class="foogallery-multi-filtering-modal-wrapper" data-foogalleryid="<?php echo $post->ID; ?>" data-nonce="<?php echo wp_create_nonce( 'foogallery_multi_filtering_content' ); ?>" style="display: none;">
+			<div class="foogallery-multi-filtering-modal-wrapper" data-foogalleryid="<?php echo esc_attr( $post->ID ); ?>" data-nonce="<?php echo esc_attr( wp_create_nonce( 'foogallery_multi_filtering_content' ) ); ?>" style="display: none;">
 				<div class="media-modal wp-core-ui">
 					<button type="button" class="media-modal-close foogallery-multi-filtering-modal-close">
-						<span class="media-modal-icon"><span class="screen-reader-text"><?php _e( 'Close', 'foogallery' ); ?></span>
+						<span class="media-modal-icon"><span class="screen-reader-text"><?php esc_html_e( 'Close', 'foogallery' ); ?></span>
 					</button>
 					<div class="media-modal-content">
 						<div class="media-frame wp-core-ui">
 							<div class="foogallery-multi-filtering-modal-title">
-								<h1><?php _e('Multi-level Filtering Builder', 'foogallery'); ?></h1>
-								<a class="foogallery-multi-filtering-modal-reload button" href="#"><span style="padding-top: 4px;" class="dashicons dashicons-update"></span> <?php _e('Reload', 'foogallery'); ?></a>
-								<label for="foogallery-multi-filtering-modal-load-all"><?php _e('Load All', 'foogallery'); ?></label>
+								<h1><?php esc_html_e( 'Multi-level Filtering Builder', 'foogallery' ); ?></h1>
+								<a class="foogallery-multi-filtering-modal-reload button" href="#"><span style="padding-top: 4px;" class="dashicons dashicons-update"></span> <?php esc_html_e( 'Reload', 'foogallery' ); ?></a>
+								<label for="foogallery-multi-filtering-modal-load-all"><?php esc_html_e( 'Load All', 'foogallery' ); ?></label>
 									<input type="checkbox" id="foogallery-multi-filtering-modal-load-all" class="foogallery-multi-filtering-modal-load-all" value="1" />
 								</label>
 							</div>
@@ -1202,10 +1239,10 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 									<div class="media-toolbar-primary">
 										<a href="#"
 										   class="foogallery-multi-filtering-modal-close button button-large button-secondary"
-										   title="<?php esc_attr_e('Close', 'foogallery'); ?>"><?php _e('Close', 'foogallery'); ?></a>
+										   title="<?php esc_attr_e( 'Close', 'foogallery' ); ?>"><?php esc_html_e( 'Close', 'foogallery' ); ?></a>
                                         <a href="#"
                                            class="foogallery-multi-filtering-modal-set button button-large button-primary"
-                                           title="<?php esc_attr_e('Set Levels', 'foogallery'); ?>"><?php _e('Set Levels', 'foogallery'); ?></a>
+                                           title="<?php esc_attr_e( 'Set Levels', 'foogallery' ); ?>"><?php esc_html_e( 'Set Levels', 'foogallery' ); ?></a>
 									</div>
 								</div>
 							</div>
@@ -1249,7 +1286,7 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 				$this->render_content_level( $index + 1, $level, $terms );
 			}
 
-			echo '<a href="#" class="button button-primary foogallery-multi-filtering-add-level">' . __('Add Another Level') . '</a>';
+			echo '<a href="#" class="button button-primary foogallery-multi-filtering-add-level">' . esc_html__( 'Add Another Level', 'foogallery' ) . '</a>';
 
 			echo '</div>';
 		}
@@ -1265,13 +1302,17 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 		private function render_content_level( $index, $level, $terms, $class='foogallery-multi-filtering-modal-content-level' ) {
 			echo '<div class="' . esc_attr( $class ) . '">';
 
-			echo '<h3>' . __( 'Level', 'foogallery' ) . ' <span class="foogallery-multi-filtering-modal-content-level-count">' . esc_html( $index ) . '</span>';
-			echo '<a href="#" class="foogallery-multi-filtering-modal-content-level-remove" title="' . __('Remove Level', 'foogallery') . '"><span class="dashicons dashicons-no-alt"></span></a>';
+			echo '<h3>' . esc_html__( 'Level', 'foogallery' ) . ' <span class="foogallery-multi-filtering-modal-content-level-count">' . esc_html( $index ) . '</span>';
+			echo '<a href="#" class="foogallery-multi-filtering-modal-content-level-remove" title="' . esc_attr__( 'Remove Level', 'foogallery' ) . '"><span class="dashicons dashicons-no-alt"></span></a>';
 			echo '</h3>';
 
-			echo '<label>' . sprintf( __( 'Level %s "All" Text : ' , 'foogallery' ), '<span class="foogallery-multi-filtering-modal-content-level-count">' . esc_html( $index ) . '</span>' ) . '</label>';
+			$label_text = sprintf(
+				__( 'Level %s "All" Text : ' , 'foogallery' ),
+				'<span class="foogallery-multi-filtering-modal-content-level-count">' . esc_html( $index ) . '</span>'
+			);
+			echo '<label>' . wp_kses_post( $label_text ) . '</label>';
 
-			$all_value = array_key_exists( 'all', $level ) ? $level['all'] : __('All', 'foogallery');
+			$all_value = array_key_exists( 'all', $level ) ? sanitize_text_field( $level['all'] ) : __( 'All', 'foogallery' );
 
 			echo '<input type="text" value="' . esc_html( $all_value ) . '"/>';
 
@@ -1379,15 +1420,15 @@ if ( ! class_exists( 'FooGallery_Pro_Filtering' ) ) {
 
 				echo '<div class="foogallery-multi-filtering-modal-sidebar">';
 				echo '<div class="foogallery-multi-filtering-modal-sidebar-inner">';
-				echo '<h2>' . __( 'Multi Level Filtering Help', 'foogallery' ) . '</h2>';
-				echo '<p>' . __( 'To add a new level, click on the "Add Another Level" button on the left.', 'foogallery' ) . '</p>';
-				echo '<p>' . __( 'For each level that you add, you can override the "All" text for that level.', 'foogallery' ) . '</p>';
-				echo '<p>' . __( 'Select the terms for each level by clicking on them. They will change to a selected state. To unselect a term, click on it again.', 'foogallery' ) . '</p>';
-				echo '<p>' . __( 'Once you select a term, it will not be available for the other levels.', 'foogallery' ) . '</p>';
-				echo '<p>' . __( 'You can sort the terms by dragging and dropping them.', 'foogallery' ) . '</p>';
-				echo '<p>' . __( 'To remove a level, click on the small "x" button next to the level title.', 'foogallery' ) . '</p>';
-				echo '<p>' . __( 'If you want to undo any changes, click the "Reload" button at the top.', 'foogallery' ) . '</p>';
-				echo '<p>' . __( 'Once you are happy with your levels, click the "Set Levels" button below.', 'foogallery' ) . '</p>';
+				echo '<h2>' . esc_html__( 'Multi Level Filtering Help', 'foogallery' ) . '</h2>';
+				echo '<p>' . esc_html__( 'To add a new level, click on the "Add Another Level" button on the left.', 'foogallery' ) . '</p>';
+				echo '<p>' . esc_html__( 'For each level that you add, you can override the "All" text for that level.', 'foogallery' ) . '</p>';
+				echo '<p>' . esc_html__( 'Select the terms for each level by clicking on them. They will change to a selected state. To unselect a term, click on it again.', 'foogallery' ) . '</p>';
+				echo '<p>' . esc_html__( 'Once you select a term, it will not be available for the other levels.', 'foogallery' ) . '</p>';
+				echo '<p>' . esc_html__( 'You can sort the terms by dragging and dropping them.', 'foogallery' ) . '</p>';
+				echo '<p>' . esc_html__( 'To remove a level, click on the small "x" button next to the level title.', 'foogallery' ) . '</p>';
+				echo '<p>' . esc_html__( 'If you want to undo any changes, click the "Reload" button at the top.', 'foogallery' ) . '</p>';
+				echo '<p>' . esc_html__( 'Once you are happy with your levels, click the "Set Levels" button below.', 'foogallery' ) . '</p>';
 				echo '</div>';
 				echo '</div>';
 			}

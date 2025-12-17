@@ -3,8 +3,8 @@ Contributors: fooplugins, bradvin, steveush
 Donate link: https://fooplugins.com
 Tags: gallery, image-gallery, photo-gallery, responsive-gallery, lightbox
 Requires at least: 5.3
-Tested up to: 6.8
-Stable tag: 3.1.1
+Tested up to: 6.9
+Stable tag: 3.1.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -283,6 +283,28 @@ Yes. FooGallery does not collect visitor data, and admin tracking is optional.
 Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 3.1.4 =
+
+Biggest features in this release :
+
+1. A new way for foogallery assets to be enqueued (which prevents caching issues after plugin updates).
+2. The new Media Category "Folder" sidebar feature, that now shows in the attachment modal (PRO Expert Plan).
+3. A number of quality-of-life tweaks to make the gallery editing experience better.
+
+* Date Updated : 26 Nov 2025
+* Added : FooGallery assets now enqueue from fingerprinted files, to prevent issues when updating the plugin.
+* Update : Attachment modal enhancement - shows the selected attachments instead of using saved attachments (better previews).
+* Update : Attachment modal enhancement - allows for 'wrap' navigation when navigating between attachments.
+* Update : Made gallery previews more reliable with settings that control features that use AJAX requests.
+* Update : Improved accessibility on Image Viewer and Carousel templates.
+* Update : Improved gallery editing experience by persisting certain settings when changing gallery layouts, eg. pagination, filtering.
+* Update : Improved gallery editing experience by allowing certain changes when in preview (e.g. product info and social features).
+[//]: # fs_premium_only_begin
+* Fixed: Multiple fixes for Plugin Check requirements.
+* Added: [Expert Plan] Added new Media Category "Folder" sidebar feature, that now shows in the attachment modal.
+* Added: [Commerce Plan] Added gallery setting "Lightbox Display" to change the Cart Panel from overlay to inline. Default is inline, which pushes the content over when opened.
+[//]: # fs_premium_only_end
 
 = 3.1.1 =
 

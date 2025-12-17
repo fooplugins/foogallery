@@ -505,6 +505,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			if ( 'none' !== $ecommerce_lightbox_product_information && function_exists( 'wc_get_cart_url' ) ) {
 				$time                   = time();
 				$options['cart']        = $ecommerce_lightbox_product_information;
+				$options['cartOverlay'] = foogallery_gallery_template_setting( 'ecommerce_lightbox_product_information_display', '' ) === 'overlay';
 				$options['cartVisible'] = true;
 				$options['cartTimeout'] = $time;
 				$options['cartNonce']   = wp_create_nonce( $time . 'foogallery_product_variations' );
@@ -1202,6 +1203,29 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 					),
 				);
 
+				$new_fields[] = [
+					'id'       => 'ecommerce_lightbox_product_information_display',
+					'title'    => __( 'Lightbox Display', 'foogallery-social' ),
+					'desc'     => __( 'Choose how to display the product information panel inside the lightbox.', 'foogallery-social' ),
+					'section'  => __( 'Ecommerce', 'foogallery' ),
+					'subsection' => array( 'ecommerce-lightbox' => __( 'Lightbox', 'foogallery' ) ),
+					'default'  => '',
+					'type'     => 'radio',
+					'choices'  => [
+						'overlay' => [ 'label' => __( 'Overlay', 'foogallery-social' ), 'tooltip' => __( 'Display the product information panel over the image.', 'foogallery-social' ) ],
+						'' => [ 'label' => __( 'Inline', 'foogallery-social' ), 'tooltip' => __( 'Display the product information panel inline, which will push the image over when opened.', 'foogallery-social' ) ]
+					],
+					'row_data' => [
+						'data-foogallery-hidden'                   => true,
+						'data-foogallery-show-when-field'          => 'ecommerce_lightbox_product_information',
+						'data-foogallery-show-when-field-operator' => '!==',
+						'data-foogallery-show-when-field-value'    => 'none',
+						'data-foogallery-change-selector'          => 'input:radio',
+						'data-foogallery-preview'                  => 'shortcode',
+						'data-foogallery-value-selector'           => 'input:checked',
+					],
+				];
+
 				$new_fields[] = array(
 					'id'       => 'ecommerce_lightbox_product_description_type',
 					'title'    => __( 'Product Description Type', 'foogallery' ),
@@ -1587,7 +1611,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
         public function attachment_modal_display_tab() { ?>
             <div class="foogallery-img-modal-tab-wrapper" data-tab_id="foogallery-panel-commerce">
                 <input type="radio" name="tabset" id="foogallery-tab-commerce" aria-controls="foogallery-panel-commerce">
-                <label for="foogallery-tab-commerce"><?php _e('Ecommerce', 'foogallery'); ?></label>
+                <label for="foogallery-tab-commerce"><?php esc_html_e('Ecommerce', 'foogallery'); ?></label>
             </div>
         <?php }
 
@@ -1626,14 +1650,14 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
                                 <?php esc_html_e( 'Force a specific ribbon to always show for this image.', 'foogallery' ); ?>
                             </p>
 							<span class="setting has-description" data-setting="ribbon-text">
-								<label for="attachment-details-two-column-ribbon-text" class="name"><?php _e('Ribbon Text', 'foogallery'); ?></label>
+								<label for="attachment-details-two-column-ribbon-text" class="name"><?php esc_html_e('Ribbon Text', 'foogallery'); ?></label>
 								<input type="text" name="foogallery[ribbon-text]" id="attachment-details-two-column-ribbon-text" value="<?php echo esc_attr( $modal_data['foogallery_ribbon_text'] ); ?>">
 							</span>
 							<p class="description">
                                 <?php esc_html_e( 'The ribbon text that will show, if a ribbon is selected above.', 'foogallery' ); ?>
                             </p>
 							<span class="setting has-description" data-setting="product-id">
-								<label for="attachment-details-two-column-product-id" class="name"><?php _e('Product ID', 'foogallery'); ?></label>
+								<label for="attachment-details-two-column-product-id" class="name"><?php esc_html_e('Product ID', 'foogallery'); ?></label>
 								<input type="text" name="foogallery[product-id]" id="attachment-details-two-column-product-id" value="<?php echo esc_attr( $modal_data['foogallery_product'] ); ?>">
 							</span>
 							<p class="description">
@@ -1715,7 +1739,7 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			return $modal_data;
 		}
 
-				/**
+		/**
 		 * Override if the gallery html cache is disabled
 		 *
 		 * @param $disabled bool

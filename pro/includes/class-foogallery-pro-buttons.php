@@ -148,7 +148,7 @@ if ( ! class_exists( 'FooGallery_Pro_Buttons' ) ) {
 		public function add_button_fields_to_product() {
 			?>
 			<p>
-				<?php _e('You can override the buttons shown for this product within the gallery.', 'foogallery '); ?>
+				<?php esc_html_e('You can override the buttons shown for this product within the gallery.', 'foogallery '); ?>
 			</p>
 			<?php
 

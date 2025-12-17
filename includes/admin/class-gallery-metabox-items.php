@@ -2,8 +2,6 @@
 /**
  * Class to handle adding the Items metabox to a gallery
  */
-
-
 if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Items' ) ) {
 
     class FooGallery_Admin_Gallery_MetaBox_Items {
@@ -159,7 +157,11 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Items' ) ) {
                         echo '<pre style="display: none">' . esc_html__('Preview Debug Arguments:', 'foogallery') . '<br>' . esc_html( print_r( $args, true ) ) . '</pre> <!-- phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -->';
                     }
 
+					do_action( 'foogallery_preview_before_render', $foogallery_id, $args );
+
 					foogallery_render_gallery( $foogallery_id, $args );
+
+					do_action( 'foogallery_preview_after_render', $foogallery_id, $args );
 
 					$foogallery_gallery_preview = false;
 

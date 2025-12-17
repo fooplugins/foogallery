@@ -1,0 +1,237 @@
+.foogallery-browser-with-folders {
+    display: flex;
+    gap: 12px;
+}
+
+.foogallery-browser-with-folders .foogallery-media-folders-wrapper {
+    flex: 0 0 220px;
+    border-right: 1px solid #e2e4e7;
+    padding: 12px 12px 12px 0;
+    margin-right: 0;
+    overflow-y: auto;
+}
+
+.foogallery-browser-with-folders .attachments-wrapper {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+/* Override core absolute positioning so the grid sits next to the folders. Specificity beats core selectors. */
+.attachments-browser.has-load-more .foogallery-browser-with-folders .attachments-wrapper,
+.attachments-browser:not(.has-load-more) .foogallery-browser-with-folders .attachments,
+.attachments-browser .foogallery-browser-with-folders .attachments {
+    left: 240px !important;
+}
+
+.foogallery-attachment-dragging .uploader-inline,
+.foogallery-attachment-dragging .media-frame-uploader {
+    display: none !important;
+}
+
+.foogallery-has-folders .attachments-browser .media-toolbar {
+    left: 240px !important;
+}
+
+.foogallery-media-folders-header {
+    margin-bottom: 8px;
+	margin-left: 8px;
+	display: flex;
+	justify-content: space-between;
+}
+
+.foogallery-folder-title {
+    font-weight: 600;
+}
+
+.foogallery-media-folders,
+.foogallery-media-folders-children {
+    list-style: none;
+    margin: 0;
+    padding-left: 10px;
+}
+
+.foogallery-media-folders-children {
+    padding-left: 12px;
+}
+
+.foogallery-folder-node {
+    margin: 0;
+    padding: 2px 0;
+}
+
+.foogallery-folder-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    min-height: 28px;
+}
+
+.foogallery-folder-actions {
+    margin-left: auto;
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.foogallery-folder-row:hover {
+    background: #f8f9fa;
+}
+
+.foogallery-folder-node.is-active > .foogallery-folder-row {
+    background: #eff4f8;
+}
+
+.foogallery-folder-label {
+    text-decoration: none;
+    outline: none !important;
+    flex: 1 1 auto;
+}
+
+.foogallery-folder-node.is-active > .foogallery-folder-row .foogallery-folder-label {
+    font-weight: bold;
+}
+
+.foogallery-folder-node.is-drag-over > .foogallery-folder-row {
+    background: #e8f0fe;
+    border-color: #6fa4f2;
+    border-style: dashed;
+}
+
+.foogallery-folder-dropzone {
+    height: 2px;
+    margin: 1px 0;
+    border-top: 2px solid transparent;
+}
+
+.foogallery-folder-dropzone.is-active {
+    border-top-color: #1e73be;
+}
+
+.foogallery-folder-label-container.is-editing .foogallery-folder-label {
+    display: none;
+}
+
+.foogallery-folder-drag-handle {
+    margin-right: 4px;
+    color: #aaa;
+    cursor: move;
+	font-size: 16px;
+	width: unset;
+	height: unset;
+}
+
+.foogallery-folder-count {
+    margin-left: 6px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    background: #eef1f4;
+    color: #555;
+    font-size: 11px;
+    line-height: 1.2;
+    flex-shrink: 0;
+}
+
+.foogallery-folder-edit-input,
+.foogallery-folder-new-input {
+    width: 100%;
+    max-width: 200px;
+}
+
+.foogallery-folder-actions button {
+    border: none;
+    background: none;
+    padding: 4px;
+    line-height: 1;
+    cursor: pointer;
+	color: #2271b1;
+	border-radius: 3px;
+	cursor: pointer;
+}
+
+.foogallery-folder-actions button:hover {
+	color: #124361;
+	background: white;
+}
+
+.foogallery-folder-actions .dashicons {
+    font-size: 16px;
+	width: unset;
+	height: unset;
+}
+
+/* Prevent drag flicker by disabling pointer events on action controls while dragging attachments. */
+.foogallery-attachment-dragging .foogallery-folder-actions,
+.foogallery-attachment-dragging .foogallery-folder-drag-handle,
+.foogallery-attachment-dragging .foogallery-folder-count {
+    pointer-events: none;
+}
+
+/* Hide core dropzone while dragging folders. */
+.foogallery-folder-dragging .uploader-inline {
+    display: none !important;
+}
+
+.foogallery-media-folders-status {
+    margin-left: auto;
+    font-size: 12px;
+    color: #aaa;
+    text-align: right;
+}
+
+/* Keep folders visible above the modal footer and allow scrolling when tall. */
+.foogallery-has-folders .foogallery-media-folders-wrapper {
+    max-height: calc(100vh - 220px);
+    padding-bottom: 72px;
+}
+
+.foogallery-folder-help-toggle {
+    border: none;
+    padding: 0;
+    background: none;
+}
+
+.foogallery-folder-help-toggle .dashicons {
+    font-size: 18px;
+	color: #ddd;
+}
+
+.foogallery-folder-help {
+    padding: 8px;
+    border-radius: 8px;
+    border: solid 1px #ddd;
+    background: #eee;
+    margin: 0 0 0px 10px;
+}
+
+.foogallery-folder-help ul {
+	list-style: disc;
+	margin: 0;
+}
+
+.foogallery-folder-help ul li {
+	margin-left: 15px;
+}
+
+.foogallery-folder-help .dashicons {
+	font-size: 12px;
+	width: unset;
+	height: unset;
+	line-height: 12px;
+}
+
+@media screen and (max-width: 960px) {
+    .foogallery-browser-with-folders {
+        flex-direction: column;
+    }
+
+    .foogallery-browser-with-folders .foogallery-media-folders-wrapper {
+        border-right: none;
+        border-bottom: 1px solid #e2e4e7;
+        margin-right: 0;
+        padding: 0 0 12px;
+    }
+}
