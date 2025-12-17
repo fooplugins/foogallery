@@ -292,6 +292,7 @@ This release includes a change in how FooGallery assets are loaded to make way f
 * Added: Added new filter 'foogallery_attachments_pre_sort' that runs before a gallery sorts attachments.
 * Added: Added new filters for asset management: 'foogallery_feature_style_deps' and 'foogallery_feature_script_deps'. These allow you to add dependencies to the scripts and styles for a feature.
 * Added: Addedd page argument to foogallery shortcode, to allow only a specific page of attachments to be shown.
+* Added: Allow license key to be activated by defining FOOGALLERY_LICENSE_KEY in wp-config.php 
 * Update: Updated the way FooGallery enqueues scripts and styles. The FooGallery core script is now split into 2 scripts.
 * Fixed: Fixed bug where captions were being limited to 2 lines by default, even if no limiting was set.
 * Fixed: Made password protect code backwards compatible with WP 5.9
