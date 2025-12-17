@@ -103,12 +103,12 @@ if ( function_exists( 'foogallery_fs' ) ) {
 			 */
 			private function __construct() {
 
-                                // include everything we need!
-                                require_once FOOGALLERY_PATH . 'includes/includes.php';
+				// include everything we need!
+				require_once FOOGALLERY_PATH . 'includes/includes.php';
 
-                                register_activation_hook( __FILE__, array( 'FooGallery_Plugin', 'activate' ) );
+				register_activation_hook( __FILE__, array( 'FooGallery_Plugin', 'activate' ) );
 
-                                FooGallery_License_Constant_Handler::init();
+				FooGallery_License_Constant_Handler::init();
 
 				// init FooPluginBase.
 				$this->init( FOOGALLERY_FILE, FOOGALLERY_SLUG, FOOGALLERY_VERSION, 'FooGallery' );
@@ -223,9 +223,9 @@ if ( function_exists( 'foogallery_fs' ) ) {
                 $extensions[] = array(
                     'slug' => 'foogallery-bulk-copy',
                     'categories' => array( 'Premium' ),
-                    'title' => __( 'Bulk Copy', 'foogallery' ),
+                    'title' => foogallery__( 'Bulk Copy', 'foogallery' ),
                     'description' => $pro_features['bulk_copy']['desc'],
-                    'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                    'external_link_text' => foogallery__( 'Read documentation', 'foogallery' ),
                     'external_link_url' => $pro_features['bulk_copy']['link'],
                     'dashicon'          => 'dashicons-admin-page',
                     'tags' => array( 'Premium' ),
@@ -235,9 +235,9 @@ if ( function_exists( 'foogallery_fs' ) ) {
                 $extensions[] = array(
                     'slug' => 'foogallery-whitelabeling',
                     'categories' => array( 'Premium' ),
-                    'title' => __( 'White Labeling', 'foogallery' ),
+                    'title' => foogallery__( 'White Labeling', 'foogallery' ),
                     'description' => $pro_features['whitelabeling']['desc'],
-                    'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                    'external_link_text' => foogallery__( 'Read documentation', 'foogallery' ),
                     'external_link_url' => $pro_features['whitelabeling']['link'],
                     'dashicon'          => 'dashicons-tag',
                     'tags' => array( 'Premium' ),
@@ -247,9 +247,9 @@ if ( function_exists( 'foogallery_fs' ) ) {
                 $extensions[] = array(
                     'slug' => 'foogallery-exif',
                     'categories' => array( 'Premium' ),
-                    'title' => __( 'EXIF', 'foogallery' ),
+                    'title' => foogallery__( 'EXIF', 'foogallery' ),
                     'description' => $pro_features['exif']['desc'],
-                    'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                    'external_link_text' => foogallery__( 'Read documentation', 'foogallery' ),
                     'external_link_url' => $pro_features['exif']['link'],
                     'dashicon'          => 'dashicons-camera',
                     'tags' => array( 'Premium' ),
@@ -259,9 +259,9 @@ if ( function_exists( 'foogallery_fs' ) ) {
                 $extensions[] = array(
                     'slug' => 'foogallery-filtering',
                     'categories' => array( 'Premium' ),
-                    'title' => __( 'Filtering', 'foogallery' ),
+                    'title' => foogallery__( 'Filtering', 'foogallery' ),
                     'description' => $pro_features['filtering']['desc'],
-                    'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                    'external_link_text' => foogallery__( 'Read documentation', 'foogallery' ),
                     'external_link_url' => $pro_features['filtering']['link'],
                     'dashicon'          => 'dashicons-filter',
                     'tags' => array( 'Premium' ),
@@ -271,9 +271,9 @@ if ( function_exists( 'foogallery_fs' ) ) {
                 $extensions[] = array(
                     'slug' => 'foogallery-gallery-blueprints',
                     'categories' => array( 'Premium' ),
-                    'title' => __( 'Gallery Blueprints', 'foogallery' ),
+                    'title' => foogallery__( 'Gallery Blueprints', 'foogallery' ),
                     'description' => $pro_features['gallery_blueprints']['desc'],
-                    'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                    'external_link_text' => foogallery__( 'Read documentation', 'foogallery' ),
                     'external_link_url' => $pro_features['gallery_blueprints']['link'],
                     'dashicon'          => 'dashicons-networking',
                     'tags' => array( 'Premium' ),
@@ -283,9 +283,9 @@ if ( function_exists( 'foogallery_fs' ) ) {
                 $extensions[] = array(
                     'slug' => 'foogallery-paging',
                     'categories' => array( 'Premium' ),
-                    'title' => __( 'Pagination', 'foogallery' ),
+                    'title' => foogallery__( 'Pagination', 'foogallery' ),
                     'description' => $pro_features['pagination']['desc'],
-                    'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                    'external_link_text' => foogallery__( 'Read documentation', 'foogallery' ),
                     'external_link_url' => $pro_features['pagination']['link'],
                     'dashicon'          => 'dashicons-arrow-right-alt',
                     'tags' => array( 'Premium' ),
@@ -295,9 +295,9 @@ if ( function_exists( 'foogallery_fs' ) ) {
                 $extensions[] = array(
                     'slug' => 'foogallery-protection',
                     'categories' => array( 'Premium' ),
-                    'title' => __( 'Protection', 'foogallery' ),
+                    'title' => foogallery__( 'Protection', 'foogallery' ),
                     'description' => $pro_features['protection']['desc'],
-                    'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                    'external_link_text' => foogallery__( 'Read documentation', 'foogallery' ),
                     'external_link_url' => $pro_features['protection']['link'],
                     'dashicon'          => 'dashicons-lock',
                     'tags' => array( 'Premium' ),
@@ -307,9 +307,9 @@ if ( function_exists( 'foogallery_fs' ) ) {
                 $extensions[] = array(
                     'slug' => 'foogallery-video',
                     'categories' => array( 'Premium' ),
-                    'title' => __( 'Video', 'foogallery' ),
+                    'title' => foogallery__( 'Video', 'foogallery' ),
                     'description' => $pro_features['video']['desc'],
-                    'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                    'external_link_text' => foogallery__( 'Read documentation', 'foogallery' ),
                     'external_link_url' => $pro_features['video']['link'],
                     'dashicon'          => 'dashicons-video-alt3',
                     'tags' => array( 'Premium' ),
@@ -319,9 +319,9 @@ if ( function_exists( 'foogallery_fs' ) ) {
                 $extensions[] = array(
                     'slug' => 'foogallery-woocommerce',
                     'categories' => array( 'Premium' ),
-                    'title' => __( 'Ecommerce', 'foogallery' ),
+                    'title' => foogallery__( 'Ecommerce', 'foogallery' ),
                     'description' => $pro_features['ecommerce']['desc'],
-                    'external_link_text' => __( 'Read documentation', 'foogallery' ),
+                    'external_link_text' => foogallery__( 'Read documentation', 'foogallery' ),
                     'external_link_url' => $pro_features['ecommerce']['link'],
                     'dashicon'          => 'dashicons-cart',
                     'tags' => array( 'Premium' ),
@@ -382,20 +382,20 @@ if ( function_exists( 'foogallery_fs' ) ) {
 				restore_current_blog();
 			}
 
-				/**
-				 * Fired when the plugin is activated.
-				 *
-				 * @since    1.0.0
-				 *
-				 * @param    boolean $network_wide       True if WPMU superadmin uses
-				 *                                       "Network Activate" action, false if
-				 *                                       WPMU is disabled or plugin is
-				 *                                       activated on an individual blog.
-				 */
-				public static function activate( $network_wide ) {
-					FooGallery_License_Constant_Handler::flag_activation();
+			/**
+			 * Fired when the plugin is activated.
+			 *
+			 * @since    1.0.0
+			 *
+			 * @param    boolean $network_wide       True if WPMU superadmin uses
+			 *                                       "Network Activate" action, false if
+			 *                                       WPMU is disabled or plugin is
+			 *                                       activated on an individual blog.
+			 */
+			public static function activate( $network_wide ) {
+				FooGallery_License_Constant_Handler::flag_activation();
 
-                                if ( function_exists( 'is_multisite' ) && is_multisite() ) {
+				if ( function_exists( 'is_multisite' ) && is_multisite() ) {
 
 					if ( $network_wide ) {
 
