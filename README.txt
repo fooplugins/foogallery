@@ -284,6 +284,13 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 3.1.5 =
+
+This release improved the gallery import process (inside the Import/Export feature) to be more reliable and handle large imports, with progress of what has been done along the way.
+
+* Date Updated : 21 Dec 2025
+* Update : Overhaul of the gallery import (inside the Import/Export feature) to better cater for large galleries. It now shows import progress, has better error handling and also allow you to resume the import if you refresh the page.
+
 = 3.1.4 =
 
 Biggest features in this release :
