@@ -4,7 +4,7 @@ Donate link: https://fooplugins.com
 Tags: gallery, image-gallery, photo-gallery, responsive-gallery, lightbox
 Requires at least: 5.3
 Tested up to: 6.9
-Stable tag: 3.1.4
+Stable tag: 3.1.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -289,7 +289,7 @@ Please update in order for FooGallery to work in WP 5.5+!
 This release improved the gallery import process (inside the Import/Export feature) to be more reliable and handle large imports, with progress of what has been done along the way.
 
 * Date Updated : 21 Dec 2025
-* Update : Overhaul of the gallery import (inside the Import/Export feature) to better cater for large galleries. It now shows import progress, has better error handling and also allow you to resume the import if you refresh the page.
+* Update: Overhaul of the gallery import (inside the Import/Export feature) to better cater for large galleries. It now shows import progress, has better error handling and also allow you to resume the import if you refresh the page.
 
 = 3.1.4 =
 
@@ -300,13 +300,14 @@ Biggest features in this release :
 3. A number of quality-of-life tweaks to make the gallery editing experience better.
 
 * Date Updated : 26 Nov 2025
-* Added : FooGallery assets now enqueue from fingerprinted files, to prevent issues when updating the plugin.
-* Update : Attachment modal enhancement - shows the selected attachments instead of using saved attachments (better previews).
-* Update : Attachment modal enhancement - allows for 'wrap' navigation when navigating between attachments.
-* Update : Made gallery previews more reliable with settings that control features that use AJAX requests.
-* Update : Improved accessibility on Image Viewer and Carousel templates.
-* Update : Improved gallery editing experience by persisting certain settings when changing gallery layouts, eg. pagination, filtering.
-* Update : Improved gallery editing experience by allowing certain changes when in preview (e.g. product info and social features).
+* Added: FooGallery assets now enqueue from fingerprinted files, to prevent issues when updating the plugin.
+* Added: Allow license key to be activated by defining FOOGALLERY_LICENSE_KEY in wp-config.php 
+* Update: Attachment modal enhancement - shows the selected attachments instead of using saved attachments (better previews).
+* Update: Attachment modal enhancement - allows for 'wrap' navigation when navigating between attachments.
+* Update: Made gallery previews more reliable with settings that control features that use AJAX requests.
+* Update: Improved accessibility on Image Viewer and Carousel templates.
+* Update: Improved gallery editing experience by persisting certain settings when changing gallery layouts, eg. pagination, filtering.
+* Update: Improved gallery editing experience by allowing certain changes when in preview (e.g. product info and social features).
 [//]: # fs_premium_only_begin
 * Fixed: Multiple fixes for Plugin Check requirements.
 * Added: [Expert Plan] Added new Media Category "Folder" sidebar feature, that now shows in the attachment modal.
@@ -321,7 +322,6 @@ This release includes a change in how FooGallery assets are loaded to make way f
 * Added: Added new filter 'foogallery_attachments_pre_sort' that runs before a gallery sorts attachments.
 * Added: Added new filters for asset management: 'foogallery_feature_style_deps' and 'foogallery_feature_script_deps'. These allow you to add dependencies to the scripts and styles for a feature.
 * Added: Addedd page argument to foogallery shortcode, to allow only a specific page of attachments to be shown.
-* Added: Allow license key to be activated by defining FOOGALLERY_LICENSE_KEY in wp-config.php 
 * Update: Updated the way FooGallery enqueues scripts and styles. The FooGallery core script is now split into 2 scripts.
 * Fixed: Fixed bug where captions were being limited to 2 lines by default, even if no limiting was set.
 * Fixed: Made password protect code backwards compatible with WP 5.9
