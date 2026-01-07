@@ -3899,6 +3899,12 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 	 * });
 	 */
 
+    var mobileSize = globalThis?.FooGallery_mobileSize ?? '782px';
+    /**
+     * A very simple screen size based check for mobile sized screens.
+     */
+    _.isMobile = !!(globalThis.matchMedia && globalThis.matchMedia( `(max-width: ${ mobileSize })` ).matches);
+
 	/**
 	 * @summary Checks if the supplied image src is cached by the browser.
 	 * @param {string} src - The image src to check.
@@ -5087,7 +5093,10 @@ FooGallery.utils.$, FooGallery.utils, FooGallery.utils.is, FooGallery.utils.fn);
 		 */
 		make: function (options, element) {
 			element = _is.jq(element) ? element : $(element);
-			options = _obj.extend({}, options, element.data("foogallery"));
+            options = _obj.extend({}, options, element.data("foogallery"));
+            if (_.isMobile) {
+                options = _obj.extend({}, options, element.data("foogalleryMobile"));
+            }
 			var self = this, type = self.type(options, element);
 			if (!self.contains(type)) return null;
 			options = self.options(type, options);

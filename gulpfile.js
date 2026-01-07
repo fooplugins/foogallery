@@ -53,6 +53,41 @@ function getAssetTargetDir(assetConfig) {
     return sourceDir;
 }
 
+function escapeRegex(value) {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function getFingerprintRegexes(assetConfig) {
+    const ext  = path.extname(assetConfig.source);
+    const base = path.basename(assetConfig.source, ext);
+    const escapedExt = escapeRegex(ext);
+
+    if (base.endsWith(".min")) {
+        const baseNoMin = base.slice(0, -4);
+
+        return [
+            new RegExp(`^${escapeRegex(baseNoMin)}\\.[a-f0-9]{8}\\.min${escapedExt}$`),
+            new RegExp(`^${escapeRegex(base)}\\.[a-f0-9]{8}${escapedExt}$`)
+        ];
+    }
+
+    return [
+        new RegExp(`^${escapeRegex(base)}\\.[a-f0-9]{8}${escapedExt}$`)
+    ];
+}
+
+function getFingerprintedName(assetConfig, hash) {
+    const ext  = path.extname(assetConfig.source);
+    const base = path.basename(assetConfig.source, ext);
+
+    if (base.endsWith(".min")) {
+        const baseNoMin = base.slice(0, -4);
+        return `${baseNoMin}.${hash}.min${ext}`;
+    }
+
+    return `${base}.${hash}${ext}`;
+}
+
 // Delete old fingerprinted files
 function deleteOldFingerprints() {
     ASSETS_TO_FINGERPRINT.forEach(assetEntry => {
@@ -64,8 +99,7 @@ function deleteOldFingerprints() {
             possibleDirs.push(assetConfig.outputDir);
         }
 
-        const ext  = path.extname(assetConfig.source);
-        const base = path.basename(assetConfig.source, ext);
+        const fingerprintRegexes = getFingerprintRegexes(assetConfig);
 
         possibleDirs.forEach(dir => {
             if (!fs.existsSync(dir)) {
@@ -75,10 +109,7 @@ function deleteOldFingerprints() {
             const files = fs.readdirSync(dir);
 
             files.forEach(file => {
-                // match foogallery.fp-1a2b3c4d.css
-                const regex = new RegExp(`^${base}\\.v-[a-f0-9]{8}\\${ext}$`);
-
-                if (regex.test(file)) {
+                if (fingerprintRegexes.some(regex => regex.test(file))) {
                     fs.unlinkSync(path.join(dir, file));
                     console.log("Deleted old fingerprint:", path.join(dir, file));
                 }
@@ -105,10 +136,7 @@ function fingerprintAssets(cb) {
         const hash = crypto.createHash("md5").update(content).digest("hex").slice(0, 8);
 
         const targetDir = getAssetTargetDir(assetConfig);
-        const ext  = path.extname(assetConfig.source);
-        const base = path.basename(assetConfig.source, ext);
-
-        const fingerprintedName = `${base}.v-${hash}${ext}`;
+        const fingerprintedName = getFingerprintedName(assetConfig, hash);
         const fingerprintedPath = path.join(targetDir, fingerprintedName);
 
         // Copy file to fingerprinted filename
