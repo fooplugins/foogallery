@@ -4,7 +4,7 @@ Donate link: https://fooplugins.com
 Tags: gallery, image-gallery, photo-gallery, responsive-gallery, lightbox
 Requires at least: 5.3
 Tested up to: 6.9
-Stable tag: 3.1.5
+Stable tag: 3.1.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -283,6 +283,14 @@ Yes. FooGallery does not collect visitor data, and admin tracking is optional.
 Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 3.1.6 =
+
+This release fixes a few bugs and compatability issues with WP Rocket
+
+* Date Updated : 7 Jan 2025
+* Fixed: fixed bug introduced when saving custom JS in admin settings. Correct JS was being escaped.
+* Update: updated how assets are generated, so that caching plugins do not try to minify files that are already minified.
 
 = 3.1.5 =
 
