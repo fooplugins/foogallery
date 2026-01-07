@@ -777,10 +777,6 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 		}
 
 		function generate_assets( $old_value, $value, $option) {
-			if ( !is_admin() ) {
-				return;
-			}
-
 			if ( !current_user_can( 'manage_options' ) ) {
 				return;
 			}
