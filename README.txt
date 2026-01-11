@@ -4,7 +4,7 @@ Donate link: https://fooplugins.com
 Tags: gallery, image-gallery, photo-gallery, responsive-gallery, lightbox
 Requires at least: 5.3
 Tested up to: 6.9
-Stable tag: 3.1.6
+Stable tag: 3.1.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -283,6 +283,13 @@ Yes. FooGallery does not collect visitor data, and admin tracking is optional.
 Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 3.1.7 =
+
+This release fixes the bug for the missing "Import Video" tab in the media selector modal.
+
+* Date Updated : 11 Jan 2026
+* Fixed: fixed bug introduced in 3.1.6 where the "Import Video" tab was not showing in the media selector modal.
 
 = 3.1.6 =
 
