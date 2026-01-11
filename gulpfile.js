@@ -174,8 +174,12 @@ gulpFreemius(gulp, {
 function clean(){
     return del([
         `./languages/${pkg.name}.pot`,
-        `./dist/${pkg.name}.v${pkg.version}.zip`
-    ]);
+        `./dist/${pkg.name}.v${pkg.version}.zip`,
+        "**/.DS_Store"
+    ], {
+        dot: true,
+        ignore: ["**/node_modules/**"]
+    });
 }
 
 // extract a .pot file from all PHP files excluding those in the node_modules dir
