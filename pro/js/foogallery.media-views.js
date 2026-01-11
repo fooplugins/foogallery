@@ -24,8 +24,8 @@
 			delete attributes.frame;
 			wp.media.frame = frame;
 			return frame;
-		} else if ( 'select-child' === attributes.frame && wp.foogallery.media.Select ){
-			frame = new wp.foogallery.media.Select( attributes );
+		} else if ( 'select-child' === attributes.frame && wp.foogallery.ChildSelect ){
+			frame = new wp.foogallery.ChildSelect( attributes );
 			delete attributes.frame;
 			wp.media.frame = frame;
 			return frame;
@@ -1200,6 +1200,32 @@
 	wp.foogallery.Select = Select;
 
 })( wp.foogallery.l10n, wp.foogallery.media.Select );
+// wp.foogallery.ChildSelect - create a select frame for child modals with FooGallery tabs
+(function(Select){
+
+	/**
+	 * wp.foogallery.ChildSelect
+	 *
+	 * A child select frame that includes FooGallery's custom tabs and importer behavior.
+	 *
+	 * @memberOf wp.foogallery
+	 *
+	 * @class
+	 * @augments wp.foogallery.Select
+	 */
+	var ChildSelect = Select.extend(/** @lends wp.foogallery.ChildSelect.prototype */{
+		initialize: function(){
+			_.defaults(this.options, {
+				frame: "select-child",
+				persistState: false
+			});
+			Select.prototype.initialize.apply(this, arguments);
+		}
+	});
+
+	wp.foogallery.ChildSelect = ChildSelect;
+
+})( wp.foogallery.Select );
 // wp.foogallery.Select.Toolbar - create a toolbar to add our custom buttons
 (function(l10n, Select){
 
