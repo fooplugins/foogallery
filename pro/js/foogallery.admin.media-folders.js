@@ -1057,5 +1057,12 @@
 
 		wp.foogallery.media.Select = FolderFooGallerySelect;
 	}
+	// Ensure FooGallery select-based frames created before this override also use the folder browser.
+	if (wp.foogallery && wp.foogallery.Select && FolderMediaFrameSelect) {
+		wp.foogallery.Select.prototype.browseContent = FolderMediaFrameSelect.prototype.browseContent;
+	}
+	if (wp.foogallery && wp.foogallery.ChildSelect && FolderMediaFrameSelect) {
+		wp.foogallery.ChildSelect.prototype.browseContent = FolderMediaFrameSelect.prototype.browseContent;
+	}
 
 }(jQuery, window.wp));
