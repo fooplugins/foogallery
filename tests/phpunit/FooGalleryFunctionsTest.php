@@ -237,4 +237,13 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 
 		$this->assertSame( foogallery_image_placeholder_src(), $src );
 	}
+
+	public function test_get_attachment_id_by_url_returns_match() {
+		$attachment_id = $this->create_attachment( array(
+			'guid' => 'https://example.org/uploads/attachment.jpg',
+		) );
+
+		$this->assertSame( $attachment_id, foogallery_get_attachment_id_by_url( 'https://example.org/uploads/attachment.jpg' ) );
+		$this->assertNull( foogallery_get_attachment_id_by_url( 'https://example.org/uploads/missing.jpg' ) );
+	}
 }
