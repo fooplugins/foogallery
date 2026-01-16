@@ -964,6 +964,29 @@
 		},
 	});
 
+	var buildFolderBrowserOptions = function (frame, state) {
+		var options = frame.options || {};
+
+		return {
+			controller: frame,
+			collection: state.get('library'),
+			selection: state.get('selection'),
+			model: state,
+			sortable: state.get('sortable'),
+			search: state.get('searchable'),
+			filters: state.get('filterable'),
+			date: state.get('date'),
+			display: state.has('display') ? state.get('display') : state.get('displaySettings'),
+			dragInfo: state.get('dragInfo'),
+			idealColumnWidth: state.get('idealColumnWidth'),
+			suggestedWidth: options.suggestedWidth,
+			suggestedHeight: options.suggestedHeight,
+			AttachmentView: state.get('AttachmentView'),
+			scrollElement: document,
+			autoSelect: true,
+		};
+	};
+
 	// Keep a reference to the original MediaFrame.Post so our overrides don't recurse.
 	var OriginalMediaFramePost = wp.media.view.MediaFrame.Post;
 
@@ -980,27 +1003,17 @@
 
 		browseContent: function (region) {
 			var state = this.state();
-			var options = this.options;
-			var library = state.get('library');
-			var view = new FolderAttachmentsBrowser({
-				controller: this,
-				collection: library,
-				selection: state.get('selection'),
-				model: state,
-				scrollElement: document,
-				autoSelect: true,
-				suggestedWidth: options.suggestedWidth,
-				suggestedHeight: options.suggestedHeight,
-			});
-
-			region.view = view;
+			this.$el.removeClass('hide-toolbar');
+			region.view = new FolderAttachmentsBrowser(buildFolderBrowserOptions(this, state));
 		},
 	});
 
 	var open = wp.media.editor.open;
 	wp.media.editor.open = function (id, options) {
 		options = options || {};
-		options.frame = FolderMediaFrame;
+		if (!options.frame || options.frame === 'post') {
+			options.frame = 'post';
+		}
 		return open.apply(wp.media.editor, [id, options]);
 	};
 
@@ -1012,21 +1025,8 @@
 	var FolderMediaFrameSelect = OriginalMediaFrameSelect.extend({
 		browseContent: function (region) {
 			var state = this.state();
-			var options = this.options;
-			var library = state.get('library');
-
-			var view = new FolderAttachmentsBrowser({
-				controller: this,
-				collection: library,
-				selection: state.get('selection'),
-				model: state,
-				scrollElement: document,
-				autoSelect: true,
-				suggestedWidth: options.suggestedWidth,
-				suggestedHeight: options.suggestedHeight,
-			});
-
-			region.view = view;
+			this.$el.removeClass('hide-toolbar');
+			region.view = new FolderAttachmentsBrowser(buildFolderBrowserOptions(this, state));
 		},
 	});
 
@@ -1039,19 +1039,8 @@
 		var FolderFooGallerySelect = OriginalFooGallerySelect.extend({
 			browseContent: function (region) {
 				var state = this.state();
-				var options = this.options;
-				var library = state.get('library');
-
-				region.view = new FolderAttachmentsBrowser({
-					controller: this,
-					collection: library,
-					selection: state.get('selection'),
-					model: state,
-					scrollElement: document,
-					autoSelect: true,
-					suggestedWidth: options.suggestedWidth,
-					suggestedHeight: options.suggestedHeight,
-				});
+				this.$el.removeClass('hide-toolbar');
+				region.view = new FolderAttachmentsBrowser(buildFolderBrowserOptions(this, state));
 			},
 		});
 
