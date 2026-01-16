@@ -73,4 +73,12 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertSame( 'filtered', foogallery_get_setting( 'gallery_template' ) );
 		remove_filter( 'foogallery_get_setting-gallery_template', $filter );
 	}
+
+	public function test_default_options_have_expected_keys() {
+		$defaults = foogallery_get_default_options();
+		$this->assertArrayHasKey( 'gallery_template', $defaults );
+		$this->assertArrayHasKey( 'gallery_permalinks_enabled', $defaults );
+		$this->assertArrayHasKey( 'lightbox', $defaults );
+		$this->assertSame( 'default', $defaults['gallery_template'] );
+	}
 }
