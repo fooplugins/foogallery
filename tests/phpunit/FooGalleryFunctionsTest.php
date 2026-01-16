@@ -212,4 +212,17 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertSame( 'media_library', $datasources['media_library']['id'] );
 		$this->assertArrayHasKey( 'label', $datasources['media_library'] );
 	}
+
+	public function test_image_placeholder_html_escapes_attributes() {
+		$html = foogallery_image_placeholder_html( array(
+			'width'  => '150"',
+			'height' => '150',
+			'alt'    => 'Sample',
+		) );
+
+		$this->assertStringContainsString( 'width="150"', $html );
+		$this->assertStringContainsString( 'height="150"', $html );
+		$this->assertStringContainsString( 'alt="Sample"', $html );
+		$this->assertStringNotContainsString( '150""', $html );
+	}
 }
