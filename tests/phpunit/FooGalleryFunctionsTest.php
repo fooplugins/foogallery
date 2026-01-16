@@ -107,4 +107,10 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertInstanceOf( FooGallery::class, $galleries[0] );
 		$this->assertSame( $gallery_id, $galleries[0]->ID );
 	}
+
+	public function test_extract_gallery_shortcodes_parses_ids() {
+		$content = 'Before [foogallery id="12"] middle [foogallery id="34" /] after';
+		$ids = foogallery_extract_gallery_shortcodes( $content );
+		$this->assertSame( array( 12 => '[foogallery id="12"]', 34 => '[foogallery id="34" /]' ), $ids );
+	}
 }
