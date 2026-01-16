@@ -90,11 +90,19 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		global $current_foogallery_arguments;
 		global $current_foogallery_template;
 
+		$previous_gallery = $current_foogallery;
+		$previous_arguments = $current_foogallery_arguments;
+		$previous_template = $current_foogallery_template;
+
 		$current_foogallery = $gallery;
 		$current_foogallery_template = 'default';
 		$current_foogallery_arguments = array( 'lightbox' => 'custom' );
 
 		$this->assertSame( 'custom', foogallery_gallery_template_setting( 'lightbox', 'fallback' ) );
+
+		$current_foogallery = $previous_gallery;
+		$current_foogallery_arguments = $previous_arguments;
+		$current_foogallery_template = $previous_template;
 	}
 
 	public function test_get_all_galleries_returns_gallery_objects() {
