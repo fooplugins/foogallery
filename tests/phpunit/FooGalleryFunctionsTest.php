@@ -200,7 +200,7 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 
 		$html = foogallery_build_container_attributes_safe( $gallery, $attributes );
 		$this->assertStringContainsString( 'id="' . $gallery->container_id() . '"', $html );
-		$this->assertStringContainsString( 'class="testclass"', $html );
+		$this->assertStringContainsString( 'class="test&amp;quot;class"', $html );
 		$this->assertStringContainsString( 'data="value"', $html );
 	}
 
