@@ -161,4 +161,14 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertStringContainsString( 'class="testclass"', $html );
 		$this->assertStringContainsString( 'data="value"', $html );
 	}
+
+	public function test_sorting_options_map_to_expected_orderby() {
+		$this->assertSame( 'date', foogallery_sorting_get_posts_orderby_arg( 'date_desc' ) );
+		$this->assertSame( 'modified', foogallery_sorting_get_posts_orderby_arg( 'modified_asc' ) );
+		$this->assertSame( 'title', foogallery_sorting_get_posts_orderby_arg( 'title_desc' ) );
+		$this->assertSame( 'rand', foogallery_sorting_get_posts_orderby_arg( 'rand' ) );
+		$this->assertSame( 'post__in', foogallery_sorting_get_posts_orderby_arg( 'unknown' ) );
+		$this->assertSame( 'ASC', foogallery_sorting_get_posts_order_arg( 'title_asc' ) );
+		$this->assertSame( 'DESC', foogallery_sorting_get_posts_order_arg( 'date_desc' ) );
+	}
 }
