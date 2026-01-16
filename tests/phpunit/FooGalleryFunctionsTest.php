@@ -146,6 +146,12 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertSame( 1, preg_match( $regex, $content ) );
 	}
 
+	public function test_gallery_shortcode_regex_matches_wrapped_content() {
+		$regex = '/' . foogallery_gallery_shortcode_regex() . '/s';
+		$content = '[foogallery id="77"]Content[/foogallery]';
+		$this->assertSame( 1, preg_match( $regex, $content ) );
+	}
+
 	public function test_gallery_shortcode_tag_is_filterable() {
 		$filter = function() {
 			return 'customgallery';
