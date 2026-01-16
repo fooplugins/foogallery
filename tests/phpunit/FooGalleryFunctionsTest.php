@@ -134,6 +134,16 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertSame( 1, preg_match( $regex, $content ) );
 	}
 
+	public function test_gallery_shortcode_tag_is_filterable() {
+		$filter = function() {
+			return 'customgallery';
+		};
+
+		add_filter( 'foogallery_gallery_shortcode_tag', $filter );
+		$this->assertSame( 'customgallery', foogallery_gallery_shortcode_tag() );
+		remove_filter( 'foogallery_gallery_shortcode_tag', $filter );
+	}
+
 	public function test_build_class_attribute_includes_template_and_custom_classes() {
 		$gallery_id = $this->create_gallery_post();
 		update_post_meta( $gallery_id, FOOGALLERY_META_TEMPLATE, 'default' );
