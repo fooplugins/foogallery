@@ -292,5 +292,7 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertSame( 'masonry', get_post_meta( $gallery_id, FOOGALLERY_META_TEMPLATE, true ) );
 		$this->assertSame( array( $attachment_id ), get_post_meta( $gallery_id, FOOGALLERY_META_ATTACHMENTS, true ) );
 		$this->assertNotEmpty( get_post_meta( $gallery_id, FOOGALLERY_META_SETTINGS, true ) );
+
+		wp_delete_post( $gallery_id, true );
 	}
 }
