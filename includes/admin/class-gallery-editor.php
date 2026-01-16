@@ -298,32 +298,40 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 		}
 
 		function ajax_get_gallery_info() {
+			if ( ! check_ajax_referer( 'foogallery-timymce-nonce', 'nonce', false ) ) {
+				wp_send_json_error( __( 'Invalid security token.', 'foogallery' ) );
+			}
 
-			$nonce = sanitize_text_field( safe_get_from_request( 'nonce' ) );
+			if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) {
+				wp_send_json_error( __( 'Insufficient permissions.', 'foogallery' ) );
+			}
 
-			wp_verify_nonce( $nonce, 'foogallery-timymce-nonce' );
-
-			$id = intval( safe_get_from_request( 'foogallery_id' ) );
+			$id = absint( safe_get_from_request( 'foogallery_id' ) );
+			if ( ! $id ) {
+				wp_send_json_error( __( 'Invalid gallery ID.', 'foogallery' ) );
+			}
 
 			$gallery = FooGallery::get_by_id( $id );
+			if ( ! $gallery ) {
+				wp_send_json_error( __( 'Gallery not found.', 'foogallery' ) );
+			}
+
+			if ( ! current_user_can( 'edit_post', $gallery->ID ) ) {
+				wp_send_json_error( __( 'Insufficient permissions.', 'foogallery' ) );
+			}
 
 			$image_src = foogallery_find_featured_attachment_thumbnail_src( $gallery, array(
 				'width' => get_option( 'thumbnail_size_w' ),
 				'height' => get_option( 'thumbnail_size_h' ),
-				'force_use_original_thumb' => true
+				'force_use_original_thumb' => true,
 			) );
 
-			$json_array = array(
+			wp_send_json_success( array(
 				'id'    => $id,
 				'name'  => $gallery->name,
 				'count' => $gallery->image_count(),
 				'src'   => $image_src,
-			);
-
-			header( 'Content-type: application/json' );
-			echo json_encode( $json_array );
-
-			die();
+			) );
 		}
 	}
 }
