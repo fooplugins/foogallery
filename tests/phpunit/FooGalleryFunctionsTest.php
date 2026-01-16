@@ -25,6 +25,9 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		return $this->factory->attachment->create( array_merge( $defaults, $args ) );
 	}
 
+	/**
+	 * Tests the plugin name is filterable.
+	 */
 	public function test_foogallery_plugin_name_is_filterable() {
 		$this->assertSame( 'FooGallery', foogallery_plugin_name() );
 
@@ -37,6 +40,9 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		remove_filter( 'foogallery_plugin_name', $filter );
 	}
 
+	/**
+	 * Tests gallery templates can be retrieved and missing templates return false.
+	 */
 	public function test_gallery_template_helpers_handle_missing_and_valid_templates() {
 		$this->assertFalse( foogallery_get_gallery_template( 'missing' ) );
 
@@ -60,6 +66,9 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		remove_filter( 'foogallery_gallery_templates', $template_filter );
 	}
 
+	/**
+	 * Tests settings read defaults and apply filters.
+	 */
 	public function test_get_setting_returns_defaults_and_filters() {
 		$this->assertSame( 'default', foogallery_default_gallery_template() );
 		$this->assertSame( 'default', foogallery_get_setting( 'gallery_template' ) );
@@ -74,6 +83,9 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		remove_filter( 'foogallery_get_setting-gallery_template', $filter );
 	}
 
+	/**
+	 * Tests default settings include required keys.
+	 */
 	public function test_default_options_have_expected_keys() {
 		$defaults = foogallery_get_default_options();
 		$this->assertArrayHasKey( 'gallery_template', $defaults );
@@ -82,6 +94,9 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertSame( 'default', $defaults['gallery_template'] );
 	}
 
+	/**
+	 * Tests default settings are filterable.
+	 */
 	public function test_default_options_are_filterable() {
 		$filter = function( $defaults ) {
 			$defaults['gallery_template'] = 'custom';
@@ -94,6 +109,9 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		remove_filter( 'foogallery_defaults', $filter );
 	}
 
+	/**
+	 * Tests shortcode arguments override stored template settings.
+	 */
 	public function test_gallery_template_setting_prefers_shortcode_args() {
 		$gallery_id = $this->create_gallery_post();
 		$gallery = FooGallery::get_by_id( $gallery_id );
@@ -117,6 +135,9 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$current_foogallery_template = $previous_template;
 	}
 
+	/**
+	 * Tests galleries are returned as FooGallery objects.
+	 */
 	public function test_get_all_galleries_returns_gallery_objects() {
 		$gallery_id = $this->create_gallery_post();
 		$draft_id = $this->create_gallery_post( array( 'post_status' => 'draft' ) );
@@ -134,24 +155,36 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertContains( $draft_id, $ids );
 	}
 
+	/**
+	 * Tests shortcode parsing extracts gallery IDs.
+	 */
 	public function test_extract_gallery_shortcodes_parses_ids() {
 		$content = 'Before [foogallery id="12"] middle [foogallery id="34" /] after';
 		$ids = foogallery_extract_gallery_shortcodes( $content );
 		$this->assertSame( array( 12 => '[foogallery id="12"]', 34 => '[foogallery id="34" /]' ), $ids );
 	}
 
+	/**
+	 * Tests shortcode regex matches self-closing shortcodes.
+	 */
 	public function test_gallery_shortcode_regex_matches_self_closing() {
 		$regex = '/' . foogallery_gallery_shortcode_regex() . '/s';
 		$content = '[foogallery id="99" /]';
 		$this->assertSame( 1, preg_match( $regex, $content ) );
 	}
 
+	/**
+	 * Tests shortcode regex matches content-wrapped shortcodes.
+	 */
 	public function test_gallery_shortcode_regex_matches_wrapped_content() {
 		$regex = '/' . foogallery_gallery_shortcode_regex() . '/s';
 		$content = '[foogallery id="77"]Content[/foogallery]';
 		$this->assertSame( 1, preg_match( $regex, $content ) );
 	}
 
+	/**
+	 * Tests shortcode tag filter override.
+	 */
 	public function test_gallery_shortcode_tag_is_filterable() {
 		$filter = function() {
 			return 'customgallery';
@@ -162,6 +195,9 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		remove_filter( 'foogallery_gallery_shortcode_tag', $filter );
 	}
 
+	/**
+	 * Tests class attribute builder includes template and custom classes.
+	 */
 	public function test_build_class_attribute_includes_template_and_custom_classes() {
 		$gallery_id = $this->create_gallery_post();
 		update_post_meta( $gallery_id, FOOGALLERY_META_TEMPLATE, 'default' );
@@ -183,6 +219,9 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$current_foogallery_arguments = $previous_arguments;
 	}
 
+	/**
+	 * Tests safe class attribute escaping.
+	 */
 	public function test_build_class_attribute_safe_escapes_html() {
 		$gallery_id = $this->create_gallery_post();
 		$gallery = FooGallery::get_by_id( $gallery_id );
@@ -192,6 +231,9 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertStringContainsString( 'unsafe', $classes );
 	}
 
+	/**
+	 * Tests container attributes are escaped and include container ID.
+	 */
 	public function test_build_container_attributes_safe_escapes_values() {
 		$gallery_id = $this->create_gallery_post();
 		$gallery = FooGallery::get_by_id( $gallery_id );
@@ -207,6 +249,9 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertStringContainsString( 'data="value"', $html );
 	}
 
+	/**
+	 * Tests sorting option mapping for orderby and order.
+	 */
 	public function test_sorting_options_map_to_expected_orderby() {
 		$this->assertSame( 'date', foogallery_sorting_get_posts_orderby_arg( 'date_desc' ) );
 		$this->assertSame( 'modified', foogallery_sorting_get_posts_orderby_arg( 'modified_asc' ) );
@@ -217,7 +262,9 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertSame( 'DESC', foogallery_sorting_get_posts_order_arg( 'date_desc' ) );
 	}
 
-
+	/**
+	 * Tests thumbnail jpeg quality clamps invalid values.
+	 */
 	public function test_thumbnail_jpeg_quality_clamps_invalid_values() {
 		update_option( 'foogallery', array( 'thumb_jpeg_quality' => 0 ) );
 		$this->assertSame( 80, foogallery_thumbnail_jpeg_quality() );
@@ -226,6 +273,9 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertSame( 95, foogallery_thumbnail_jpeg_quality() );
 	}
 
+	/**
+	 * Tests caption helpers return expected values by source.
+	 */
 	public function test_caption_helpers_resolve_sources() {
 		$attachment_id = $this->create_attachment( array(
 			'post_title'   => 'Title',
@@ -252,6 +302,9 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertSame( 'Description', foogallery_get_caption_desc_for_attachment( $attachment, 'desc' ) );
 	}
 
+	/**
+	 * Tests default datasource entry exists.
+	 */
 	public function test_gallery_datasources_include_default() {
 		$datasources = foogallery_gallery_datasources();
 		$this->assertArrayHasKey( 'media_library', $datasources );
@@ -259,6 +312,9 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertArrayHasKey( 'label', $datasources['media_library'] );
 	}
 
+	/**
+	 * Tests placeholder HTML escapes attributes.
+	 */
 	public function test_image_placeholder_html_escapes_attributes() {
 		$html = foogallery_image_placeholder_html( array(
 			'width'  => '150"',
@@ -272,6 +328,9 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertStringNotContainsString( '150""', $html );
 	}
 
+	/**
+	 * Tests featured attachment thumbnail falls back to placeholder.
+	 */
 	public function test_featured_attachment_thumbnail_src_falls_back_to_placeholder() {
 		$gallery_id = $this->create_gallery_post();
 		$gallery = FooGallery::get_by_id( $gallery_id );
@@ -284,6 +343,9 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertSame( foogallery_image_placeholder_src(), $src );
 	}
 
+	/**
+	 * Tests attachment ID lookup by URL.
+	 */
 	public function test_get_attachment_id_by_url_returns_match() {
 		$attachment_id = $this->create_attachment( array(
 			'guid' => 'https://example.org/uploads/attachment.jpg',
@@ -293,6 +355,9 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertNull( foogallery_get_attachment_id_by_url( 'https://example.org/uploads/missing.jpg' ) );
 	}
 
+	/**
+	 * Tests gallery creation populates required metadata.
+	 */
 	public function test_create_gallery_sets_template_and_attachments() {
 		$attachment_id = $this->create_attachment();
 		$gallery_id = foogallery_create_gallery( 'masonry', (string) $attachment_id );
