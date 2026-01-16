@@ -225,4 +225,16 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertStringContainsString( 'alt="Sample"', $html );
 		$this->assertStringNotContainsString( '150""', $html );
 	}
+
+	public function test_featured_attachment_thumbnail_src_falls_back_to_placeholder() {
+		$gallery_id = $this->create_gallery_post();
+		$gallery = FooGallery::get_by_id( $gallery_id );
+
+		$src = foogallery_find_featured_attachment_thumbnail_src( $gallery, array(
+			'width'  => 120,
+			'height' => 120,
+		) );
+
+		$this->assertSame( foogallery_image_placeholder_src(), $src );
+	}
 }
