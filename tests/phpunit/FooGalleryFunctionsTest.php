@@ -113,4 +113,10 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$ids = foogallery_extract_gallery_shortcodes( $content );
 		$this->assertSame( array( 12 => '[foogallery id="12"]', 34 => '[foogallery id="34" /]' ), $ids );
 	}
+
+	public function test_gallery_shortcode_regex_matches_self_closing() {
+		$regex = '/' . foogallery_gallery_shortcode_regex() . '/s';
+		$content = '[foogallery id="99" /]';
+		$this->assertSame( 1, preg_match( $regex, $content ) );
+	}
 }
