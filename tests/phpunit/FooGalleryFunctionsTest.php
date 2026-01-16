@@ -168,6 +168,7 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$gallery = FooGallery::get_by_id( $gallery_id );
 
 		global $current_foogallery_arguments;
+		$previous_arguments = $current_foogallery_arguments;
 		$current_foogallery_arguments = array(
 			'classname' => 'custom-class',
 			'classes'   => 'extra-class',
@@ -178,6 +179,8 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertStringContainsString( 'custom-class', $classes );
 		$this->assertStringContainsString( 'extra-class', $classes );
 		$this->assertStringContainsString( 'added', $classes );
+
+		$current_foogallery_arguments = $previous_arguments;
 	}
 
 	public function test_build_class_attribute_safe_escapes_html() {
