@@ -246,4 +246,14 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertSame( $attachment_id, foogallery_get_attachment_id_by_url( 'https://example.org/uploads/attachment.jpg' ) );
 		$this->assertNull( foogallery_get_attachment_id_by_url( 'https://example.org/uploads/missing.jpg' ) );
 	}
+
+	public function test_create_gallery_sets_template_and_attachments() {
+		$attachment_id = $this->create_attachment();
+		$gallery_id = foogallery_create_gallery( 'masonry', (string) $attachment_id );
+
+		$this->assertSame( FOOGALLERY_CPT_GALLERY, get_post_type( $gallery_id ) );
+		$this->assertSame( 'masonry', get_post_meta( $gallery_id, FOOGALLERY_META_TEMPLATE, true ) );
+		$this->assertSame( array( $attachment_id ), get_post_meta( $gallery_id, FOOGALLERY_META_ATTACHMENTS, true ) );
+		$this->assertNotEmpty( get_post_meta( $gallery_id, FOOGALLERY_META_SETTINGS, true ) );
+	}
 }
