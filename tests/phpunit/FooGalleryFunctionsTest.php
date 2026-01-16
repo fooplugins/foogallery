@@ -52,7 +52,25 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		add_filter( 'foogallery_gallery_templates', $template_filter );
 		$templates = foogallery_gallery_templates();
 		$this->assertCount( 1, $templates );
-		$this->assertSame( 'simple-template', foogallery_get_gallery_template( 'simple-template' )['slug'] );
+		$this->assertSame( 'simple-template', $templates[0]['slug'] );
+
+		$template = foogallery_get_gallery_template( 'simple-template' );
+		$this->assertIsArray( $template );
+		$this->assertSame( 'simple-template', $template['slug'] );
 		remove_filter( 'foogallery_gallery_templates', $template_filter );
+	}
+
+	public function test_get_setting_returns_defaults_and_filters() {
+		$this->assertSame( 'default', foogallery_default_gallery_template() );
+		$this->assertSame( 'default', foogallery_get_setting( 'gallery_template' ) );
+		$this->assertSame( 'fallback', foogallery_get_setting( 'unknown_setting', 'fallback' ) );
+
+		$filter = function( $value ) {
+			return 'filtered';
+		};
+
+		add_filter( 'foogallery_get_setting-gallery_template', $filter );
+		$this->assertSame( 'filtered', foogallery_get_setting( 'gallery_template' ) );
+		remove_filter( 'foogallery_get_setting-gallery_template', $filter );
 	}
 }
