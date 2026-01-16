@@ -119,4 +119,22 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$content = '[foogallery id="99" /]';
 		$this->assertSame( 1, preg_match( $regex, $content ) );
 	}
+
+	public function test_build_class_attribute_includes_template_and_custom_classes() {
+		$gallery_id = $this->create_gallery_post();
+		update_post_meta( $gallery_id, FOOGALLERY_META_TEMPLATE, 'default' );
+		$gallery = FooGallery::get_by_id( $gallery_id );
+
+		global $current_foogallery_arguments;
+		$current_foogallery_arguments = array(
+			'classname' => 'custom-class',
+			'classes'   => 'extra-class',
+		);
+
+		$classes = foogallery_build_class_attribute( $gallery, 'added' );
+		$this->assertStringContainsString( 'foogallery-default', $classes );
+		$this->assertStringContainsString( 'custom-class', $classes );
+		$this->assertStringContainsString( 'extra-class', $classes );
+		$this->assertStringContainsString( 'added', $classes );
+	}
 }
