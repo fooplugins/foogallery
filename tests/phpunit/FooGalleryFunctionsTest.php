@@ -146,4 +146,19 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertStringNotContainsString( '"', $classes );
 		$this->assertStringContainsString( 'unsafe', $classes );
 	}
+
+	public function test_build_container_attributes_safe_escapes_values() {
+		$gallery_id = $this->create_gallery_post();
+		$gallery = FooGallery::get_by_id( $gallery_id );
+
+		$attributes = array(
+			'class' => 'test"class',
+			'data'  => 'value',
+		);
+
+		$html = foogallery_build_container_attributes_safe( $gallery, $attributes );
+		$this->assertStringContainsString( 'id="' . $gallery->container_id() . '"', $html );
+		$this->assertStringContainsString( 'class="testclass"', $html );
+		$this->assertStringContainsString( 'data="value"', $html );
+	}
 }
