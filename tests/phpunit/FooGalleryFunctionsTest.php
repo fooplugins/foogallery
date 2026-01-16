@@ -107,13 +107,19 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 
 	public function test_get_all_galleries_returns_gallery_objects() {
 		$gallery_id = $this->create_gallery_post();
-		$this->create_gallery_post( array( 'post_status' => 'draft' ) );
+		$draft_id = $this->create_gallery_post( array( 'post_status' => 'draft' ) );
 		$this->factory->post->create( array( 'post_type' => 'post' ) );
 
 		$galleries = foogallery_get_all_galleries();
 		$this->assertNotEmpty( $galleries );
 		$this->assertInstanceOf( FooGallery::class, $galleries[0] );
-		$this->assertSame( $gallery_id, $galleries[0]->ID );
+
+		$ids = array_map( function( $gallery ) {
+			return $gallery->ID;
+		}, $galleries );
+
+		$this->assertContains( $gallery_id, $ids );
+		$this->assertContains( $draft_id, $ids );
 	}
 
 	public function test_extract_gallery_shortcodes_parses_ids() {
