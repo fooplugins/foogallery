@@ -179,4 +179,30 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		update_option( 'foogallery', array( 'thumb_jpeg_quality' => 95 ) );
 		$this->assertSame( 95, foogallery_thumbnail_jpeg_quality() );
 	}
+
+	public function test_caption_helpers_resolve_sources() {
+		$attachment_id = $this->create_attachment( array(
+			'post_title'   => 'Title',
+			'post_excerpt' => 'Caption',
+			'post_content' => 'Description',
+		) );
+		update_post_meta( $attachment_id, '_wp_attachment_image_alt', 'Alt Text' );
+		$attachment = get_post( $attachment_id );
+
+		$this->assertSame( 'Title', foogallery_get_caption_title_for_attachment( $attachment, 'title' ) );
+		$this->assertSame( 'Description', foogallery_get_caption_title_for_attachment( $attachment, 'desc' ) );
+		$this->assertSame( 'Alt Text', foogallery_get_caption_title_for_attachment( $attachment, 'alt' ) );
+		$this->assertSame( 'Caption', foogallery_get_caption_title_for_attachment( $attachment, 'caption' ) );
+
+		$foogallery_attachment = new FooGalleryAttachment( $attachment_id );
+		$this->assertSame( 'Title', foogallery_get_caption_by_source( $foogallery_attachment, 'title', 'title' ) );
+		$this->assertSame( 'Description', foogallery_get_caption_by_source( $foogallery_attachment, 'desc', 'title' ) );
+		$this->assertSame( 'Alt Text', foogallery_get_caption_by_source( $foogallery_attachment, 'alt', 'title' ) );
+		$this->assertSame( 'Caption', foogallery_get_caption_by_source( $foogallery_attachment, 'caption', 'title' ) );
+
+		$this->assertSame( 'Title', foogallery_get_caption_desc_for_attachment( $attachment, 'title' ) );
+		$this->assertSame( 'Caption', foogallery_get_caption_desc_for_attachment( $attachment, 'caption' ) );
+		$this->assertSame( 'Alt Text', foogallery_get_caption_desc_for_attachment( $attachment, 'alt' ) );
+		$this->assertSame( 'Description', foogallery_get_caption_desc_for_attachment( $attachment, 'desc' ) );
+	}
 }
