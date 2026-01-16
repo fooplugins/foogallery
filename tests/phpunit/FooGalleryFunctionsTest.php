@@ -194,7 +194,7 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertSame( 'Alt Text', foogallery_get_caption_title_for_attachment( $attachment, 'alt' ) );
 		$this->assertSame( 'Caption', foogallery_get_caption_title_for_attachment( $attachment, 'caption' ) );
 
-		$foogallery_attachment = new FooGalleryAttachment( $attachment_id );
+		$foogallery_attachment = new FooGalleryAttachment( $attachment );
 		$this->assertSame( 'Title', foogallery_get_caption_by_source( $foogallery_attachment, 'title', 'title' ) );
 		$this->assertSame( 'Description', foogallery_get_caption_by_source( $foogallery_attachment, 'desc', 'title' ) );
 		$this->assertSame( 'Alt Text', foogallery_get_caption_by_source( $foogallery_attachment, 'alt', 'title' ) );
@@ -204,5 +204,12 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertSame( 'Caption', foogallery_get_caption_desc_for_attachment( $attachment, 'caption' ) );
 		$this->assertSame( 'Alt Text', foogallery_get_caption_desc_for_attachment( $attachment, 'alt' ) );
 		$this->assertSame( 'Description', foogallery_get_caption_desc_for_attachment( $attachment, 'desc' ) );
+	}
+
+	public function test_gallery_datasources_include_default() {
+		$datasources = foogallery_gallery_datasources();
+		$this->assertArrayHasKey( 'media_library', $datasources );
+		$this->assertSame( 'media_library', $datasources['media_library']['id'] );
+		$this->assertArrayHasKey( 'label', $datasources['media_library'] );
 	}
 }
