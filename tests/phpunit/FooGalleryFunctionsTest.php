@@ -82,6 +82,18 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertSame( 'default', $defaults['gallery_template'] );
 	}
 
+	public function test_default_options_are_filterable() {
+		$filter = function( $defaults ) {
+			$defaults['gallery_template'] = 'custom';
+			return $defaults;
+		};
+
+		add_filter( 'foogallery_defaults', $filter );
+		$defaults = foogallery_get_default_options();
+		$this->assertSame( 'custom', $defaults['gallery_template'] );
+		remove_filter( 'foogallery_defaults', $filter );
+	}
+
 	public function test_gallery_template_setting_prefers_shortcode_args() {
 		$gallery_id = $this->create_gallery_post();
 		$gallery = FooGallery::get_by_id( $gallery_id );
