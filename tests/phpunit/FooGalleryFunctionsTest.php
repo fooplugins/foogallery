@@ -36,4 +36,23 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertSame( 'FooGallery Pro', foogallery_plugin_name() );
 		remove_filter( 'foogallery_plugin_name', $filter );
 	}
+
+	public function test_gallery_template_helpers_handle_missing_and_valid_templates() {
+		$this->assertFalse( foogallery_get_gallery_template( 'missing' ) );
+
+		$template_filter = function( $templates ) {
+			$templates[] = array(
+				'slug'   => 'simple-template',
+				'title'  => 'Simple Template',
+				'fields' => array(),
+			);
+			return $templates;
+		};
+
+		add_filter( 'foogallery_gallery_templates', $template_filter );
+		$templates = foogallery_gallery_templates();
+		$this->assertCount( 1, $templates );
+		$this->assertSame( 'simple-template', foogallery_get_gallery_template( 'simple-template' )['slug'] );
+		remove_filter( 'foogallery_gallery_templates', $template_filter );
+	}
 }
