@@ -208,6 +208,7 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertSame( 'DESC', foogallery_sorting_get_posts_order_arg( 'date_desc' ) );
 	}
 
+
 	public function test_thumbnail_jpeg_quality_clamps_invalid_values() {
 		update_option( 'foogallery', array( 'thumb_jpeg_quality' => 0 ) );
 		$this->assertSame( 80, foogallery_thumbnail_jpeg_quality() );
