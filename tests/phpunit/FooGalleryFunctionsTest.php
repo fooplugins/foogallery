@@ -81,4 +81,19 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertArrayHasKey( 'lightbox', $defaults );
 		$this->assertSame( 'default', $defaults['gallery_template'] );
 	}
+
+	public function test_gallery_template_setting_prefers_shortcode_args() {
+		$gallery_id = $this->create_gallery_post();
+		$gallery = FooGallery::get_by_id( $gallery_id );
+
+		global $current_foogallery;
+		global $current_foogallery_arguments;
+		global $current_foogallery_template;
+
+		$current_foogallery = $gallery;
+		$current_foogallery_template = 'default';
+		$current_foogallery_arguments = array( 'lightbox' => 'custom' );
+
+		$this->assertSame( 'custom', foogallery_gallery_template_setting( 'lightbox', 'fallback' ) );
+	}
 }
