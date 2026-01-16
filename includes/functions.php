@@ -2002,44 +2002,44 @@ function foogallery_render_debug_array( $array, $level = 0 ) {
  *
  * @return false|int|WP_Error
  */
-	function foogallery_import_attachment( $attachment_data ) {
-		// Include image.php so we can call wp_generate_attachment_metadata().
-		require_once ABSPATH . 'wp-admin/includes/image.php';
+function foogallery_import_attachment( $attachment_data ) {
+	// Include image.php so we can call wp_generate_attachment_metadata().
+	require_once ABSPATH . 'wp-admin/includes/image.php';
 
-		// Get the contents of the picture.
-		$response = wp_remote_get( $attachment_data['url'] );
-		if ( is_wp_error( $response ) ) {
-			return $response;
-		}
+	// Get the contents of the picture.
+	$response = wp_remote_get( $attachment_data['url'] );
+	if ( is_wp_error( $response ) ) {
+		return $response;
+	}
 
-		$response_code = (int) wp_remote_retrieve_response_code( $response );
-		if ( 200 !== $response_code ) {
-			return new WP_Error(
-				'foogallery_import_attachment_http_error',
-				sprintf( __( 'Remote server returned HTTP %d.', 'foogallery' ), $response_code )
-			);
-		}
+	$response_code = (int) wp_remote_retrieve_response_code( $response );
+	if ( 200 !== $response_code ) {
+		return new WP_Error(
+			'foogallery_import_attachment_http_error',
+			sprintf( __( 'Remote server returned HTTP %d.', 'foogallery' ), $response_code )
+		);
+	}
 
-		$content_type = (string) wp_remote_retrieve_header( $response, 'content-type' );
-		if ( '' !== $content_type && 0 !== stripos( $content_type, 'image/' ) ) {
-			return new WP_Error(
-				'foogallery_import_attachment_invalid_content_type',
-				sprintf( __( 'Remote URL did not return an image (content-type: %s).', 'foogallery' ), $content_type )
-			);
-		}
+	$content_type = (string) wp_remote_retrieve_header( $response, 'content-type' );
+	if ( '' !== $content_type && 0 !== stripos( $content_type, 'image/' ) ) {
+		return new WP_Error(
+			'foogallery_import_attachment_invalid_content_type',
+			sprintf( __( 'Remote URL did not return an image (content-type: %s).', 'foogallery' ), $content_type )
+		);
+	}
 
-		$contents = wp_remote_retrieve_body( $response );
-		if ( '' === $contents ) {
-			return new WP_Error(
-				'foogallery_import_attachment_empty_body',
-				__( 'Remote server returned an empty response body.', 'foogallery' )
-			);
-		}
+	$contents = wp_remote_retrieve_body( $response );
+	if ( '' === $contents ) {
+		return new WP_Error(
+			'foogallery_import_attachment_empty_body',
+			__( 'Remote server returned an empty response body.', 'foogallery' )
+		);
+	}
 
-		// Upload and get file data.
-		$upload = wp_upload_bits( basename( $attachment_data['url'] ), null, $contents );
-		if ( array_key_exists( 'error', $upload ) && false !== $upload['error'] ) {
-			return new WP_Error( 'foogallery_import_attachment_upload_fail', $upload['error'] );
+	// Upload and get file data.
+	$upload = wp_upload_bits( basename( $attachment_data['url'] ), null, $contents );
+	if ( array_key_exists( 'error', $upload ) && false !== $upload['error'] ) {
+		return new WP_Error( 'foogallery_import_attachment_upload_fail', $upload['error'] );
 	}
 	$guid      = $upload['url'];
 	$file      = $upload['file'];
