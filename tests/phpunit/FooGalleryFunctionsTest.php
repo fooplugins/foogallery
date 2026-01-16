@@ -137,4 +137,13 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertStringContainsString( 'extra-class', $classes );
 		$this->assertStringContainsString( 'added', $classes );
 	}
+
+	public function test_build_class_attribute_safe_escapes_html() {
+		$gallery_id = $this->create_gallery_post();
+		$gallery = FooGallery::get_by_id( $gallery_id );
+
+		$classes = foogallery_build_class_attribute_safe( $gallery, 'unsafe"class' );
+		$this->assertStringNotContainsString( '"', $classes );
+		$this->assertStringContainsString( 'unsafe', $classes );
+	}
 }
