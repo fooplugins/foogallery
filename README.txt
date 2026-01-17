@@ -4,7 +4,7 @@ Donate link: https://fooplugins.com
 Tags: gallery, image-gallery, photo-gallery, responsive-gallery, lightbox
 Requires at least: 5.3
 Tested up to: 6.9
-Stable tag: 3.1.7
+Stable tag: 3.1.9
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -284,13 +284,24 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
+= 3.1.9 =
+
+This release fixes a bug where the media modal was not showing in the classic editor and ACF.
+
+* Date Updated : 15 Jan 2026
+[//]: # fs_premium_only_begin
+* Fixed: [Expert Plan] fixed bug introduced in 3.1.7 where the media modal was not showing in the classic editor, ACF and other plugins using the media modal.
+* Fixed: [Expert Plan] fixed bug introduced in 3.1.7 where the media modal was not showing for the ACF image field.
+[//]: # fs_premium_only_end
+
 = 3.1.7 =
 
 This release fixes the bug for the missing "Import Video" tab in the media selector modal.
 
 * Date Updated : 11 Jan 2026
-* Fixed: fixed bug introduced in 3.1.6 where the "Import Video" tab was not showing in the media selector modal.
-
+[//]: # fs_premium_only_begin
+* Fixed: [Expert Plan] fixed bug introduced in 3.1.6 where the "Import Video" tab was not showing in the media selector modal.
+[//]: # fs_premium_only_end
 = 3.1.6 =
 
 This release fixes a few bugs and compatability issues with WP Rocket
