@@ -2,7 +2,7 @@
 
 class FooGalleryFunctionsTest extends WP_UnitTestCase {
 	private function create_gallery_post( array $args = array(), array $meta = array() ) {
-		$post_id = $this->factory->post->create( array_merge( array(
+		$post_id = self::factory()->post->create( array_merge( array(
 			'post_title'  => 'Test Gallery',
 			'post_type'   => FOOGALLERY_CPT_GALLERY,
 			'post_status' => 'publish',
@@ -22,7 +22,7 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 			'guid'           => 'https://example.org/test-image.jpg',
 		);
 
-		return $this->factory->attachment->create( array_merge( $defaults, $args ) );
+		return self::factory()->attachment->create( array_merge( $defaults, $args ) );
 	}
 
 	/**
@@ -141,7 +141,7 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 	public function test_get_all_galleries_returns_gallery_objects() {
 		$gallery_id = $this->create_gallery_post();
 		$draft_id = $this->create_gallery_post( array( 'post_status' => 'draft' ) );
-		$this->factory->post->create( array( 'post_type' => 'post' ) );
+		self::factory()->post->create( array( 'post_type' => 'post' ) );
 
 		$galleries = foogallery_get_all_galleries();
 		$this->assertNotEmpty( $galleries );
