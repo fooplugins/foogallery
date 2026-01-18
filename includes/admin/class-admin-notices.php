@@ -179,8 +179,13 @@ if ( ! class_exists( 'FooGallery_Admin_Notices' ) ) {
 		}
 
 		function display_thumb_test_notice() {
-			//check if we are on specific admin pages
-			if ( FOOGALLERY_CPT_GALLERY === foo_current_screen_post_type() ) {
+			$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+			if ( ! is_object( $screen ) ) {
+				return;
+			}
+
+			// Only run on the galleries list page, not other FooGallery admin screens.
+			if ( 'edit-foogallery' === $screen->id ) {
 
 				if ( $this->should_run_tests() ) {
 					$thumbs = new FooGallery_Thumbnails();
