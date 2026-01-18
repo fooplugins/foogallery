@@ -73,19 +73,24 @@
 						url: ajaxurl,
 						data: data,
 						dataType: 'JSON',
-						success: function(data) {
+						success: function(response) {
 							var titleDiv = dom.select( '.foogallery-tinymce-title', node),
 								countDiv = dom.select( '.foogallery-tinymce-count', node),
-								galleryImg = dom.select( '.foogallery-pile-inner-thumb', node );
+								galleryImg = dom.select( '.foogallery-pile-inner-thumb', node ),
+								payload = response && response.success ? response.data : null;
+
+							if (!payload) {
+								return;
+							}
 
 							if (titleDiv && titleDiv.length) {
-								titleDiv[0].textContent = data.name;
+								titleDiv[0].textContent = payload.name;
 							}
 							if (countDiv && countDiv.length) {
-								countDiv[0].textContent = data.count;
+								countDiv[0].textContent = payload.count;
 							}
 							if (galleryImg && galleryImg.length) {
-								jQuery(galleryImg[0]).replaceWith('<img src="' + data.src + '" />');
+								jQuery(galleryImg[0]).replaceWith('<img src="' + payload.src + '" />');
 							}
 						}
 					});

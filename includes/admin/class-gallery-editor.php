@@ -115,7 +115,7 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Editor' ) ) {
 		 */
 		public function render_tinymce_nonce() {
 			?>
-			<input id="foogallery-timnymce-action-nonce" type="hidden" value="<?php esc_url( wp_create_nonce( 'foogallery-timymce-nonce' ) ); ?>" />
+			<input id="foogallery-timnymce-action-nonce" type="hidden" value="<?php echo esc_attr( wp_create_nonce( 'foogallery-timymce-nonce' ) ); ?>" />
 			<?php
 		}
 
