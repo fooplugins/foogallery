@@ -206,27 +206,48 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 		}
 
 		static function find_first_image_in_media_library() {
-			//try the first 10 attachments from the media library
-			$args         = array(
-				'post_type'        => 'attachment',
-				'post_mime_type'   => 'image',
-				'post_status'      => 'any',
-				'numberposts'      => 10,
-				'orderby'          => 'date',
-				'order'            => 'ASC'
-			);
-			$query_images = new WP_Query( $args );
-			foreach ( $query_images->posts as $image ) {
-				$image_url = wp_get_attachment_url( $image->ID );
+			static $cached = null;
+			if ( null !== $cached ) {
+				return $cached;
+			}
 
-				if ( !empty( $image_url ) ) {
-                    if ( self::image_file_exists( $image_url ) || self::image_file_exists( $image_url, true ) ) {
-                        return $image_url;
-                    }
+			// Try a small set of recent images with minimal query overhead.
+			$args = array(
+				'post_type'              => 'attachment',
+				'post_mime_type'         => 'image',
+				'post_status'            => 'inherit',
+				'posts_per_page'         => 5,
+				'orderby'                => 'date',
+				'order'                  => 'DESC',
+				'fields'                 => 'ids',
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+			);
+
+			$query_images = new WP_Query( $args );
+			if ( empty( $query_images->posts ) ) {
+				$cached = false;
+				return $cached;
+			}
+			foreach ( $query_images->posts as $image_id ) {
+				$local_path = get_attached_file( $image_id );
+				if ( $local_path && file_exists( $local_path ) ) {
+					$cached = wp_get_attachment_url( $image_id );
+					return $cached;
+				}
+
+				$image_url = wp_get_attachment_url( $image_id );
+				if ( ! empty( $image_url ) ) {
+					if ( self::image_file_exists( $image_url ) || self::image_file_exists( $image_url, true ) ) {
+						$cached = $image_url;
+						return $cached;
+					}
 				}
 			}
 
-			return false;
+			$cached = false;
+			return $cached;
 		}
 
 		/**
@@ -238,11 +259,22 @@ if ( !class_exists( 'FooGallery_Thumbnails' ) ) {
 		 * @return bool        Whether the remote image exists.
 		 */
 		static function image_file_exists( $url, $force_https = false ) {
-            if ( $force_https ) {
-                $url = str_replace( 'http://', 'https://', $url );
-            }
-			$response = wp_remote_head( $url );
-			return 200 === wp_remote_retrieve_response_code( $response );
+			if ( $force_https ) {
+				$url = str_replace( 'http://', 'https://', $url );
+			}
+
+			$response = wp_remote_head( $url, array(
+				'timeout'           => 2,
+				'redirection'       => 0,
+				'reject_unsafe_urls' => true,
+			) );
+
+			if ( is_wp_error( $response ) ) {
+				return false;
+			}
+
+			$code = wp_remote_retrieve_response_code( $response );
+			return ( $code >= 200 && $code < 400 ) || 403 === $code;
 		}
 	}
 }
