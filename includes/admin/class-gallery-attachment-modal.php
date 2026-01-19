@@ -48,10 +48,35 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		 * Generate image edit modal on gallery creation
 		 */ 
 		public function ajax_open_modal() {
+			if ( ! check_ajax_referer( 'foogallery_attachment_modal_open', 'nonce', false ) ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Invalid security token.', 'foogallery' ) ),
+					403
+				);
+			}
 
-			// Check for nonce security      
-			if ( ! wp_verify_nonce( $_POST['nonce'], 'foogallery_attachment_modal_open' ) ) {
-				die ( 'Busted!');
+			$img_id = isset( $_POST['img_id'] ) ? absint( wp_unslash( $_POST['img_id'] ) ) : 0;
+			$gallery_id = isset( $_POST['gallery_id'] ) ? absint( wp_unslash( $_POST['gallery_id'] ) ) : 0;
+
+			if ( ! $img_id || ! $gallery_id ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Invalid attachment data.', 'foogallery' ) ),
+					400
+				);
+			}
+
+			if ( ! current_user_can( 'edit_post', $img_id ) ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Insufficient permissions.', 'foogallery' ) ),
+					403
+				);
+			}
+
+			if ( ! current_user_can( 'edit_post', $gallery_id ) ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Insufficient permissions.', 'foogallery' ) ),
+					403
+				);
 			}
 
 			$modal_data = $this->build_modal_data( $_POST );
@@ -167,66 +192,110 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Attachment_Modal' ) ) {
 		 * Save modal form data to database
 		 */
 		public function ajax_save_modal() {
+			$foogallery = isset( $_POST['foogallery'] ) ? wp_unslash( $_POST['foogallery'] ) : array();
 
-			$foogallery = ( isset( $_POST['foogallery'] ) ? $_POST['foogallery'] : array() );
-
-			if ( !is_array( $foogallery ) || empty( $foogallery ) ) {
-				return;
+			if ( ! is_array( $foogallery ) || empty( $foogallery ) ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Invalid attachment data.', 'foogallery' ) ),
+					400
+				);
 			}
 
-			// Check for nonce security      
-			if ( ! wp_verify_nonce( $_POST['nonce'], 'foogallery-modal-nonce' ) ) {
-				die ( 'Busted!');
+			if ( ! check_ajax_referer( 'foogallery-modal-nonce', 'nonce', false ) ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Invalid security token.', 'foogallery' ) ),
+					403
+				);
 			}
 
-			$img_id = intval( sanitize_text_field( $_POST['img_id'] ) );
+			$img_id = isset( $_POST['img_id'] ) ? absint( wp_unslash( $_POST['img_id'] ) ) : 0;
 
-			if ( $img_id > 0 ) {
-                if ( current_user_can('edit_post', $img_id ) ) {
-                    do_action( 'foogallery_attachment_save_data', $img_id, $foogallery );
-                }
+			if ( ! $img_id ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Invalid attachment data.', 'foogallery' ) ),
+					400
+				);
 			}
-			
-			wp_die();
+
+			if ( ! current_user_can( 'edit_post', $img_id ) ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Insufficient permissions.', 'foogallery' ) ),
+					403
+				);
+			}
+
+			do_action( 'foogallery_attachment_save_data', $img_id, $foogallery );
+			wp_send_json_success();
 		}
 
         /**
          * Save new taxonomy
          */
-        public function ajax_add_taxonomy() {
-            // Check for nonce security
-            if ( ! wp_verify_nonce( $_POST['nonce'], 'foogallery_attachment_modal_taxonomies' ) ) {
-                die ( 'Busted!');
-            }
+		public function ajax_add_taxonomy() {
+			if ( ! check_ajax_referer( 'foogallery_attachment_modal_taxonomies', 'nonce', false ) ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Invalid security token.', 'foogallery' ) ),
+					403
+				);
+			}
 
-            $img_id = intval( sanitize_text_field( $_POST['img_id'] ) );
-            $taxonomy = sanitize_text_field( $_POST['taxonomy'] );
-            $term = sanitize_text_field( $_POST['term'] );
+			$img_id = isset( $_POST['img_id'] ) ? absint( wp_unslash( $_POST['img_id'] ) ) : 0;
+			$taxonomy = isset( $_POST['taxonomy'] ) ? sanitize_key( wp_unslash( $_POST['taxonomy'] ) ) : '';
+			$term = isset( $_POST['term'] ) ? sanitize_text_field( wp_unslash( $_POST['term'] ) ) : '';
 
-            if ( $img_id > 0 && strlen( $taxonomy ) > 0 && strlen( $term ) > 0 ) {
-                $new_term = wp_insert_term( $term, $taxonomy );
-                if ( is_wp_error( $new_term ) ) {
-                    wp_send_json_error( array(
-                        'message' => __( 'Could not add new taxonomy term!', 'foogallery' )
-                    ));
-                } else {
-                    $new_term_obj = null;
+			if ( ! $img_id || '' === $taxonomy || '' === $term ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Invalid data.', 'foogallery' ) ),
+					400
+				);
+			}
 
-                    if ( isset( $new_term['term_id'] ) ) {
-                        $new_term_obj = get_term( $new_term['term_id'] );
+			if ( ! taxonomy_exists( $taxonomy ) ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Invalid taxonomy.', 'foogallery' ) ),
+					400
+				);
+			}
 
-                        wp_send_json_success( array(
-                            'id' => $new_term_obj->term_id,
-                            'name' => $new_term_obj->name
-                        ));
-                    }
-                }
-            } else {
-                wp_send_json_error( array(
-                    'message' => __( 'Invalid data!', 'foogallery' )
-                ));
-            }
-        }
+			if ( ! current_user_can( 'edit_post', $img_id ) ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Insufficient permissions.', 'foogallery' ) ),
+					403
+				);
+			}
+
+			$tax = get_taxonomy( $taxonomy );
+			if ( $tax && ! empty( $tax->cap->assign_terms ) && ! current_user_can( $tax->cap->assign_terms ) ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Insufficient permissions.', 'foogallery' ) ),
+					403
+				);
+			}
+
+			$new_term = wp_insert_term( $term, $taxonomy );
+			if ( is_wp_error( $new_term ) ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Could not add new taxonomy term!', 'foogallery' ) ),
+					400
+				);
+			}
+
+			if ( isset( $new_term['term_id'] ) ) {
+				$new_term_obj = get_term( $new_term['term_id'] );
+				wp_send_json_success(
+					array(
+						'id' => $new_term_obj->term_id,
+						'name' => $new_term_obj->name,
+					)
+				);
+			}
+
+			wp_send_json_error(
+				array( 'message' => __( 'Invalid data.', 'foogallery' ) ),
+				400
+			);
+		}
+
 
 		/**
 		 * Save main tab data content
