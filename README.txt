@@ -4,7 +4,7 @@ Donate link: https://fooplugins.com
 Tags: gallery, image-gallery, photo-gallery, responsive-gallery, lightbox
 Requires at least: 5.3
 Tested up to: 6.9
-Stable tag: 3.1.9
+Stable tag: 3.1.10
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -283,6 +283,15 @@ Yes. FooGallery does not collect visitor data, and admin tracking is optional.
 Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
+
+= 3.1.10-beta =
+
+This release fixes an admin bug causing 503 errors in come scenarios, and also ensures all ajax calls do compatability checks.
+
+* Date Updated : 18 Jan 2026
+* Update : Thumbnail generation tests are only done on the gallery listing page now.
+* Fixed : Reworked thumbnail generation tests to not do HTTP checks for images in the media library, and only load 5 attaachments. These prevent any possible 503 errors happening.
+* Update : Added capability checks for admin ajax events to ensure user can perform the needed activites.
 
 = 3.1.9 =
 
