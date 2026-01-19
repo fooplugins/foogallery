@@ -28,7 +28,7 @@ agent-browser "${SESSION_ARGS[@]}" is visible "#menu-posts-foogallery"
 MENU_LABEL=$(agent-browser "${SESSION_ARGS[@]}" get text "#menu-posts-foogallery .wp-menu-name")
 echo "Found FooGallery menu: $MENU_LABEL"
 
-agent-browser "${SESSION_ARGS[@]}" click "#menu-posts-foogallery a"
+agent-browser "${SESSION_ARGS[@]}" click "#menu-posts-foogallery > a.menu-top"
 agent-browser "${SESSION_ARGS[@]}" wait --url "**post_type=foogallery**"
 agent-browser "${SESSION_ARGS[@]}" wait "h1.wp-heading-inline"
 
