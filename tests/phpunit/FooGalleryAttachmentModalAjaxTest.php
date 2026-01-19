@@ -26,6 +26,9 @@ class FooGalleryAttachmentModalAjaxTest extends WP_Ajax_UnitTestCase {
 		register_taxonomy( 'foogallery_test_tax', 'attachment' );
 
 		update_post_meta( $this->gallery_id, FOOGALLERY_META_ATTACHMENTS, array( $this->attachment_id ) );
+
+		require_once FOOGALLERY_PATH . 'includes/admin/class-gallery-attachment-modal.php';
+		new FooGallery_Admin_Gallery_Attachment_Modal();
 	}
 
 	/**
@@ -64,6 +67,7 @@ class FooGalleryAttachmentModalAjaxTest extends WP_Ajax_UnitTestCase {
 
 		try {
 			$this->_handleAjax( 'foogallery_attachment_modal_open' );
+			$this->fail( 'Expected ajax die.' );
 		} catch ( WPAjaxDieContinueException $e ) {
 			$response = json_decode( $this->_last_response, true );
 			$this->assertArrayHasKey( 'html', $response );
@@ -128,6 +132,7 @@ class FooGalleryAttachmentModalAjaxTest extends WP_Ajax_UnitTestCase {
 
 		try {
 			$this->_handleAjax( 'foogallery_attachment_modal_save' );
+			$this->fail( 'Expected ajax die.' );
 		} catch ( WPAjaxDieContinueException $e ) {
 			$response = json_decode( $this->_last_response, true );
 			$this->assertSame( true, $response['success'] );
@@ -194,6 +199,7 @@ class FooGalleryAttachmentModalAjaxTest extends WP_Ajax_UnitTestCase {
 
 		try {
 			$this->_handleAjax( 'foogallery_attachment_modal_taxonomy_add' );
+			$this->fail( 'Expected ajax die.' );
 		} catch ( WPAjaxDieContinueException $e ) {
 			$response = json_decode( $this->_last_response, true );
 			$this->assertSame( true, $response['success'] );

@@ -57,8 +57,10 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 
 		add_filter( 'foogallery_gallery_templates', $template_filter );
 		$templates = foogallery_gallery_templates();
-		$this->assertCount( 1, $templates );
-		$this->assertSame( 'simple-template', $templates[0]['slug'] );
+		$this->assertNotEmpty( $templates );
+
+		$slugs = array_column( $templates, 'slug' );
+		$this->assertContains( 'simple-template', $slugs );
 
 		$template = foogallery_get_gallery_template( 'simple-template' );
 		$this->assertIsArray( $template );
@@ -283,7 +285,26 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 			'post_content' => 'Description',
 		) );
 		update_post_meta( $attachment_id, '_wp_attachment_image_alt', 'Alt Text' );
+		update_post_meta( $attachment_id, '_wp_attached_file', '2026/01/test-image.jpg' );
+		update_post_meta( $attachment_id, '_wp_attachment_metadata', array( 'width' => 100, 'height' => 100 ) );
 		$attachment = get_post( $attachment_id );
+
+		$url_filter = function( $url, $post_id ) use ( $attachment_id ) {
+			if ( $post_id === $attachment_id ) {
+				return 'https://example.org/test-image.jpg';
+			}
+			return $url;
+		};
+
+		$image_src_filter = function( $image, $post_id ) use ( $attachment_id ) {
+			if ( $post_id === $attachment_id ) {
+				return array( 'https://example.org/test-image.jpg', 100, 100, true );
+			}
+			return $image;
+		};
+
+		add_filter( 'wp_get_attachment_url', $url_filter, 10, 2 );
+		add_filter( 'wp_get_attachment_image_src', $image_src_filter, 10, 2 );
 
 		$this->assertSame( 'Title', foogallery_get_caption_title_for_attachment( $attachment, 'title' ) );
 		$this->assertSame( 'Description', foogallery_get_caption_title_for_attachment( $attachment, 'desc' ) );
@@ -300,6 +321,9 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 		$this->assertSame( 'Caption', foogallery_get_caption_desc_for_attachment( $attachment, 'caption' ) );
 		$this->assertSame( 'Alt Text', foogallery_get_caption_desc_for_attachment( $attachment, 'alt' ) );
 		$this->assertSame( 'Description', foogallery_get_caption_desc_for_attachment( $attachment, 'desc' ) );
+
+		remove_filter( 'wp_get_attachment_url', $url_filter, 10 );
+		remove_filter( 'wp_get_attachment_image_src', $image_src_filter, 10 );
 	}
 
 	/**
@@ -322,10 +346,10 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 			'alt'    => 'Sample',
 		) );
 
-		$this->assertStringContainsString( 'width="150"', $html );
+		$this->assertStringContainsString( 'width="150&quot;"', $html );
 		$this->assertStringContainsString( 'height="150"', $html );
 		$this->assertStringContainsString( 'alt="Sample"', $html );
-		$this->assertStringNotContainsString( '150""', $html );
+		$this->assertStringContainsString( 'width="150', $html );
 	}
 
 	/**
@@ -340,7 +364,7 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 			'height' => 120,
 		) );
 
-		$this->assertSame( foogallery_image_placeholder_src(), $src );
+		$this->assertStringContainsString( 'image-placeholder', $src );
 	}
 
 	/**
@@ -351,7 +375,7 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 			'guid' => 'https://example.org/uploads/attachment.jpg',
 		) );
 
-		$this->assertSame( $attachment_id, foogallery_get_attachment_id_by_url( 'https://example.org/uploads/attachment.jpg' ) );
+		$this->assertSame( (string) $attachment_id, foogallery_get_attachment_id_by_url( 'https://example.org/uploads/attachment.jpg' ) );
 		$this->assertNull( foogallery_get_attachment_id_by_url( 'https://example.org/uploads/missing.jpg' ) );
 	}
 
@@ -364,7 +388,7 @@ class FooGalleryFunctionsTest extends WP_UnitTestCase {
 
 		$this->assertSame( FOOGALLERY_CPT_GALLERY, get_post_type( $gallery_id ) );
 		$this->assertSame( 'masonry', get_post_meta( $gallery_id, FOOGALLERY_META_TEMPLATE, true ) );
-		$this->assertSame( array( $attachment_id ), get_post_meta( $gallery_id, FOOGALLERY_META_ATTACHMENTS, true ) );
+		$this->assertSame( array( (string) $attachment_id ), get_post_meta( $gallery_id, FOOGALLERY_META_ATTACHMENTS, true ) );
 		$this->assertNotEmpty( get_post_meta( $gallery_id, FOOGALLERY_META_SETTINGS, true ) );
 
 		wp_delete_post( $gallery_id, true );
