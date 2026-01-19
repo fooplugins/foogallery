@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<phpunit
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
+	bootstrap="tests/phpunit/bootstrap.php"
+	colors="true"
+	backupGlobals="false"
+>
+	<testsuites>
+		<testsuite name="FooGallery">
+			<directory>./tests/phpunit</directory>
+		</testsuite>
+	</testsuites>
+</phpunit>

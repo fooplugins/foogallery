@@ -7,3 +7,6 @@ node_modules
 fs-config.json
 dist
 .idea
+.env
+.phpunit.result.cache
+tests/ui/artifacts/

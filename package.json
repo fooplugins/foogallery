@@ -1,6 +1,6 @@
 {
   "name": "foogallery",
-  "version": "3.1.7",
+  "version": "3.1.10-beta",
   "title": "FooGallery",
   "description": "The Most Intuitive and Extensible Gallery Creation and Management Tool Ever Created for WordPress",
   "repository": "https://github.com/fooplugins/foogallery",
@@ -12,7 +12,12 @@
     "build": "wp-scripts build --config=./gutenberg/config/blocks.js",
     "package": "npm run build && gulp",
     "gulp": "gulp",
-    "deploy": "gulp freemius-deploy"
+    "deploy": "gulp freemius-deploy",
+    "test:ui": "bash tests/ui/run.sh",
+    "test:php:setup": "npx @wordpress/env start",
+    "test:php:stop": "npx @wordpress/env stop",
+    "test:php": "npx @wordpress/env run tests-cli --env-cwd=wp-content/plugins/foogallery vendor/bin/phpunit --configuration phpunit.xml.dist",
+    "test:php:ajax": "npx @wordpress/env run tests-cli --env-cwd=wp-content/plugins/foogallery vendor/bin/phpunit --configuration phpunit.xml.dist --group ajax"
   },
   "devDependencies": {
     "@svgr/webpack": "^6.5.1",

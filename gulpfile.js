@@ -184,7 +184,13 @@ function clean(){
 
 // extract a .pot file from all PHP files excluding those in the node_modules dir
 function translate(){
-    return gulp.src("./**/*.php")
+    return gulp.src([
+        "./*.php",
+		"./extensions/**/*.php",
+		"./gutenberg/**/*.php",
+		"./pro/**/*.php",
+        "./includes/**/*.php"
+    ])
         .pipe(gulpWpPot({
             "domain": `${pkg.name}`,
             "package": `${pkg.title}`,
@@ -216,7 +222,9 @@ function zip(){
         '!Gruntfile.js',
         "!./{.nodeploy,.nodeploy/**/*}",
         '!AGENTS.md',
-        '!WORDPRESS.md'
+        '!WORDPRESS.md',
+		"!./{tests,tests/**/*}",
+		"!./{.docs,.docs/**/*}",
     ])
         .pipe(gulpZip(`${pkg.name}.v${pkg.version}.zip`))
         .pipe(gulp.dest("./dist"));
