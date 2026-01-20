@@ -18,6 +18,7 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 			'foogallery-grid'              => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/grid-gallery/',
 			'foogallery-slider'            => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/slider-gallery/',
 			'foogallery-videos'            => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/video-gallery/',
+			'foogallery-social'            => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/social/',
 			'foogallery-exif'              => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/exif-data/',
 			'foogallery-bulk-copy'         => 'https://fooplugins.com/bulk-copy-foogallery-pro/',
 			'foogallery-trial'             => 'https://fooplugins.com/foogallery-wordpress-gallery-plugin/start-trial/',
@@ -58,9 +59,14 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 					return;
 				}
 
+				if ( $this->should_show_social_addon_promo() ) {
+					add_filter( 'foogallery_override_gallery_template_fields', array( $this, 'add_social_addon_promo_fields' ), 15, 2 );
+				}
+
 				$show_starter_promos = true;
 				$show_expert_promos = true;
 				$show_commerce_promos = true;
+				$show_plan_promos = true;
 
 				if ( !$is_free ) {
 					if ( FOOGALLERY_PRO_PLAN_STARTER === $current_plan ) {
@@ -68,9 +74,13 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 					} else if ( FOOGALLERY_PRO_PLAN_EXPERT == $current_plan ) {
 						$show_starter_promos = $show_expert_promos = false;
 					} else {
-						// Do not show any promos!
-						return;
+						$show_starter_promos = $show_expert_promos = $show_commerce_promos = false;
+						$show_plan_promos = false;
 					}
+				}
+
+				if ( ! $show_plan_promos ) {
+					return;
 				}
 
 				if ( $show_starter_promos ) {
@@ -418,6 +428,78 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 			return foogallery_get_setting( 'pro_promo_disabled' ) !== 'on';
 		}
 
+		/**
+		 * Returns true if the Social Addon promo should be shown.
+		 *
+		 * @return bool
+		 */
+		private function should_show_social_addon_promo() {
+			return ! $this->is_social_addon_active();
+		}
+
+		/**
+		 * Returns true if the Social Addon is active.
+		 *
+		 * @return bool
+		 */
+		private function is_social_addon_active() {
+			$is_active = false;
+
+			if ( defined( 'FOOGALLERY_SOCIAL_VERSION' ) ) {
+				$is_active = true;
+			}
+
+			if ( ! $is_active ) {
+				$classes = array(
+					'FooGallery_Social_Extension',
+					'FooGallery_Social_Addon',
+					'FooGallery_Social',
+				);
+
+				foreach ( $classes as $class ) {
+					if ( class_exists( $class ) ) {
+						$is_active = true;
+						break;
+					}
+				}
+			}
+
+			if ( ! $is_active && function_exists( 'foogallery_extensions_api' ) ) {
+				$api = foogallery_extensions_api();
+				$slugs = array(
+					'foogallery-social',
+					'social',
+				);
+
+				foreach ( $slugs as $slug ) {
+					if ( $api->get_extension( $slug ) && $api->is_active( $slug ) ) {
+						$is_active = true;
+						break;
+					}
+				}
+			}
+
+			if ( ! $is_active ) {
+				if ( ! function_exists( 'is_plugin_active' ) ) {
+					require_once ABSPATH . 'wp-admin/includes/plugin.php';
+				}
+
+				$plugin_files = array(
+					'foogallery-social/foogallery-social.php',
+					'foogallery-social-addon/foogallery-social-addon.php',
+				);
+
+				foreach ( $plugin_files as $plugin_file ) {
+					if ( function_exists( 'is_plugin_active' ) && is_plugin_active( $plugin_file ) ) {
+						$is_active = true;
+						break;
+					}
+				}
+			}
+
+			return (bool) apply_filters( 'foogallery_is_social_addon_active', $is_active );
+		}
+
 		/*
 		 * Include promo settings
 		 */
@@ -758,6 +840,51 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 			);
 
 			return $fields;
+		}
+
+		/**
+		 * Add Social Addon promo fields to the gallery template.
+		 *
+		 * @uses "foogallery_override_gallery_template_fields"
+		 *
+		 * @param $fields
+		 * @param $template
+		 *
+		 * @return array
+		 */
+		function add_social_addon_promo_fields( $fields, $template ) {
+			if ( $this->is_social_addon_active() ) {
+				return $fields;
+			}
+
+			$fields[] = array(
+				'id'      => 'social_addon_promo',
+				'section' => __( 'Social', 'foogallery' ),
+				'title'   => __( 'Social Addon: Sharing, Likes, and Comments', 'foogallery' ),
+				'desc'    => __( 'Add social sharing and engagement to your galleries:', 'foogallery' ) .
+				             '<ul class="ul-disc"><li><strong>' . __( 'Social Sharing', 'foogallery' ) . '</strong> - ' . __( 'Let visitors share images to popular networks.', 'foogallery' ) .
+				             '</li><li><strong>' . __( 'Likes', 'foogallery' ) . '</strong> - ' . __( 'Encourage quick reactions to your images.', 'foogallery' ) .
+				             '</li><li><strong>' . __( 'Comments', 'foogallery' ) . '</strong> - ' . __( 'Collect feedback and conversation per image.', 'foogallery' ) .
+				             '</li></ul>',
+				'type'    => 'promo',
+				'cta'     => $this->build_social_addon_cta_buttons(),
+			);
+
+			return $fields;
+		}
+
+		private function build_social_addon_cta_buttons() {
+			return array(
+				array(
+					'text' => __( 'Learn More', 'foogallery' ),
+					'link' => $this->build_url( 'foogallery-social' ),
+				),
+				array(
+					'text' => __( 'View Extensions', 'foogallery' ),
+					'link' => foogallery_admin_extensions_url(),
+					'class' => 'button-secondary',
+				),
+			);
 		}
 
 		private function build_cta_buttons( $url_name ) {
