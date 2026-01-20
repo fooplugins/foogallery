@@ -97,6 +97,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
 					return 'captions';
 				case __('Paging', 'foogallery'):
 					return 'paging';
+				case __('Social', 'foogallery'):
+					return 'social';
 			}
 			return strtolower( $section );
 		}
@@ -123,6 +125,8 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Settings' ) ) {
                     return 'dashicons-editor-quote';
                 case 'paging':
                     return 'dashicons-admin-page';
+				case 'social':
+					return 'dashicons-share';
             }
             return $section_slug;
         }
