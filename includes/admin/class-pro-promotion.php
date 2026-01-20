@@ -445,15 +445,13 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 		private function is_social_addon_active() {
 			$is_active = false;
 
-			if ( defined( 'FOOGALLERY_SOCIAL_VERSION' ) ) {
+			if ( defined( 'FG_SOCIAL_VERSION' ) ) {
 				$is_active = true;
 			}
 
 			if ( ! $is_active ) {
 				$classes = array(
-					'FooGallery_Social_Extension',
-					'FooGallery_Social_Addon',
-					'FooGallery_Social',
+					'FooPlugins\\FooGallery\\Social\\Init',
 				);
 
 				foreach ( $classes as $class ) {
@@ -462,6 +460,10 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 						break;
 					}
 				}
+			}
+
+			if ( ! $is_active && function_exists( 'foogallery_social_is_enabled_for_current_gallery' ) ) {
+				$is_active = true;
 			}
 
 			if ( ! $is_active && function_exists( 'foogallery_extensions_api' ) ) {
@@ -485,8 +487,8 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 				}
 
 				$plugin_files = array(
+					'foogallery-social/index.php',
 					'foogallery-social/foogallery-social.php',
-					'foogallery-social-addon/foogallery-social-addon.php',
 				);
 
 				foreach ( $plugin_files as $plugin_file ) {
@@ -861,10 +863,10 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 				'id'      => 'social_addon_promo',
 				'section' => __( 'Social', 'foogallery' ),
 				'title'   => __( 'Social Addon: Sharing, Likes, and Comments', 'foogallery' ),
-				'desc'    => __( 'Add social sharing and engagement to your galleries:', 'foogallery' ) .
-				             '<ul class="ul-disc"><li><strong>' . __( 'Social Sharing', 'foogallery' ) . '</strong> - ' . __( 'Let visitors share images to popular networks.', 'foogallery' ) .
-				             '</li><li><strong>' . __( 'Likes', 'foogallery' ) . '</strong> - ' . __( 'Encourage quick reactions to your images.', 'foogallery' ) .
-				             '</li><li><strong>' . __( 'Comments', 'foogallery' ) . '</strong> - ' . __( 'Collect feedback and conversation per image.', 'foogallery' ) .
+				'desc'    => __( 'Add social engagement and sharing to your galleries:', 'foogallery' ) .
+				             '<ul class="ul-disc"><li><strong>' . __( 'Lightbox Sharing', 'foogallery' ) . '</strong> - ' . __( 'Let visitors share gallery items to popular networks from the built-in lightbox.', 'foogallery' ) .
+				             '</li><li><strong>' . __( 'Likes', 'foogallery' ) . '</strong> - ' . __( 'Add like buttons on thumbnails, optional lightbox likes, and sort by most liked.', 'foogallery' ) .
+				             '</li><li><strong>' . __( 'Comments', 'foogallery' ) . '</strong> - ' . __( 'Collect feedback with a comments panel in the lightbox.', 'foogallery' ) .
 				             '</li></ul>',
 				'type'    => 'promo',
 				'cta'     => $this->build_social_addon_cta_buttons(),
