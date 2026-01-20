@@ -466,21 +466,6 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 				$is_active = true;
 			}
 
-			if ( ! $is_active && function_exists( 'foogallery_extensions_api' ) ) {
-				$api = foogallery_extensions_api();
-				$slugs = array(
-					'foogallery-social',
-					'social',
-				);
-
-				foreach ( $slugs as $slug ) {
-					if ( $api->get_extension( $slug ) && $api->is_active( $slug ) ) {
-						$is_active = true;
-						break;
-					}
-				}
-			}
-
 			if ( ! $is_active ) {
 				if ( ! function_exists( 'is_plugin_active' ) ) {
 					require_once ABSPATH . 'wp-admin/includes/plugin.php';
@@ -488,7 +473,6 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 
 				$plugin_files = array(
 					'foogallery-social/index.php',
-					'foogallery-social/foogallery-social.php',
 				);
 
 				foreach ( $plugin_files as $plugin_file ) {
@@ -864,10 +848,10 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 				'section' => __( 'Social', 'foogallery' ),
 				'title'   => __( 'Social Addon: Sharing, Likes, and Comments', 'foogallery' ),
 				'desc'    => __( 'Add social engagement and sharing to your galleries:', 'foogallery' ) .
-				             '<ul class="ul-disc"><li><strong>' . __( 'Lightbox Sharing', 'foogallery' ) . '</strong> - ' . __( 'Let visitors share gallery items to popular networks from the built-in lightbox.', 'foogallery' ) .
-				             '</li><li><strong>' . __( 'Likes', 'foogallery' ) . '</strong> - ' . __( 'Add like buttons on thumbnails, optional lightbox likes, and sort by most liked.', 'foogallery' ) .
-				             '</li><li><strong>' . __( 'Comments', 'foogallery' ) . '</strong> - ' . __( 'Collect feedback with a comments panel in the lightbox.', 'foogallery' ) .
-				             '</li></ul>',
+				             '<ul class="ul-disc"><li><strong>' . __( 'Lightbox Sharing', 'foogallery' ) . '</strong> - ' . __( 'Let visitors share gallery items to social networks from the built-in lightbox.', 'foogallery' ) .
+				             '</li><li><strong>' . __( 'Likes', 'foogallery' ) . '</strong> - ' . __( 'Add like buttons on thumbnails, and sort gallery images by most liked.', 'foogallery' ) .
+				             '</li><li><strong>' . __( 'Comments', 'foogallery' ) . '</strong> - ' . __( 'Let visitors comment on your gallery images, or reply to other comments.', 'foogallery' ) .
+				             '</li></ul>' . __( 'Includes all the settings you need for customization, moderation or allowing anonymous comments / likes.', 'foogallery' ) . '<br /><br />',
 				'type'    => 'promo',
 				'cta'     => $this->build_social_addon_cta_buttons(),
 			);
@@ -882,8 +866,8 @@ if ( ! class_exists( 'FooGallery_Pro_Promotion' ) ) {
 					'link' => $this->build_url( 'foogallery-social' ),
 				),
 				array(
-					'text' => __( 'View Extensions', 'foogallery' ),
-					'link' => foogallery_admin_extensions_url(),
+					'text' => __( 'View Addons', 'foogallery' ),
+					'link' => foogallery_admin_addon_url(),
 					'class' => 'button-secondary',
 				),
 			);

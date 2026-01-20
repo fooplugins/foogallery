@@ -40,6 +40,7 @@ define( 'FOOGALLERY_ADMIN_MENU_SETTINGS_SLUG', 'foogallery-settings' );
 define( 'FOOGALLERY_ADMIN_MENU_FEATURES_SLUG', 'foogallery-features' );
 define( 'FOOGALLERY_ADMIN_MENU_SYSTEMINFO_SLUG', 'foogallery-systeminfo' );
 define( 'FOOGALLERY_ADMIN_MENU_PRICING_SLUG', 'foogallery-pricing' );
+define( 'FOOGALLERY_ADMIN_MENU_ADDON_SLUG', 'foogallery-addons' );
 
 define( 'FOOGALLERY_ATTACHMENT_TAXONOMY_TAG', 'foogallery_attachment_tag' );
 define( 'FOOGALLERY_ATTACHMENT_TAXONOMY_CATEGORY', 'foogallery_attachment_category' );

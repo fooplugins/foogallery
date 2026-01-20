@@ -237,6 +237,15 @@ function foogallery_admin_pricing_url() {
 }
 
 /**
+ * Returns the FooGallery addon page Url within the admin
+ *
+ * @return string The Url to the FooGallery addon page in admin
+ */
+function foogallery_admin_addon_url() {
+	return foogallery_admin_url_for_page( FOOGALLERY_ADMIN_MENU_ADDON_SLUG );
+}
+
+/**
  * Returns the FooGallery free trial pricing page Url within the admin
  *
  * @return string The Url to the FooGallery free trial page in admin
