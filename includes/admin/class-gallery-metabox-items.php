@@ -126,54 +126,81 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBox_Items' ) ) {
 		}
 
 		public function ajax_gallery_preview() {
-			if ( check_admin_referer( 'foogallery_preview', 'foogallery_preview_nonce' ) ) {
-
-				$foogallery_id = intval( $_POST['foogallery_id'] );
-
-				$template = isset( $_POST['foogallery_template'] ) ? sanitize_key( $_POST['foogallery_template'] ) : '';
-
-				$template = apply_filters( 'foogallery_preview_template', $template, $foogallery_id );
-
-				//check that the template supports previews
-				$gallery_template = foogallery_get_gallery_template( $template );
-				if ( isset( $gallery_template['preview_support'] ) && true === $gallery_template['preview_support'] ) {
-
-					global $foogallery_gallery_preview;
-
-					$foogallery_gallery_preview = true;
-
-					$args = array(
-						'template'       => $template,
-						'attachment_ids' => $_POST['foogallery_attachments'],
-						'preview'        => true
-					);
-
-					$args = $this->extract_preview_arguments( $args, $_POST, $template );
-
-					$args = apply_filters( 'foogallery_preview_arguments', $args, $_POST, $template );
-					$args = apply_filters( 'foogallery_preview_arguments-' . $template, $args, $_POST );
-
-					if ( foogallery_is_debug() ) {
-                        echo '<pre style="display: none">' . esc_html__('Preview Debug Arguments:', 'foogallery') . '<br>' . esc_html( print_r( $args, true ) ) . '</pre> <!-- phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -->';
-                    }
-
-					do_action( 'foogallery_preview_before_render', $foogallery_id, $args );
-
-					foogallery_render_gallery( $foogallery_id, $args );
-
-					do_action( 'foogallery_preview_after_render', $foogallery_id, $args );
-
-					$foogallery_gallery_preview = false;
-
-				} else {
-					echo '<div style="padding:20px 50px 50px 50px; text-align: center">';
-					echo '<h3>' . esc_html__( 'Preview not available!', 'foogallery' ) . '</h3>';
-					echo esc_html__('Sorry, but this gallery template does not support live previews. Please update the gallery in order to see what the gallery will look like.', 'foogallery' );
-					echo '</div>';
-				}
+			if ( ! check_ajax_referer( 'foogallery_preview', 'foogallery_preview_nonce', false ) ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Invalid security token.', 'foogallery' ) ),
+					403
+				);
 			}
 
-			die();
+			$post_data = wp_unslash( $_POST );
+			$foogallery_id = isset( $post_data['foogallery_id'] ) ? absint( $post_data['foogallery_id'] ) : 0;
+			if ( ! $foogallery_id ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Invalid gallery ID.', 'foogallery' ) ),
+					400
+				);
+			}
+
+			if ( ! current_user_can( 'edit_post', $foogallery_id ) ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Insufficient permissions.', 'foogallery' ) ),
+					403
+				);
+			}
+
+			$template = isset( $post_data['foogallery_template'] ) ? sanitize_key( $post_data['foogallery_template'] ) : foogallery_default_gallery_template();
+			$template = apply_filters( 'foogallery_preview_template', $template, $foogallery_id );
+
+			//check that the template supports previews
+			$gallery_template = foogallery_get_gallery_template( $template );
+			if ( isset( $gallery_template['preview_support'] ) && true === $gallery_template['preview_support'] ) {
+
+				global $foogallery_gallery_preview;
+
+				$foogallery_gallery_preview = true;
+
+				$attachment_ids = array();
+				if ( isset( $post_data['foogallery_attachments'] ) ) {
+					$attachment_ids = $post_data['foogallery_attachments'];
+					if ( is_string( $attachment_ids ) ) {
+						$attachment_ids = array_map( 'absint', array_filter( explode( ',', $attachment_ids ) ) );
+					} else {
+						$attachment_ids = array_map( 'absint', (array) $attachment_ids );
+					}
+				}
+
+				$args = array(
+					'template'       => $template,
+					'attachment_ids' => $attachment_ids,
+					'preview'        => true,
+				);
+
+				$args = $this->extract_preview_arguments( $args, $post_data, $template );
+
+				$args = apply_filters( 'foogallery_preview_arguments', $args, $post_data, $template );
+				$args = apply_filters( 'foogallery_preview_arguments-' . $template, $args, $post_data );
+
+				if ( foogallery_is_debug() ) {
+					echo '<pre style="display: none">' . esc_html__( 'Preview Debug Arguments:', 'foogallery' ) . '<br>' . esc_html( print_r( $args, true ) ) . '</pre> <!-- phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -->';
+				}
+
+				do_action( 'foogallery_preview_before_render', $foogallery_id, $args );
+
+				foogallery_render_gallery( $foogallery_id, $args );
+
+				do_action( 'foogallery_preview_after_render', $foogallery_id, $args );
+
+				$foogallery_gallery_preview = false;
+
+			} else {
+				echo '<div style="padding:20px 50px 50px 50px; text-align: center">';
+				echo '<h3>' . esc_html__( 'Preview not available!', 'foogallery' ) . '</h3>';
+				echo esc_html__( 'Sorry, but this gallery template does not support live previews. Please update the gallery in order to see what the gallery will look like.', 'foogallery' );
+				echo '</div>';
+			}
+
+			wp_die();
 		}
 
 	    /**
