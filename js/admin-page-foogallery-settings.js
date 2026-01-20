@@ -58,6 +58,17 @@ jQuery(document).ready(function($) {
         });
     };
 
+    FOOGALLERY.renderSettingsAjaxResponse = function($container, response) {
+        if (!response || !response.data) {
+            return;
+        }
+
+        var html = response.data.html || response.data.message;
+        if (html) {
+            $container.html(html);
+        }
+    };
+
     FOOGALLERY.bindClearCssOptimizationButton = function() {
         $('.foogallery_clear_css_optimizations').on('click', function(e) {
             e.preventDefault();
@@ -76,8 +87,12 @@ jQuery(document).ready(function($) {
                 type: "POST",
                 url: ajaxurl,
                 data: data,
-                success: function(data) {
-                    $container.html(data);
+                dataType: "json",
+                success: function(response) {
+                    FOOGALLERY.renderSettingsAjaxResponse($container, response);
+                },
+                error: function(xhr) {
+                    FOOGALLERY.renderSettingsAjaxResponse($container, xhr.responseJSON);
                 },
                 complete: function() {
                     $spinner.removeClass('is-active');
@@ -105,8 +120,12 @@ jQuery(document).ready(function($) {
                 type: "POST",
                 url: ajaxurl,
                 data: data,
-                success: function(data) {
-                    $container.html(data);
+                dataType: "json",
+                success: function(response) {
+                    FOOGALLERY.renderSettingsAjaxResponse($container, response);
+                },
+                error: function(xhr) {
+                    FOOGALLERY.renderSettingsAjaxResponse($container, xhr.responseJSON);
                 },
                 complete: function() {
                     $spinner.removeClass('is-active');
@@ -143,8 +162,12 @@ jQuery(document).ready(function($) {
                 type: "POST",
                 url: ajaxurl,
                 data: data,
-                success: function(data) {
-                    $container.html(data);
+                dataType: "json",
+                success: function(response) {
+                    FOOGALLERY.renderSettingsAjaxResponse($container, response);
+                },
+                error: function(xhr) {
+                    FOOGALLERY.renderSettingsAjaxResponse($container, xhr.responseJSON);
                 },
                 complete: function() {
                     $spinner.removeClass('is-active');
