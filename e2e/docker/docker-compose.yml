@@ -1,0 +1,74 @@
+# File: docker/docker-compose.yml
+# FooGallery Premium E2E Testing - Docker Compose Configuration
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: foogallery-e2e-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-wordpress_test}
+      MYSQL_USER: ${MYSQL_USER:-wordpress}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-wordpress}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-rootpassword}"]
+      interval: 2s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    networks:
+      - foogallery-e2e
+
+  wordpress:
+    build:
+      context: .
+      dockerfile: Dockerfile.wordpress
+    container_name: foogallery-e2e-wordpress
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "${WORDPRESS_PORT:-8080}:80"
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_USER: ${MYSQL_USER:-wordpress}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD:-wordpress}
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE:-wordpress_test}
+      WORDPRESS_DEBUG: "1"
+      WORDPRESS_ADMIN_USER: ${WORDPRESS_ADMIN_USER:-admin}
+      WORDPRESS_ADMIN_PASSWORD: ${WORDPRESS_ADMIN_PASSWORD:-admin}
+      WORDPRESS_ADMIN_EMAIL: ${WORDPRESS_ADMIN_EMAIL:-admin@example.com}
+      # Video API keys (optional)
+      YOUTUBE_API_KEY: ${YOUTUBE_API_KEY:-}
+      VIMEO_ACCESS_TOKEN: ${VIMEO_ACCESS_TOKEN:-}
+    volumes:
+      # Mount plugin source (read-only)
+      - ../../app/public/wp-content/plugins/foogallery-premium:/var/www/html/wp-content/plugins/foogallery-premium:ro
+      # Mount setup scripts
+      - ./scripts:/var/scripts:ro
+      # Persist WordPress uploads
+      - wp_uploads:/var/www/html/wp-content/uploads
+      # Mount test assets (videos, etc.) for E2E testing
+      - ../test-assets:/var/www/html/wp-content/e2e-assets:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/wp-admin/install.php", "||", "curl", "-f", "http://localhost/"]
+      interval: 2s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+    networks:
+      - foogallery-e2e
+
+volumes:
+  mysql_data:
+    name: foogallery-e2e-mysql-data
+  wp_uploads:
+    name: foogallery-e2e-wp-uploads
+
+networks:
+  foogallery-e2e:
+    name: foogallery-e2e-network

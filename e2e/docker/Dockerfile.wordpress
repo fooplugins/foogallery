@@ -1,0 +1,43 @@
+# File: docker/Dockerfile.wordpress
+# FooGallery Premium E2E Testing - Custom WordPress Image with WP-CLI
+
+FROM wordpress:6.7-php8.2-apache
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    less \
+    vim \
+    default-mysql-client \
+    netcat-openbsd \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install WP-CLI
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+    && chmod +x wp-cli.phar \
+    && mv wp-cli.phar /usr/local/bin/wp
+
+# Create wp-cli config to allow running as root
+RUN mkdir -p /var/www/.wp-cli \
+    && echo "path: /var/www/html" > /var/www/.wp-cli/config.yml \
+    && chown -R www-data:www-data /var/www/.wp-cli
+
+# Set proper permissions for WordPress directories
+RUN mkdir -p /var/www/html/wp-content/uploads \
+    /var/www/html/wp-content/plugins \
+    /var/www/html/wp-content/mu-plugins \
+    && chown -R www-data:www-data /var/www/html/wp-content
+
+# Enable Apache mod_rewrite for pretty permalinks
+RUN a2enmod rewrite
+
+# Configure Apache to allow .htaccess overrides
+RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+
+# Health check endpoint
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost/ || exit 1
+
+WORKDIR /var/www/html
+
+EXPOSE 80
