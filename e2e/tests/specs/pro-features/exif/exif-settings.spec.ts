@@ -1,11 +1,19 @@
 // File: tests/specs/pro-features/exif/exif-settings.spec.ts
-// Tests for EXIF gallery settings configuration
+// Tests for EXIF gallery settings configuration with frontend verification
 
 import { test, expect } from '@playwright/test';
 import {
   navigateToExifSettings,
   configureExifSettings,
   isExifTabVisible,
+  addExifImagesToGallery,
+  publishGalleryAndNavigateToFrontend,
+  openLightbox,
+  toggleLightboxInfo,
+  closeLightbox,
+  verifyExifIconPositionOnFrontend,
+  verifyExifIconThemeOnFrontend,
+  verifyExifIconVisibleOnItem,
   EXIF_SELECTORS,
   EXIF_ICON_POSITIONS,
   EXIF_ICON_THEMES,
@@ -48,58 +56,117 @@ test.describe('EXIF Settings Configuration', () => {
     expect(exifTabVisible).toBe(true);
   });
 
-  test('enables EXIF feature', async ({ page }) => {
+  test('enables EXIF feature and verifies on frontend', async ({ page }) => {
     // Navigate to create new gallery
     await page.goto('/wp-admin/post-new.php?post_type=foogallery');
     await page.waitForLoadState('domcontentloaded');
 
     // Enter gallery title
-    await page.locator('#title').fill('Test EXIF Enabled');
+    await page.locator('#title').fill('Test EXIF Enabled Frontend');
 
     // Select template
     const templateCard = page.locator(`[data-template="${templateSelector}"]`);
     await templateCard.waitFor({ state: 'visible', timeout: 10000 });
     await templateCard.click();
 
-    // Configure EXIF settings - enabled
+    // Add EXIF images to the gallery
+    await addExifImagesToGallery(page, 3);
+
+    // Configure EXIF settings - enabled with bottom-right position
     await configureExifSettings(page, templateSelector, {
       enabled: true,
+      iconPosition: 'bottomRight',
     });
 
-    // Screenshot
-    await page.screenshot({ path: `test-results/${screenshotPrefix}-02-exif-enabled.png` });
+    // Screenshot admin settings
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-02-exif-enabled-admin.png` });
 
     // Verify EXIF is enabled (Enabled radio should be checked)
-    // Using specific ID: #FooGallerySettings_default_exif_view_status1
     const enabledRadio = page.locator(`#FooGallerySettings_${templateSelector}_exif_view_status1`);
     await expect(enabledRadio).toBeChecked();
+
+    // Publish and navigate to frontend
+    await publishGalleryAndNavigateToFrontend(page);
+
+    // Wait for gallery to load
+    await page.waitForSelector(EXIF_SELECTORS.galleryContainer, { state: 'visible', timeout: 15000 });
+
+    // Screenshot frontend
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-02-exif-enabled-frontend.png` });
+
+    // Verify gallery has EXIF position class
+    const gallery = page.locator(EXIF_SELECTORS.galleryContainer);
+    await expect(gallery).toHaveClass(/fg-exif-bottom-right/);
+
+    // Verify items with EXIF have the fg-item-exif class
+    const itemsWithExif = page.locator(EXIF_SELECTORS.itemWithExif);
+    const exifItemCount = await itemsWithExif.count();
+    expect(exifItemCount).toBeGreaterThan(0);
+
+    // Open lightbox and verify EXIF info is available
+    await openLightbox(page, 0);
+    const infoToggled = await toggleLightboxInfo(page);
+    expect(infoToggled).toBe(true);
+
+    // Verify EXIF container is visible
+    const exifContainer = page.locator(EXIF_SELECTORS.exifContainer);
+    await expect(exifContainer).toBeVisible();
+
+    // Screenshot lightbox with EXIF
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-02-exif-enabled-lightbox.png` });
+
+    await closeLightbox(page);
   });
 
-  test('disables EXIF feature', async ({ page }) => {
+  test('disables EXIF feature and verifies on frontend', async ({ page }) => {
     // Navigate to create new gallery
     await page.goto('/wp-admin/post-new.php?post_type=foogallery');
     await page.waitForLoadState('domcontentloaded');
 
     // Enter gallery title
-    await page.locator('#title').fill('Test EXIF Disabled');
+    await page.locator('#title').fill('Test EXIF Disabled Frontend');
 
     // Select template
     const templateCard = page.locator(`[data-template="${templateSelector}"]`);
     await templateCard.waitFor({ state: 'visible', timeout: 10000 });
     await templateCard.click();
+
+    // Add EXIF images to the gallery
+    await addExifImagesToGallery(page, 3);
 
     // Configure EXIF settings - disabled
     await configureExifSettings(page, templateSelector, {
       enabled: false,
     });
 
-    // Screenshot
-    await page.screenshot({ path: `test-results/${screenshotPrefix}-03-exif-disabled.png` });
+    // Screenshot admin settings
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-03-exif-disabled-admin.png` });
 
     // Verify EXIF is disabled (Disabled radio should be checked)
-    // Using specific ID: #FooGallerySettings_default_exif_view_status0
     const disabledRadio = page.locator(`#FooGallerySettings_${templateSelector}_exif_view_status0`);
     await expect(disabledRadio).toBeChecked();
+
+    // Publish and navigate to frontend
+    await publishGalleryAndNavigateToFrontend(page);
+
+    // Wait for gallery to load
+    await page.waitForSelector(EXIF_SELECTORS.galleryContainer, { state: 'visible', timeout: 15000 });
+
+    // Screenshot frontend
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-03-exif-disabled-frontend.png` });
+
+    // Verify gallery does NOT have EXIF position classes
+    const gallery = page.locator(EXIF_SELECTORS.galleryContainer);
+    const hasBottomRight = await gallery.evaluate((el) => el.classList.contains('fg-exif-bottom-right'));
+    const hasBottomLeft = await gallery.evaluate((el) => el.classList.contains('fg-exif-bottom-left'));
+    const hasTopRight = await gallery.evaluate((el) => el.classList.contains('fg-exif-top-right'));
+    const hasTopLeft = await gallery.evaluate((el) => el.classList.contains('fg-exif-top-left'));
+    expect(hasBottomRight || hasBottomLeft || hasTopRight || hasTopLeft).toBe(false);
+
+    // Verify items do NOT have fg-item-exif class when EXIF is disabled
+    const itemsWithExif = page.locator(EXIF_SELECTORS.itemWithExif);
+    const exifItemCount = await itemsWithExif.count();
+    expect(exifItemCount).toBe(0);
   });
 
   test('shows dependent settings when enabled', async ({ page }) => {
@@ -176,7 +243,7 @@ test.describe('EXIF Settings Configuration', () => {
     await expect(displayLayoutRow).toBeHidden();
   });
 
-  test('selects icon position - bottom right', async ({ page }) => {
+  test('selects icon position - bottom right and verifies on frontend', async ({ page }) => {
     // Navigate to create new gallery
     await page.goto('/wp-admin/post-new.php?post_type=foogallery');
     await page.waitForLoadState('domcontentloaded');
@@ -189,22 +256,38 @@ test.describe('EXIF Settings Configuration', () => {
     await templateCard.waitFor({ state: 'visible', timeout: 10000 });
     await templateCard.click();
 
-    // Configure EXIF settings with bottom-right icon position (default)
+    // Add EXIF images to the gallery
+    await addExifImagesToGallery(page, 3);
+
+    // Configure EXIF settings with bottom-right icon position
     await configureExifSettings(page, templateSelector, {
       enabled: true,
       iconPosition: 'bottomRight',
     });
 
-    // Screenshot
-    await page.screenshot({ path: `test-results/${screenshotPrefix}-06-icon-position-bottom-right.png` });
+    // Screenshot admin
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-06-icon-position-bottom-right-admin.png` });
 
-    // Verify icon position is set
+    // Verify icon position is set in admin
     const templateContainer = page.locator(`.foogallery-settings-container-${templateSelector}`);
     const positionSelect = templateContainer.locator(`select[name*="${templateSelector}_exif_icon_position"]`);
     await expect(positionSelect).toHaveValue(EXIF_ICON_POSITIONS.bottomRight);
+
+    // Publish and navigate to frontend
+    await publishGalleryAndNavigateToFrontend(page);
+
+    // Wait for gallery to load
+    await page.waitForSelector(EXIF_SELECTORS.galleryContainer, { state: 'visible', timeout: 15000 });
+
+    // Screenshot frontend
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-06-icon-position-bottom-right-frontend.png` });
+
+    // Verify gallery has fg-exif-bottom-right class
+    const gallery = page.locator(EXIF_SELECTORS.galleryContainer);
+    await expect(gallery).toHaveClass(/fg-exif-bottom-right/);
   });
 
-  test('selects icon position - bottom left', async ({ page }) => {
+  test('selects icon position - bottom left and verifies on frontend', async ({ page }) => {
     // Navigate to create new gallery
     await page.goto('/wp-admin/post-new.php?post_type=foogallery');
     await page.waitForLoadState('domcontentloaded');
@@ -217,22 +300,38 @@ test.describe('EXIF Settings Configuration', () => {
     await templateCard.waitFor({ state: 'visible', timeout: 10000 });
     await templateCard.click();
 
+    // Add EXIF images to the gallery
+    await addExifImagesToGallery(page, 3);
+
     // Configure EXIF settings with bottom-left icon position
     await configureExifSettings(page, templateSelector, {
       enabled: true,
       iconPosition: 'bottomLeft',
     });
 
-    // Screenshot
-    await page.screenshot({ path: `test-results/${screenshotPrefix}-07-icon-position-bottom-left.png` });
+    // Screenshot admin
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-07-icon-position-bottom-left-admin.png` });
 
-    // Verify icon position is set
+    // Verify icon position is set in admin
     const templateContainer = page.locator(`.foogallery-settings-container-${templateSelector}`);
     const positionSelect = templateContainer.locator(`select[name*="${templateSelector}_exif_icon_position"]`);
     await expect(positionSelect).toHaveValue(EXIF_ICON_POSITIONS.bottomLeft);
+
+    // Publish and navigate to frontend
+    await publishGalleryAndNavigateToFrontend(page);
+
+    // Wait for gallery to load
+    await page.waitForSelector(EXIF_SELECTORS.galleryContainer, { state: 'visible', timeout: 15000 });
+
+    // Screenshot frontend
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-07-icon-position-bottom-left-frontend.png` });
+
+    // Verify gallery has fg-exif-bottom-left class
+    const gallery = page.locator(EXIF_SELECTORS.galleryContainer);
+    await expect(gallery).toHaveClass(/fg-exif-bottom-left/);
   });
 
-  test('selects icon position - top right', async ({ page }) => {
+  test('selects icon position - top right and verifies on frontend', async ({ page }) => {
     // Navigate to create new gallery
     await page.goto('/wp-admin/post-new.php?post_type=foogallery');
     await page.waitForLoadState('domcontentloaded');
@@ -245,22 +344,38 @@ test.describe('EXIF Settings Configuration', () => {
     await templateCard.waitFor({ state: 'visible', timeout: 10000 });
     await templateCard.click();
 
+    // Add EXIF images to the gallery
+    await addExifImagesToGallery(page, 3);
+
     // Configure EXIF settings with top-right icon position
     await configureExifSettings(page, templateSelector, {
       enabled: true,
       iconPosition: 'topRight',
     });
 
-    // Screenshot
-    await page.screenshot({ path: `test-results/${screenshotPrefix}-08-icon-position-top-right.png` });
+    // Screenshot admin
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-08-icon-position-top-right-admin.png` });
 
-    // Verify icon position is set
+    // Verify icon position is set in admin
     const templateContainer = page.locator(`.foogallery-settings-container-${templateSelector}`);
     const positionSelect = templateContainer.locator(`select[name*="${templateSelector}_exif_icon_position"]`);
     await expect(positionSelect).toHaveValue(EXIF_ICON_POSITIONS.topRight);
+
+    // Publish and navigate to frontend
+    await publishGalleryAndNavigateToFrontend(page);
+
+    // Wait for gallery to load
+    await page.waitForSelector(EXIF_SELECTORS.galleryContainer, { state: 'visible', timeout: 15000 });
+
+    // Screenshot frontend
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-08-icon-position-top-right-frontend.png` });
+
+    // Verify gallery has fg-exif-top-right class
+    const gallery = page.locator(EXIF_SELECTORS.galleryContainer);
+    await expect(gallery).toHaveClass(/fg-exif-top-right/);
   });
 
-  test('selects icon position - top left', async ({ page }) => {
+  test('selects icon position - top left and verifies on frontend', async ({ page }) => {
     // Navigate to create new gallery
     await page.goto('/wp-admin/post-new.php?post_type=foogallery');
     await page.waitForLoadState('domcontentloaded');
@@ -273,22 +388,38 @@ test.describe('EXIF Settings Configuration', () => {
     await templateCard.waitFor({ state: 'visible', timeout: 10000 });
     await templateCard.click();
 
+    // Add EXIF images to the gallery
+    await addExifImagesToGallery(page, 3);
+
     // Configure EXIF settings with top-left icon position
     await configureExifSettings(page, templateSelector, {
       enabled: true,
       iconPosition: 'topLeft',
     });
 
-    // Screenshot
-    await page.screenshot({ path: `test-results/${screenshotPrefix}-09-icon-position-top-left.png` });
+    // Screenshot admin
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-09-icon-position-top-left-admin.png` });
 
-    // Verify icon position is set
+    // Verify icon position is set in admin
     const templateContainer = page.locator(`.foogallery-settings-container-${templateSelector}`);
     const positionSelect = templateContainer.locator(`select[name*="${templateSelector}_exif_icon_position"]`);
     await expect(positionSelect).toHaveValue(EXIF_ICON_POSITIONS.topLeft);
+
+    // Publish and navigate to frontend
+    await publishGalleryAndNavigateToFrontend(page);
+
+    // Wait for gallery to load
+    await page.waitForSelector(EXIF_SELECTORS.galleryContainer, { state: 'visible', timeout: 15000 });
+
+    // Screenshot frontend
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-09-icon-position-top-left-frontend.png` });
+
+    // Verify gallery has fg-exif-top-left class
+    const gallery = page.locator(EXIF_SELECTORS.galleryContainer);
+    await expect(gallery).toHaveClass(/fg-exif-top-left/);
   });
 
-  test('selects icon position - none', async ({ page }) => {
+  test('selects icon position - none and verifies on frontend', async ({ page }) => {
     // Navigate to create new gallery
     await page.goto('/wp-admin/post-new.php?post_type=foogallery');
     await page.waitForLoadState('domcontentloaded');
@@ -301,22 +432,48 @@ test.describe('EXIF Settings Configuration', () => {
     await templateCard.waitFor({ state: 'visible', timeout: 10000 });
     await templateCard.click();
 
+    // Add EXIF images to the gallery
+    await addExifImagesToGallery(page, 3);
+
     // Configure EXIF settings with no icon position
     await configureExifSettings(page, templateSelector, {
       enabled: true,
       iconPosition: 'none',
     });
 
-    // Screenshot
-    await page.screenshot({ path: `test-results/${screenshotPrefix}-10-icon-position-none.png` });
+    // Screenshot admin
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-10-icon-position-none-admin.png` });
 
-    // Verify icon position is set to empty/none
+    // Verify icon position is set to empty/none in admin
     const templateContainer = page.locator(`.foogallery-settings-container-${templateSelector}`);
     const positionSelect = templateContainer.locator(`select[name*="${templateSelector}_exif_icon_position"]`);
     await expect(positionSelect).toHaveValue(EXIF_ICON_POSITIONS.none);
+
+    // Publish and navigate to frontend
+    await publishGalleryAndNavigateToFrontend(page);
+
+    // Wait for gallery to load
+    await page.waitForSelector(EXIF_SELECTORS.galleryContainer, { state: 'visible', timeout: 15000 });
+
+    // Screenshot frontend
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-10-icon-position-none-frontend.png` });
+
+    // Verify gallery does NOT have any position classes
+    const hasNoPositionClasses = await verifyExifIconPositionOnFrontend(page, 'none');
+    expect(hasNoPositionClasses).toBe(true);
+
+    // But EXIF should still work in lightbox
+    await openLightbox(page, 0);
+    const infoToggled = await toggleLightboxInfo(page);
+    expect(infoToggled).toBe(true);
+
+    const exifContainer = page.locator(EXIF_SELECTORS.exifContainer);
+    await expect(exifContainer).toBeVisible();
+
+    await closeLightbox(page);
   });
 
-  test('selects icon theme - dark', async ({ page }) => {
+  test('selects icon theme - dark and verifies on frontend', async ({ page }) => {
     // Navigate to create new gallery
     await page.goto('/wp-admin/post-new.php?post_type=foogallery');
     await page.waitForLoadState('domcontentloaded');
@@ -329,23 +486,40 @@ test.describe('EXIF Settings Configuration', () => {
     await templateCard.waitFor({ state: 'visible', timeout: 10000 });
     await templateCard.click();
 
-    // Configure EXIF settings with dark theme (default)
+    // Add EXIF images to the gallery
+    await addExifImagesToGallery(page, 3);
+
+    // Configure EXIF settings with dark theme
     await configureExifSettings(page, templateSelector, {
       enabled: true,
+      iconPosition: 'bottomRight',
       iconTheme: 'dark',
     });
 
-    // Screenshot
-    await page.screenshot({ path: `test-results/${screenshotPrefix}-11-icon-theme-dark.png` });
+    // Screenshot admin
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-11-icon-theme-dark-admin.png` });
 
-    // Verify dark theme is selected
+    // Verify dark theme is selected in admin
     const templateContainer = page.locator(`.foogallery-settings-container-${templateSelector}`);
     const themeRow = templateContainer.locator('tr').filter({ hasText: 'Thumbnail Icon Theme' });
     const darkRadio = themeRow.locator(`input[type="radio"][value="${EXIF_ICON_THEMES.dark}"]`);
     await expect(darkRadio).toBeChecked();
+
+    // Publish and navigate to frontend
+    await publishGalleryAndNavigateToFrontend(page);
+
+    // Wait for gallery to load
+    await page.waitForSelector(EXIF_SELECTORS.galleryContainer, { state: 'visible', timeout: 15000 });
+
+    // Screenshot frontend
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-11-icon-theme-dark-frontend.png` });
+
+    // Verify gallery has fg-exif-dark class
+    const gallery = page.locator(EXIF_SELECTORS.galleryContainer);
+    await expect(gallery).toHaveClass(/fg-exif-dark/);
   });
 
-  test('selects icon theme - light', async ({ page }) => {
+  test('selects icon theme - light and verifies on frontend', async ({ page }) => {
     // Navigate to create new gallery
     await page.goto('/wp-admin/post-new.php?post_type=foogallery');
     await page.waitForLoadState('domcontentloaded');
@@ -358,20 +532,37 @@ test.describe('EXIF Settings Configuration', () => {
     await templateCard.waitFor({ state: 'visible', timeout: 10000 });
     await templateCard.click();
 
+    // Add EXIF images to the gallery
+    await addExifImagesToGallery(page, 3);
+
     // Configure EXIF settings with light theme
     await configureExifSettings(page, templateSelector, {
       enabled: true,
+      iconPosition: 'bottomRight',
       iconTheme: 'light',
     });
 
-    // Screenshot
-    await page.screenshot({ path: `test-results/${screenshotPrefix}-12-icon-theme-light.png` });
+    // Screenshot admin
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-12-icon-theme-light-admin.png` });
 
-    // Verify light theme is selected
+    // Verify light theme is selected in admin
     const templateContainer = page.locator(`.foogallery-settings-container-${templateSelector}`);
     const themeRow = templateContainer.locator('tr').filter({ hasText: 'Thumbnail Icon Theme' });
     const lightRadio = themeRow.locator(`input[type="radio"][value="${EXIF_ICON_THEMES.light}"]`);
     await expect(lightRadio).toBeChecked();
+
+    // Publish and navigate to frontend
+    await publishGalleryAndNavigateToFrontend(page);
+
+    // Wait for gallery to load
+    await page.waitForSelector(EXIF_SELECTORS.galleryContainer, { state: 'visible', timeout: 15000 });
+
+    // Screenshot frontend
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-12-icon-theme-light-frontend.png` });
+
+    // Verify gallery has fg-exif-light class
+    const gallery = page.locator(EXIF_SELECTORS.galleryContainer);
+    await expect(gallery).toHaveClass(/fg-exif-light/);
   });
 
   test('EXIF unavailable without FooGallery lightbox', async ({ page }) => {

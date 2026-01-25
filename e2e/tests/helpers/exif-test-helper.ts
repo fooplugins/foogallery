@@ -845,3 +845,338 @@ export async function isExifTabVisible(page: Page, templateSelector: string): Pr
   const exifTab = templateContainer.locator('div.foogallery-vertical-tabs > div').filter({ hasText: 'EXIF' });
   return await exifTab.isVisible();
 }
+
+/**
+ * Add EXIF images to the current gallery from the media library.
+ * Searches for images tagged with 'EXIF' or specific EXIF test image names.
+ */
+export async function addExifImagesToGallery(
+  page: Page,
+  imageCount: number = 3,
+  imageNames?: string[]
+): Promise<void> {
+  // Click "Add From Media Library"
+  await page.locator('text=Add From Media Library').click();
+  await page.waitForLoadState('networkidle');
+
+  // Wait for modal
+  const modal = page.locator('.media-modal:visible');
+  await modal.waitFor({ state: 'visible', timeout: 10000 });
+
+  // Switch to Media Library tab
+  const mediaLibraryTab = modal.locator('.media-menu-item').filter({ hasText: 'Media Library' });
+  await mediaLibraryTab.click();
+  await page.waitForTimeout(500);
+
+  const attachments = modal.locator('.attachment');
+  await attachments.first().waitFor({ state: 'visible', timeout: 10000 });
+
+  // If specific image names are provided, search for them
+  if (imageNames && imageNames.length > 0) {
+    const searchInput = modal.locator('input[type="search"]');
+    for (const imageName of imageNames) {
+      await searchInput.fill(imageName);
+      await page.waitForTimeout(1000);
+      const attachment = modal.locator('.attachment').first();
+      if (await attachment.isVisible()) {
+        await attachment.click();
+      }
+      await searchInput.clear();
+      await page.waitForTimeout(500);
+    }
+  } else {
+    // Search for EXIF test images
+    const searchInput = modal.locator('input[type="search"]');
+    if (await searchInput.isVisible()) {
+      // Search for Canon_40D, Nikon_D70, Panasonic_DMC to get images with EXIF data
+      const exifImageNames = ['Canon_40D', 'Nikon_D70', 'Panasonic_DMC', 'Canon_PowerShot'];
+      let selectedCount = 0;
+
+      for (const name of exifImageNames) {
+        if (selectedCount >= imageCount) break;
+
+        await searchInput.fill(name);
+        await page.waitForTimeout(1000);
+
+        const exifAttachments = modal.locator('.attachment');
+        const count = await exifAttachments.count();
+
+        for (let i = 0; i < count && selectedCount < imageCount; i++) {
+          const attachment = exifAttachments.nth(i);
+          if (await attachment.isVisible()) {
+            await attachment.click();
+            selectedCount++;
+          }
+        }
+        await searchInput.clear();
+        await page.waitForTimeout(300);
+      }
+    }
+  }
+
+  // Click "Add to Gallery"
+  const addButton = modal.locator('button.media-button-select, button:has-text("Add to Gallery")').first();
+  await addButton.click();
+  await page.waitForLoadState('networkidle');
+}
+
+/**
+ * Publish the current gallery and navigate to the frontend page.
+ * Returns the frontend URL.
+ */
+export async function publishGalleryAndNavigateToFrontend(page: Page): Promise<string> {
+  // Publish gallery
+  await page.locator('#publish').click();
+  await page.waitForLoadState('networkidle');
+  await expect(page).toHaveURL(/post\.php\?post=\d+&action=edit/);
+
+  // Click "Create Gallery Page" button
+  await page.locator('#foogallery_create_page').click();
+  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
+
+  // Find the View link and navigate to frontend
+  const viewLink = page.getByRole('link', { name: 'View', exact: true }).first();
+  await viewLink.waitFor({ state: 'visible', timeout: 30000 });
+  const viewUrl = await viewLink.getAttribute('href') || '';
+
+  if (viewUrl) {
+    await page.goto(viewUrl);
+    await page.waitForLoadState('networkidle');
+  }
+
+  return viewUrl;
+}
+
+/**
+ * Create a gallery with EXIF images, configure settings, and verify on frontend.
+ */
+export async function createExifGalleryWithFrontendVerification(
+  page: Page,
+  options: {
+    galleryName: string;
+    templateSelector?: string;
+    exifEnabled?: boolean;
+    iconPosition?: 'bottomRight' | 'bottomLeft' | 'topRight' | 'topLeft' | 'none';
+    iconTheme?: 'dark' | 'light';
+    displayLayout?: 'auto' | 'full' | 'partial' | 'minimal';
+    imageCount?: number;
+    imageNames?: string[];
+  }
+): Promise<{ frontendUrl: string; galleryId: string }> {
+  const {
+    galleryName,
+    templateSelector = 'default',
+    exifEnabled = true,
+    iconPosition,
+    iconTheme,
+    displayLayout,
+    imageCount = 3,
+    imageNames,
+  } = options;
+
+  // Set viewport size
+  await page.setViewportSize({ width: 1932, height: 1271 });
+
+  // Navigate to create new gallery
+  await page.goto('/wp-admin/post-new.php?post_type=foogallery');
+  await page.waitForLoadState('domcontentloaded');
+
+  // Enter gallery title
+  await page.locator('#title').fill(galleryName);
+
+  // Select template
+  const templateCard = page.locator(`[data-template="${templateSelector}"]`);
+  await templateCard.waitFor({ state: 'visible', timeout: 10000 });
+  await templateCard.click();
+
+  // Add EXIF images
+  await addExifImagesToGallery(page, imageCount, imageNames);
+
+  // Configure EXIF settings
+  await configureExifSettings(page, templateSelector, {
+    enabled: exifEnabled,
+    iconPosition,
+    iconTheme,
+    displayLayout,
+  });
+
+  // Publish and navigate to frontend
+  const frontendUrl = await publishGalleryAndNavigateToFrontend(page);
+
+  // Extract gallery ID from the URL
+  const url = page.url();
+  const postIdMatch = url.match(/post=(\d+)/) || url.match(/\/(\d+)\/?$/);
+  const galleryId = postIdMatch ? postIdMatch[1] : '';
+
+  return { frontendUrl, galleryId };
+}
+
+/**
+ * Verify EXIF display in the lightbox.
+ * Opens the lightbox, toggles info panel, and checks EXIF values.
+ */
+export async function verifyExifInLightbox(
+  page: Page,
+  expectedFields?: {
+    camera?: string;
+    aperture?: string;
+    iso?: string;
+    shutterSpeed?: string;
+    focalLength?: string;
+    date?: string;
+  }
+): Promise<{ visible: boolean; values: Record<string, string> }> {
+  // Open lightbox
+  const opened = await openLightboxAndShowExif(page, 0);
+
+  if (!opened) {
+    return { visible: false, values: {} };
+  }
+
+  // Get EXIF values
+  const values = await getExifValuesFromLightbox(page);
+
+  // If expected fields are provided, verify them
+  if (expectedFields) {
+    if (expectedFields.camera && values['Camera']) {
+      expect(values['Camera']).toContain(expectedFields.camera);
+    }
+    if (expectedFields.aperture && values['Aperture']) {
+      expect(values['Aperture']).toContain(expectedFields.aperture);
+    }
+    if (expectedFields.iso && values['ISO']) {
+      expect(values['ISO']).toContain(expectedFields.iso);
+    }
+  }
+
+  // Close lightbox
+  await closeLightbox(page);
+
+  return { visible: true, values };
+}
+
+/**
+ * Toggle the info panel in the lightbox (open or close EXIF display).
+ */
+export async function toggleLightboxInfo(page: Page): Promise<boolean> {
+  const infoButton = page.locator(EXIF_SELECTORS.lightboxInfoButton);
+  if (await infoButton.isVisible()) {
+    const isDisabled = await infoButton.getAttribute('disabled');
+    const ariaDisabled = await infoButton.getAttribute('aria-disabled');
+
+    if (isDisabled !== 'disabled' && ariaDisabled !== 'true') {
+      await infoButton.click();
+      await page.waitForTimeout(500);
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Save changes in the attachment modal.
+ * CRITICAL: Always call this before closing the modal to persist EXIF edits.
+ */
+export async function saveAttachmentModal(page: Page): Promise<void> {
+  const saveButton = page.locator('#attachments-data-save-btn');
+  if (await saveButton.isVisible()) {
+    await saveButton.click();
+    await page.waitForTimeout(1000);
+  }
+}
+
+/**
+ * Verify gallery has specific EXIF icon position class on the frontend.
+ */
+export async function verifyExifIconPositionOnFrontend(
+  page: Page,
+  position: 'bottomRight' | 'bottomLeft' | 'topRight' | 'topLeft' | 'none'
+): Promise<boolean> {
+  const gallery = page.locator(EXIF_SELECTORS.galleryContainer);
+  await gallery.waitFor({ state: 'visible', timeout: 15000 });
+
+  if (position === 'none') {
+    // When position is none, no position class should be present
+    const hasBottomRight = await gallery.evaluate((el) => el.classList.contains('fg-exif-bottom-right'));
+    const hasBottomLeft = await gallery.evaluate((el) => el.classList.contains('fg-exif-bottom-left'));
+    const hasTopRight = await gallery.evaluate((el) => el.classList.contains('fg-exif-top-right'));
+    const hasTopLeft = await gallery.evaluate((el) => el.classList.contains('fg-exif-top-left'));
+    return !hasBottomRight && !hasBottomLeft && !hasTopRight && !hasTopLeft;
+  }
+
+  const positionClass = EXIF_ICON_POSITIONS[position];
+  const hasClass = await gallery.evaluate((el, cls) => el.classList.contains(cls), positionClass);
+  return hasClass;
+}
+
+/**
+ * Verify gallery has specific EXIF icon theme class on the frontend.
+ */
+export async function verifyExifIconThemeOnFrontend(
+  page: Page,
+  theme: 'dark' | 'light'
+): Promise<boolean> {
+  const gallery = page.locator(EXIF_SELECTORS.galleryContainer);
+  await gallery.waitFor({ state: 'visible', timeout: 15000 });
+
+  const themeClass = EXIF_ICON_THEMES[theme];
+  const hasClass = await gallery.evaluate((el, cls) => el.classList.contains(cls), themeClass);
+  return hasClass;
+}
+
+/**
+ * Check if EXIF icon is visible on gallery items (on hover).
+ */
+export async function verifyExifIconVisibleOnItem(page: Page, itemIndex: number = 0): Promise<boolean> {
+  const items = page.locator(EXIF_SELECTORS.galleryItem);
+  const item = items.nth(itemIndex);
+
+  if (!await item.isVisible()) {
+    return false;
+  }
+
+  // Check if item has EXIF class
+  const hasExifClass = await item.evaluate((el) => el.classList.contains('fg-item-exif'));
+  return hasExifClass;
+}
+
+/**
+ * Open an image in the lightbox by clicking on a gallery item.
+ */
+export async function openLightbox(page: Page, itemIndex: number = 0): Promise<void> {
+  const galleryItem = page.locator(EXIF_SELECTORS.itemAnchor).nth(itemIndex);
+  await galleryItem.waitFor({ state: 'visible', timeout: 15000 });
+  await galleryItem.click({ force: true });
+  await page.waitForSelector(EXIF_SELECTORS.lightboxPanel, { state: 'visible', timeout: 10000 });
+  await page.waitForTimeout(500);
+}
+
+/**
+ * Verify EXIF values are displayed in the lightbox with specific field/value.
+ */
+export async function verifyExifFieldInLightbox(
+  page: Page,
+  fieldLabel: string,
+  expectedValue?: string
+): Promise<{ found: boolean; value: string }> {
+  const exifProps = page.locator(EXIF_SELECTORS.exifProp);
+  const count = await exifProps.count();
+
+  for (let i = 0; i < count; i++) {
+    const prop = exifProps.nth(i);
+    const label = await prop.locator(EXIF_SELECTORS.exifLabel).textContent() || '';
+
+    if (label.trim().toLowerCase().includes(fieldLabel.toLowerCase())) {
+      const value = await prop.locator(EXIF_SELECTORS.exifValue).textContent() || '';
+
+      if (expectedValue) {
+        expect(value.trim()).toContain(expectedValue);
+      }
+
+      return { found: true, value: value.trim() };
+    }
+  }
+
+  return { found: false, value: '' };
+}

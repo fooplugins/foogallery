@@ -1,11 +1,14 @@
 // File: tests/specs/pro-features/exif/exif-display-layouts.spec.ts
-// Tests for EXIF display layout options
+// Tests for EXIF display layout options with frontend verification
 
 import { test, expect } from '@playwright/test';
 import {
   configureExifSettings,
-  createGalleryAndNavigateToPage,
+  addExifImagesToGallery,
+  publishGalleryAndNavigateToFrontend,
   openLightboxAndShowExif,
+  openLightbox,
+  toggleLightboxInfo,
   closeLightbox,
   verifyExifLayoutClass,
   EXIF_SELECTORS,
@@ -23,18 +26,21 @@ test.describe('EXIF Attribute layouts', () => {
     await page.setViewportSize({ width: 1932, height: 1271 });
   });
 
-  test('sets display layout - auto (default)', async ({ page }) => {
+  test('sets display layout - auto (default) and verifies on frontend', async ({ page }) => {
     // Navigate to create new gallery
     await page.goto('/wp-admin/post-new.php?post_type=foogallery');
     await page.waitForLoadState('domcontentloaded');
 
     // Enter gallery title
-    await page.locator('#title').fill('Test EXIF Layout Auto');
+    await page.locator('#title').fill('Test EXIF Layout Auto Frontend');
 
     // Select template
     const templateCard = page.locator(`[data-template="${templateSelector}"]`);
     await templateCard.waitFor({ state: 'visible', timeout: 10000 });
     await templateCard.click();
+
+    // Add EXIF images
+    await addExifImagesToGallery(page, 3);
 
     // Configure EXIF settings with auto layout
     await configureExifSettings(page, templateSelector, {
@@ -42,28 +48,62 @@ test.describe('EXIF Attribute layouts', () => {
       displayLayout: 'auto',
     });
 
-    // Screenshot
-    await page.screenshot({ path: `test-results/${screenshotPrefix}-01-layout-auto.png` });
+    // Screenshot admin
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-01-layout-auto-admin.png` });
 
     // Verify auto layout is selected
     const templateContainer = page.locator(`.foogallery-settings-container-${templateSelector}`);
     const layoutRow = templateContainer.locator('tr').filter({ hasText: 'Attribute layout' });
     const autoRadio = layoutRow.locator(`input[type="radio"][value="${EXIF_DISPLAY_LAYOUTS.auto}"]`);
     await expect(autoRadio).toBeChecked();
+
+    // Publish and navigate to frontend
+    await publishGalleryAndNavigateToFrontend(page);
+
+    // Wait for gallery to load
+    await page.waitForSelector(EXIF_SELECTORS.galleryContainer, { state: 'visible', timeout: 15000 });
+
+    // Screenshot frontend
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-01-layout-auto-frontend.png` });
+
+    // Open lightbox and verify EXIF display
+    await openLightbox(page, 0);
+    await toggleLightboxInfo(page);
+
+    // Screenshot lightbox
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-01-layout-auto-lightbox.png` });
+
+    // Verify EXIF container is visible
+    const exifContainer = page.locator(EXIF_SELECTORS.exifContainer);
+    await expect(exifContainer).toBeVisible();
+
+    // Auto layout adapts to screen size - verify container has expected class
+    const hasAutoClass = await exifContainer.evaluate((el) => {
+      return el.classList.contains('fg-media-caption-exif-auto') ||
+             el.classList.contains('fg-media-caption-exif-full') ||
+             el.classList.contains('fg-media-caption-exif-partial') ||
+             el.classList.contains('fg-media-caption-exif-minimal');
+    });
+    expect(hasAutoClass).toBe(true);
+
+    await closeLightbox(page);
   });
 
-  test('sets display layout - full', async ({ page }) => {
+  test('sets display layout - full and verifies on frontend', async ({ page }) => {
     // Navigate to create new gallery
     await page.goto('/wp-admin/post-new.php?post_type=foogallery');
     await page.waitForLoadState('domcontentloaded');
 
     // Enter gallery title
-    await page.locator('#title').fill('Test EXIF Layout Full');
+    await page.locator('#title').fill('Test EXIF Layout Full Frontend');
 
     // Select template
     const templateCard = page.locator(`[data-template="${templateSelector}"]`);
     await templateCard.waitFor({ state: 'visible', timeout: 10000 });
     await templateCard.click();
+
+    // Add EXIF images
+    await addExifImagesToGallery(page, 3);
 
     // Configure EXIF settings with full layout
     await configureExifSettings(page, templateSelector, {
@@ -71,28 +111,71 @@ test.describe('EXIF Attribute layouts', () => {
       displayLayout: 'full',
     });
 
-    // Screenshot
-    await page.screenshot({ path: `test-results/${screenshotPrefix}-02-layout-full.png` });
+    // Screenshot admin
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-02-layout-full-admin.png` });
 
     // Verify full layout is selected
     const templateContainer = page.locator(`.foogallery-settings-container-${templateSelector}`);
     const layoutRow = templateContainer.locator('tr').filter({ hasText: 'Attribute layout' });
     const fullRadio = layoutRow.locator(`input[type="radio"][value="${EXIF_DISPLAY_LAYOUTS.full}"]`);
     await expect(fullRadio).toBeChecked();
+
+    // Publish and navigate to frontend
+    await publishGalleryAndNavigateToFrontend(page);
+
+    // Wait for gallery to load
+    await page.waitForSelector(EXIF_SELECTORS.galleryContainer, { state: 'visible', timeout: 15000 });
+
+    // Screenshot frontend
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-02-layout-full-frontend.png` });
+
+    // Open lightbox and verify EXIF display
+    await openLightbox(page, 0);
+    await toggleLightboxInfo(page);
+
+    // Screenshot lightbox
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-02-layout-full-lightbox.png` });
+
+    // Verify EXIF container has full layout class
+    const exifContainer = page.locator(EXIF_SELECTORS.exifContainer);
+    if (await exifContainer.isVisible()) {
+      await expect(exifContainer).toHaveClass(/fg-media-caption-exif-full/);
+
+      // Full layout should show icon, label, and value for each property
+      const props = page.locator(EXIF_SELECTORS.exifProp);
+      const count = await props.count();
+
+      if (count > 0) {
+        const firstProp = props.first();
+        const icon = firstProp.locator(EXIF_SELECTORS.exifIcon);
+        const label = firstProp.locator(EXIF_SELECTORS.exifLabel);
+        const value = firstProp.locator(EXIF_SELECTORS.exifValue);
+
+        // In full layout, icon, label, and value should be visible
+        await expect(icon).toBeVisible();
+        await expect(label).toBeVisible();
+        await expect(value).toBeVisible();
+      }
+    }
+
+    await closeLightbox(page);
   });
 
-  test('sets display layout - partial', async ({ page }) => {
+  test('sets display layout - partial and verifies on frontend', async ({ page }) => {
     // Navigate to create new gallery
     await page.goto('/wp-admin/post-new.php?post_type=foogallery');
     await page.waitForLoadState('domcontentloaded');
 
     // Enter gallery title
-    await page.locator('#title').fill('Test EXIF Layout Partial');
+    await page.locator('#title').fill('Test EXIF Layout Partial Frontend');
 
     // Select template
     const templateCard = page.locator(`[data-template="${templateSelector}"]`);
     await templateCard.waitFor({ state: 'visible', timeout: 10000 });
     await templateCard.click();
+
+    // Add EXIF images
+    await addExifImagesToGallery(page, 3);
 
     // Configure EXIF settings with partial layout
     await configureExifSettings(page, templateSelector, {
@@ -100,28 +183,69 @@ test.describe('EXIF Attribute layouts', () => {
       displayLayout: 'partial',
     });
 
-    // Screenshot
-    await page.screenshot({ path: `test-results/${screenshotPrefix}-03-layout-partial.png` });
+    // Screenshot admin
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-03-layout-partial-admin.png` });
 
     // Verify partial layout is selected
     const templateContainer = page.locator(`.foogallery-settings-container-${templateSelector}`);
     const layoutRow = templateContainer.locator('tr').filter({ hasText: 'Attribute layout' });
     const partialRadio = layoutRow.locator(`input[type="radio"][value="${EXIF_DISPLAY_LAYOUTS.partial}"]`);
     await expect(partialRadio).toBeChecked();
+
+    // Publish and navigate to frontend
+    await publishGalleryAndNavigateToFrontend(page);
+
+    // Wait for gallery to load
+    await page.waitForSelector(EXIF_SELECTORS.galleryContainer, { state: 'visible', timeout: 15000 });
+
+    // Screenshot frontend
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-03-layout-partial-frontend.png` });
+
+    // Open lightbox and verify EXIF display
+    await openLightbox(page, 0);
+    await toggleLightboxInfo(page);
+
+    // Screenshot lightbox
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-03-layout-partial-lightbox.png` });
+
+    // Verify EXIF container has partial layout class
+    const exifContainer = page.locator(EXIF_SELECTORS.exifContainer);
+    if (await exifContainer.isVisible()) {
+      await expect(exifContainer).toHaveClass(/fg-media-caption-exif-partial/);
+
+      // Partial layout shows icon and value (no label)
+      const props = page.locator(EXIF_SELECTORS.exifProp);
+      const count = await props.count();
+
+      if (count > 0) {
+        const firstProp = props.first();
+        const icon = firstProp.locator(EXIF_SELECTORS.exifIcon);
+        const value = firstProp.locator(EXIF_SELECTORS.exifValue);
+
+        // In partial layout, icon and value should be visible
+        await expect(icon).toBeVisible();
+        await expect(value).toBeVisible();
+      }
+    }
+
+    await closeLightbox(page);
   });
 
-  test('sets display layout - minimal', async ({ page }) => {
+  test('sets display layout - minimal and verifies on frontend', async ({ page }) => {
     // Navigate to create new gallery
     await page.goto('/wp-admin/post-new.php?post_type=foogallery');
     await page.waitForLoadState('domcontentloaded');
 
     // Enter gallery title
-    await page.locator('#title').fill('Test EXIF Layout Minimal');
+    await page.locator('#title').fill('Test EXIF Layout Minimal Frontend');
 
     // Select template
     const templateCard = page.locator(`[data-template="${templateSelector}"]`);
     await templateCard.waitFor({ state: 'visible', timeout: 10000 });
     await templateCard.click();
+
+    // Add EXIF images
+    await addExifImagesToGallery(page, 3);
 
     // Configure EXIF settings with minimal layout
     await configureExifSettings(page, templateSelector, {
@@ -129,27 +253,69 @@ test.describe('EXIF Attribute layouts', () => {
       displayLayout: 'minimal',
     });
 
-    // Screenshot
-    await page.screenshot({ path: `test-results/${screenshotPrefix}-04-layout-minimal.png` });
+    // Screenshot admin
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-04-layout-minimal-admin.png` });
 
     // Verify minimal layout is selected
     const templateContainer = page.locator(`.foogallery-settings-container-${templateSelector}`);
     const layoutRow = templateContainer.locator('tr').filter({ hasText: 'Attribute layout' });
     const minimalRadio = layoutRow.locator(`input[type="radio"][value="${EXIF_DISPLAY_LAYOUTS.minimal}"]`);
     await expect(minimalRadio).toBeChecked();
+
+    // Publish and navigate to frontend
+    await publishGalleryAndNavigateToFrontend(page);
+
+    // Wait for gallery to load
+    await page.waitForSelector(EXIF_SELECTORS.galleryContainer, { state: 'visible', timeout: 15000 });
+
+    // Screenshot frontend
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-04-layout-minimal-frontend.png` });
+
+    // Open lightbox and verify EXIF display
+    await openLightbox(page, 0);
+    await toggleLightboxInfo(page);
+
+    // Screenshot lightbox
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-04-layout-minimal-lightbox.png` });
+
+    // Verify EXIF container has minimal layout class
+    const exifContainer = page.locator(EXIF_SELECTORS.exifContainer);
+    if (await exifContainer.isVisible()) {
+      await expect(exifContainer).toHaveClass(/fg-media-caption-exif-minimal/);
+
+      // Minimal layout shows only icon (value in tooltip on hover)
+      const props = page.locator(EXIF_SELECTORS.exifProp);
+      const count = await props.count();
+
+      if (count > 0) {
+        const firstProp = props.first();
+        const icon = firstProp.locator(EXIF_SELECTORS.exifIcon);
+        await expect(icon).toBeVisible();
+      }
+    }
+
+    await closeLightbox(page);
   });
 
   test('auto layout adjusts to screen size', async ({ page }) => {
-    // Create gallery with auto layout and navigate to frontend
-    await createGalleryAndNavigateToPage(page, {
-      galleryName: 'EXIF Auto Layout Responsive',
-      templateSelector,
-      screenshotPrefix: `${screenshotPrefix}-auto-responsive`,
-      imageCount: 3,
-    }, {
+    // Navigate to create new gallery
+    await page.goto('/wp-admin/post-new.php?post_type=foogallery');
+    await page.waitForLoadState('domcontentloaded');
+
+    await page.locator('#title').fill('EXIF Auto Layout Responsive');
+
+    const templateCard = page.locator(`[data-template="${templateSelector}"]`);
+    await templateCard.waitFor({ state: 'visible', timeout: 10000 });
+    await templateCard.click();
+
+    await addExifImagesToGallery(page, 3);
+
+    await configureExifSettings(page, templateSelector, {
       enabled: true,
       displayLayout: 'auto',
     });
+
+    await publishGalleryAndNavigateToFrontend(page);
 
     // Wait for gallery to load
     await page.waitForSelector(EXIF_SELECTORS.galleryContainer, { state: 'visible', timeout: 15000 });
@@ -186,16 +352,23 @@ test.describe('EXIF Attribute layouts', () => {
   });
 
   test('full layout displays all EXIF properties', async ({ page }) => {
-    // Create gallery with full layout and navigate to frontend
-    await createGalleryAndNavigateToPage(page, {
-      galleryName: 'EXIF Full Layout All Properties',
-      templateSelector,
-      screenshotPrefix: `${screenshotPrefix}-full-all`,
-      imageCount: 3,
-    }, {
+    await page.goto('/wp-admin/post-new.php?post_type=foogallery');
+    await page.waitForLoadState('domcontentloaded');
+
+    await page.locator('#title').fill('EXIF Full Layout All Properties');
+
+    const templateCard = page.locator(`[data-template="${templateSelector}"]`);
+    await templateCard.waitFor({ state: 'visible', timeout: 10000 });
+    await templateCard.click();
+
+    await addExifImagesToGallery(page, 3);
+
+    await configureExifSettings(page, templateSelector, {
       enabled: true,
       displayLayout: 'full',
     });
+
+    await publishGalleryAndNavigateToFrontend(page);
 
     // Wait for gallery to load
     await page.waitForSelector(EXIF_SELECTORS.galleryContainer, { state: 'visible', timeout: 15000 });
@@ -229,16 +402,23 @@ test.describe('EXIF Attribute layouts', () => {
   });
 
   test('verifies layout container CSS class', async ({ page }) => {
-    // Create gallery with full layout and navigate to frontend
-    await createGalleryAndNavigateToPage(page, {
-      galleryName: 'EXIF Layout CSS Class Verification',
-      templateSelector,
-      screenshotPrefix: `${screenshotPrefix}-css-class`,
-      imageCount: 3,
-    }, {
+    await page.goto('/wp-admin/post-new.php?post_type=foogallery');
+    await page.waitForLoadState('domcontentloaded');
+
+    await page.locator('#title').fill('EXIF Layout CSS Class Verification');
+
+    const templateCard = page.locator(`[data-template="${templateSelector}"]`);
+    await templateCard.waitFor({ state: 'visible', timeout: 10000 });
+    await templateCard.click();
+
+    await addExifImagesToGallery(page, 3);
+
+    await configureExifSettings(page, templateSelector, {
       enabled: true,
       displayLayout: 'full',
     });
+
+    await publishGalleryAndNavigateToFrontend(page);
 
     // Wait for gallery to load
     await page.waitForSelector(EXIF_SELECTORS.galleryContainer, { state: 'visible', timeout: 15000 });
@@ -254,6 +434,50 @@ test.describe('EXIF Attribute layouts', () => {
     if (await exifContainer.isVisible()) {
       // Should have fg-media-caption-exif-full class
       await expect(exifContainer).toHaveClass(/fg-media-caption-exif-full/);
+    }
+  });
+
+  test('partial layout shows icon and value only', async ({ page }) => {
+    await page.goto('/wp-admin/post-new.php?post_type=foogallery');
+    await page.waitForLoadState('domcontentloaded');
+
+    await page.locator('#title').fill('EXIF Partial Layout Verification');
+
+    const templateCard = page.locator(`[data-template="${templateSelector}"]`);
+    await templateCard.waitFor({ state: 'visible', timeout: 10000 });
+    await templateCard.click();
+
+    await addExifImagesToGallery(page, 3);
+
+    await configureExifSettings(page, templateSelector, {
+      enabled: true,
+      displayLayout: 'partial',
+    });
+
+    await publishGalleryAndNavigateToFrontend(page);
+
+    await page.waitForSelector(EXIF_SELECTORS.galleryContainer, { state: 'visible', timeout: 15000 });
+
+    await openLightboxAndShowExif(page);
+
+    await page.screenshot({ path: `test-results/${screenshotPrefix}-09-partial-layout-verification.png` });
+
+    const exifContainer = page.locator(EXIF_SELECTORS.exifContainer);
+    if (await exifContainer.isVisible()) {
+      await expect(exifContainer).toHaveClass(/fg-media-caption-exif-partial/);
+
+      // Partial layout shows icon and value but labels are hidden
+      const props = page.locator(EXIF_SELECTORS.exifProp);
+      const count = await props.count();
+
+      if (count > 0) {
+        const firstProp = props.first();
+        const icon = firstProp.locator(EXIF_SELECTORS.exifIcon);
+        const value = firstProp.locator(EXIF_SELECTORS.exifValue);
+
+        await expect(icon).toBeVisible();
+        await expect(value).toBeVisible();
+      }
     }
   });
 });
