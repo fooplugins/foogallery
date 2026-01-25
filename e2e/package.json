@@ -34,6 +34,8 @@
     "test:exif:headed": "CLEANUP_AFTER_TESTS=false npm run pretest && npx playwright test --config=tests/playwright.config.ts --headed tests/specs/pro-features/exif/",
     "test:captions": "npm run pretest && npx playwright test --config=tests/playwright.config.ts tests/specs/pro-features/captions/",
     "test:captions:headed": "CLEANUP_AFTER_TESTS=false npm run pretest && npx playwright test --config=tests/playwright.config.ts --headed tests/specs/pro-features/captions/",
+    "test:album": "npm run pretest && npx playwright test --config=tests/playwright.config.ts tests/specs/albums/",
+    "test:album:headed": "CLEANUP_AFTER_TESTS=false npm run pretest && npx playwright test --config=tests/playwright.config.ts --headed tests/specs/albums/",
 
     "setup": "npm run docker:up && sleep 10 && npm run docker:setup",
     "clean": "npm run docker:clean && rm -rf playwright-report test-results .auth",

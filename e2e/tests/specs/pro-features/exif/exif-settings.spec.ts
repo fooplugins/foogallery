@@ -9,6 +9,7 @@ import {
   addExifImagesToGallery,
   publishGalleryAndNavigateToFrontend,
   openLightbox,
+  openLightboxAndShowExif,
   toggleLightboxInfo,
   closeLightbox,
   verifyExifIconPositionOnFrontend,
@@ -72,10 +73,11 @@ test.describe('EXIF Settings Configuration', () => {
     // Add EXIF images to the gallery
     await addExifImagesToGallery(page, 3);
 
-    // Configure EXIF settings - enabled with bottom-right position
+    // Configure EXIF settings - enabled with bottom-right position and full display layout
     await configureExifSettings(page, templateSelector, {
       enabled: true,
       iconPosition: 'bottomRight',
+      displayLayout: 'full',
     });
 
     // Screenshot admin settings
@@ -104,13 +106,13 @@ test.describe('EXIF Settings Configuration', () => {
     expect(exifItemCount).toBeGreaterThan(0);
 
     // Open lightbox and verify EXIF info is available
-    await openLightbox(page, 0);
-    const infoToggled = await toggleLightboxInfo(page);
-    expect(infoToggled).toBe(true);
+    const exifOpened = await openLightboxAndShowExif(page, 0);
+    expect(exifOpened).toBe(true);
 
-    // Verify EXIF container is visible
+    // Verify EXIF container is visible (openLightboxAndShowExif already waits for it)
     const exifContainer = page.locator(EXIF_SELECTORS.exifContainer);
-    await expect(exifContainer).toBeVisible();
+    const isVisible = await exifContainer.isVisible();
+    expect(isVisible).toBe(true);
 
     // Screenshot lightbox with EXIF
     await page.screenshot({ path: `test-results/${screenshotPrefix}-02-exif-enabled-lightbox.png` });
@@ -435,10 +437,11 @@ test.describe('EXIF Settings Configuration', () => {
     // Add EXIF images to the gallery
     await addExifImagesToGallery(page, 3);
 
-    // Configure EXIF settings with no icon position
+    // Configure EXIF settings with no icon position and full display layout
     await configureExifSettings(page, templateSelector, {
       enabled: true,
       iconPosition: 'none',
+      displayLayout: 'full',
     });
 
     // Screenshot admin
@@ -463,12 +466,12 @@ test.describe('EXIF Settings Configuration', () => {
     expect(hasNoPositionClasses).toBe(true);
 
     // But EXIF should still work in lightbox
-    await openLightbox(page, 0);
-    const infoToggled = await toggleLightboxInfo(page);
-    expect(infoToggled).toBe(true);
+    const exifOpened = await openLightboxAndShowExif(page, 0);
+    expect(exifOpened).toBe(true);
 
     const exifContainer = page.locator(EXIF_SELECTORS.exifContainer);
-    await expect(exifContainer).toBeVisible();
+    const isVisible = await exifContainer.isVisible();
+    expect(isVisible).toBe(true);
 
     await closeLightbox(page);
   });

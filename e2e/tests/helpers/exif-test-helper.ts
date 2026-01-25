@@ -6,7 +6,7 @@ import { Page, expect, Locator } from '@playwright/test';
 // EXIF selectors - based on FooGallery EXIF feature DOM structure
 export const EXIF_SELECTORS = {
   // Admin - Gallery Settings (EXIF Tab)
-  // EXIF tab is the 11th tab in vertical tabs navigation (Advanced is 12th)
+  // EXIF tab is the 11th tab in vertical tabs navigation
   exifTab: 'div.foogallery-vertical-tabs > div:nth-of-type(11)',
   // Radio buttons for enabling/disabling EXIF - use specific IDs
   exifViewDisabled: '#FooGallerySettings_default_exif_view_status0',
@@ -202,7 +202,7 @@ export const EXIF_TEST_IMAGES = {
 
 /**
  * Navigate to the EXIF settings tab in gallery admin
- * In the test environment (localhost:8080), EXIF is the 11th tab, Advanced is 12th
+ * Uses text-based selector for reliability instead of fragile positional index
  */
 export async function navigateToExifSettings(page: Page, templateSelector: string): Promise<void> {
   // Scroll down to Gallery Settings section
@@ -211,16 +211,28 @@ export async function navigateToExifSettings(page: Page, templateSelector: strin
   await page.waitForTimeout(500);
 
   // Click on EXIF section tab in Gallery Settings for the selected template
-  // EXIF is the 11th tab in the vertical tabs navigation (Advanced is 12th)
-  // Tab order: General, Lightbox, Appearance, Hover Effects, Captions, Paging, Filtering, Video, Protection, Ecommerce, EXIF, Advanced
-  const exifTab = page.locator(`div.foogallery-settings-container-${templateSelector} div.foogallery-vertical-tabs > div:nth-of-type(11)`);
+  // Use text-based selector for reliability
+  const templateContainer = page.locator(`div.foogallery-settings-container-${templateSelector}`);
+
+  // Try text-based selector first (most reliable)
+  let exifTab = templateContainer.locator('div.foogallery-vertical-tabs > div').filter({ hasText: /^EXIF$/ });
+
+  if (await exifTab.count() === 0) {
+    // Fallback: try with just "EXIF" text
+    exifTab = templateContainer.locator('div.foogallery-vertical-tabs > div:has-text("EXIF")');
+  }
+
+  if (await exifTab.count() === 0) {
+    // Final fallback: positional selector (EXIF is typically 11th or 12th tab)
+    // Tab order: General, Lightbox, Appearance, Hover Effects, Captions, Paging, Filtering, Video, Protection, Ecommerce, EXIF, Advanced
+    exifTab = templateContainer.locator('div.foogallery-vertical-tabs > div:nth-of-type(11)');
+  }
 
   await exifTab.scrollIntoViewIfNeeded();
   await exifTab.click();
   await page.waitForTimeout(500);
 
   // Wait for the EXIF tab content to be active
-  // The tab should contain the "Show EXIF" setting row
   await page.waitForTimeout(300);
 }
 
@@ -401,7 +413,7 @@ export async function openLightboxAndShowExif(page: Page, itemIndex: number = 0)
 
   // Wait for lightbox to open
   await page.waitForSelector(EXIF_SELECTORS.lightboxPanel, { state: 'visible', timeout: 10000 });
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(1000); // Allow lightbox animation to complete
 
   // Click info button to show EXIF panel
   const infoButton = page.locator(EXIF_SELECTORS.lightboxInfoButton);
@@ -416,9 +428,24 @@ export async function openLightboxAndShowExif(page: Page, itemIndex: number = 0)
       return false;
     }
 
-    await infoButton.click();
-    await page.waitForTimeout(500);
-    return true;
+    // Click the info button with force to ensure it triggers
+    await infoButton.click({ force: true });
+    await page.waitForTimeout(1000); // Wait for panel animation
+
+    // Try to wait for EXIF container to become visible
+    try {
+      await page.waitForSelector(EXIF_SELECTORS.exifContainer, { state: 'visible', timeout: 5000 });
+      return true;
+    } catch {
+      // EXIF container didn't become visible - try clicking again
+      // Sometimes the first click toggles a different state
+      await infoButton.click({ force: true });
+      await page.waitForTimeout(1000);
+
+      // Check again if EXIF container is now visible
+      const exifContainer = page.locator(EXIF_SELECTORS.exifContainer);
+      return await exifContainer.isVisible();
+    }
   }
 
   return false;
@@ -610,8 +637,29 @@ export async function editExifInAttachmentModal(page: Page, itemIndex: number, e
   }
 
   // Close the modal
-  await page.keyboard.press('Escape');
-  await page.waitForTimeout(500);
+  await closeAttachmentModal(page);
+}
+
+/**
+ * Close the FooGallery attachment modal reliably
+ */
+export async function closeAttachmentModal(page: Page): Promise<void> {
+  // Try clicking the close button first (most reliable)
+  const closeButton = page.locator('#foogallery-image-edit-modal .media-modal-close, #foogallery-image-edit-modal button.media-modal-close');
+  if (await closeButton.isVisible()) {
+    await closeButton.click({ force: true });
+    await page.waitForTimeout(1000);
+  } else {
+    // Fallback to Escape key
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(1000);
+  }
+
+  // Wait for the modal to be hidden
+  const modal = page.locator('#foogallery-image-edit-modal');
+  await modal.waitFor({ state: 'hidden', timeout: 10000 }).catch(() => {
+    // Modal might not exist anymore, that's OK
+  });
 }
 
 /**
@@ -766,29 +814,53 @@ export async function createGalleryAndNavigateToPage(page: Page, options: ExifTe
       await page.waitForTimeout(500);
     }
   } else {
-    // For EXIF tests, try to find images with "EXIF" in the title first
+    // For EXIF tests, search for images with REAL EXIF data (camera metadata)
+    // These are titled "EXIF - Canon_40D", "EXIF - Nikon_D70", etc.
     const searchInput = modal.locator('input[type="search"]');
     if (await searchInput.isVisible()) {
-      await searchInput.fill('EXIF');
-      await page.waitForTimeout(1000);
+      let selectedCount = 0;
 
-      // Check if we found any EXIF images
-      const exifAttachments = modal.locator('.attachment');
-      const exifCount = await exifAttachments.count();
+      // Search for specific camera names to find images with actual EXIF data
+      const cameraSearchTerms = ['Canon_40D', 'Canon_PowerShot', 'Nikon_D70', 'Panasonic_DMC'];
 
-      if (exifCount >= imageCount) {
-        // Select EXIF images
-        for (let i = 0; i < imageCount; i++) {
-          await exifAttachments.nth(i).click();
+      for (const searchTerm of cameraSearchTerms) {
+        if (selectedCount >= imageCount) break;
+
+        await searchInput.fill(searchTerm);
+        await page.waitForTimeout(1000);
+
+        const searchAttachments = modal.locator('.attachment');
+        const count = await searchAttachments.count();
+
+        for (let i = 0; i < count && selectedCount < imageCount; i++) {
+          const attachment = searchAttachments.nth(i);
+          if (await attachment.isVisible()) {
+            const isSelected = await attachment.evaluate((el) => el.classList.contains('selected'));
+            if (!isSelected) {
+              await attachment.click();
+              selectedCount++;
+            }
+          }
         }
-      } else {
-        // Clear search and select any images
+      }
+
+      // Fallback: if we didn't find enough images with camera names, try any images
+      if (selectedCount < imageCount) {
         await searchInput.clear();
         await page.waitForTimeout(500);
         const allAttachments = modal.locator('.attachment');
         await allAttachments.first().waitFor({ state: 'visible', timeout: 5000 });
-        for (let i = 0; i < imageCount; i++) {
-          await allAttachments.nth(i).click();
+        const count = await allAttachments.count();
+
+        for (let i = 0; i < count && selectedCount < imageCount; i++) {
+          const attachment = allAttachments.nth(i);
+          if (await attachment.isVisible()) {
+            const isSelected = await attachment.evaluate((el) => el.classList.contains('selected'));
+            if (!isSelected) {
+              await attachment.click();
+              selectedCount++;
+            }
+          }
         }
       }
     } else {
@@ -885,31 +957,75 @@ export async function addExifImagesToGallery(
       await page.waitForTimeout(500);
     }
   } else {
-    // Search for EXIF test images
+    // Search for EXIF test images with REAL EXIF data
+    // These are titled "EXIF - Canon_40D", "EXIF - Nikon_D70", etc.
+    // NOT "EXIF test image: no_exif" which has no EXIF data
     const searchInput = modal.locator('input[type="search"]');
     if (await searchInput.isVisible()) {
-      // Search for Canon_40D, Nikon_D70, Panasonic_DMC to get images with EXIF data
-      const exifImageNames = ['Canon_40D', 'Nikon_D70', 'Panasonic_DMC', 'Canon_PowerShot'];
       let selectedCount = 0;
 
-      for (const name of exifImageNames) {
+      // Search for specific camera names to find images with actual EXIF data
+      // These images have embedded camera metadata: Canon, Nikon, Panasonic
+      const cameraSearchTerms = ['Canon_40D', 'Canon_PowerShot', 'Nikon_D70', 'Panasonic_DMC'];
+
+      for (const searchTerm of cameraSearchTerms) {
         if (selectedCount >= imageCount) break;
 
-        await searchInput.fill(name);
+        await searchInput.fill(searchTerm);
         await page.waitForTimeout(1000);
 
-        const exifAttachments = modal.locator('.attachment');
-        const count = await exifAttachments.count();
+        const attachments = modal.locator('.attachment');
+        const count = await attachments.count();
 
         for (let i = 0; i < count && selectedCount < imageCount; i++) {
-          const attachment = exifAttachments.nth(i);
+          const attachment = attachments.nth(i);
+          if (await attachment.isVisible()) {
+            // Check if not already selected
+            const isSelected = await attachment.evaluate((el) => el.classList.contains('selected'));
+            if (!isSelected) {
+              await attachment.click();
+              selectedCount++;
+            }
+          }
+        }
+      }
+
+      // If we didn't find enough camera-specific images, try "EXIF -" (with hyphen)
+      // This matches "EXIF - Canon_40D" but not "EXIF test image: no_exif"
+      if (selectedCount < imageCount) {
+        await searchInput.fill('EXIF -');
+        await page.waitForTimeout(1000);
+
+        const attachments = modal.locator('.attachment');
+        const count = await attachments.count();
+
+        for (let i = 0; i < count && selectedCount < imageCount; i++) {
+          const attachment = attachments.nth(i);
+          if (await attachment.isVisible()) {
+            const isSelected = await attachment.evaluate((el) => el.classList.contains('selected'));
+            if (!isSelected) {
+              await attachment.click();
+              selectedCount++;
+            }
+          }
+        }
+      }
+
+      // Final fallback: select any available images
+      if (selectedCount === 0) {
+        await searchInput.clear();
+        await page.waitForTimeout(500);
+
+        const anyAttachments = modal.locator('.attachment');
+        const count = await anyAttachments.count();
+
+        for (let i = 0; i < count && selectedCount < imageCount; i++) {
+          const attachment = anyAttachments.nth(i);
           if (await attachment.isVisible()) {
             await attachment.click();
             selectedCount++;
           }
         }
-        await searchInput.clear();
-        await page.waitForTimeout(300);
       }
     }
   }

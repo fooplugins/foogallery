@@ -125,6 +125,10 @@ else
     wp plugin activate foogallery-premium --allow-root || log_warn "Could not activate FooGallery Premium (may not be installed)"
 fi
 
+# Step 4b: Activate FooGallery Albums Extension
+log_info "Activating FooGallery Albums extension..."
+wp eval 'update_option("foogallery_extensions_activated", array_merge(get_option("foogallery_extensions_activated", array()), array("foogallery-albums" => "FooGallery_Albums_Extension"))); echo "Albums extension activated!";' --allow-root 2>/dev/null || log_warn "Could not activate Albums extension"
+
 # Step 5: Configure permalinks
 log_info "Setting permalinks to /%postname%/..."
 wp rewrite structure '/%postname%/' --allow-root

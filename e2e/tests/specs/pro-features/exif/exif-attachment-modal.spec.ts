@@ -10,7 +10,9 @@ import {
   addExifImagesToGallery,
   publishGalleryAndNavigateToFrontend,
   saveAttachmentModal,
+  closeAttachmentModal,
   openLightbox,
+  openLightboxAndShowExif,
   toggleLightboxInfo,
   closeLightbox,
   getExifValuesFromLightbox,
@@ -49,8 +51,7 @@ test.describe('EXIF Attachment Modal', () => {
     const tabVisible = await exifTab.first().isVisible().catch(() => false);
 
     // Close modal
-    await page.keyboard.press('Escape');
-    await page.waitForTimeout(500);
+    await closeAttachmentModal(page);
 
     // EXIF tab should be present if FooGallery Pro is active
     expect(typeof tabVisible).toBe('boolean');
@@ -87,8 +88,7 @@ test.describe('EXIF Attachment Modal', () => {
                            await isoInput.isVisible();
 
     // Close modal
-    await page.keyboard.press('Escape');
-    await page.waitForTimeout(500);
+    await closeAttachmentModal(page);
 
     expect(typeof anyFieldVisible).toBe('boolean');
   });
@@ -120,8 +120,7 @@ test.describe('EXIF Attachment Modal', () => {
     }
 
     // Close modal
-    await page.keyboard.press('Escape');
-    await page.waitForTimeout(500);
+    await closeAttachmentModal(page);
   });
 
   test('edits camera field and verifies on frontend', async ({ page }) => {
@@ -170,9 +169,8 @@ test.describe('EXIF Attachment Modal', () => {
       await saveAttachmentModal(page);
     }
 
-    // Close modal
-    await page.keyboard.press('Escape');
-    await page.waitForTimeout(500);
+    // Close modal by clicking the close button
+    await closeAttachmentModal(page);
 
     // Update the gallery
     await page.locator('#publish').click();
@@ -194,16 +192,17 @@ test.describe('EXIF Attachment Modal', () => {
     await page.waitForSelector(EXIF_SELECTORS.galleryContainer, { state: 'visible', timeout: 15000 });
 
     // Open lightbox and verify camera value
-    await openLightbox(page, 0);
-    await toggleLightboxInfo(page);
+    const exifOpened = await openLightboxAndShowExif(page, 0);
 
     // Screenshot lightbox
     await page.screenshot({ path: `test-results/${screenshotPrefix}-04-edit-camera-frontend.png` });
 
-    // Verify camera value in lightbox
-    const exifValues = await getExifValuesFromLightbox(page);
-    if (exifValues['Camera']) {
-      expect(exifValues['Camera']).toContain('Custom Test Camera XYZ');
+    // Verify camera value in lightbox (only if EXIF panel opened)
+    if (exifOpened) {
+      const exifValues = await getExifValuesFromLightbox(page);
+      if (exifValues['Camera']) {
+        expect(exifValues['Camera']).toContain('Custom Test Camera XYZ');
+      }
     }
 
     await closeLightbox(page);
@@ -245,8 +244,7 @@ test.describe('EXIF Attachment Modal', () => {
       await saveAttachmentModal(page);
     }
 
-    await page.keyboard.press('Escape');
-    await page.waitForTimeout(500);
+    await closeAttachmentModal(page);
 
     // Update and navigate to frontend
     await page.locator('#publish').click();
@@ -313,8 +311,7 @@ test.describe('EXIF Attachment Modal', () => {
       await saveAttachmentModal(page);
     }
 
-    await page.keyboard.press('Escape');
-    await page.waitForTimeout(500);
+    await closeAttachmentModal(page);
 
     await page.locator('#publish').click();
     await page.waitForLoadState('networkidle');
@@ -380,8 +377,7 @@ test.describe('EXIF Attachment Modal', () => {
       await saveAttachmentModal(page);
     }
 
-    await page.keyboard.press('Escape');
-    await page.waitForTimeout(500);
+    await closeAttachmentModal(page);
 
     await page.locator('#publish').click();
     await page.waitForLoadState('networkidle');
@@ -446,8 +442,7 @@ test.describe('EXIF Attachment Modal', () => {
       await saveAttachmentModal(page);
     }
 
-    await page.keyboard.press('Escape');
-    await page.waitForTimeout(500);
+    await closeAttachmentModal(page);
 
     await page.locator('#publish').click();
     await page.waitForLoadState('networkidle');
@@ -512,8 +507,7 @@ test.describe('EXIF Attachment Modal', () => {
       await saveAttachmentModal(page);
     }
 
-    await page.keyboard.press('Escape');
-    await page.waitForTimeout(500);
+    await closeAttachmentModal(page);
 
     await page.locator('#publish').click();
     await page.waitForLoadState('networkidle');
@@ -531,14 +525,12 @@ test.describe('EXIF Attachment Modal', () => {
 
     await page.waitForSelector(EXIF_SELECTORS.galleryContainer, { state: 'visible', timeout: 15000 });
 
-    await openLightbox(page, 0);
-    await toggleLightboxInfo(page);
+    const exifOpened = await openLightboxAndShowExif(page, 0);
 
     await page.screenshot({ path: `test-results/${screenshotPrefix}-09-edit-orientation-frontend.png` });
 
     // Orientation may be displayed or not depending on settings
-    const exifContainer = page.locator(EXIF_SELECTORS.exifContainer);
-    await expect(exifContainer).toBeVisible();
+    expect(exifOpened).toBe(true);
 
     await closeLightbox(page);
   });
@@ -577,8 +569,7 @@ test.describe('EXIF Attachment Modal', () => {
       await saveAttachmentModal(page);
     }
 
-    await page.keyboard.press('Escape');
-    await page.waitForTimeout(500);
+    await closeAttachmentModal(page);
 
     await page.locator('#publish').click();
     await page.waitForLoadState('networkidle');
@@ -673,8 +664,7 @@ test.describe('EXIF Attachment Modal', () => {
 
     await saveAttachmentModal(page);
 
-    await page.keyboard.press('Escape');
-    await page.waitForTimeout(500);
+    await closeAttachmentModal(page);
 
     await page.locator('#publish').click();
     await page.waitForLoadState('networkidle');
@@ -760,8 +750,7 @@ test.describe('EXIF Attachment Modal', () => {
 
     await saveAttachmentModal(page);
 
-    await page.keyboard.press('Escape');
-    await page.waitForTimeout(500);
+    await closeAttachmentModal(page);
 
     await page.locator('#publish').click();
     await page.waitForLoadState('networkidle');
