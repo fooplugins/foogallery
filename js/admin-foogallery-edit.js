@@ -738,8 +738,20 @@ FooGallery.autoEnabled = false;
 				url: ajaxurl,
 				data: data,
 				success: function(data) {
-					//refresh page
-					location.reload();
+					if (data && data.success) {
+						//refresh page
+						location.reload();
+						return;
+					}
+
+					var message = data && data.data && data.data.message ? data.data.message : 'Unable to create page.';
+					alert(message);
+					$('#foogallery_create_page_spinner').removeClass('is-active');
+				},
+				error: function(xhr) {
+					var message = xhr.responseJSON && xhr.responseJSON.data && xhr.responseJSON.data.message ? xhr.responseJSON.data.message : 'Unable to create page.';
+					alert(message);
+					$('#foogallery_create_page_spinner').removeClass('is-active');
 				}
 			});
 		});
@@ -760,7 +772,13 @@ FooGallery.autoEnabled = false;
 				url: ajaxurl,
 				data: data,
 				success: function(data) {
-					alert(data);
+					var message = data && data.data && data.data.message ? data.data.message : data;
+					alert(message);
+					$('#foogallery_clear_thumb_cache_spinner').removeClass('is-active');
+				},
+				error: function(xhr) {
+					var message = xhr.responseJSON && xhr.responseJSON.data && xhr.responseJSON.data.message ? xhr.responseJSON.data.message : 'There was a problem clearing the thumbnail cache.';
+					alert(message);
 					$('#foogallery_clear_thumb_cache_spinner').removeClass('is-active');
 				}
 			});
@@ -1073,7 +1091,13 @@ FooGallery.autoEnabled = false;
 				url: ajaxurl,
 				data: data,
 				success: function(data) {
-					alert(data);
+					var message = data && data.data && data.data.message ? data.data.message : data;
+					alert(message);
+					$('#foogallery_clear_img_thumb_cache_spinner').removeClass('is-active');
+				},
+				error: function(xhr) {
+					var message = xhr.responseJSON && xhr.responseJSON.data && xhr.responseJSON.data.message ? xhr.responseJSON.data.message : 'There was a problem clearing the thumbnail cache.';
+					alert(message);
 					$('#foogallery_clear_img_thumb_cache_spinner').removeClass('is-active');
 				}
 			});

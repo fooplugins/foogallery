@@ -506,78 +506,170 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 		}
 
 		public function ajax_create_gallery_page() {
-			if ( check_admin_referer( 'foogallery_create_gallery_page', 'foogallery_create_gallery_page_nonce' ) ) {
-
-				$foogallery_id = $_POST['foogallery_id'];
-
-				$foogallery = FooGallery::get_by_id( $foogallery_id );
-
-				$content = apply_filters( 'foogallery_create_gallery_page_content', $foogallery->shortcode(), $foogallery );
-
-				$post = apply_filters( 'foogallery_create_gallery_page_arguments', array(
-					'post_content' => $content,
-					'post_title'   => $foogallery->name,
-					'post_status'  => 'draft',
-					'post_type'    => 'page',
-				) );
-
-				wp_insert_post( $post );
+			if ( ! check_ajax_referer( 'foogallery_create_gallery_page', 'foogallery_create_gallery_page_nonce', false ) ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Invalid security token.', 'foogallery' ) ),
+					403
+				);
 			}
-			die();
+
+			$foogallery_id = isset( $_POST['foogallery_id'] ) ? absint( $_POST['foogallery_id'] ) : 0;
+			if ( ! $foogallery_id ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Invalid gallery ID.', 'foogallery' ) ),
+					400
+				);
+			}
+
+			// Check if the user can edit the current foogallery.
+			if ( ! current_user_can( 'edit_post', $foogallery_id ) ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Insufficient permissions.', 'foogallery' ) ),
+					403
+				);
+			}
+
+			// Check if the user can create draft pages.
+			if ( ! current_user_can( 'edit_pages' ) ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Insufficient permissions.', 'foogallery' ) ),
+					403
+				);
+			}
+
+			$foogallery = FooGallery::get_by_id( $foogallery_id );
+			if ( ! $foogallery ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Gallery not found.', 'foogallery' ) ),
+					404
+				);
+			}
+
+			$content = apply_filters( 'foogallery_create_gallery_page_content', $foogallery->shortcode(), $foogallery );
+
+			$post = apply_filters( 'foogallery_create_gallery_page_arguments', array(
+				'post_content' => $content,
+				'post_title'   => $foogallery->name,
+				'post_status'  => 'draft',
+				'post_type'    => 'page',
+			) );
+
+			$page_id = wp_insert_post( $post, true );
+			if ( is_wp_error( $page_id ) ) {
+				wp_send_json_error(
+					array( 'message' => $page_id->get_error_message() ),
+					500
+				);
+			}
+
+			wp_send_json_success(
+				array( 'page_id' => $page_id )
+			);
 		}
 
 		public function ajax_clear_gallery_thumb_cache() {
-			if ( check_admin_referer( 'foogallery_clear_gallery_thumb_cache', 'foogallery_clear_gallery_thumb_cache_nonce' ) ) {
-
-				$engine = foogallery_thumb_active_engine();
-
-				if ( $engine->has_local_cache() ) {
-
-					$foogallery_id = $_POST['foogallery_id'];
-
-					$foogallery = FooGallery::get_by_id( $foogallery_id );
-
-					ob_start();
-
-					//loop through all images, get the full sized file
-					foreach ( $foogallery->attachments() as $attachment ) {
-						$engine->clear_local_cache_for_file( $attachment->url );
-					}
-
-					ob_end_clean();
-
-					echo esc_html__( 'The thumbnail cache has been cleared!', 'foogallery' );
-				} else {
-					echo esc_html__( 'There was no thumbnail cache to clear.', 'foogallery' );
-				}
+			if ( ! check_ajax_referer( 'foogallery_clear_gallery_thumb_cache', 'foogallery_clear_gallery_thumb_cache_nonce', false ) ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Invalid security token.', 'foogallery' ) ),
+					403
+				);
 			}
 
-			die();
+			$foogallery_id = isset( $_POST['foogallery_id'] ) ? absint( $_POST['foogallery_id'] ) : 0;
+			if ( ! $foogallery_id ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Invalid gallery ID.', 'foogallery' ) ),
+					400
+				);
+			}
+
+			if ( ! current_user_can( 'edit_post', $foogallery_id ) ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Insufficient permissions.', 'foogallery' ) ),
+					403
+				);
+			}
+
+			$foogallery = FooGallery::get_by_id( $foogallery_id );
+			if ( ! $foogallery ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Gallery not found.', 'foogallery' ) ),
+					404
+				);
+			}
+
+			$engine = foogallery_thumb_active_engine();
+
+			if ( $engine->has_local_cache() ) {
+				ob_start();
+
+				//loop through all images, get the full sized file
+				foreach ( $foogallery->attachments() as $attachment ) {
+					$engine->clear_local_cache_for_file( $attachment->url );
+				}
+
+				ob_end_clean();
+
+				wp_send_json_success(
+					array( 'message' => __( 'The thumbnail cache has been cleared!', 'foogallery' ) )
+				);
+			}
+
+			wp_send_json_success(
+				array( 'message' => __( 'There was no thumbnail cache to clear.', 'foogallery' ) )
+			);
 		}
 
 		public function ajax_clear_attachment_thumb_cache() {
-			if ( check_admin_referer( 'foogallery_clear_attachment_thumb_cache', 'foogallery_clear_attachment_thumb_cache_nonce' ) ) {
-
-				$engine = foogallery_thumb_active_engine();
-
-				if ( $engine->has_local_cache() ) {
-
-					$attachment_id = intval( $_POST['attachment_id'] );
-					$url = wp_get_attachment_image_url( $attachment_id, 'full' );
-
-					ob_start();
-
-					$engine->clear_local_cache_for_file( $url );
-
-					ob_end_clean();
-
-					echo esc_html__( 'The thumbnail cache has been cleared!', 'foogallery' );
-				} else {
-					echo esc_html__( 'There was no thumbnail cache to clear.', 'foogallery' );
-				}
+			if ( ! check_ajax_referer( 'foogallery_clear_attachment_thumb_cache', 'foogallery_clear_attachment_thumb_cache_nonce', false ) ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Invalid security token.', 'foogallery' ) ),
+					403
+				);
 			}
 
-			die();
+			$attachment_id = isset( $_POST['attachment_id'] ) ? absint( $_POST['attachment_id'] ) : 0;
+			if ( ! $attachment_id ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Invalid attachment ID.', 'foogallery' ) ),
+					400
+				);
+			}
+
+			if ( ! current_user_can( 'edit_post', $attachment_id ) ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Insufficient permissions.', 'foogallery' ) ),
+					403
+				);
+			}
+
+			$attachment = get_post( $attachment_id );
+			if ( ! $attachment || 'attachment' !== $attachment->post_type ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Attachment not found.', 'foogallery' ) ),
+					404
+				);
+			}
+
+			$engine = foogallery_thumb_active_engine();
+
+			if ( $engine->has_local_cache() ) {
+				$url = wp_get_attachment_image_url( $attachment_id, 'full' );
+
+				ob_start();
+
+				$engine->clear_local_cache_for_file( $url );
+
+				ob_end_clean();
+
+				wp_send_json_success(
+					array( 'message' => __( 'The thumbnail cache has been cleared!', 'foogallery' ) )
+				);
+			}
+
+			wp_send_json_success(
+				array( 'message' => __( 'There was no thumbnail cache to clear.', 'foogallery' ) )
+			);
 		}
 
 		/**
