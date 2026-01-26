@@ -711,60 +711,105 @@ if ( ! class_exists( 'FooGallery_Admin_Settings' ) ) {
 		 * AJAX endpoint for clearing all CSS optimizations
 		 */
 		function ajax_clear_css_optimizations() {
-			if ( check_admin_referer( 'foogallery_clear_css_optimizations' ) ) {
-				foogallery_clear_all_css_load_optimizations();
-
-				esc_html_e('The CSS optimization cache was successfully cleared!', 'foogallery' );
-				die();
+			if ( ! check_ajax_referer( 'foogallery_clear_css_optimizations', '_wpnonce', false ) ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Invalid security token.', 'foogallery' ) ),
+					403
+				);
 			}
+
+			if ( ! current_user_can( 'manage_options' ) ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Insufficient permissions.', 'foogallery' ) ),
+					403
+				);
+			}
+
+			foogallery_clear_all_css_load_optimizations();
+
+			wp_send_json_success(
+				array( 'html' => esc_html__( 'The CSS optimization cache was successfully cleared!', 'foogallery' ) )
+			);
 		}
 
 		/**
 		 * AJAX endpoint for testing thumbnail generation
 		 */
 		function ajax_thumb_generation_test() {
-			if ( check_admin_referer( 'foogallery_thumb_generation_test' ) ) {
-				foogallery_output_thumbnail_generation_results();
-				die();
+			if ( ! check_ajax_referer( 'foogallery_thumb_generation_test', '_wpnonce', false ) ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Invalid security token.', 'foogallery' ) ),
+					403
+				);
 			}
+
+			if ( ! current_user_can( 'manage_options' ) ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Insufficient permissions.', 'foogallery' ) ),
+					403
+				);
+			}
+
+			ob_start();
+			foogallery_output_thumbnail_generation_results();
+			$html = ob_get_clean();
+
+			wp_send_json_success( array( 'html' => $html ) );
 		}
 
 		/**
 		 * AJAX endpoint for applying the retina defaults to all galleries
 		 */
 		function ajax_apply_retina_defaults() {
-			if ( check_admin_referer( 'foogallery_apply_retina_defaults' ) ) {
+			if ( ! check_ajax_referer( 'foogallery_apply_retina_defaults', '_wpnonce', false ) ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Invalid security token.', 'foogallery' ) ),
+					403
+				);
+			}
 
-				$defaults = $_POST['defaults'];
+			if ( ! current_user_can( 'manage_options' ) ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Insufficient permissions.', 'foogallery' ) ),
+					403
+				);
+			}
 
-				//extract the settings using a regex
-				$regex = '/foogallery\[default_retina_support\|(?<setting>.+?)\]/';
+			$defaults = isset( $_POST['defaults'] ) ? sanitize_text_field( wp_unslash( $_POST['defaults'] ) ) : '';
 
-				preg_match_all($regex, $defaults, $matches);
+			//extract the settings using a regex
+			$regex = '/foogallery\[default_retina_support\|(?<setting>.+?)\]/';
 
-				$gallery_retina_settings = array();
+			preg_match_all( $regex, $defaults, $matches );
 
-				if ( isset( $matches[1] ) ) {
-					foreach ( $matches[1] as $match ) {
-						$gallery_retina_settings[$match] = "true";
-					}
+			$gallery_retina_settings = array();
+
+			if ( isset( $matches[1] ) ) {
+				foreach ( $matches[1] as $match ) {
+					$gallery_retina_settings[ $match ] = 'true';
 				}
+			}
 
-				//go through all galleries and update the retina settings
-				$galleries = foogallery_get_all_galleries();
-				$gallery_update_count = 0;
-				foreach ( $galleries as $gallery ) {
-					update_post_meta( $gallery->ID, FOOGALLERY_META_RETINA, $gallery_retina_settings );
-					$gallery_update_count++;
-				}
+			//go through all galleries and update the retina settings
+			$galleries = foogallery_get_all_galleries();
+			$gallery_update_count = 0;
+			foreach ( $galleries as $gallery ) {
+				update_post_meta( $gallery->ID, FOOGALLERY_META_RETINA, $gallery_retina_settings );
+				$gallery_update_count++;
+			}
 
-				echo esc_html( sprintf( _n(
+			/* translators: %s: number of galleries updated. */
+			$message = sprintf(
+				_n(
 					'1 gallery successfully updated to use the default retina settings.',
 					'%s galleries successfully updated to use the default retina settings.',
-					$gallery_update_count, 'foogallery' ), absint( $gallery_update_count ) ) );
+					$gallery_update_count,
+					'foogallery'
+				),
+				absint( $gallery_update_count )
+			);
 
-				die();
-			}
+			wp_send_json_success( array( 'html' => esc_html( $message ) ) );
 		}
 
 		function ajax_uninstall() {
