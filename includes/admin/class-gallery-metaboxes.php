@@ -521,7 +521,16 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_MetaBoxes' ) ) {
 				);
 			}
 
+			// Check if the user can edit the current foogallery.
 			if ( ! current_user_can( 'edit_post', $foogallery_id ) ) {
+				wp_send_json_error(
+					array( 'message' => __( 'Insufficient permissions.', 'foogallery' ) ),
+					403
+				);
+			}
+
+			// Check if the user can create draft pages.
+			if ( ! current_user_can( 'edit_pages' ) ) {
 				wp_send_json_error(
 					array( 'message' => __( 'Insufficient permissions.', 'foogallery' ) ),
 					403
