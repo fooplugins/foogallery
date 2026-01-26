@@ -119,16 +119,51 @@ if ( ! class_exists( 'FooGallery_Admin_Gallery_Datasources' ) ) {
          * Outputs the modal content for the specific datasource
          */
         public function ajax_load_datasource_content() {
-            $nonce = safe_get_from_request( 'nonce' );
-            $datasource = sanitize_file_name( safe_get_from_request( 'datasource' ) );
-            $datasource_value = $this->get_json_datasource_value( safe_get_from_request( 'datasource_value' ) );
-            $foogallery_id = intval( safe_get_from_request( 'foogallery_id' ) );
-
-            if ( wp_verify_nonce( $nonce, 'foogallery-datasource-content' ) ) {             
-                do_action( 'foogallery-datasource-modal-content_'. $datasource, $foogallery_id, $datasource_value );
+            if ( ! check_ajax_referer( 'foogallery-datasource-content', 'nonce', false ) ) {
+                wp_send_json_error(
+                    array( 'message' => __( 'Invalid security token.', 'foogallery' ) ),
+                    403
+                );
             }
 
-            die();
+            $post_data = wp_unslash( $_POST );
+            $datasource = isset( $post_data['datasource'] ) ? sanitize_key( $post_data['datasource'] ) : '';
+            $datasource_value = isset( $post_data['datasource_value'] ) ? $this->get_json_datasource_value( $post_data['datasource_value'] ) : array();
+            $foogallery_id = isset( $post_data['foogallery_id'] ) ? absint( $post_data['foogallery_id'] ) : 0;
+
+            if ( ! $foogallery_id ) {
+                wp_send_json_error(
+                    array( 'message' => __( 'Invalid gallery ID.', 'foogallery' ) ),
+                    400
+                );
+            }
+
+            $gallery = FooGallery::get_by_id( $foogallery_id );
+            if ( ! $gallery ) {
+                wp_send_json_error(
+                    array( 'message' => __( 'Gallery not found.', 'foogallery' ) ),
+                    404
+                );
+            }
+
+            if ( ! current_user_can( 'edit_post', $foogallery_id ) ) {
+                wp_send_json_error(
+                    array( 'message' => __( 'Insufficient permissions.', 'foogallery' ) ),
+                    403
+                );
+            }
+
+            $datasources = foogallery_gallery_datasources();
+            if ( empty( $datasource ) || ! is_array( $datasources ) || ! array_key_exists( $datasource, $datasources ) ) {
+                wp_send_json_error(
+                    array( 'message' => __( 'Invalid datasource.', 'foogallery' ) ),
+                    400
+                );
+            }
+
+            do_action( 'foogallery-datasource-modal-content_' . $datasource, $foogallery_id, $datasource_value );
+
+            wp_die();
         }
 
         /**
