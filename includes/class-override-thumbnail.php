@@ -74,16 +74,32 @@ if ( ! class_exists( 'FooGallery_Override_Thumbnail' ) ) {
          */
         public function ajax_remove_override() {
 
-            // Check for nonce security
-            if ( ! wp_verify_nonce( $_POST['nonce'], 'foogallery-modal-nonce' ) ) {
-                die ( 'Busted!');
+            if ( ! check_ajax_referer( 'foogallery-modal-nonce', 'nonce', false ) ) {
+                wp_send_json_error(
+                    array( 'message' => __( 'Invalid security token.', 'foogallery' ) ),
+                    403
+                );
             }
 
-            $img_id = sanitize_text_field( $_POST['img_id'] );
+            $img_id = isset( $_POST['img_id'] ) ? absint( wp_unslash( $_POST['img_id'] ) ) : 0;
+
+            if ( ! $img_id ) {
+                wp_send_json_error(
+                    array( 'message' => __( 'Invalid attachment data.', 'foogallery' ) ),
+                    400
+                );
+            }
+
+            if ( ! current_user_can( 'edit_post', $img_id ) ) {
+                wp_send_json_error(
+                    array( 'message' => __( 'Insufficient permissions.', 'foogallery' ) ),
+                    403
+                );
+            }
 
             delete_post_meta( $img_id, '_foogallery_override_thumbnail' );
 
-            wp_die();
+            wp_send_json_success();
         }
 
         public function extra_content_for_override_thumbnail( $modal_data ) {
