@@ -104,7 +104,7 @@ if ( ! class_exists( 'FooGallery_Rest_Routes' ) ) {
 
 			if ( ! empty( $gallery_posts ) ) {
 				foreach ( $gallery_posts as $gallery_post ) {
-					if ( ! current_user_can( 'edit_post', $gallery_post->ID ) ) {
+					if ( ! current_user_can( 'read_post', $gallery_post->ID ) ) {
 						continue;
 					}
 
