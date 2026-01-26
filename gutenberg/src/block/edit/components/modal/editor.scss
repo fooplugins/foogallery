@@ -4,6 +4,23 @@
  * CSS for just Backend enqueued after style.scss
  * which makes it higher in priority.
  */
+@media (min-width: 600px) {
+  .foogallery-modal {
+    max-width: min(calc(100% - 32px), 1280px);
+    min-width: 400px;
+  }
+}
+
+.foogallery-modal > .components-modal__content {
+  margin-top: 88px;
+  margin-bottom: 72px;
+  padding: 4px 32px;
+}
+
+.components-modal__content > .components-modal__header {
+  height: 88px;
+  padding: 24px 32px;
+}
 
 .foogallery-modal__content {
   text-align: center;
@@ -11,7 +28,10 @@
 
 .foogallery-modal__content-container {
   position: relative;
-  display: block;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
   outline: none;
 }
 
@@ -43,24 +63,30 @@
 }
 
 .foogallery-modal__footer {
-  border-top: 1px solid #e2e4e7;
-  padding: 0 16px;
+  align-items: center;
+  background: #fff;
+  border-top: 1px solid transparent;
+  bottom: 0;
+  box-sizing: border-box;
   display: flex;
   flex-direction: row;
+  height: 72px;
+  width: calc(100% - 32px);
   justify-content: space-between;
-  background: #fff;
-  align-items: center;
-  box-sizing: border-box;
-  height: 56px;
-  position: -webkit-sticky;
-  position: sticky;
-  bottom: 0;
+  margin: 0 -16px;
+  padding: 10px 0 24px;
+  position: absolute;
   z-index: 10;
-  margin: 24px -24px -24px;
 }
 
-.foogallery-modal__footer-search {
+.components-modal__content.is-scrollable .foogallery-modal__footer {
+  border-top-color: #e2e4e7;
+}
+
+input.foogallery-modal__footer-search[type=text] {
   flex: 1;
+  border-color: #e2e4e7;
+  min-height: 36px;
 }
 .foogallery-modal__footer-buttons {
   display: flex;

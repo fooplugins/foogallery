@@ -24,6 +24,7 @@ import { registerBlockType } from '@wordpress/blocks';
  */
 registerBlockType( 'fooplugins/foogallery', {
 	// Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
+	apiVersion: 3,
 	title: __( 'FooGallery' ), // Block title.
 	description: __( 'Insert a FooGallery into your content' ),
 	icon: 'format-gallery', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.

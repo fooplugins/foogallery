@@ -122,7 +122,7 @@ export default class FooGalleryEditModal extends Component {
 							data={ gallery }
 							isSelected={ id === gallery.id }
 							isDisabled={ disable.indexOf(gallery.id) !== -1 }
-							onSelected={ ( id ) => { self.setState( { id: id } ); } }
+							onSelected={ ( nextId ) => { self.setState( { id: id === nextId ? 0 : nextId } ); } }
 					/>
 			);
 		});
@@ -134,7 +134,7 @@ FooGalleryEditModal.defaultProps = {
 	currentId: 0,
 	isModalOpen: false,
 	className: "",
-	title: __("Select the gallery you want to insert"),
+	title: __("Select a gallery"),
 	empty: __("No galleries found!"),
 	insert: __("Insert Gallery"),
 	reload: __("Reload Galleries"),
