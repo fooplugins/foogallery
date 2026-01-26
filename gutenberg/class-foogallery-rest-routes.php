@@ -72,37 +72,60 @@ if ( ! class_exists( 'FooGallery_Rest_Routes' ) ) {
 		 */
 		public function get_galleries( $request ) {
 
-			$args = false;
+			$query_args = array(
+				'post_type'     => FOOGALLERY_CPT_GALLERY,
+				'post_status'   => array( 'publish', 'draft' ),
+				'cache_results' => false,
+				'nopaging'      => true,
+			);
 
-			$limit = intval( foogallery_get_setting( 'limit_gallery_selector_block_editor', 0 ) );
+			$limit = absint( foogallery_get_setting( 'limit_gallery_selector_block_editor', 0 ) );
 
 			if ( $limit > 0 ) {
-				$args['posts_per_page'] = $limit;
-				$args['nopaging'] = false;
+				$query_args['posts_per_page'] = $limit;
+				$query_args['nopaging'] = false;
 			}
 
-			$galleries = foogallery_get_all_galleries( false, $args );
+			$switched = false;
+			if ( is_multisite() ) {
+				$current_blog_id = get_current_blog_id();
+				if ( $current_blog_id ) {
+					$switched = switch_to_blog( $current_blog_id );
+				}
+			}
+
+			$gallery_posts = get_posts( $query_args );
+
+			if ( $switched ) {
+				restore_current_blog();
+			}
 
 			$result = array();
 
-			if ( !empty( $galleries ) ) {
-				foreach ( $galleries as $gallery ) {
-					$args = array(
-						'width' => 150,
+			if ( ! empty( $gallery_posts ) ) {
+				foreach ( $gallery_posts as $gallery_post ) {
+					if ( ! current_user_can( 'read_post', $gallery_post->ID ) ) {
+						continue;
+					}
+
+					$gallery = FooGallery::get( $gallery_post );
+
+					$image_args = array(
+						'width'  => 150,
 						'height' => 150
 					);
 
 					$img = foogallery_image_placeholder_src();
 
-					$featuredAttachment = @$gallery->featured_attachment();
-					if ( $featuredAttachment ) {
-						$img = @$featuredAttachment->html_img_src( $args );
+					$featured_attachment = $gallery->featured_attachment();
+					if ( $featured_attachment && method_exists( $featured_attachment, 'html_img_src' ) ) {
+						$img = $featured_attachment->html_img_src( $image_args );
 					}
 
 					$result[] = array(
-						'id' => $gallery->ID,
-						'name' => $gallery->name,
-						'thumbnail' => $img
+						'id' => absint( $gallery->ID ),
+						'name' => sanitize_text_field( $gallery->name ),
+						'thumbnail' => esc_url_raw( $img )
 					);
 				}
 			}
