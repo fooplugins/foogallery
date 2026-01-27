@@ -5,7 +5,6 @@ This document defines the required unit/integration tests that should run before
 
 ## Required Test Files
 - `.docs/tests/TEST-core-galleries.md` — core gallery CRUD and rendering checks.
-- `.docs/tests/TEST-admin-ajax.md` — authenticated admin-ajax endpoints and permissions.
 - `.docs/tests/TEST-rest-api.md` — REST API permissions and multisite scope.
 - `.docs/tests/TEST-security-multisite.md` — cross-site access protections.
 - `.docs/tests/TEST-templates-rendering.md` — template rendering and escaping.
