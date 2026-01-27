@@ -1,0 +1,66 @@
+{
+  "name": "foogallery-e2e",
+  "version": "1.0.0",
+  "description": "E2E Testing Infrastructure for FooGallery Premium",
+  "private": true,
+  "scripts": {
+    "docker:up": "docker compose -f docker/docker-compose.yml up -d",
+    "docker:down": "docker compose -f docker/docker-compose.yml down",
+    "docker:clean": "docker compose -f docker/docker-compose.yml down -v --remove-orphans",
+    "docker:logs": "docker compose -f docker/docker-compose.yml logs -f",
+    "docker:setup": "docker compose -f docker/docker-compose.yml exec wordpress /var/scripts/setup-wordpress.sh",
+    "docker:shell": "docker compose -f docker/docker-compose.yml exec wordpress bash",
+    "docker:wp": "docker compose -f docker/docker-compose.yml exec wordpress wp --allow-root",
+
+    "pretest": "bash scripts/pre-test.sh",
+    "test": "npx playwright test --config=tests/playwright.config.ts",
+    "posttest": "bash scripts/post-test.sh",
+
+    "test:headed": "CLEANUP_AFTER_TESTS=false npm run pretest && npx playwright test --config=tests/playwright.config.ts --headed",
+    "test:debug": "CLEANUP_AFTER_TESTS=false npm run pretest && npx playwright test --config=tests/playwright.config.ts --debug",
+    "test:ui": "CLEANUP_AFTER_TESTS=false npm run pretest && npx playwright test --config=tests/playwright.config.ts --ui",
+    "test:report": "npx playwright show-report playwright-report",
+    "test:trace": "npx playwright show-trace",
+    "test:keep-env": "CLEANUP_AFTER_TESTS=false npm test",
+    "test:quick": "npx playwright test --config=tests/playwright.config.ts",
+
+    "test:filtering": "npm run pretest && npx playwright test --config=tests/playwright.config.ts tests/specs/pro-features/filtering/",
+    "test:filtering:headed": "CLEANUP_AFTER_TESTS=false npm run pretest && npx playwright test --config=tests/playwright.config.ts --headed tests/specs/pro-features/filtering/",
+    "test:pagination": "npm run pretest && npx playwright test --config=tests/playwright.config.ts tests/specs/pro-features/pagination/",
+    "test:pagination:headed": "CLEANUP_AFTER_TESTS=false npm run pretest && npx playwright test --config=tests/playwright.config.ts --headed tests/specs/pro-features/pagination/",
+    "test:video": "npm run pretest && npx playwright test --config=tests/playwright.config.ts tests/specs/pro-features/video/",
+    "test:video:headed": "CLEANUP_AFTER_TESTS=false npm run pretest && npx playwright test --config=tests/playwright.config.ts --headed tests/specs/pro-features/video/",
+    "test:exif": "npm run pretest && npx playwright test --config=tests/playwright.config.ts tests/specs/pro-features/exif/",
+    "test:exif:headed": "CLEANUP_AFTER_TESTS=false npm run pretest && npx playwright test --config=tests/playwright.config.ts --headed tests/specs/pro-features/exif/",
+    "test:captions": "npm run pretest && npx playwright test --config=tests/playwright.config.ts tests/specs/pro-features/captions/",
+    "test:captions:headed": "CLEANUP_AFTER_TESTS=false npm run pretest && npx playwright test --config=tests/playwright.config.ts --headed tests/specs/pro-features/captions/",
+    "test:album": "npm run pretest && npx playwright test --config=tests/playwright.config.ts tests/specs/albums/",
+    "test:album:headed": "CLEANUP_AFTER_TESTS=false npm run pretest && npx playwright test --config=tests/playwright.config.ts --headed tests/specs/albums/",
+    "test:appearance": "npm run pretest && npx playwright test --config=tests/playwright.config.ts tests/specs/pro-features/appearance/",
+    "test:appearance:headed": "CLEANUP_AFTER_TESTS=false npm run pretest && npx playwright test --config=tests/playwright.config.ts --headed tests/specs/pro-features/appearance/",
+    "test:hover-effects": "npm run pretest && npx playwright test --config=tests/playwright.config.ts tests/specs/pro-features/hover-effects/",
+    "test:hover-effects:headed": "CLEANUP_AFTER_TESTS=false npm run pretest && npx playwright test --config=tests/playwright.config.ts --headed tests/specs/pro-features/hover-effects/",
+
+    "setup": "npm run docker:up && sleep 10 && npm run docker:setup",
+    "clean": "npm run docker:clean && rm -rf playwright-report test-results .auth",
+    "clean:artifacts": "rm -rf playwright-report test-results .auth"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "@types/node": "^20.10.0",
+    "dotenv": "^16.3.1",
+    "typescript": "^5.3.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "foogallery",
+    "wordpress",
+    "e2e",
+    "playwright",
+    "testing"
+  ],
+  "author": "FooPlugins",
+  "license": "GPL-2.0+"
+}
