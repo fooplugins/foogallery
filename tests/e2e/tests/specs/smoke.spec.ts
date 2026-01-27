@@ -140,7 +140,7 @@ test.describe('FooGallery Smoke Tests', () => {
       // Check for absence of upgrade nags
       !pageContent.includes('Upgrade to Pro');
 
-    // The freemius-killer should ensure Pro features are unlocked
+    // The freemius-e2e-helper should ensure Pro features are unlocked
   // At minimum, we should not see upgrade prompts
     const noFreemiusNag =
       !pageContent.includes('Start my free trial') &&

@@ -54,7 +54,7 @@ services:
       - wp_uploads:/var/www/html/wp-content/uploads
       # Mount test assets (videos, etc.) for E2E testing
       - ../test-assets:/var/www/html/wp-content/e2e-assets:ro
-      # Mount secrets directory (contains freemius-killer.php)
+      # Mount secrets directory (contains freemius-e2e-helper.php)
       - ../secrets:/var/www/html/wp-content/e2e-secrets:ro
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/wp-admin/install.php", "||", "curl", "-f", "http://localhost/"]

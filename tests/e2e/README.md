@@ -59,13 +59,13 @@ The E2E tests require FooGallery Premium features to be unlocked. For security r
    mkdir -p tests/e2e/secrets
    ```
 
-2. **Get the freemius-killer code**:
+2. **Get the freemius-e2e-helper code**:
    - Contact your team lead or check internal documentation
-   - The code should be saved to: `tests/e2e/secrets/freemius-killer.php`
+   - The code should be saved to: `tests/e2e/secrets/freemius-e2e-helper.php`
 
 3. **Verify setup**:
    ```bash
-   ls tests/e2e/secrets/freemius-killer.php
+   ls tests/e2e/secrets/freemius-e2e-helper.php
    ```
 
 #### What Happens Without It?
@@ -76,7 +76,7 @@ The E2E tests require FooGallery Premium features to be unlocked. For security r
 
 #### Security Note
 
-- **NEVER** commit `freemius-killer.php` to version control
+- **NEVER** commit `freemius-e2e-helper.php` to version control
 - The `secrets/` directory is gitignored
 - Only the `.example` template file is tracked
 
@@ -182,8 +182,8 @@ tests/e2e/
 │   └── post-test.sh            # Runs after tests (cleanup)
 ├── secrets/                    # GITIGNORED - local secrets
 │   ├── .gitkeep                # Keeps directory in git
-│   ├── freemius-killer.php.example  # Template (tracked)
-│   └── freemius-killer.php     # Actual bypass (gitignored)
+│   ├── freemius-e2e-helper.php.example  # Template (tracked)
+│   └── freemius-e2e-helper.php     # Actual bypass (gitignored)
 ├── tests/
 │   ├── playwright.config.ts    # Playwright configuration
 │   ├── helpers/                # Test helper functions
@@ -456,7 +456,7 @@ export class GalleryPage {
 3. **Browser:** Chromium only for Phase 1 (fastest, most stable)
 4. **Sequential Tests:** Tests run sequentially for Phase 1 reliability
 5. **Plugin Location:** Plugin mounted from parent directory (tests/e2e is inside foogallery-premium/)
-6. **Freemius Bypass:** Requires manual setup of `secrets/freemius-killer.php` (see Developer Setup)
+6. **Freemius Bypass:** Requires manual setup of `secrets/freemius-e2e-helper.php` (see Developer Setup)
 7. **Fresh Environment:** Each `npm test` run starts with a clean WordPress installation
 
 ## License

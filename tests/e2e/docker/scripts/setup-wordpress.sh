@@ -59,21 +59,21 @@ else
     log_info "WordPress installed successfully!"
 fi
 
-# Step 3: Set up mu-plugins directory and freemius-killer
+# Step 3: Set up mu-plugins directory and freemius-e2e-helper
 log_info "Setting up mu-plugins..."
 mkdir -p /var/www/html/wp-content/mu-plugins
 
-# Check for freemius-killer.php in mounted secrets directory
-FREEMIUS_KILLER_SOURCE="/var/www/html/wp-content/e2e-secrets/freemius-killer.php"
-FREEMIUS_KILLER_DEST="/var/www/html/wp-content/mu-plugins/freemius-killer.php"
+# Check for freemius-e2e-helper.php in mounted secrets directory
+FREEMIUS_HELPER_SOURCE="/var/www/html/wp-content/e2e-secrets/freemius-e2e-helper.php"
+FREEMIUS_HELPER_DEST="/var/www/html/wp-content/mu-plugins/freemius-e2e-helper.php"
 
-if [ -f "$FREEMIUS_KILLER_SOURCE" ]; then
-    log_info "Installing freemius-killer from secrets..."
-    cp "$FREEMIUS_KILLER_SOURCE" "$FREEMIUS_KILLER_DEST"
-    chown www-data:www-data "$FREEMIUS_KILLER_DEST"
-    log_info "Freemius killer installed!"
+if [ -f "$FREEMIUS_HELPER_SOURCE" ]; then
+    log_info "Installing freemius-e2e-helper from secrets..."
+    cp "$FREEMIUS_HELPER_SOURCE" "$FREEMIUS_HELPER_DEST"
+    chown www-data:www-data "$FREEMIUS_HELPER_DEST"
+    log_info "Freemius E2E helper installed!"
 else
-    log_warn "Freemius killer not found at $FREEMIUS_KILLER_SOURCE"
+    log_warn "Freemius E2E helper not found at $FREEMIUS_HELPER_SOURCE"
     log_warn "Premium features will require a valid license."
     log_warn "See e2e/README.md for setup instructions."
 fi
