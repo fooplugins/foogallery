@@ -291,6 +291,21 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			$product_id = intval( sanitize_text_field( wp_unslash( $request['product_id'] ) ) );
 			$gallery_id = foogallery_extract_gallery_id( sanitize_text_field( wp_unslash( $request['gallery_id'] ) ) );
 			$attachment_id = intval( sanitize_text_field( wp_unslash( $request['attachment_id'] ) ) );
+
+			// If the attachment is linked to a product, it must be published.
+			$attachment_product_id = absint( get_post_meta( $attachment_id, '_foogallery_product', true ) );
+			if ( $attachment_product_id > 0 && function_exists( 'wc_get_product' ) ) {
+				$attachment_product = wc_get_product( $attachment_product_id );
+				if ( empty( $attachment_product ) || 'publish' !== $attachment_product->get_status() ) {
+					wp_send_json( array(
+						'error' => __( 'Product not available!', 'foogallery' ),
+						'title' => __( 'Error', 'foogallery' ),
+						'body' => __( 'The linked product is not available. Please refresh the page and try again.', 'foogallery' ),
+						'purchasable' => false,
+					) );
+					die();
+				}
+			}
 		
 			try {
 				$info = $this->build_product_info( $product_id, $gallery_id, $attachment_id );
@@ -325,6 +340,15 @@ if ( ! class_exists( 'FooGallery_Pro_Woocommerce' ) ) {
 			$product = wc_get_product( $product_id );
 
 			$gallery = FooGallery::get_by_id( $gallery_id );
+
+			if ( false === $gallery || ! ( $gallery instanceof FooGallery ) ) {
+				return array(
+					'error' => __( 'No gallery found!', 'foogallery' ),
+					'title' => __( 'No gallery found!', 'foogallery' ),
+					'body' => __( 'We could not load any gallery information, as the gallery was not found!', 'foogallery' ),
+					'purchasable' => false,
+				);
+			}
 
 			$response = array();
 
