@@ -52,6 +52,7 @@ if ( function_exists( 'foogallery_fs' ) ) {
                     'is_premium'     => true,
                     'has_paid_plans' => true,
                     'has_addons'     => true,
+					'has_affiliation'=> 'selected',
                     'trial'          => array(
                         'days'               => 7,
                         'is_require_payment' => false,
