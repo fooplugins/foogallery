@@ -205,6 +205,7 @@ function translate(){
 function zip(){
     return gulp.src([
         "**/*",
+        "!**/.DS_Store",
         "!package*.json",
         "!./{node_modules,node_modules/**/*}",
         "!./{dist,dist/**/*}",
@@ -225,6 +226,7 @@ function zip(){
         '!WORDPRESS.md',
 		"!./{tests,tests/**/*}",
 		"!./{.docs,.docs/**/*}",
+		'!phpunit.xml.dist'
     ])
         .pipe(gulpZip(`${pkg.name}.v${pkg.version}.zip`))
         .pipe(gulp.dest("./dist"));

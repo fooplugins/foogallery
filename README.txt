@@ -284,14 +284,19 @@ Please update in order for FooGallery to work in WP 5.5+!
 
 == Changelog ==
 
-= 3.1.10-beta =
+= 3.1.10 =
 
-This release fixes an admin bug causing 503 errors in come scenarios, and also ensures all ajax calls do compatability checks.
+This release fixes a bunch of issues, hardens AJAX calls, and ensures foogallery block is WP 7.0 compatible.
 
-* Date Updated : 18 Jan 2026
+* Date Updated : 28 Jan 2026
 * Update : Thumbnail generation tests are only done on the gallery listing page now.
 * Fixed : Reworked thumbnail generation tests to not do HTTP checks for images in the media library, and only load 5 attaachments. These prevent any possible 503 errors happening.
 * Update : Added capability checks for admin ajax events to ensure user can perform the needed activites.
+* Update : Updated foogallery block to use apiVersion 3, to future proof for iframe block editor coming in WordPress 7.0.
+* Fix : Fixed CSS styling issues for foogallery block gallery selector.
+* Update : Hardened all admin ajax endpoints with capability checks and extra checks.
+* Update : Included Social Addon promotion tab when editing a gallery.
+* Update : Removed all old FooVideo compatibility code.
 
 = 3.1.9 =
 
