@@ -186,6 +186,12 @@ In order for FooGallery to function properly, the theme needs to have:
 
 One way to check if the theme is the problem, is by switching to one of the built-in WordPress themes, and then see if the gallery loads.
 
+= I am getting a 503 server error whenever I try to edit galleries from the admin =
+
+Some versions of PHP have issues with the Imagick Image library, which FooGallery uses to generate thumbnails.
+To fix this problem, goto FooGallery Settings -> Images, and ensure "Force GD Library" is checked and save settings.
+This will force your server to rather use the GD image library to avoid the 503 errors.
+
 = After updating, my galleries no longer work! What should I do? =
 
 Do you have any WordPress caching or optimization plugins? If so, then clear/purge your caches.
